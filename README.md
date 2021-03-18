@@ -17,11 +17,13 @@ Ce projet est réalisé dans le cadre du cours de PRO de notre 6ème semestre au
 | ----------------- | ---------------------------- | ------------------------------------------------------- |
 | Alexis Allemann   | alexis.allemann@heig-vd.ch   | [alexis-allemann](https://github.com/alexis-allemann)   |
 | Balestrieri Hakim | hakim.balestrieri@heig-vd.ch | [hakimbalestrieri](https://github.com/hakimbalestrieri) |
-| Christen Aloïs    | alois.christen@heig-vd.ch    | [](https://github.com/)                                 |
+| Christen Aloïs    | alois.christen@heig-vd.ch    | [AloisChristen](https://github.com/AloisChristen)       |
 | Gomes Christian   | christian.gomes@heig-vd.ch   | [Kyoden28](https://github.com/Kyoden28)                 |
 | Mottier Alexandre | alexandre.mottier@heig-vd.ch | [alex-mottier](https://github.com/alex-mottier)         |
-| Werkle Johann     | johann.werkle@heig-vd.ch     | [](https://github.com/)                                 |
+| Werkle Johann     | johann.werkle@heig-vd.ch     | [jwgit2](https://github.com/jwgit2)                     |
 
 ## Documentation :books:
 - [Cahier des charges](https://docs.google.com/document/d/1qoa4yTymvGwsT7UbVMWsHINIgMTjK4omENQQtDLuuCA/edit?usp=sharing)
-- ...
+- [Diagramme de Gantt](https://drive.google.com/file/d/1jsPWJtWTFPpic8qQQ9Nm8ls9UPAucrTE/view?usp=sharing)
+- [Journal de travail](https://docs.google.com/spreadsheets/d/1AO1D3wjjDWczJA71A2J2e0a2b0CYdRRPWPqOHQMfUHI/edit?usp=sharing)
+- [Modélisation](https://docs.google.com/document/d/18b8kpZCc5WYAIRArxywzORcK48tLwfY9McR1MsVFv4c/edit?usp=sharing)
