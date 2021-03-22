@@ -2,7 +2,7 @@
  * @file    Global.ts
  * @author  Alexis Allemann
  * @date    22.03.2021
- * @brief   Paramètres généraux de l'application
+ * @brief   General application settings
  -----------------------------------------------------------------------------------*/
 
 export default {
@@ -16,9 +16,11 @@ export default {
   },
   ICONS: {
     ARROW_LEFT: 'arrow-left',
+    HOME: 'home',
   },
   PRECISION: 2,
   SIZES: {
     ICON_BUTTON: 30,
+    ICON_MENU: 20,
   },
 };
