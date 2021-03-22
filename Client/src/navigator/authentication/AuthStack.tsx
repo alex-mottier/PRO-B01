@@ -17,7 +17,6 @@ const Stack = createStackNavigator<AuthParamList>();
 export const AuthStack: React.FC<AuthStackProps> = ({}) => {
   return (
     <Stack.Navigator initialRouteName='Login'>
-      {/* <Stack.Screen name="Register" component={} /> */}
       <Stack.Screen name='Login' component={LoginScreen} />
     </Stack.Navigator>
   );
