@@ -1,4 +1,7 @@
 package com.example.controller;
 
-public class MeetingController {
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class MeetingController extends BaseController {
 }

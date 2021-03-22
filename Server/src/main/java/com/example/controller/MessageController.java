@@ -1,4 +1,7 @@
-package com.example.neo4jEntities;
+package com.example.controller;
 
-public class MessageController {
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class MessageController extends BaseController {
 }

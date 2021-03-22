@@ -1,20 +1,21 @@
 package com.example.controller;
 
-import java.util.concurrent.atomic.AtomicLong;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/api")
 public class BaseController {
 
     public BaseController() {
     }
 
     @GetMapping("/testController")
-    //on relie la variable name à notre String name
     public String testBaseMethod(@RequestParam(value = "name", defaultValue = "hello") String name) {
         return name;
+    }
+
+    public String controllerName() {
+        return this.getClass().getSimpleName();
     }
 }
