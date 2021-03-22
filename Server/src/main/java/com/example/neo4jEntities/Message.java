@@ -1,5 +1,6 @@
 package com.example.neo4jEntities;
 
+import lombok.Data;
 import org.springframework.data.neo4j.core.schema.Node;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,14 +8,11 @@ import lombok.Setter;
 import java.util.Date;
 
 @Node("Message")
+@Data
 public class Message {
-    @Getter @Setter
     private Student student;
-    @Getter @Setter
     private Chat chat;
-    @Getter @Setter
     private String texte;
-    @Getter @Setter
     private Date date;
 
     public Message(Student student, Chat chat, String texte, Date date) {

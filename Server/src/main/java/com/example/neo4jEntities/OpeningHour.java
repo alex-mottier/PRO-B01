@@ -1,5 +1,6 @@
 package com.example.neo4jEntities;
 
+import lombok.Data;
 import org.springframework.data.neo4j.core.schema.Node;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,17 +8,14 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Node("HoraireOuverture")
+@Data
 public class OpeningHour {
     public enum Jour {
         LUNDI,MARDI,MERCREDI,JEUDI,VENDREDI,SAMEDI,DIMANCHE
     }
-    @Getter @Setter
     private Jour jour;
-    @Getter @Setter
     private LocalDateTime heureDebut;
-    @Getter @Setter
     private LocalDateTime heureFin;
-    @Getter @Setter
     private Location location;
 
     public OpeningHour(Jour jour, LocalDateTime heureDebut, LocalDateTime heureFin, Location location) {

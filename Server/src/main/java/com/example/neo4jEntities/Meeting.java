@@ -1,5 +1,6 @@
 package com.example.neo4jEntities;
 
+import lombok.Data;
 import org.springframework.data.neo4j.core.schema.Node;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,22 +8,15 @@ import lombok.Setter;
 import java.util.ArrayList;
 
 @Node("Reunion")
+@Data
 public class Meeting {
-    @Getter @Setter
     private ArrayList<Student> elevesParticipants;
-    @Getter @Setter
     private Student eleveOrganisteur;
-    @Getter @Setter
     private ArrayList<Location> lieuxes;
-    @Getter @Setter
     private ArrayList<Tag> tags;
-    @Getter @Setter
     private Chat chat;
-    @Getter @Setter
     private String nom;
-    @Getter @Setter
     private Integer nbRepetitions;
-    @Getter @Setter
     private Integer nbFrequence;
 
     public Meeting(ArrayList<Student> elevesParticipants, Student eleveOrganisteur,

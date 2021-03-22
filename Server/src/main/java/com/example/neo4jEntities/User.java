@@ -1,14 +1,15 @@
 package com.example.neo4jEntities;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.data.neo4j.core.schema.Node;
 import lombok.Getter;
 import lombok.Setter;
 
 @Node("Utilisateur")
+@Data
 public class User {
-    @Getter @Setter
     private String prenom;
-    @Getter @Setter
     private String nom;
 
     public User(String prenom, String nom) {
