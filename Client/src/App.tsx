@@ -1,9 +1,9 @@
-/**-----------------------------------------------------------------------------------
+/**
  * @file    App.tsx
  * @author  Alexis Allemann
  * @date    22.03.2021
  * @brief   Root component of the application
- -----------------------------------------------------------------------------------*/
+ */
 
 import * as React from 'react';
 import { PreferencesContext } from './app/context/ContextPreferences';
@@ -23,7 +23,7 @@ export default () => {
   );
 
   function toggleTheme() {
-    setTheme((theme) => (theme === 'light' ? 'dark' : 'light'));
+    setTheme((currentTheme) => (currentTheme === 'light' ? 'dark' : 'light'));
   }
 
   const preferences = React.useMemo(

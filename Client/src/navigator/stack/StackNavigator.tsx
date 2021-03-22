@@ -1,9 +1,9 @@
-/**-----------------------------------------------------------------------------------
+/**
  * @file    StackNavigator.tsx
  * @author  Alexis Allemann
  * @date    22.03.2021
  * @brief   Stack navigation
- -----------------------------------------------------------------------------------*/
+ */
 
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';

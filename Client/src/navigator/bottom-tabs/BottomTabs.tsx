@@ -1,9 +1,9 @@
-/**-----------------------------------------------------------------------------------
+/**
  * @file    BottomTabs.tsx
  * @author  Alexis Allemann
  * @date    22.03.2021
  * @brief   Bottom tabs navigator
- -----------------------------------------------------------------------------------*/
+ */
 
 import * as React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';

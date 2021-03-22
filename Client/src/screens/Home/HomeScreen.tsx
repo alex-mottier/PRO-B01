@@ -1,9 +1,9 @@
-/**-----------------------------------------------------------------------------------
+/**
  * @file    HomeScreen.tsx
  * @author  Alexis Allemann
  * @date    09.02.2021
  * @brief   Home page
- -----------------------------------------------------------------------------------*/
+ */
 
 import * as React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';

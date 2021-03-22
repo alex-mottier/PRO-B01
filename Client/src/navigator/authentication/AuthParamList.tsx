@@ -1,9 +1,9 @@
-/**-----------------------------------------------------------------------------------
+/**
  * @file    AuthParamList.tsx
  * @author  Alexis Allemann
  * @date    22.03.2021
  * @brief   Navigation settings for authentication
- -----------------------------------------------------------------------------------*/
+ */
 
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';

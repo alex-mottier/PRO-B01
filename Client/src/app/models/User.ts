@@ -1,22 +1,18 @@
-/**-----------------------------------------------------------------------------------
+/**
  * @file    User.ts
  * @author  Alexis Allemann
  * @date    22.03.2021
  * @brief   User of the application
- -----------------------------------------------------------------------------------*/
+ */
 
 export default class User {
-  private name: String;
+  private name: string;
 
   /**
    * Instantiation of a new user
    * @param name of the user
-   * @throws Error if the name is null of undefined
    */
-  public constructor(name: String) {
-    if (name === null || name === undefined)
-      throw new Error('Name can not be null');
-
+  public constructor(name: string) {
     this.name = name;
   }
 
@@ -24,7 +20,7 @@ export default class User {
    * Get the user name
    * @returns the user name
    */
-  public getName(): String {
+  public getName(): string {
     return this.name;
   }
 }
