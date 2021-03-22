@@ -7,17 +7,17 @@ import lombok.Setter;
 import java.util.ArrayList;
 
 @Node("Reunion")
-public class Reunion {
+public class Meeting {
     @Getter @Setter
-    private ArrayList<Etudiant> elevesParticipants;
+    private ArrayList<Student> elevesParticipants;
     @Getter @Setter
-    private Etudiant eleveOrganisteur;
+    private Student eleveOrganisteur;
     @Getter @Setter
-    private ArrayList<Lieu> lieux;
+    private ArrayList<Location> lieuxes;
     @Getter @Setter
     private ArrayList<Tag> tags;
     @Getter @Setter
-    private Conversation conversation;
+    private Chat chat;
     @Getter @Setter
     private String nom;
     @Getter @Setter
@@ -25,14 +25,14 @@ public class Reunion {
     @Getter @Setter
     private Integer nbFrequence;
 
-    public Reunion(ArrayList<Etudiant> elevesParticipants, Etudiant eleveOrganisteur,
-                   ArrayList<Lieu> lieux, ArrayList<Tag> tags, Conversation conversation,
+    public Meeting(ArrayList<Student> elevesParticipants, Student eleveOrganisteur,
+                   ArrayList<Location> lieuxes, ArrayList<Tag> tags, Chat chat,
                    String nom, Integer nbRepetitions, Integer nbFrequence) {
         this.elevesParticipants = elevesParticipants;
         this.eleveOrganisteur = eleveOrganisteur;
-        this.lieux = lieux;
+        this.lieuxes = lieuxes;
         this.tags = tags;
-        this.conversation = conversation;
+        this.chat = chat;
         this.nom = nom;
         this.nbRepetitions = nbRepetitions;
         this.nbFrequence = nbFrequence;

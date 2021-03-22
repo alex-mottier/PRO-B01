@@ -9,17 +9,17 @@ import java.util.Date;
 @Node("Message")
 public class Message {
     @Getter @Setter
-    private Etudiant etudiant;
+    private Student student;
     @Getter @Setter
-    private Conversation conversation;
+    private Chat chat;
     @Getter @Setter
     private String texte;
     @Getter @Setter
     private Date date;
 
-    public Message(Etudiant etudiant, Conversation conversation, String texte, Date date) {
-        this.etudiant = etudiant;
-        this.conversation = conversation;
+    public Message(Student student, Chat chat, String texte, Date date) {
+        this.student = student;
+        this.chat = chat;
         this.texte = texte;
         this.date = date;
     }

@@ -7,22 +7,22 @@ import lombok.Setter;
 import java.util.ArrayList;
 
 @Node("Hebergeur")
-public class Hebergeur extends Utilisateur {
+public class Host extends User {
     @Getter @Setter
     private String prenom;
     @Getter @Setter
     private String nom;
     @Getter @Setter
-    private Adresse adresse;
+    private Address address;
     @Getter @Setter
     private ArrayList<Tag> tags;
     @Getter @Setter
-    private ArrayList<Lieu> lieux;
+    private ArrayList<Location> lieuxes;
 
-    public Hebergeur(String prenom, String nom, Adresse adresse, ArrayList<Tag> tags, ArrayList<Lieu> lieux) {
+    public Host(String prenom, String nom, Address address, ArrayList<Tag> tags, ArrayList<Location> lieuxes) {
         super(prenom, nom);
-        this.adresse = adresse;
+        this.address = address;
         this.tags = tags;
-        this.lieux = lieux;
+        this.lieuxes = lieuxes;
     }
 }

@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Node("HoraireOuverture")
-public class HoraireOuverture {
+public class OpeningHour {
     public enum Jour {
         LUNDI,MARDI,MERCREDI,JEUDI,VENDREDI,SAMEDI,DIMANCHE
     }
@@ -18,12 +18,12 @@ public class HoraireOuverture {
     @Getter @Setter
     private LocalDateTime heureFin;
     @Getter @Setter
-    private Lieu lieu;
+    private Location location;
 
-    public HoraireOuverture(Jour jour, LocalDateTime heureDebut, LocalDateTime heureFin, Lieu lieu) {
+    public OpeningHour(Jour jour, LocalDateTime heureDebut, LocalDateTime heureFin, Location location) {
         this.jour = jour;
         this.heureDebut = heureDebut;
         this.heureFin = heureFin;
-        this.lieu = lieu;
+        this.location = location;
     }
 }

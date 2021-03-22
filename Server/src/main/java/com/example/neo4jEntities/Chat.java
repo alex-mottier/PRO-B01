@@ -5,18 +5,17 @@ import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.Node;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Node("Conversation")
-public class Conversation {
+public class Chat {
 
     @Getter @Setter
     private ArrayList<Message> messages = new ArrayList<>();
     @Getter @Setter
-    private Reunion reunion;
+    private Meeting meeting;
 
-    public Conversation(ArrayList<Message> messages, Reunion reunion) {
+    public Chat(ArrayList<Message> messages, Meeting meeting) {
         this.messages = messages;
-        this.reunion = reunion;
+        this.meeting = meeting;
     }
 }

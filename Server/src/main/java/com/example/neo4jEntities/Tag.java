@@ -10,18 +10,18 @@ import java.util.ArrayList;
 
 public class Tag {
     @Getter @Setter
-    private ArrayList<Reunion> reunions;
+    private ArrayList<Meeting> meetings;
     @Getter @Setter
-    private ArrayList<Lieu> lieux;
+    private ArrayList<Location> lieuxes;
     @Getter @Setter
-    private ArrayList<Hebergeur> hebergeurs;
+    private ArrayList<Host> hosts;
     @Getter @Setter
     private String nom;
 
-    public Tag(ArrayList<Reunion> reunions, ArrayList<Lieu> lieux, ArrayList<Hebergeur> hebergeurs, String nom) {
-        this.reunions = reunions;
-        this.lieux = lieux;
-        this.hebergeurs = hebergeurs;
+    public Tag(ArrayList<Meeting> meetings, ArrayList<Location> lieuxes, ArrayList<Host> hosts, String nom) {
+        this.meetings = meetings;
+        this.lieuxes = lieuxes;
+        this.hosts = hosts;
         this.nom = nom;
     }
 }

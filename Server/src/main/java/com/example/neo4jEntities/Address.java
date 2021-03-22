@@ -4,7 +4,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import lombok.Getter;
 import lombok.Setter;
 @Node("Adresse")
-public class Adresse {
+public class Address {
     //TODO ajouter les annotations, @Id pour les id @Property pour le nom, @Relationship pour les relations
     //TODO : Ajout de lombok dans les technologies
     @Getter @Setter
@@ -12,17 +12,17 @@ public class Adresse {
     @Getter @Setter
     private Integer nrRue;
     @Getter @Setter
-    private Ville ville;
+    private City city;
     @Getter @Setter
-    private Hebergeur hebergeur;
+    private Host host;
     @Getter @Setter
-    private Lieu lieu;
+    private Location location;
 
-    public Adresse(String rue, Integer nrRue, Ville ville, Hebergeur hebergeur, Lieu lieu) {
+    public Address(String rue, Integer nrRue, City city, Host host, Location location) {
         this.rue = rue;
         this.nrRue = nrRue;
-        this.ville = ville;
-        this.hebergeur = hebergeur;
-        this.lieu = lieu;
+        this.city = city;
+        this.host = host;
+        this.location = location;
     }
 }

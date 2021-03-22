@@ -15,8 +15,8 @@ public class MessageImage extends Message {
     @Getter @Setter
     private String link;
 
-    public MessageImage(Etudiant etudiant, Conversation conversation, String texte, Date date, Integer height, Integer width, String link) {
-        super(etudiant, conversation, texte, date);
+    public MessageImage(Student student, Chat chat, String texte, Date date, Integer height, Integer width, String link) {
+        super(student, chat, texte, date);
         this.height = height;
         this.width = width;
         this.link = link;

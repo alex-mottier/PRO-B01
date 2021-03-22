@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 
 @Node("Etudiant")
-public class Etudiant extends Utilisateur {
+public class Student extends User {
     @Getter @Setter
     private String prenom;
     @Getter @Setter
@@ -15,12 +15,12 @@ public class Etudiant extends Utilisateur {
     @Getter @Setter
     private ArrayList<Message> messages;
     @Getter @Setter
-    private ArrayList<Reunion> reunionsParticipe;
+    private ArrayList<Meeting> reunionsParticipe;
     @Getter @Setter
-    private ArrayList<Reunion> reunionsOrganisee;
+    private ArrayList<Meeting> reunionsOrganisee;
 
-    public Etudiant(String prenom, String nom, ArrayList<Message> messages, ArrayList<Reunion> reunionsParticipe,
-                    ArrayList<Reunion> reunionsOrganisee) {
+    public Student(String prenom, String nom, ArrayList<Message> messages, ArrayList<Meeting> reunionsParticipe,
+                   ArrayList<Meeting> reunionsOrganisee) {
         super(prenom, nom);
         this.messages = messages;
         this.reunionsParticipe = reunionsParticipe;
