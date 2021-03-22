@@ -11,6 +11,7 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Appbar, useTheme } from 'react-native-paper';
 import { StackNavigatorParamlist } from './StackNavigatorParameters';
 import { BottomTabs } from '../bottom-tabs/BottomTabs';
+import Globals from '../../app/context/Globals';
 
 const Stack = createStackNavigator<StackNavigatorParamlist>();
 
@@ -32,19 +33,28 @@ export const StackNavigator = () => {
               : scene.route.name;
 
           return (
-            <Appbar.Header style={{ backgroundColor: theme.colors.primary }}>
+            <Appbar.Header
+              style={{
+                backgroundColor: theme.colors.surface,
+                borderBottomColor: Globals.COLORS.PRIMARY,
+                borderBottomWidth: 1,
+              }}
+            >
               {previous && (
                 <Appbar.BackAction
                   onPress={navigation.goBack}
-                  color={'#FFFFFF'}
+                  color={Globals.COLORS.PRIMARY}
                 />
               )}
               <Appbar.Content
                 title={title}
                 titleStyle={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  color: '#ffffff',
+                  fontSize: 20,
+                  color: Globals.COLORS.PRIMARY,
+                  textAlign: 'center',
+                }}
+                style={{
+                  alignItems: 'center',
                 }}
               />
             </Appbar.Header>
@@ -56,7 +66,7 @@ export const StackNavigator = () => {
         name='Main'
         component={BottomTabs}
         options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? 'Accueil';
+          const routeName = getFocusedRouteNameFromRoute(route) ?? 'Amphitryon';
           return { headerTitle: routeName };
         }}
       />

@@ -7,12 +7,13 @@
 
 export default {
   COLORS: {
-    PRIMARY: '#eb3b28',
     BLUE: '#28d7eb',
-    PINK: '#eb2876',
-    ORANGE: '#eb9d28',
-    YELLOW: '#d7eb28',
     GREEN: '#28eb3c',
+    ORANGE: '#eb9d28',
+    PINK: '#eb2876',
+    PRIMARY: '#eb3b28',
+    YELLOW: '#d7eb28',
+    WHITE: '#ffffff',
   },
   ICONS: {
     ARROW_LEFT: 'arrow-left',

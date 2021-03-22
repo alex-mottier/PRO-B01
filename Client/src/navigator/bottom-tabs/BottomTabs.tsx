@@ -17,15 +17,17 @@ export const BottomTabs = () => {
   return (
     <React.Fragment>
       <Tab.Navigator
-        initialRouteName='Accueil'
+        initialRouteName='Home'
         activeColor={Globals.COLORS.BLUE}
-        barStyle={{ backgroundColor: Globals.COLORS.PRIMARY }}
+        barStyle={{
+          backgroundColor: Globals.COLORS.WHITE,
+        }}
       >
         <Tab.Screen
           name='Home'
           component={HomeScreen}
           options={{
-            tabBarLabel: 'Home',
+            tabBarLabel: 'Accueil',
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons
                 name={Globals.ICONS.HOME}
