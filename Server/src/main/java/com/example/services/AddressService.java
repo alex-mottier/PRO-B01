@@ -1,0 +1,53 @@
+package com.example.services;
+
+import com.example.neo4jEntities.Host;
+import com.example.repositories.HostRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class AddressService implements IGenericService<Host> {
+
+    private HostRepository hostRepository;
+
+    public AddressService(HostRepository hostRepository) {
+        this.hostRepository = hostRepository;
+    }
+
+    @Override
+    public List<Host> findAll() {
+        return hostRepository.findAll();
+    }
+
+    @Override
+    public Host save(Host host) {
+        return hostRepository.save(host);
+    }
+
+    @Override
+    public Host findById(long id) {
+        try {
+            return hostRepository.findById(id).orElseThrow(Exception::new);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public void delete(Host host) {
+        hostRepository.delete(host);
+    }
+
+    @Override
+    public void deleteById(long id) {
+        hostRepository.deleteById(id);
+    }
+
+    @Override
+    public long count() {
+        return hostRepository.count();
+    }
+
+}
