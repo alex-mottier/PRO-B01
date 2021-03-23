@@ -1,6 +1,6 @@
 package com.example.controller;
 
-import com.example.neo4jEntities.User;
+import com.example.entities.User;
 import com.example.services.UserService;
 import org.springframework.web.bind.annotation.*;
 

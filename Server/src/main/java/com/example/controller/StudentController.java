@@ -1,6 +1,6 @@
 package com.example.controller;
 
-import com.example.neo4jEntities.Student;
+import com.example.entities.Student;
 import com.example.services.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
