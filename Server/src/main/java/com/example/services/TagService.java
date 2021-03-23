@@ -1,7 +1,6 @@
 package com.example.services;
 
-import com.example.neo4jEntities.Tag;
-import com.example.neo4jEntities.Tag;
+import com.example.entities.Tag;
 import com.example.repositories.TagRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,6 @@
 package com.example.services;
 
-import com.example.neo4jEntities.City;
-import com.example.repositories.CityRepository;
+import com.example.entities.City;
 import com.example.repositories.CityRepository;
 import org.springframework.stereotype.Service;
 

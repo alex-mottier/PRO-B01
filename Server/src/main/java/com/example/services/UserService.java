@@ -1,6 +1,6 @@
 package com.example.services;
 
-import com.example.neo4jEntities.User;
+import com.example.entities.User;
 import com.example.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;

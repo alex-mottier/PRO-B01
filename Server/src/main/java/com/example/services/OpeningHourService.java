@@ -1,7 +1,6 @@
 package com.example.services;
 
-import com.example.neo4jEntities.OpeningHour;
-import com.example.neo4jEntities.OpeningHour;
+import com.example.entities.OpeningHour;
 import com.example.repositories.OpeningHourRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,6 @@
 package com.example.services;
 
-import com.example.neo4jEntities.Chat;
-import com.example.repositories.ChatRepository;
+import com.example.entities.Chat;
 import com.example.repositories.ChatRepository;
 import org.springframework.stereotype.Service;
 

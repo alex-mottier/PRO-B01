@@ -1,6 +1,6 @@
 package com.example.services;
 
-import com.example.neo4jEntities.Host;
+import com.example.entities.Host;
 import com.example.repositories.HostRepository;
 import org.springframework.stereotype.Service;
 

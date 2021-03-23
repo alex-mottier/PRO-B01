@@ -1,6 +1,6 @@
 package com.example.services;
 
-import com.example.neo4jEntities.Meeting;
+import com.example.entities.Meeting;
 import com.example.repositories.MeetingRepository;
 import org.springframework.stereotype.Service;
 

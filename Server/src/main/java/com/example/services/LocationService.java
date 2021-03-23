@@ -1,6 +1,6 @@
 package com.example.services;
 
-import com.example.neo4jEntities.Location;
+import com.example.entities.Location;
 import com.example.repositories.LocationRepository;
 import org.springframework.stereotype.Service;
 

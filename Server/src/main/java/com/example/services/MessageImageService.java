@@ -1,6 +1,6 @@
 package com.example.services;
 
-import com.example.neo4jEntities.MessageImage;
+import com.example.entities.MessageImage;
 import com.example.repositories.MessageImageRepository;
 import org.springframework.stereotype.Service;
 
