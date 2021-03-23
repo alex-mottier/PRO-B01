@@ -1,9 +1,7 @@
-package com.example.neo4jEntities;
+package com.example.entities;
 
 import lombok.Data;
 import org.springframework.data.neo4j.core.schema.Node;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Date;
 
@@ -12,13 +10,13 @@ import java.util.Date;
 public class Message {
     private Student student;
     private Chat chat;
-    private String texte;
+    private String text;
     private Date date;
 
-    public Message(Student student, Chat chat, String texte, Date date) {
+    public Message(Student student, Chat chat, String text, Date date) {
         this.student = student;
         this.chat = chat;
-        this.texte = texte;
+        this.text = text;
         this.date = date;
     }
 }

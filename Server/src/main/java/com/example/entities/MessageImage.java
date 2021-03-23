@@ -1,9 +1,7 @@
-package com.example.neo4jEntities;
+package com.example.entities;
 
 import lombok.Data;
 import org.springframework.data.neo4j.core.schema.Node;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Date;
 
