@@ -2,6 +2,7 @@ package com.example.services;
 
 import com.example.entities.Student;
 import com.example.repositories.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class StudentService implements IGenericService<Student> {
 
     private StudentRepository studentRepository;
 
+    @Autowired
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }

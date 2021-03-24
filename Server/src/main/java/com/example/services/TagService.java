@@ -2,6 +2,7 @@ package com.example.services;
 
 import com.example.entities.Tag;
 import com.example.repositories.TagRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class TagService implements IGenericService<Tag> {
 
     private TagRepository tagRepository;
 
+    @Autowired
     public TagService(TagRepository tagRepository) {
         this.tagRepository = tagRepository;
     }

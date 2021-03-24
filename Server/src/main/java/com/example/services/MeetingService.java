@@ -2,6 +2,7 @@ package com.example.services;
 
 import com.example.entities.Meeting;
 import com.example.repositories.MeetingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class MeetingService implements IGenericService<Meeting> {
 
     private MeetingRepository meetingRepository;
 
+    @Autowired
     public MeetingService(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
     }

@@ -2,6 +2,7 @@ package com.example.services;
 
 import com.example.entities.City;
 import com.example.repositories.CityRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class CityService implements IGenericService<City> {
 
     private CityRepository cityRepository;
 
+    @Autowired
     public CityService(CityRepository cityRepository) {
         this.cityRepository = cityRepository;
     }

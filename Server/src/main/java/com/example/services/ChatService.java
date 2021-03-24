@@ -2,6 +2,7 @@ package com.example.services;
 
 import com.example.entities.Chat;
 import com.example.repositories.ChatRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class ChatService implements IGenericService<Chat> {
 
     private ChatRepository chatRepository;
 
+    @Autowired
     public ChatService(ChatRepository chatRepository) {
         this.chatRepository = chatRepository;
     }

@@ -2,6 +2,7 @@ package com.example.services;
 
 import com.example.entities.Host;
 import com.example.repositories.HostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class HostService implements IGenericService<Host> {
 
     private HostRepository hostRepository;
 
+    @Autowired
     public HostService(HostRepository hostRepository) {
         this.hostRepository = hostRepository;
     }

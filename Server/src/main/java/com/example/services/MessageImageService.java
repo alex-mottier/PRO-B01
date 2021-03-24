@@ -2,6 +2,7 @@ package com.example.services;
 
 import com.example.entities.MessageImage;
 import com.example.repositories.MessageImageRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class MessageImageService implements IGenericService<MessageImage> {
 
     private MessageImageRepository messageImageRepository;
 
+    @Autowired
     public MessageImageService(MessageImageRepository messageImageRepository) {
         this.messageImageRepository = messageImageRepository;
     }

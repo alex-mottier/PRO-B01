@@ -2,6 +2,7 @@ package com.example.services;
 
 import com.example.entities.OpeningHour;
 import com.example.repositories.OpeningHourRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class OpeningHourService implements IGenericService<OpeningHour> {
 
     private OpeningHourRepository openingHourRepository;
 
+    @Autowired
     public OpeningHourService(OpeningHourRepository openingHourRepository) {
         this.openingHourRepository = openingHourRepository;
     }
