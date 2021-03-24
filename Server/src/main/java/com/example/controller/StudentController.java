@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-class StudentController extends BaseController {
+class StudentController extends BaseController implements IGenericController<Student>{
 
     private final StudentService studentService;
 
@@ -20,7 +20,7 @@ class StudentController extends BaseController {
     }
 
     @GetMapping("/students")
-    ResponseEntity<List<Student>> findAll() {
+    public ResponseEntity<List<Student>> getAll() {
         try {
             return ResponseEntity.ok(studentService.findAll());
         } catch (Exception e) {
@@ -29,7 +29,7 @@ class StudentController extends BaseController {
     }
 
     @PostMapping("/students")
-    ResponseEntity<Student> save(@RequestBody Student student) {
+    public ResponseEntity<Student> save(@RequestBody Student student) {
         try {
             return ResponseEntity.ok(studentService.save(student));
         } catch (Exception e) {
@@ -37,7 +37,7 @@ class StudentController extends BaseController {
         }    }
 
     @GetMapping("/students/{id}")
-    ResponseEntity<Student> getStudentById(@PathVariable Long id) {
+    public ResponseEntity<Student> getById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(studentService.findById(id));
         } catch (Exception e) {

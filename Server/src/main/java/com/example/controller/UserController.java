@@ -2,37 +2,48 @@ package com.example.controller;
 
 import com.example.entities.User;
 import com.example.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-public class UserController extends BaseController {
+public class UserController extends BaseController implements IGenericController<User> {
 
     private final UserService userService;
 
+    @Autowired
     UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/users")
-    List<User> getAllUsers() {
-        return userService.findAll();
+    public ResponseEntity<List<User>> getAll() {
+        try {
+            return ResponseEntity.ok(userService.findAll());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping("/users")
-    User newUser(@RequestBody User newUser){
-        return userService.save(newUser);
+    public ResponseEntity<User> save(@RequestBody User entity){
+        try {
+            return ResponseEntity.ok(userService.save(entity));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/users/{id}")
-    User getUserById(@PathVariable Long id) {
+    public ResponseEntity<User> getById(@PathVariable Long id) {
         try {
-            return userService.findById(id);
+            return ResponseEntity.ok(userService.findById(id));
         } catch (Exception e) {
-            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return null;
     }
 
 }
