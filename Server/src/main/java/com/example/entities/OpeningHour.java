@@ -1,12 +1,15 @@
 package com.example.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.neo4j.core.schema.Node;
 
 import java.time.LocalDateTime;
 
-@Node("HoraireOuverture")
+@AllArgsConstructor
 @Data
+@Document
 public class OpeningHour {
     public enum Day {
         MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY
@@ -16,10 +19,4 @@ public class OpeningHour {
     private LocalDateTime hourEnd;
     private Location location;
 
-    public OpeningHour(Day day, LocalDateTime hourBegin, LocalDateTime hourEnd, Location location) {
-        this.day = day;
-        this.hourBegin = hourBegin;
-        this.hourEnd = hourEnd;
-        this.location = location;
-    }
 }

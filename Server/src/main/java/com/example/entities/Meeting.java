@@ -1,12 +1,15 @@
 package com.example.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.neo4j.core.schema.Node;
 
 import java.util.ArrayList;
 
-@Node("Reunion")
+@AllArgsConstructor
 @Data
+@Document
 public class Meeting {
     private ArrayList<Student> partStudents;
     private Student orgStudent;
@@ -17,16 +20,4 @@ public class Meeting {
     private Integer repetitionsNb;
     private Integer frequencyNb;
 
-    public Meeting(ArrayList<Student> partStudents, Student orgStudent,
-                   ArrayList<Location> locations, ArrayList<Tag> tags, Chat chat,
-                   String name, Integer repetitionsNb, Integer frequencyNb) {
-        this.partStudents = partStudents;
-        this.orgStudent = orgStudent;
-        this.locations = locations;
-        this.tags = tags;
-        this.chat = chat;
-        this.name = name;
-        this.repetitionsNb = repetitionsNb;
-        this.frequencyNb = frequencyNb;
-    }
 }

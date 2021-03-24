@@ -1,12 +1,15 @@
 package com.example.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.neo4j.core.schema.Node;
 
 import java.util.ArrayList;
 
-@Node("Lieu")
+@AllArgsConstructor
 @Data
+@Document
 public class Location {
     private Host host;
     private Address address;
@@ -15,13 +18,4 @@ public class Location {
     private ArrayList<OpeningHour> openingHours;
     private String name;
 
-    public Location(Host host, Address address, ArrayList<Meeting> meetings, ArrayList<Tag> tags,
-                    ArrayList<OpeningHour> openingHours, String name) {
-        this.host = host;
-        this.address = address;
-        this.meetings = meetings;
-        this.tags = tags;
-        this.openingHours = openingHours;
-        this.name = name;
-    }
 }
