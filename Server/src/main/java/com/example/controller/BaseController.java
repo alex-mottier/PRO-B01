@@ -1,18 +1,17 @@
 package com.example.controller;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/api/v1")
-@Api(tags = {"Tactic API"})
+@RequestMapping(value = BaseController.ROOT_PATH)
+@Api(tags = {"Amphytrion API"})
 public class BaseController {
+    public static final String ROOT_PATH = "/item";
 
     public BaseController() {}
 
