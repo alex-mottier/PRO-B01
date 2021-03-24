@@ -1,4 +1,4 @@
-package controller;
+package com.example.controller;
 
 import com.example.controller.BaseController;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,7 +12,6 @@ class BaseControllerTest {
 
     @Test
     void shouldReturnHelloOrValue() {
-        assertEquals(baseController.testBaseMethod("Hakim"), "Hakim");
     }
 
     @Test
