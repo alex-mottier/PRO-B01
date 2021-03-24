@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.entities.Student;
 import com.example.services.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ class StudentController extends BaseController {
 
     private final StudentService studentService;
 
+    @Autowired
     StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
