@@ -1,6 +1,9 @@
 package com.example.services;
 
+import com.example.entities.Address;
 import com.example.entities.Host;
+import com.example.entities.Meeting;
+import com.example.repositories.AddressRepository;
 import com.example.repositories.HostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,29 +11,30 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AddressService implements IGenericService<Host> {
+public class AddressService implements IGenericService<Address> {
 
-    private HostRepository hostRepository;
+    private AddressRepository addressRepository;
 
     @Autowired
-    public AddressService(HostRepository hostRepository) {
-        this.hostRepository = hostRepository;
+    public AddressService(AddressRepository addressRepository) {
+        this.addressRepository = addressRepository;
+    }
+
+
+    @Override
+    public List<Address> findAll() {
+        return addressRepository.findAll();
     }
 
     @Override
-    public List<Host> findAll() {
-        return hostRepository.findAll();
+    public Address save(Address address) {
+        return addressRepository.save(address);
     }
 
     @Override
-    public Host save(Host host) {
-        return hostRepository.save(host);
-    }
-
-    @Override
-    public Host findById(long id) {
+    public Address findById(long id) {
         try {
-            return hostRepository.findById(id).orElseThrow(Exception::new);
+            return addressRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -38,18 +42,17 @@ public class AddressService implements IGenericService<Host> {
     }
 
     @Override
-    public void delete(Host host) {
-        hostRepository.delete(host);
+    public void delete(Address address) {
+        addressRepository.delete(address);
     }
 
     @Override
     public void deleteById(long id) {
-        hostRepository.deleteById(id);
+        addressRepository.deleteById(id);
     }
 
     @Override
     public long count() {
-        return hostRepository.count();
+        return addressRepository.count();
     }
-
 }
