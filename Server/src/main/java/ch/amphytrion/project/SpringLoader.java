@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AccessingDataNeo4jApplication {
+public class SpringLoader {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AccessingDataNeo4jApplication.class, args);
+		SpringApplication.run(SpringLoader.class, args);
 	}
 
 }

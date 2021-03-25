@@ -1,6 +1,6 @@
-package com.example.spring.config;
+package ch.amphytrion.project.spring.config;
 
-import com.example.controller.BaseController;
+import ch.amphytrion.project.controller.BaseController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
