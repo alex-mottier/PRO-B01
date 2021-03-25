@@ -1,10 +1,7 @@
 package com.example.services;
 
 import com.example.entities.Address;
-import com.example.entities.Host;
-import com.example.entities.Meeting;
 import com.example.repositories.AddressRepository;
-import com.example.repositories.HostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

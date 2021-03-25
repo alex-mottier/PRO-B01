@@ -1,45 +1,49 @@
 package com.example.controller;
 
-import com.example.entities.OpeningHour;
-import com.example.services.OpeningHourService;
+import com.example.entities.Message;
+import com.example.services.MessageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-public class OpeningHourController extends BaseController implements IGenericController<OpeningHour> {
+public class MessageController extends BaseController implements IGenericController<Message> {
 
-    private final OpeningHourService openingHourService;
+    private final MessageService messageService;
 
-    public OpeningHourController(OpeningHourService openingHourService) {
-        this.openingHourService = openingHourService;
+    public MessageController(MessageService messageService) {
+       this.messageService = messageService;
     }
 
     @Override
-    public ResponseEntity<List<OpeningHour>> getAll() {
+    @GetMapping("/messages")
+    public ResponseEntity<List<Message>> getAll() {
         try {
-            return ResponseEntity.ok(openingHourService.findAll());
+            return ResponseEntity.ok(messageService.findAll());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @Override
-    public ResponseEntity save(OpeningHour entity) {
+    @PostMapping("/messages")
+    public ResponseEntity save(Message entity) {
         try {
-            return ResponseEntity.ok(openingHourService.save(entity));
+            return ResponseEntity.ok(messageService.save(entity));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @Override
+    @GetMapping("/messages/{id}")
     public ResponseEntity getById(Long id) {
         try {
-            return ResponseEntity.ok(openingHourService.findById(id));
+            return ResponseEntity.ok(messageService.findById(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

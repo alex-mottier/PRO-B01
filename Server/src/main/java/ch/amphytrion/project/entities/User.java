@@ -12,7 +12,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class User {
+abstract public class User {
     @Field("UserFirstname")
     private String firstname;
     @Field("UserLastname")

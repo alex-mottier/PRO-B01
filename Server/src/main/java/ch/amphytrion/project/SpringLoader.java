@@ -1,4 +1,4 @@
-package com.example;
+package ch.amphytrion.project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

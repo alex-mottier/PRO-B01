@@ -1,10 +1,10 @@
-package com.example.accessingdataneo4j;
+package ch.amphytrion.project.spring;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AccessingDataNeo4jApplicationTests {
+class SpringLoaderTests {
 
 	@Test
 	void contextLoads() {
