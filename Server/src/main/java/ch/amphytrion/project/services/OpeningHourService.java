@@ -1,7 +1,7 @@
-package com.example.services;
+package ch.amphytrion.project.services;
 
-import com.example.entities.OpeningHour;
-import com.example.repositories.OpeningHourRepository;
+import ch.amphytrion.project.entities.OpeningHour;
+import ch.amphytrion.project.repositories.OpeningHourRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

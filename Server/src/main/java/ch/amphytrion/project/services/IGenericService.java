@@ -1,4 +1,4 @@
-package com.example.services;
+package ch.amphytrion.project.services;
 
 import java.util.List;
 

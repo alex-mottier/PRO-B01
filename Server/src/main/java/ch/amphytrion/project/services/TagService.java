@@ -1,7 +1,7 @@
-package com.example.services;
+package ch.amphytrion.project.services;
 
-import com.example.entities.Tag;
-import com.example.repositories.TagRepository;
+import ch.amphytrion.project.entities.Tag;
+import ch.amphytrion.project.repositories.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

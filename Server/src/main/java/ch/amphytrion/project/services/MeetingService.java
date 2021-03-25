@@ -1,7 +1,7 @@
-package com.example.services;
+package ch.amphytrion.project.services;
 
-import com.example.entities.Meeting;
-import com.example.repositories.MeetingRepository;
+import ch.amphytrion.project.entities.Meeting;
+import ch.amphytrion.project.repositories.MeetingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

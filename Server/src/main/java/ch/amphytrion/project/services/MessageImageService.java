@@ -1,7 +1,7 @@
-package com.example.services;
+package ch.amphytrion.project.services;
 
-import com.example.entities.MessageImage;
-import com.example.repositories.MessageImageRepository;
+import ch.amphytrion.project.entities.MessageImage;
+import ch.amphytrion.project.repositories.MessageImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

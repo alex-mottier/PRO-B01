@@ -1,7 +1,7 @@
-package com.example.services;
+package ch.amphytrion.project.services;
 
-import com.example.entities.Chat;
-import com.example.repositories.ChatRepository;
+import ch.amphytrion.project.repositories.ChatRepository;
+import ch.amphytrion.project.entities.Chat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

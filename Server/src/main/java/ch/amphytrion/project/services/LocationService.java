@@ -1,7 +1,7 @@
-package com.example.services;
+package ch.amphytrion.project.services;
 
-import com.example.entities.Location;
-import com.example.repositories.LocationRepository;
+import ch.amphytrion.project.entities.Location;
+import ch.amphytrion.project.repositories.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
