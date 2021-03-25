@@ -1,7 +1,7 @@
-package com.example.controller;
+package ch.amphytrion.project.controller;
 
-import com.example.entities.Address;
-import com.example.services.AddressService;
+import ch.amphytrion.project.entities.Address;
+import ch.amphytrion.project.services.AddressService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -50,16 +50,15 @@ public class AddressController extends BaseController implements IGenericControl
         }
     }
 
-
     @ApiOperation(value = "Retrieve AddressController")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully reached AddressController"),
             @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
             @ApiResponse(code = 403, message = "Access to this resource is forbidden")
     })
-    @GetMapping("/testController")
-    private String testController(@RequestParam(value = "name", defaultValue = "PRO - Amphytrion") String name) {
-        return name;
+    @GetMapping("/addressController")
+    private String testController() {
+        return this.getClass().getSimpleName();
     }
 
 

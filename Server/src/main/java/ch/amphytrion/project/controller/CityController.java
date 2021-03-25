@@ -1,10 +1,14 @@
-package com.example.controller;
+package ch.amphytrion.project.controller;
 
-import com.example.entities.City;
-import com.example.services.CityService;
+import ch.amphytrion.project.entities.City;
+import ch.amphytrion.project.services.CityService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -45,4 +49,16 @@ public class CityController extends BaseController implements IGenericController
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @ApiOperation(value = "Retrieve cityController")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully reached cityController"),
+            @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
+            @ApiResponse(code = 403, message = "Access to this resource is forbidden")
+    })
+    @GetMapping("/cityController")
+    private String testController() {
+        return this.getClass().getSimpleName();
+    }
+
 }

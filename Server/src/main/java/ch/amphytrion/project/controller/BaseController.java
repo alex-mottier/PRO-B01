@@ -1,4 +1,4 @@
-package com.example.controller;
+package ch.amphytrion.project.controller;
 
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,7 +16,9 @@ public class BaseController {
     public BaseController() {}
 
     public String controllerName() {
-        return this.getClass().getSimpleName();
+        return this.getClass().getCanonicalName();
     }
+
+
 
 }

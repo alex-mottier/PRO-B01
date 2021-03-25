@@ -1,7 +1,10 @@
-package com.example.controller;
+package ch.amphytrion.project.controller;
 
-import com.example.entities.User;
-import com.example.services.UserService;
+import ch.amphytrion.project.entities.User;
+import ch.amphytrion.project.services.UserService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,4 +49,14 @@ public class UserController extends BaseController implements IGenericController
         }
     }
 
+    @ApiOperation(value = "Retrieve userController")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully reached userController"),
+            @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
+            @ApiResponse(code = 403, message = "Access to this resource is forbidden")
+    })
+    @GetMapping("/userController")
+    private String testController() {
+        return this.getClass().getSimpleName();
+    }
 }

@@ -1,7 +1,10 @@
-package com.example.controller;
+package ch.amphytrion.project.controller;
 
-import com.example.entities.Message;
-import com.example.services.MessageService;
+import ch.amphytrion.project.entities.Message;
+import ch.amphytrion.project.services.MessageService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,5 +50,16 @@ public class MessageController extends BaseController implements IGenericControl
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @ApiOperation(value = "Retrieve messageController")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully reached messageController"),
+            @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
+            @ApiResponse(code = 403, message = "Access to this resource is forbidden")
+    })
+    @GetMapping("/messageController")
+    private String testController() {
+        return this.getClass().getSimpleName();
     }
 }
