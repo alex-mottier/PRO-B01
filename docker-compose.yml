@@ -1,0 +1,26 @@
+version: '3'
+services:
+
+    amphitryon_db:
+        image: mongo:4.1.1
+        environment:
+            MONGO_INITDB_DATABASE: amphitryon_db
+        ports:
+            - 27017:27017
+        container_name: amphitryon_db
+        
+    amphitryon_backend:
+  
+        build:
+            context: .
+            dockerfile: Server/Dockerfile
+        ports:
+          - 8080:8080
+        environment:
+          MONGODB_URI: mongodb://amphitryon_db:27017/amphitryon_db
+        depends_on:
+            - amphitryon_db
+        links:
+            - amphitryon_db
+    
+   
