@@ -3,8 +3,7 @@ services:
 
     amphitryon_db:
         image: mongo:4.1.1
-        environment:
-            MONGO_INITDB_DATABASE: amphitryon_db
+        restart : always
         ports:
             - 27017:27017
         container_name: amphitryon_db
@@ -14,13 +13,8 @@ services:
         build:
             context: .
             dockerfile: Server/Dockerfile
+        restart : always
         ports:
           - 8080:8080
-        environment:
-          MONGODB_URI: mongodb://amphitryon_db:27017/amphitryon_db
         depends_on:
             - amphitryon_db
-        links:
-            - amphitryon_db
-    
-   
