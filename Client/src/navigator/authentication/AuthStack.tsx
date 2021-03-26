@@ -12,10 +12,10 @@ import LoginScreen from '../../screens/LoginScreen/LoginScreen';
 
 const Stack = createStackNavigator<AuthParamList>();
 
-export const AuthStack: React.FC<{}> = ({}) => {
+export const AuthStack: React.FC = () => {
   return (
-    <Stack.Navigator initialRouteName='Login'>
-      <Stack.Screen name='Login' component={LoginScreen} />
+    <Stack.Navigator initialRouteName="Login">
+      <Stack.Screen name="Login" component={LoginScreen} />
     </Stack.Navigator>
   );
 };

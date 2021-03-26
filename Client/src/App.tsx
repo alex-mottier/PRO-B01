@@ -7,19 +7,15 @@
 
 import * as React from 'react';
 import { PreferencesContext } from './app/context/ContextPreferences';
-import {
-  Provider as PaperProvider,
-  DefaultTheme,
-  DarkTheme,
-} from 'react-native-paper';
+import { Provider as PaperProvider, DefaultTheme, DarkTheme } from 'react-native-paper';
 import Globals from './app/context/Globals';
 import { RootNavigator } from './navigator/RootNavigator';
 import { useColorScheme } from 'react-native';
 
-export default () => {
+export default (): React.ReactElement => {
   const colorScheme = useColorScheme();
   const [theme, setTheme] = React.useState<'light' | 'dark'>(
-    colorScheme === 'dark' ? 'dark' : 'light'
+    colorScheme === 'dark' ? 'dark' : 'light',
   );
 
   function toggleTheme() {
@@ -31,7 +27,7 @@ export default () => {
       toggleTheme,
       theme,
     }),
-    [theme]
+    [theme],
   );
 
   return (
@@ -55,8 +51,7 @@ export default () => {
                   primary: Globals.COLORS.PRIMARY,
                 },
               }
-        }
-      >
+        }>
         <RootNavigator />
       </PaperProvider>
     </PreferencesContext.Provider>

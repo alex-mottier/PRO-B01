@@ -9,7 +9,7 @@ import * as React from 'react';
 import LocalStorage from '../../app/data/LocalStorage';
 import User from '../../app/models/User';
 
-export const AuthProvider: React.FC<{}> = ({ children }) => {
+export const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = React.useState<User | null>(null);
   const localStorage = LocalStorage.getInstance();
   return (
@@ -19,14 +19,13 @@ export const AuthProvider: React.FC<{}> = ({ children }) => {
         login: async () => {
           const fakeUser = new User('Alexis');
           setUser(fakeUser);
-          localStorage.setUser(fakeUser);
+          await localStorage.setUser(fakeUser);
         },
         logout: () => {
           setUser(null);
-          localStorage.removeUser();
+          void localStorage.removeUser();
         },
-      }}
-    >
+      }}>
       {children}
     </AuthContext.Provider>
   );

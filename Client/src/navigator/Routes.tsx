@@ -6,11 +6,7 @@
  */
 
 import * as React from 'react';
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { ActivityIndicator, useTheme } from 'react-native-paper';
 import { AuthContext } from './authentication/AuthProvider';
 import { StyleSheet, View } from 'react-native';
@@ -27,7 +23,7 @@ export const Routes: React.FC = () => {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    localStorage.getUser().then((userRegistered: User | null) => {
+    void localStorage.getUser().then((userRegistered: User | null) => {
       if (userRegistered !== null) login();
       setLoading(false);
     });
@@ -36,7 +32,7 @@ export const Routes: React.FC = () => {
   if (loading) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size='large' />
+        <ActivityIndicator size="large" />
       </View>
     );
   }

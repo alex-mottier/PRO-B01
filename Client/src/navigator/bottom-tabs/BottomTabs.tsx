@@ -13,18 +13,17 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Tab = createMaterialBottomTabNavigator();
 
-export const BottomTabs = () => {
+export const BottomTabs = (): React.ReactElement => {
   return (
     <React.Fragment>
       <Tab.Navigator
-        initialRouteName='Home'
+        initialRouteName="Home"
         activeColor={Globals.COLORS.BLUE}
         barStyle={{
           backgroundColor: Globals.COLORS.WHITE,
-        }}
-      >
+        }}>
         <Tab.Screen
-          name='Home'
+          name="Home"
           component={HomeScreen}
           options={{
             tabBarLabel: 'Accueil',

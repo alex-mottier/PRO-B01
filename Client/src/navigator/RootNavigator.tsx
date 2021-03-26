@@ -9,7 +9,7 @@ import * as React from 'react';
 import { AuthProvider } from './authentication/AuthProvider';
 import { Routes } from './Routes';
 
-export const RootNavigator = () => {
+export const RootNavigator = (): React.ReactElement => {
   return (
     <AuthProvider>
       <Routes />

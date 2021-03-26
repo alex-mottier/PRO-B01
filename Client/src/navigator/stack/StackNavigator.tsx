@@ -15,13 +15,13 @@ import Globals from '../../app/context/Globals';
 
 const Stack = createStackNavigator<StackNavigatorParamlist>();
 
-export const StackNavigator = () => {
+export const StackNavigator = (): React.ReactElement => {
   const theme = useTheme();
 
   return (
     <Stack.Navigator
-      initialRouteName='Main'
-      headerMode='screen'
+      initialRouteName="Main"
+      headerMode="screen"
       screenOptions={{
         header: ({ scene, previous, navigation }) => {
           const { options } = scene.descriptor;
@@ -38,13 +38,9 @@ export const StackNavigator = () => {
                 backgroundColor: theme.colors.surface,
                 borderBottomColor: Globals.COLORS.PRIMARY,
                 borderBottomWidth: 1,
-              }}
-            >
+              }}>
               {previous && (
-                <Appbar.BackAction
-                  onPress={navigation.goBack}
-                  color={Globals.COLORS.PRIMARY}
-                />
+                <Appbar.BackAction onPress={navigation.goBack} color={Globals.COLORS.PRIMARY} />
               )}
               <Appbar.Content
                 title={title}
@@ -60,10 +56,9 @@ export const StackNavigator = () => {
             </Appbar.Header>
           );
         },
-      }}
-    >
+      }}>
       <Stack.Screen
-        name='Main'
+        name="Main"
         component={BottomTabs}
         options={({ route }) => {
           const routeName = getFocusedRouteNameFromRoute(route) ?? 'Amphitryon';
