@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-abstract public class User {
+public class User {
     @Field("UserFirstname")
     private String firstname;
     @Field("UserLastname")
