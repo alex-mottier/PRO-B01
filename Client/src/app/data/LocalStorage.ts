@@ -5,8 +5,8 @@
  * @brief   Local storage of application data
  */
 
-import asyncStorage from '@react-native-community/async-storage';
-import User from '../models/User';
+import asyncStorage from "@react-native-async-storage/async-storage";
+import User from "../models/User";
 
 export default class LocalStorage {
   private static instance: LocalStorage = new LocalStorage();
@@ -29,7 +29,7 @@ export default class LocalStorage {
    * @returns user registered or null if user is not found
    */
   getUser = async (): Promise<User | null> => {
-    const user = await asyncStorage.getItem('user');
+    const user = await asyncStorage.getItem("user");
     return user === null ? null : JSON.parse(user);
   };
 
@@ -39,7 +39,7 @@ export default class LocalStorage {
    * @returns promise when user is registred
    */
   setUser = async (user: User): Promise<void> => {
-    return await asyncStorage.setItem('user', JSON.stringify(user));
+    return await asyncStorage.setItem("user", JSON.stringify(user));
   };
 
   /**
@@ -47,6 +47,6 @@ export default class LocalStorage {
    * @returns promise when user is removed
    */
   removeUser = async (): Promise<void> => {
-    return await asyncStorage.removeItem('user');
+    return await asyncStorage.removeItem("user");
   };
 }

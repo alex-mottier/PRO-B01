@@ -69,7 +69,10 @@
           "jsx": "react"
         }
       }
-    }
+    },
+    "setupFiles": [
+      "./jestSetupFile.js"
+    ]
   },
   "private": true
 }
