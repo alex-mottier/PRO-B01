@@ -8,15 +8,21 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { Appbar, useTheme } from 'react-native-paper';
+import { Appbar, IconButton, Switch, TouchableRipple, useTheme } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackNavigatorParamlist } from './StackNavigatorParameters';
 import { BottomTabs } from '../bottom-tabs/BottomTabs';
 import Globals from '../../app/context/Globals';
+import { AuthContext } from '../authentication/AuthProvider';
+import { PreferencesContext } from '../../app/context/ContextPreferences';
+import { View } from 'react-native';
 
 const Stack = createStackNavigator<StackNavigatorParamlist>();
 
 export const StackNavigator = (): React.ReactElement => {
-  const theme = useTheme();
+  const paperTheme = useTheme();
+  const { logout } = React.useContext(AuthContext);
+  const { theme, toggleTheme } = React.useContext(PreferencesContext);
 
   return (
     <Stack.Navigator
@@ -35,7 +41,7 @@ export const StackNavigator = (): React.ReactElement => {
           return (
             <Appbar.Header
               style={{
-                backgroundColor: theme.colors.surface,
+                backgroundColor: paperTheme.colors.surface,
                 borderBottomColor: Globals.COLORS.PRIMARY,
                 borderBottomWidth: 1,
               }}>
@@ -53,6 +59,29 @@ export const StackNavigator = (): React.ReactElement => {
                   alignItems: 'center',
                 }}
               />
+              {options.headerTitle == Globals.STRINGS.PROFILE && (
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableRipple
+                    onPress={toggleTheme}
+                    style={{ marginTop: 15, marginRight: -10 }}>
+                    <View pointerEvents="none">
+                      <Switch value={theme === 'dark'} color={Globals.COLORS.PRIMARY} />
+                    </View>
+                  </TouchableRipple>
+                  <IconButton
+                    icon={() => (
+                      <MaterialCommunityIcons
+                        name={Globals.ICONS.LOGOUT}
+                        color={Globals.COLORS.PRIMARY}
+                        size={Globals.SIZES.ICON_HEADER}
+                      />
+                    )}
+                    color={Globals.COLORS.PRIMARY}
+                    size={Globals.SIZES.ICON_BUTTON}
+                    onPress={logout}
+                  />
+                </View>
+              )}
             </Appbar.Header>
           );
         },
@@ -61,8 +90,10 @@ export const StackNavigator = (): React.ReactElement => {
         name="Main"
         component={BottomTabs}
         options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? 'Amphitryon';
-          return { headerTitle: routeName };
+          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+          return {
+            headerTitle: routeName,
+          };
         }}
       />
     </Stack.Navigator>

@@ -8,7 +8,7 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AuthParamList } from './AuthParamList';
-import LoginScreen from '../../screens/LoginScreen/LoginScreen';
+import LoginScreen from '../../screens/Login/LoginScreen';
 
 const Stack = createStackNavigator<AuthParamList>();
 

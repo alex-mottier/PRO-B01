@@ -1,5 +1,5 @@
 /**
- * @file    User.test.tsx
+ * @file    User.test.ts
  * @author  Alexis Allemann
  * @date    22.03.2021
  * @brief   Test class of users

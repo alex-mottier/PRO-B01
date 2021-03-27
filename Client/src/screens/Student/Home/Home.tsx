@@ -1,15 +1,15 @@
 /**
- * @file    HomeScreen.tsx
+ * @file    Home.tsx
  * @author  Alexis Allemann
  * @date    09.02.2021
- * @brief   Home page
+ * @brief   Student home page
  */
 
 import * as React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
 import { Title } from 'react-native-paper';
 
-const HomeScreen: React.FC = () => {
+const Home: React.FC = () => {
   return (
     <SafeAreaView>
       <ScrollView>
@@ -21,4 +21,4 @@ const HomeScreen: React.FC = () => {
   );
 };
 
-export default HomeScreen;
+export default Home;

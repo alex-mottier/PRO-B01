@@ -17,11 +17,22 @@ export default {
   },
   ICONS: {
     ARROW_LEFT: 'arrow-left',
+    CREATE: 'plus-circle',
     HOME: 'home',
+    LOGOUT: 'logout',
+    PROFILE: 'account',
+    SEARCH: 'magnify',
   },
   PRECISION: 2,
   SIZES: {
     ICON_BUTTON: 30,
+    ICON_HEADER: 18,
     ICON_MENU: 20,
+  },
+  STRINGS: {
+    APP_NAME: 'Amphitryon',
+    CREATE: 'Créer une réunion',
+    PROFILE: 'Profil',
+    SEARCH: 'Rechercher une réunion',
   },
 };

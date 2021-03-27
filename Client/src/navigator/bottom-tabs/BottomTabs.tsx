@@ -7,9 +7,12 @@
 
 import * as React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import HomeScreen from '../../screens/Home/HomeScreen';
 import Globals from '../../app/context/Globals';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Home from '../../screens/Student/Home/Home';
+import Profile from '../../screens/Student/Profile/Profile';
+import Search from '../../screens/Student/Search/Search';
+import Create from '../../screens/Student/Create/Create';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -23,13 +26,55 @@ export const BottomTabs = (): React.ReactElement => {
           backgroundColor: Globals.COLORS.WHITE,
         }}>
         <Tab.Screen
-          name="Home"
-          component={HomeScreen}
+          name={Globals.STRINGS.APP_NAME}
+          component={Home}
           options={{
             tabBarLabel: 'Accueil',
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons
                 name={Globals.ICONS.HOME}
+                color={color}
+                size={Globals.SIZES.ICON_MENU}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name={Globals.STRINGS.CREATE}
+          component={Create}
+          options={{
+            tabBarLabel: 'Créer',
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons
+                name={Globals.ICONS.CREATE}
+                color={color}
+                size={Globals.SIZES.ICON_MENU}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name={Globals.STRINGS.SEARCH}
+          component={Search}
+          options={{
+            tabBarLabel: 'Rechercher',
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons
+                name={Globals.ICONS.SEARCH}
+                color={color}
+                size={Globals.SIZES.ICON_MENU}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name={Globals.STRINGS.PROFILE}
+          component={Profile}
+          options={{
+            tabBarLabel: 'Profil',
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons
+                name={Globals.ICONS.PROFILE}
                 color={color}
                 size={Globals.SIZES.ICON_MENU}
               />

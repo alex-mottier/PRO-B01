@@ -29,10 +29,10 @@
     "react/display-name": "off",
     "react/prop-types": "off",
     "linebreak-style": "off",
-    "prettier/prettier": "error",
     "indent": "off",
     "@typescript-eslint/no-unsafe-return": "off",
-    "@typescript-eslint/unbound-method": "off"
+    "@typescript-eslint/unbound-method": "off",
+    "prettier/prettier": "off"
   },
   "settings": {
     "react": {
