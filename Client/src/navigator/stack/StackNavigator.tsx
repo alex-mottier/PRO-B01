@@ -8,7 +8,7 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { Appbar, IconButton, Switch, TouchableRipple, useTheme } from 'react-native-paper';
+import { Appbar, IconButton, Switch, useTheme } from 'react-native-paper';
 import { StackNavigatorParamlist } from './StackNavigatorParameters';
 import { BottomTabs } from '../bottom-tabs/BottomTabs';
 import Globals from '../../app/context/Globals';
