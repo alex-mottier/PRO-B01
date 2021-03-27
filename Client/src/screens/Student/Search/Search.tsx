@@ -8,12 +8,13 @@
 import * as React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
 import { Title } from 'react-native-paper';
+import styles from './styles';
 
 const Search: React.FC = () => {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View>
+        <View style={styles.container}>
           <Title>Search</Title>
         </View>
       </ScrollView>

@@ -5,24 +5,16 @@
  * @brief   Student profile page
  */
 
-import { useNavigation } from '@react-navigation/core';
 import * as React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
-import { Button, Title } from 'react-native-paper';
+import { Title } from 'react-native-paper';
+import styles from './styles';
 
 const Profile: React.FC = () => {
-  //   const nav = useNavigation();
-  //   React.useEffect(() => {
-  //     nav.setOptions({
-  //       headerTitle: 'test',
-  //       headerRight: () => <Button>Test</Button>,
-  //     });
-  //   });
-
   return (
     <SafeAreaView>
       <ScrollView>
-        <View>
+        <View style={styles.container}>
           <Title>Profile</Title>
         </View>
       </ScrollView>

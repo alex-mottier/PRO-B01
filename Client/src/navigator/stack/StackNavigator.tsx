@@ -9,13 +9,13 @@ import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Appbar, IconButton, Switch, TouchableRipple, useTheme } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackNavigatorParamlist } from './StackNavigatorParameters';
 import { BottomTabs } from '../bottom-tabs/BottomTabs';
 import Globals from '../../app/context/Globals';
 import { AuthContext } from '../authentication/AuthProvider';
 import { PreferencesContext } from '../../app/context/ContextPreferences';
 import { View } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Stack = createStackNavigator<StackNavigatorParamlist>();
 
@@ -61,13 +61,12 @@ export const StackNavigator = (): React.ReactElement => {
               />
               {options.headerTitle == Globals.STRINGS.PROFILE && (
                 <View style={{ flexDirection: 'row' }}>
-                  <TouchableRipple
-                    onPress={toggleTheme}
-                    style={{ marginTop: 15, marginRight: -10 }}>
-                    <View pointerEvents="none">
-                      <Switch value={theme === 'dark'} color={Globals.COLORS.PRIMARY} />
-                    </View>
-                  </TouchableRipple>
+                  <Switch
+                    value={theme === 'dark'}
+                    color={Globals.COLORS.PRIMARY}
+                    style={{ alignItems: 'center', justifyContent: 'center' }}
+                    onValueChange={toggleTheme}
+                  />
                   <IconButton
                     icon={() => (
                       <MaterialCommunityIcons

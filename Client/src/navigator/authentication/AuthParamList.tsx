@@ -9,8 +9,10 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 export type AuthParamList = {
-  Login: undefined;
-  Register: undefined;
+  Welcome: undefined;
+  SignIn: undefined;
+  SignUp: undefined;
+  ProfileConfiguration: undefined;
 };
 
 export type AuthNavProps<T extends keyof AuthParamList> = {

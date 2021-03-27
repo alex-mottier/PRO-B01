@@ -16,6 +16,7 @@ export default {
     WHITE: '#ffffff',
   },
   ICONS: {
+    ADD_PROFILE: 'account-plus',
     ARROW_LEFT: 'arrow-left',
     CREATE: 'plus-circle',
     HOME: 'home',

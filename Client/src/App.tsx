@@ -11,6 +11,7 @@ import { Provider as PaperProvider, DefaultTheme, DarkTheme } from 'react-native
 import Globals from './app/context/Globals';
 import { RootNavigator } from './navigator/RootNavigator';
 import { useColorScheme } from 'react-native';
+import { Font } from 'expo';
 
 export default (): React.ReactElement => {
   const colorScheme = useColorScheme();
@@ -57,3 +58,9 @@ export default (): React.ReactElement => {
     </PreferencesContext.Provider>
   );
 };
+function componentWillMount() {
+  throw new Error('Function not implemented.');
+}
+function useFonts(arg0: { Montserrat: any }): [any] {
+  throw new Error('Function not implemented.');
+}
