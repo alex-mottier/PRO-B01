@@ -28,4 +28,9 @@ describe('User', () => {
     expect(user).not.toBe(null);
     expect(user).not.toBe(undefined);
   });
+
+  it('should render the token', () => {
+    const user = new User('Username', mockToken);
+    expect(user.getToken()).toBe(mockToken);
+  });
 });
