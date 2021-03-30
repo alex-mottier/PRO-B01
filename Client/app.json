@@ -2,6 +2,7 @@
   "expo": {
     "name": "amphitryon",
     "slug": "amphitryon",
+    "scheme": "amphitryon",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,6 +28,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "",
+    "githubUrl": "https://github.com/alex-mottier/PRO-B01"
   }
 }

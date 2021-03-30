@@ -18,7 +18,7 @@ const SignIn: React.FC = () => {
       <ScrollView>
         <View style={styles.container}>
           <Title>Ecran de connexion</Title>
-          <Button title={'Login'} onPress={login} />
+          <Button title={'Sign in with Google'} onPress={login} />
         </View>
       </ScrollView>
     </SafeAreaView>
