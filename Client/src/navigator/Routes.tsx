@@ -22,6 +22,9 @@ export const Routes: React.FC = () => {
   const { user, login } = React.useContext(AuthContext);
   const [loading, setLoading] = React.useState(true);
 
+  /**
+   * Action when component is loaded
+   */
   React.useEffect(() => {
     void localStorage.getUser().then((userRegistered: User | null) => {
       if (userRegistered !== null) login();
