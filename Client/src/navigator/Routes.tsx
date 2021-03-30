@@ -12,16 +12,19 @@ import { AuthContext } from './authentication/AuthProvider';
 import { StyleSheet, View } from 'react-native';
 import { AuthStack } from './authentication/AuthStack';
 import { StackNavigator } from './stack/StackNavigator';
-import LocalStorage from '../app/data/LocalStorage';
+import LocalStorageDAO from '../app/data/LocalStorageDAO';
 import User from '../app/models/User';
 
 export const Routes: React.FC = () => {
   const theme = useTheme();
   const navigationTheme = theme.dark ? DarkTheme : DefaultTheme;
-  const localStorage = LocalStorage.getInstance();
+  const localStorage = LocalStorageDAO.getInstance();
   const { user, login } = React.useContext(AuthContext);
   const [loading, setLoading] = React.useState(true);
 
+  /**
+   * Action when component is loaded
+   */
   React.useEffect(() => {
     void localStorage.getUser().then((userRegistered: User | null) => {
       if (userRegistered !== null) login();
