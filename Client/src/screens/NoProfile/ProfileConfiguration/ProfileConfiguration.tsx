@@ -6,14 +6,20 @@
  */
 
 import * as React from 'react';
-import { SafeAreaView, ScrollView, View } from 'react-native';
-import { Chip, Title } from 'react-native-paper';
+import { Image, SafeAreaView, ScrollView, View } from 'react-native';
+import { Chip, Title, TextInput, Button } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from '../ProfileConfiguration/styles';
 
 const ProfileConfiguration: React.FC = () => {
   const [isStudent, setIsStudent] = React.useState(true);
+  const [username, setUsername] = React.useState('');
+
+  /**
+   * TODO Function to POST the username to the backend
+   */
+  const submitForm: () => void = () => {};
   return (
     <SafeAreaView>
       <ScrollView>
@@ -21,40 +27,87 @@ const ProfileConfiguration: React.FC = () => {
           <Chip
             icon={() => (
               <MaterialCommunityIcons
-                name={Globals.ICONS.ADD_PROFILE}
-                color={Globals.COLORS.WHITE}
+                name={Globals.ICONS.PROFILE}
+                color={isStudent ? Globals.COLORS.PRIMARY : Globals.COLORS.WHITE}
                 size={Globals.SIZES.ICON_HEADER}
                 style={styles.icon}
               />
             )}
             disabled={isStudent}
+            textStyle={
+              isStudent
+                ? { color: Globals.COLORS.PRIMARY, fontWeight: 'bold' }
+                : { color: Globals.COLORS.WHITE }
+            }
             onPress={() => setIsStudent(true)}
-            style={!isStudent ? styles.chip : [styles.chip, styles.activate]}>
+            style={isStudent ? [styles.chip, styles.activate] : [styles.chip, styles.deactivate]}>
             Etudiant
           </Chip>
           <Chip
             icon={() => (
               <MaterialCommunityIcons
-                name={Globals.ICONS.ADD_PROFILE}
-                color={Globals.COLORS.WHITE}
+                name={Globals.ICONS.HOME}
+                color={!isStudent ? Globals.COLORS.PRIMARY : Globals.COLORS.WHITE}
                 size={Globals.SIZES.ICON_HEADER}
                 style={styles.icon}
               />
             )}
+            textStyle={
+              !isStudent
+                ? { color: Globals.COLORS.PRIMARY, fontWeight: 'bold' }
+                : { color: Globals.COLORS.WHITE }
+            }
             disabled={!isStudent}
             onPress={() => setIsStudent(false)}
-            style={!isStudent ? styles.chip : [styles.chip, styles.activate]}>
+            style={!isStudent ? [styles.chip, styles.activate] : [styles.chip, styles.deactivate]}>
             Hebergeur
           </Chip>
         </View>
         {isStudent && (
           <View>
-            <Title>Je suis étudiant</Title>
+            <Image
+              source={require('../../../../assets/Classroom.jpg')}
+              style={styles.image}
+              resizeMode="cover"
+              blurRadius={1}
+            />
+            <Image
+              source={require('../../../../assets/Logo.png')}
+              style={styles.logo}
+              resizeMode="stretch"
+            />
+            <View style={styles.container}>
+              <Title style={styles.title}>Etudiant</Title>
+              <View style={styles.formInput}>
+                <TextInput
+                  mode="outlined"
+                  label="Nom d'utilisateur"
+                  value={username}
+                  onChangeText={(username) => setUsername(username)}
+                />
+                <Button
+                  icon={() => (
+                    <MaterialCommunityIcons
+                      name={Globals.ICONS.SEND}
+                      color={Globals.COLORS.WHITE}
+                      size={Globals.SIZES.ICON_HEADER}
+                      style={styles.icon}
+                    />
+                  )}
+                  mode="contained"
+                  style={styles.button}
+                  color={Globals.COLORS.PRIMARY}
+                  labelStyle={{ color: Globals.COLORS.WHITE }}
+                  onPress={() => submitForm()}>
+                  Finaliser le profile
+                </Button>
+              </View>
+            </View>
           </View>
         )}
         {!isStudent && (
           <View>
-            <Title>Je suis hébergeur</Title>
+            <Title style={styles.title}>Disponible dans le prochain livrable</Title>
           </View>
         )}
       </ScrollView>

@@ -41,13 +41,15 @@ const Welcome: React.FC = () => {
             icon={() => (
               <MaterialCommunityIcons
                 name={Globals.ICONS.PROFILE}
-                color={Globals.COLORS.WHITE}
+                color={Globals.COLORS.PRIMARY}
                 size={Globals.SIZES.ICON_HEADER}
                 style={styles.icon}
               />
             )}
             mode="contained"
             style={styles.buttons}
+            color={Globals.COLORS.WHITE}
+            labelStyle={{ color: Globals.COLORS.PRIMARY }}
             onPress={() => navigation.navigate('SignIn')}>
             Se connecter
           </Button>
@@ -55,15 +57,15 @@ const Welcome: React.FC = () => {
             icon={() => (
               <MaterialCommunityIcons
                 name={Globals.ICONS.ADD_PROFILE}
-                color={Globals.COLORS.WHITE}
+                color={Globals.COLORS.BLUE}
                 size={Globals.SIZES.ICON_HEADER}
                 style={styles.icon}
               />
             )}
             mode="contained"
             style={styles.buttons}
-            color={Globals.COLORS.BLUE}
-            labelStyle={{ color: Globals.COLORS.WHITE }}
+            color={Globals.COLORS.WHITE}
+            labelStyle={{ color: Globals.COLORS.BLUE }}
             onPress={() => navigation.navigate('SignUp')}>
             S&apos;inscrire
           </Button>

@@ -14,6 +14,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 15,
   },
+  buttons: {
+    width: '100%',
+    marginTop: 10,
+  },
+  icon: {
+    alignSelf: 'flex-start',
+  },
+  image: {
+    flex: 1,
+    width: '100%',
+    height: 250,
+  },
+  logo: {
+    position: 'absolute',
+    alignSelf: 'center',
+    marginTop: 80,
+    width: 80,
+    height: 80,
+    borderRadius: 200,
+  },
+  text: {
+    marginTop: 30,
+    marginBottom: 40,
+    textAlign: 'center',
+  },
 });
 
 export default styles;
