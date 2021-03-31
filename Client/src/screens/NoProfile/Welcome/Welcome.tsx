@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { Image } from 'react-native';
+import { Image, Linking } from 'react-native';
 import { SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Text, Title } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
@@ -68,6 +68,22 @@ const Welcome: React.FC = () => {
             labelStyle={{ color: Globals.COLORS.BLUE }}
             onPress={() => navigation.navigate('SignUp')}>
             S&apos;inscrire
+          </Button>
+          <Button
+            icon={() => (
+              <MaterialCommunityIcons
+                name={Globals.ICONS.ADD_PROFILE}
+                color={Globals.COLORS.BLUE}
+                size={Globals.SIZES.ICON_HEADER}
+                style={styles.icon}
+              />
+            )}
+            mode="contained"
+            style={styles.buttons}
+            color={Globals.COLORS.WHITE}
+            labelStyle={{ color: Globals.COLORS.BLUE }}
+            onPress={() => Linking.openURL('http://google.com')}>
+            Coucou Bozz
           </Button>
         </View>
       </ScrollView>

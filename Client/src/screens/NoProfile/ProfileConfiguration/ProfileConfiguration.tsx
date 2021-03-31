@@ -6,15 +6,62 @@
  */
 
 import * as React from 'react';
-import { Image, SafeAreaView, ScrollView, View } from 'react-native';
-import { Chip, Title, TextInput, Button } from 'react-native-paper';
+import { Image, Platform, SafeAreaView, ScrollView, View } from 'react-native';
+import { Chip, Title, TextInput, Button, IconButton } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from '../ProfileConfiguration/styles';
+import launchImageLibrary from 'react-native-image-picker';
 
 const ProfileConfiguration: React.FC = () => {
   const [isStudent, setIsStudent] = React.useState(true);
   const [username, setUsername] = React.useState('');
+  const [userImage, setUserImage] = React.useState(null);
+
+  const createFormData = (
+    photo: { fileName: any; type: any; uri: string },
+    body: { [x: string]: any },
+  ) => {
+    const data = new FormData();
+
+    data.append('photo', {
+      name: photo.fileName,
+      type: photo.type,
+      uri: Platform.OS === 'android' ? photo.uri : photo.uri.replace('file://', ''),
+    });
+
+    Object.keys(body).forEach((key) => {
+      data.append(key, body[key]);
+    });
+
+    return data;
+  };
+  const editUserImage: () => void = () => {
+    const options = {
+      noData: true,
+    };
+    launchImageLibrary(options, (response: { uri: string }) => {
+      if (response.uri) {
+        setUserImage(response);
+        handleUploadPhoto();
+      }
+    });
+  };
+
+  const handleUploadPhoto = () => {
+    fetch('http://localhost:3000/api/upload', {
+      method: 'POST',
+      body: createFormData(userImage, { userId: '123' }),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log('upload succes', response);
+        setUserImage(null);
+      })
+      .catch((error) => {
+        console.log('upload error', error);
+      });
+  };
 
   /**
    * TODO Function to POST the username to the backend
@@ -76,7 +123,20 @@ const ProfileConfiguration: React.FC = () => {
               style={styles.logo}
               resizeMode="stretch"
             />
-            <View style={styles.container}>
+            <IconButton
+              icon={() => (
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.EDIT_IMAGE}
+                  color={Globals.COLORS.PRIMARY}
+                  size={Globals.SIZES.ICON_HEADER}
+                  style={styles.editImage}
+                />
+              )}
+              color={Globals.COLORS.PRIMARY}
+              style={styles.iconImage}
+              onPress={() => editUserImage()}
+            />
+            <View>
               <Title style={styles.title}>Etudiant</Title>
               <View style={styles.formInput}>
                 <TextInput

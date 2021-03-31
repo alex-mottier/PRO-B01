@@ -44,6 +44,13 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 250,
   },
+  iconImage: {
+    position: 'absolute',
+    marginTop: -100,
+    marginLeft: -20,
+    width: 500,
+    height: 500,
+  },
   logo: {
     position: 'absolute',
     alignSelf: 'center',
@@ -52,6 +59,7 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 200,
   },
+  editImage: {},
 });
 
 export default styles;

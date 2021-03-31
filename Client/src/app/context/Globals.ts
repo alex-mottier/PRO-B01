@@ -29,6 +29,7 @@ export default {
     SEND: 'send',
     GOOGLE: 'google',
     FACEBOOK: 'facebook',
+    EDIT_IMAGE: 'circle-edit-outline',
   },
   PRECISION: 2,
   SIZES: {
