@@ -1,4 +1,4 @@
-# Amphitryon
+# Amphitryon 
 
 “Amphitryon” est une application ayant pour but de rassembler des étudiants afin de faciliter des échanges présentiels entre ceux-ci. Son intérêt est centré sur la difficulté de rencontre tout en respectant les recommandations sanitaires face à la pandémie.
 
