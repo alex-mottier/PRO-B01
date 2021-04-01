@@ -1,3 +1,10 @@
+/**
+ * @file    App.test.tsx
+ * @author  Alexis Allemann
+ * @date    22.03.2021
+ * @brief   Test class of the main application component
+ */
+
 import * as React from 'react';
 import * as renderer from 'react-test-renderer';
 

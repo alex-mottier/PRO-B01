@@ -6,6 +6,8 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "types": ["jest"]
-  }
+    "types": ["jest"],
+    "skipLibCheck": true
+  },
+  "exclude": ["node_modules"]
 }
