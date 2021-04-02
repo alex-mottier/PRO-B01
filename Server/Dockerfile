@@ -1,27 +1,14 @@
-# Phase de build 
-FROM maven:3.6.1-jdk-8-slim AS build
+FROM maven:3.6.1-jdk-8-alpine AS MAVEN_BUILD
 
-# Create an application directory
-RUN mkdir -p /app
+COPY Server/pom.xml /build/
+COPY Server/src /build/src/
+WORKDIR /build/
+RUN mvn package
 
-COPY Server/pom.xml /app
-COPY Server/src /app/src
+FROM openjdk:8-jre-alpine
 
-# The /app directory should act as the main application directory
 WORKDIR /app
 
-RUN mvn -f pom.xml clean package
+COPY --from=MAVEN_BUILD /build/target/*.jar /app/application.jar
 
-#Phase de RUN
-#FROM openjdk:8
-
-# Copy or project directory (locally) in the current directory of our docker image (/app)
-COPY Server/target/*.jar ./app.jar
-
-# Expose $PORT on container.
-# We use a varibale here as the port is something that can differ on the environment.
-EXPOSE 27017
-EXPOSE 8080
-
-# Start the app
-CMD [ "java", "-jar", "./app.jar" ]
+ENTRYPOINT ["java", "-jar", "application.jar"]
