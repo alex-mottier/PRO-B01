@@ -1,6 +1,6 @@
 /**
  * @file    SignUp.tsx
- * @author  Alexis Allemann
+ * @author  Alexandre Mottier
  * @date    27.03.2021
  * @brief   Sign up page
  */
@@ -30,7 +30,7 @@ const SignUp: React.FC = () => {
           resizeMode="stretch"
         />
         <View style={styles.container}>
-          <Text style={styles.text}>Veuillez choisir une option d'inscription :</Text>
+          <Text style={styles.text}>Veuillez choisir une option d&apos;inscription :</Text>
           <Button
             icon={() => (
               <MaterialCommunityIcons
@@ -45,7 +45,7 @@ const SignUp: React.FC = () => {
             color={Globals.COLORS.FACEBOOK}
             labelStyle={{ color: Globals.COLORS.WHITE }}
             onPress={() => navigation.navigate('ProfileConfiguration')}>
-            S'inscrire avec Facebook
+            S&apos;inscrire avec Facebook
           </Button>
           <Button
             icon={() => (
@@ -61,7 +61,7 @@ const SignUp: React.FC = () => {
             color={Globals.COLORS.GOOGLE}
             labelStyle={{ color: Globals.COLORS.WHITE }}
             onPress={() => navigation.navigate('ProfileConfiguration')}>
-            S'inscrire avec Google
+            S&apos;inscrire avec Google
           </Button>
         </View>
       </ScrollView>
