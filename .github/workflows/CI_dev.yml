@@ -35,7 +35,6 @@ jobs:
         node-version: 14.16
     - run: |
         cd Client
-        npm install
         npm ci
         npm run build --if-present
         npm test
