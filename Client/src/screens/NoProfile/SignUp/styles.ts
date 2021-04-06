@@ -1,5 +1,5 @@
 /**
- * @file    stlyes.ts
+ * @file    styles.ts
  * @author  Alexis Allemann
  * @date    09.02.2021
  * @brief   Authentication page styles
@@ -8,15 +8,15 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  buttons: {
+    width: '100%',
+    marginTop: 10,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 15,
-  },
-  buttons: {
-    width: '100%',
-    marginTop: 10,
+    margin: 30,
   },
   icon: {
     alignSelf: 'flex-start',
