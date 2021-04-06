@@ -33,7 +33,7 @@ const Welcome: React.FC = () => {
         <View style={styles.container}>
           <Title>Bienvenue sur Amphitryon</Title>
           <Text style={styles.text}>
-            En vous conectant, vous acceptez nos conditions générales. Pour en savoir plus sur
+            En vous connectant, vous acceptez nos conditions générales. Pour en savoir plus sur
             l&apos;usage que nous faisons de vos données, consultez notre politique de
             confidentialité et notre politique en matière de cookies.
           </Text>
@@ -68,22 +68,6 @@ const Welcome: React.FC = () => {
             labelStyle={{ color: Globals.COLORS.BLUE }}
             onPress={() => navigation.navigate('SignUp')}>
             S&apos;inscrire
-          </Button>
-          <Button
-            icon={() => (
-              <MaterialCommunityIcons
-                name={Globals.ICONS.ADD_PROFILE}
-                color={Globals.COLORS.BLUE}
-                size={Globals.SIZES.ICON_HEADER}
-                style={styles.icon}
-              />
-            )}
-            mode="contained"
-            style={styles.buttons}
-            color={Globals.COLORS.WHITE}
-            labelStyle={{ color: Globals.COLORS.BLUE }}
-            onPress={() => Linking.openURL('http://google.com')}>
-            Coucou Bozz
           </Button>
         </View>
       </ScrollView>

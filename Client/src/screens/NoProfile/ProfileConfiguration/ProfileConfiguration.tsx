@@ -15,7 +15,6 @@ import styles from '../ProfileConfiguration/styles';
 const ProfileConfiguration: React.FC = () => {
   const [isStudent, setIsStudent] = React.useState(true);
   const [username, setUsername] = React.useState('');
-  
 
   return (
     <SafeAreaView>
@@ -108,7 +107,7 @@ const ProfileConfiguration: React.FC = () => {
                   style={styles.button}
                   color={Globals.COLORS.PRIMARY}
                   labelStyle={{ color: Globals.COLORS.WHITE }}
-                  onPress={}>
+                  onPress={() => console.log('todo')}>
                   Finaliser le profile
                 </Button>
               </View>
