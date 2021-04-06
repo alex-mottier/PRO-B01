@@ -10,7 +10,7 @@ import User from '../models/User';
 
 export default class LocalStorageDAO {
   private static instance: LocalStorageDAO = new LocalStorageDAO();
-  private static storageKey = '@Amphitryon:user';
+  public static readonly storageKey = '@Amphitryon:user';
 
   /**
    * Private instantiation to apply singleton pattern
