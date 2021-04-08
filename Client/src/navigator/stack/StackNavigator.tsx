@@ -46,7 +46,11 @@ export const StackNavigator = (): React.ReactElement => {
                 borderBottomWidth: 1,
               }}>
               {previous && (
-                <Appbar.BackAction onPress={navigation.goBack} color={Globals.COLORS.PRIMARY} />
+                <Appbar.BackAction
+                  onPress={navigation.goBack}
+                  color={Globals.COLORS.PRIMARY}
+                  style={{ position: 'absolute' }}
+                />
               )}
               <Appbar.Content
                 title={title}

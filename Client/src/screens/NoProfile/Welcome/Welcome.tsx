@@ -13,6 +13,7 @@ import Globals from '../../../app/context/Globals';
 import styles from './styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
+import CustomButton from '../../../components/Buttons/CustomButton';
 
 const Welcome: React.FC = () => {
   const navigation = useNavigation();
@@ -44,14 +45,14 @@ const Welcome: React.FC = () => {
               icon={() => (
                 <MaterialCommunityIcons
                   name={Globals.ICONS.PROFILE}
-                  color={Globals.COLORS.WHITE}
+                  color={Globals.COLORS.PRIMARY}
                   size={Globals.SIZES.ICON_HEADER}
                 />
               )}
               mode="contained"
               style={styles.buttons}
-              color={Globals.COLORS.PRIMARY}
-              labelStyle={{ color: Globals.COLORS.WHITE }}
+              color={Globals.COLORS.WHITE}
+              labelStyle={{ color: Globals.COLORS.PRIMARY }}
               onPress={() => navigation.navigate('SignIn')}>
               Se connecter
             </Button>
@@ -59,14 +60,14 @@ const Welcome: React.FC = () => {
               icon={() => (
                 <MaterialCommunityIcons
                   name={Globals.ICONS.ADD_PROFILE}
-                  color={Globals.COLORS.WHITE}
+                  color={Globals.COLORS.BLUE}
                   size={Globals.SIZES.ICON_HEADER}
                 />
               )}
               mode="contained"
               style={styles.buttons}
-              color={Globals.COLORS.BLUE}
-              labelStyle={{ color: Globals.COLORS.WHITE }}
+              color={Globals.COLORS.WHITE}
+              labelStyle={{ color: Globals.COLORS.BLUE }}
               onPress={() => navigation.navigate('SignUp')}>
               S&apos;inscrire
             </Button>

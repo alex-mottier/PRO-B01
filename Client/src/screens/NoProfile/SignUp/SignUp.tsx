@@ -7,12 +7,14 @@
 
 import * as React from 'react';
 import { Image, SafeAreaView, ScrollView, View } from 'react-native';
-import { Button, Text, Title } from 'react-native-paper';
+import { Text, Title } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/core';
 import styles from './styles';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Globals from '../../../app/context/Globals';
 import { AuthContext } from '../../../navigator/authentication/AuthProvider';
+import GoogleButton from '../../../components/Buttons/GoogleButton';
+import CustomButton from '../../../components/Buttons/CustomButton';
+import FacebookButton from '../../../components/Buttons/FacebookButton';
 
 const SignUp: React.FC = () => {
   const { login } = React.useContext(AuthContext);
@@ -42,51 +44,14 @@ const SignUp: React.FC = () => {
           <Title>S&apos;inscrire avec</Title>
           <Text style={styles.text}>Veuillez choisir une option d&apos;inscription</Text>
           <View style={styles.buttons}>
-            <Button
-              icon={() => (
-                <MaterialCommunityIcons
-                  name={Globals.ICONS.FACEBOOK}
-                  color={Globals.COLORS.WHITE}
-                  size={Globals.SIZES.ICON_HEADER}
-                />
-              )}
-              mode="contained"
-              color={Globals.COLORS.FACEBOOK}
-              style={styles.buttons}
-              labelStyle={{ color: Globals.COLORS.WHITE }}
-              onPress={() => navigation.navigate('ProfileConfiguration')}>
-              Facebook
-            </Button>
-            <Button
-              icon={() => (
-                <MaterialCommunityIcons
-                  name={Globals.ICONS.GOOGLE}
-                  color={Globals.COLORS.WHITE}
-                  size={Globals.SIZES.ICON_HEADER}
-                />
-              )}
-              mode="contained"
-              style={styles.buttons}
-              color={Globals.COLORS.GOOGLE}
-              labelStyle={{ color: Globals.COLORS.WHITE }}
-              onPress={handleSignUp}>
-              Google
-            </Button>
-            <Button
-              icon={() => (
-                <MaterialCommunityIcons
-                  name={Globals.ICONS.PROFILE}
-                  color={Globals.COLORS.WHITE}
-                  size={Globals.SIZES.ICON_HEADER}
-                />
-              )}
-              mode="contained"
-              style={styles.buttons}
+            <FacebookButton onPress={() => navigation.navigate('ProfileConfiguration')} />
+            <GoogleButton onPress={handleSignUp} />
+            <CustomButton
+              icon={Globals.ICONS.PROFILE}
               color={Globals.COLORS.GRAY}
-              labelStyle={{ color: Globals.COLORS.WHITE }}
-              onPress={() => navigation.navigate('SignIn')}>
-              Se connecter
-            </Button>
+              onPress={() => navigation.navigate('SignIn')}
+              text={'Se connecter'}
+            />
           </View>
         </View>
       </ScrollView>

@@ -1,7 +1,7 @@
 /**
  * @file    styles.ts
  * @author  Alexis Allemann
- * @date    09.02.2021
+ * @date    08.04.2021
  * @brief   Authentication page styles
  */
 
