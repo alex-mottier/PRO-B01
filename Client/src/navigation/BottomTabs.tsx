@@ -7,11 +7,11 @@
 
 import * as React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import Globals from '../../app/context/Globals';
-import Home from '../../screens/Student/Home/Home';
-import Profile from '../../screens/Student/Profile/Profile';
-import Search from '../../screens/Student/Search/Search';
-import Create from '../../screens/Student/Create/Create';
+import Globals from '../app/context/Globals';
+import Home from '../screens/Student/Home/Home';
+import Profile from '../screens/Student/Profile/Profile';
+import Search from '../screens/Student/Search/Search';
+import Create from '../screens/Student/Create/Create';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from 'react-native-paper';
 

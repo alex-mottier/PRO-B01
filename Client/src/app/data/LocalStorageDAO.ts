@@ -6,7 +6,7 @@
  */
 
 import asyncStorage from '@react-native-async-storage/async-storage';
-import User from '../models/User';
+import { User } from '../models/ApplicationTypes';
 
 export default class LocalStorageDAO {
   private static instance: LocalStorageDAO = new LocalStorageDAO();

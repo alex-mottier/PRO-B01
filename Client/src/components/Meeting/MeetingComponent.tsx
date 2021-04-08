@@ -8,14 +8,13 @@
 import * as React from 'react';
 import { Avatar, Card, Chip, IconButton, Paragraph, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Meeting from '../../app/models/Meeting';
-import Tag from '../../app/models/Tag';
 import styles from './styles';
 import Globals from '../../app/context/Globals';
 import { View } from 'react-native';
 import { format } from 'date-fns';
 import frenchLocale from 'date-fns/locale/fr';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Meeting, Tag } from '../../app/models/ApplicationTypes';
 
 interface IProps {
   meeting: Meeting;

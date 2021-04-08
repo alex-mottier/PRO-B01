@@ -6,7 +6,6 @@
  */
 
 import { TokenResponse } from 'expo-app-auth';
-import User from '../app/models/User';
 
 describe('User', () => {
   const mockToken: TokenResponse = {
@@ -19,18 +18,18 @@ describe('User', () => {
   };
 
   it('should return its name', () => {
-    const user = new User('Username', mockToken);
-    expect(user.getName()).toBe('Username');
+    const user = { name: 'Username', token: mockToken };
+    expect(user.name).toBe('Username');
   });
 
   it('should create a new user instance', () => {
-    const user = new User('Username', mockToken);
+    const user = { name: 'Username', token: mockToken };
     expect(user).not.toBe(null);
     expect(user).not.toBe(undefined);
   });
 
   it('should render the token', () => {
-    const user = new User('Username', mockToken);
-    expect(user.getToken()).toBe(mockToken);
+    const user = { name: 'Username', token: mockToken };
+    expect(user.token).toBe(mockToken);
   });
 });

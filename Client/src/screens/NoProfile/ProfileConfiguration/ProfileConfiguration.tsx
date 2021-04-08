@@ -12,15 +12,18 @@ import Globals from '../../../app/context/Globals';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from '../ProfileConfiguration/styles';
 import { Tabs, TabScreen } from 'react-native-paper-tabs';
-import { AuthContext } from '../../../navigator/authentication/AuthProvider';
+import GlobalStore from '../../../app/stores/GlobalStore';
 
 const ProfileConfiguration: React.FC = () => {
   const paperTheme = useTheme();
-  const { setLogin } = React.useContext(AuthContext);
+  const store = React.useContext(GlobalStore);
   const [username, setUsername] = React.useState('');
 
+  /**
+   * Action done when submit button is pressed
+   */
   const handleSubmit = () => {
-    setLogin();
+    store.setIsLoggedIn(true);
   };
 
   return (

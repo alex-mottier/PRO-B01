@@ -7,12 +7,12 @@
 
 import * as React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
-import { FAB, TextInput, Title } from 'react-native-paper';
+import { FAB, TextInput } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
-import Meeting from '../../../app/models/Meeting';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import styles from './styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Meeting } from '../../../app/models/ApplicationTypes';
 
 const Search: React.FC = () => {
   const [search, setSearch] = React.useState('');

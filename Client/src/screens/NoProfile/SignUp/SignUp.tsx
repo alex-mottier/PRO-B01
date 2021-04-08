@@ -11,18 +11,18 @@ import { Text, Title } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/core';
 import styles from './styles';
 import Globals from '../../../app/context/Globals';
-import { AuthContext } from '../../../navigator/authentication/AuthProvider';
 import GoogleButton from '../../../components/Buttons/GoogleButton';
 import CustomButton from '../../../components/Buttons/CustomButton';
 import FacebookButton from '../../../components/Buttons/FacebookButton';
+import GlobalStore from '../../../app/stores/GlobalStore';
 
 const SignUp: React.FC = () => {
-  const { login } = React.useContext(AuthContext);
+  const store = React.useContext(GlobalStore);
   const navigation = useNavigation();
 
   const handleSignUp = () => {
-    login()?.then(() => {
-      navigation.navigate('ProfileConfiguration');
+    void store.handleSignInAsync().then((isLoggedIn: boolean) => {
+      if (isLoggedIn) navigation.navigate('ProfileConfiguration');
     });
   };
 

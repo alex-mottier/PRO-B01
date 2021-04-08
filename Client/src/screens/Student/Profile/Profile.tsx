@@ -7,19 +7,23 @@
 
 import * as React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
-import { Title } from 'react-native-paper';
+import { Button, Title } from 'react-native-paper';
 import styles from './styles';
+import { observer } from 'mobx-react-lite';
+import GlobalStore from '../../../app/stores/GlobalStore';
 
 const Profile: React.FC = () => {
+  const store = React.useContext(GlobalStore);
   return (
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
-          <Title>Profile</Title>
+          <Title>Profile{store.isLoading ? 'test' : 'abcd'}</Title>
+          <Button onPress={() => store.setIsLoading(!store.isLoading)}>Test</Button>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Profile;
+export default observer(Profile);

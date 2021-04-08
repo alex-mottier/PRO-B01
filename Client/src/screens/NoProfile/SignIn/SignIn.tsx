@@ -8,23 +8,21 @@
 import * as React from 'react';
 import { Image, SafeAreaView, ScrollView, View } from 'react-native';
 import { Text, Title } from 'react-native-paper';
-import { AuthContext } from '../../../navigator/authentication/AuthProvider';
 import styles from './styles';
 import Globals from '../../../app/context/Globals';
 import { useNavigation } from '@react-navigation/native';
 import FacebookButton from '../../../components/Buttons/FacebookButton';
 import GoogleButton from '../../../components/Buttons/GoogleButton';
 import CustomButton from '../../../components/Buttons/CustomButton';
+import GlobalStore from '../../../app/stores/GlobalStore';
 
 const SignIn: React.FC = () => {
-  const { login, setLogin } = React.useContext(AuthContext);
+  const store = React.useContext(GlobalStore);
   const navigation = useNavigation();
 
   const handleLogin = () => {
-    login()?.then((loggedIn: boolean) => {
-      if (loggedIn) {
-        setLogin();
-      }
+    void store.handleSignInAsync().then((loggedIn: boolean) => {
+      store.setIsLoggedIn(loggedIn);
     });
   };
 
