@@ -13,7 +13,6 @@ import { StyleSheet, View } from 'react-native';
 import { AuthStack } from './authentication/AuthStack';
 import { StackNavigator } from './stack/StackNavigator';
 import LocalStorageDAO from '../app/data/LocalStorageDAO';
-import User from '../app/models/User';
 
 export const Routes: React.FC = () => {
   const theme = useTheme();

@@ -13,7 +13,6 @@ import Globals from '../../../app/context/Globals';
 import styles from './styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
-import CustomButton from '../../../components/Buttons/CustomButton';
 
 const Welcome: React.FC = () => {
   const navigation = useNavigation();
