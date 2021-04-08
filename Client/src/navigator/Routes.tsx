@@ -19,7 +19,7 @@ export const Routes: React.FC = () => {
   const theme = useTheme();
   const navigationTheme = theme.dark ? DarkTheme : DefaultTheme;
   const localStorage = LocalStorageDAO.getInstance();
-  const { user, login } = React.useContext(AuthContext);
+  const { user, isLoggedIn } = React.useContext(AuthContext);
   const [loading, setLoading] = React.useState(true);
 
   /**
@@ -41,7 +41,7 @@ export const Routes: React.FC = () => {
 
   return (
     <NavigationContainer theme={navigationTheme}>
-      {user ? <StackNavigator /> : <AuthStack />}
+      {user && isLoggedIn ? <StackNavigator /> : <AuthStack />}
     </NavigationContainer>
   );
 };

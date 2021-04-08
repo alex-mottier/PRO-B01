@@ -12,10 +12,16 @@ import Globals from '../../../app/context/Globals';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from '../ProfileConfiguration/styles';
 import { Tabs, TabScreen } from 'react-native-paper-tabs';
+import { AuthContext } from '../../../navigator/authentication/AuthProvider';
 
 const ProfileConfiguration: React.FC = () => {
   const paperTheme = useTheme();
+  const { setLogin } = React.useContext(AuthContext);
   const [username, setUsername] = React.useState('');
+
+  const handleSubmit = () => {
+    setLogin();
+  };
 
   return (
     <Tabs
@@ -61,7 +67,7 @@ const ProfileConfiguration: React.FC = () => {
                 mode="contained"
                 color={Globals.COLORS.PRIMARY}
                 labelStyle={{ color: Globals.COLORS.WHITE }}
-                onPress={() => console.log('todo')}>
+                onPress={handleSubmit}>
                 Finaliser le profile
               </Button>
             </View>
@@ -82,7 +88,7 @@ const ProfileConfiguration: React.FC = () => {
             resizeMode="stretch"
           />
           <View style={styles.container}>
-            <Title>Disponible dans le prochain livrable</Title>
+            <Title style={{ textAlign: 'center' }}>Disponible dans le prochain livrable</Title>
           </View>
         </View>
       </TabScreen>

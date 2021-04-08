@@ -12,9 +12,18 @@ import { useNavigation } from '@react-navigation/core';
 import styles from './styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Globals from '../../../app/context/Globals';
+import { AuthContext } from '../../../navigator/authentication/AuthProvider';
 
 const SignUp: React.FC = () => {
+  const { login } = React.useContext(AuthContext);
   const navigation = useNavigation();
+
+  const handleSignUp = () => {
+    login()?.then(() => {
+      navigation.navigate('ProfileConfiguration');
+    });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1 }}>
@@ -60,7 +69,7 @@ const SignUp: React.FC = () => {
               style={styles.buttons}
               color={Globals.COLORS.GOOGLE}
               labelStyle={{ color: Globals.COLORS.WHITE }}
-              onPress={() => navigation.navigate('ProfileConfiguration')}>
+              onPress={handleSignUp}>
               Google
             </Button>
             <Button

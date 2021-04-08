@@ -20,6 +20,7 @@ const config = {
 export const AuthProvider: React.FC = ({ children }) => {
   const localStorageDAO = LocalStorageDAO.getInstance();
   const [user, setUser] = React.useState<User | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   /**
    * Action when component is loaded
@@ -27,21 +28,25 @@ export const AuthProvider: React.FC = ({ children }) => {
   React.useEffect(() => {
     void (async () => {
       const cachedUser = await getCachedAuthAsync();
-      if (cachedUser && !user) setUser(cachedUser);
+      if (cachedUser && !user) {
+        setUser(cachedUser);
+        setIsLoggedIn(true);
+      }
     })();
   }, []);
 
   /**
    * Sign in with Google
    */
-  const handleSignInAsync = async (): Promise<void> => {
+  const handleSignInAsync = async (): Promise<boolean> => {
     try {
       const authState = await authAsync(config);
       const user = new User('Username', authState);
       await localStorageDAO.setUser(user);
       setUser(user);
+      return true;
     } catch (e) {
-      // action to do if login is errored or canceled
+      return false;
     }
   };
 
@@ -91,6 +96,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       });
       await localStorageDAO.removeUser();
       setUser(null);
+      setIsLoggedIn(false);
     } catch (e) {
       // action to do if login is errored or canceled
     }
@@ -100,8 +106,12 @@ export const AuthProvider: React.FC = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
+        isLoggedIn,
         login: async () => {
-          await handleSignInAsync();
+          return await handleSignInAsync();
+        },
+        setLogin: () => {
+          setIsLoggedIn(true);
         },
         logout: async () => {
           await handleSignOutAsync(user);
@@ -114,10 +124,14 @@ export const AuthProvider: React.FC = ({ children }) => {
 
 export const AuthContext = React.createContext<{
   user: User | null;
-  login: () => void;
+  isLoggedIn: boolean;
+  login: () => Promise<boolean> | undefined;
+  setLogin: () => void;
   logout: () => void;
 }>({
   user: null,
+  isLoggedIn: false,
+  setLogin: () => undefined,
   login: () => undefined,
   logout: () => undefined,
 });

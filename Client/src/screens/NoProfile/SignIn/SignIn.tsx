@@ -15,8 +15,16 @@ import Globals from '../../../app/context/Globals';
 import { useNavigation } from '@react-navigation/native';
 
 const SignIn: React.FC = () => {
-  const { login } = React.useContext(AuthContext);
+  const { login, setLogin } = React.useContext(AuthContext);
   const navigation = useNavigation();
+
+  const handleLogin = () => {
+    login()?.then((loggedIn: boolean) => {
+      if (loggedIn) {
+        setLogin();
+      }
+    });
+  };
 
   return (
     <SafeAreaView>
@@ -62,7 +70,7 @@ const SignIn: React.FC = () => {
               style={styles.buttons}
               color={Globals.COLORS.GOOGLE}
               labelStyle={{ color: Globals.COLORS.WHITE }}
-              onPress={login}>
+              onPress={handleLogin}>
               Google
             </Button>
             <Button
