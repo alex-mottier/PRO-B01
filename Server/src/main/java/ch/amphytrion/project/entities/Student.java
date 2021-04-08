@@ -17,6 +17,8 @@ public class Student extends User {
     private String firstname;
     @Field("studentLastname")
     private String lastname;
+    @Field("studentUsername")
+    private String username;
     private ArrayList<Message> messages;
     private ArrayList<Meeting> meetingsParticipations;
     private ArrayList<Meeting> meetingsOwner;
