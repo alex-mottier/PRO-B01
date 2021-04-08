@@ -8,18 +8,18 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  buttons: {
+    width: '90%',
+    marginTop: 10,
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
-    margin: 15,
-  },
-  buttons: {
-    width: '100%',
-    marginTop: 10,
-  },
-  icon: {
-    alignSelf: 'flex-start',
+    justifyContent: 'space-between',
+    height: 250,
+    margin: 30,
   },
   image: {
     flex: 1,
@@ -35,8 +35,6 @@ const styles = StyleSheet.create({
     borderRadius: 200,
   },
   text: {
-    marginTop: 30,
-    marginBottom: 40,
     textAlign: 'center',
   },
 });

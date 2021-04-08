@@ -41,6 +41,8 @@ export default (): React.ReactElement => {
                 colors: {
                   ...DefaultTheme.colors,
                   primary: Globals.COLORS.PRIMARY,
+                  background: Globals.COLORS.WHITE,
+                  onBackground: Globals.COLORS.WHITE,
                 },
               }
             : {

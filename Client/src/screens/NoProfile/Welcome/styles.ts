@@ -9,20 +9,21 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   buttons: {
-    width: '80%',
+    width: '90%',
     marginTop: 10,
+    alignItems: 'center',
   },
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    height: 280,
     margin: 30,
-  },
-  icon: {
-    alignSelf: 'flex-start',
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
   },
   image: {
-    flex: 1,
     width: '100%',
     height: 250,
   },
@@ -35,8 +36,6 @@ const styles = StyleSheet.create({
     borderRadius: 200,
   },
   text: {
-    marginTop: 30,
-    marginBottom: 40,
     textAlign: 'center',
   },
 });

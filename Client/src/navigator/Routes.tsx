@@ -26,8 +26,7 @@ export const Routes: React.FC = () => {
    * Action when component is loaded
    */
   React.useEffect(() => {
-    void localStorage.getUser().then((userRegistered: User | null) => {
-      if (userRegistered !== null) login();
+    void localStorage.getUser().then(() => {
       setLoading(false);
     });
   }, []);

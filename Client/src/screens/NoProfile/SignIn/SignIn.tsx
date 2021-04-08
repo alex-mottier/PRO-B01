@@ -7,14 +7,17 @@
 
 import * as React from 'react';
 import { Image, SafeAreaView, ScrollView, View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { Button, Text, Title } from 'react-native-paper';
 import { AuthContext } from '../../../navigator/authentication/AuthProvider';
 import styles from './styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Globals from '../../../app/context/Globals';
+import { useNavigation } from '@react-navigation/native';
 
 const SignIn: React.FC = () => {
   const { login } = React.useContext(AuthContext);
+  const navigation = useNavigation();
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -30,38 +33,54 @@ const SignIn: React.FC = () => {
           resizeMode="stretch"
         />
         <View style={styles.container}>
-          <Text style={styles.text}>Veuillez choisir une option de connexion :</Text>
-          <Button
-            icon={() => (
-              <MaterialCommunityIcons
-                name={Globals.ICONS.FACEBOOK}
-                color={Globals.COLORS.WHITE}
-                size={Globals.SIZES.ICON_HEADER}
-                style={styles.icon}
-              />
-            )}
-            mode="contained"
-            style={styles.buttons}
-            color={Globals.COLORS.FACEBOOK}
-            labelStyle={{ color: Globals.COLORS.WHITE }}>
-            Se connecter avec Facebook
-          </Button>
-          <Button
-            icon={() => (
-              <MaterialCommunityIcons
-                name={Globals.ICONS.GOOGLE}
-                color={Globals.COLORS.WHITE}
-                size={Globals.SIZES.ICON_HEADER}
-                style={styles.icon}
-              />
-            )}
-            mode="contained"
-            style={styles.buttons}
-            color={Globals.COLORS.GOOGLE}
-            labelStyle={{ color: Globals.COLORS.WHITE }}
-            onPress={login}>
-            Se connecter avec Google
-          </Button>
+          <Title>Se connecter avec</Title>
+          <Text style={styles.text}>Veuillez choisir une option de connexion</Text>
+          <View style={styles.buttons}>
+            <Button
+              icon={() => (
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.FACEBOOK}
+                  color={Globals.COLORS.WHITE}
+                  size={Globals.SIZES.ICON_HEADER}
+                />
+              )}
+              mode="contained"
+              style={styles.buttons}
+              color={Globals.COLORS.FACEBOOK}
+              labelStyle={{ color: Globals.COLORS.WHITE }}>
+              Facebook
+            </Button>
+            <Button
+              icon={() => (
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.GOOGLE}
+                  color={Globals.COLORS.WHITE}
+                  size={Globals.SIZES.ICON_HEADER}
+                />
+              )}
+              mode="contained"
+              style={styles.buttons}
+              color={Globals.COLORS.GOOGLE}
+              labelStyle={{ color: Globals.COLORS.WHITE }}
+              onPress={login}>
+              Google
+            </Button>
+            <Button
+              icon={() => (
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.ADD_PROFILE}
+                  color={Globals.COLORS.WHITE}
+                  size={Globals.SIZES.ICON_HEADER}
+                />
+              )}
+              mode="contained"
+              style={styles.buttons}
+              color={Globals.COLORS.GRAY}
+              labelStyle={{ color: Globals.COLORS.WHITE }}
+              onPress={() => navigation.navigate('SignUp')}>
+              S&apos;inscrire
+            </Button>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

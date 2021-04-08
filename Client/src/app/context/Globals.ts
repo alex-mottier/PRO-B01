@@ -16,7 +16,7 @@ export default {
     WHITE: '#ffffff',
     FACEBOOK: '#4267B2',
     GOOGLE: '#DB4437',
-    DISABLED: '#d3d3d3',
+    GRAY: '#d3d3d3',
   },
   ICONS: {
     ADD_PROFILE: 'account-plus',

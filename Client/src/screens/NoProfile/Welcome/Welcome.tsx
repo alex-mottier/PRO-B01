@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { Image, Linking } from 'react-native';
+import { Image } from 'react-native';
 import { SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Text, Title } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
@@ -19,17 +19,19 @@ const Welcome: React.FC = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1 }}>
-        <Image
-          source={require('../../../../assets/Classroom.jpg')}
-          style={styles.image}
-          resizeMode="cover"
-          blurRadius={1}
-        />
-        <Image
-          source={require('../../../../assets/Logo.png')}
-          style={styles.logo}
-          resizeMode="stretch"
-        />
+        <View>
+          <Image
+            source={require('../../../../assets/Classroom.jpg')}
+            style={styles.image}
+            resizeMode="cover"
+            blurRadius={1}
+          />
+          <Image
+            source={require('../../../../assets/Logo.png')}
+            style={styles.logo}
+            resizeMode="stretch"
+          />
+        </View>
         <View style={styles.container}>
           <Title>Bienvenue sur Amphitryon</Title>
           <Text style={styles.text}>
@@ -37,38 +39,38 @@ const Welcome: React.FC = () => {
             l&apos;usage que nous faisons de vos données, consultez notre politique de
             confidentialité et notre politique en matière de cookies.
           </Text>
-          <Button
-            icon={() => (
-              <MaterialCommunityIcons
-                name={Globals.ICONS.PROFILE}
-                color={Globals.COLORS.PRIMARY}
-                size={Globals.SIZES.ICON_HEADER}
-                style={styles.icon}
-              />
-            )}
-            mode="contained"
-            style={styles.buttons}
-            color={Globals.COLORS.WHITE}
-            labelStyle={{ color: Globals.COLORS.PRIMARY }}
-            onPress={() => navigation.navigate('SignIn')}>
-            Se connecter
-          </Button>
-          <Button
-            icon={() => (
-              <MaterialCommunityIcons
-                name={Globals.ICONS.ADD_PROFILE}
-                color={Globals.COLORS.BLUE}
-                size={Globals.SIZES.ICON_HEADER}
-                style={styles.icon}
-              />
-            )}
-            mode="contained"
-            style={styles.buttons}
-            color={Globals.COLORS.WHITE}
-            labelStyle={{ color: Globals.COLORS.BLUE }}
-            onPress={() => navigation.navigate('SignUp')}>
-            S&apos;inscrire
-          </Button>
+          <View style={styles.buttons}>
+            <Button
+              icon={() => (
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.PROFILE}
+                  color={Globals.COLORS.WHITE}
+                  size={Globals.SIZES.ICON_HEADER}
+                />
+              )}
+              mode="contained"
+              style={styles.buttons}
+              color={Globals.COLORS.PRIMARY}
+              labelStyle={{ color: Globals.COLORS.WHITE }}
+              onPress={() => navigation.navigate('SignIn')}>
+              Se connecter
+            </Button>
+            <Button
+              icon={() => (
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.ADD_PROFILE}
+                  color={Globals.COLORS.WHITE}
+                  size={Globals.SIZES.ICON_HEADER}
+                />
+              )}
+              mode="contained"
+              style={styles.buttons}
+              color={Globals.COLORS.BLUE}
+              labelStyle={{ color: Globals.COLORS.WHITE }}
+              onPress={() => navigation.navigate('SignUp')}>
+              S&apos;inscrire
+            </Button>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
