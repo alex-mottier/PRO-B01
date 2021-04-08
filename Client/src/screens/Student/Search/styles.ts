@@ -14,6 +14,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 15,
   },
+  fab: {
+    marginTop: 10,
+    marginLeft: 10,
+  },
+  fields: {
+    width: '80%',
+  },
+  search: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    marginBottom: 20,
+    alignItems: 'center',
+  },
 });
 
 export default styles;
