@@ -13,9 +13,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 250,
+    height: 320,
     margin: 30,
-    paddingTop: 40,
+    paddingTop: 20,
   },
   image: {
     width: '100%',
