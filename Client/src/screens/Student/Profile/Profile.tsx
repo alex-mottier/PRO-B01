@@ -1,7 +1,7 @@
 /**
  * @file    Profile.tsx
- * @author  Alexis Allemann
- * @date    09.02.2021
+ * @author  Alexis Allemann & Alexandre Mottier
+ * @date    04.03.2021
  * @brief   Student profile page
  */
 
@@ -9,6 +9,7 @@ import * as React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
 import { Title } from 'react-native-paper';
 import styles from './styles';
+import { observer } from 'mobx-react-lite';
 
 const Profile: React.FC = () => {
   return (
@@ -22,4 +23,4 @@ const Profile: React.FC = () => {
   );
 };
 
-export default Profile;
+export default observer(Profile);

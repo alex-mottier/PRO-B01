@@ -1,41 +1,37 @@
 /**
- * @file    stlyes.ts
- * @author  Alexis Allemann & Alexandre Mottier
+ * @file    styles.ts
+ * @author  Alexandre Mottier
  * @date    04.03.2021
- * @brief   Authentication page styles
+ * @brief   Configuration profile page styles
  */
 
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  buttons: {
-    width: '90%',
-    marginTop: 10,
-    alignItems: 'center',
-  },
   container: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 250,
+    height: 320,
     margin: 30,
+    paddingTop: 20,
   },
   image: {
-    flex: 1,
     width: '100%',
-    height: 250,
+    marginTop: -10,
+    height: 200,
   },
   logo: {
     position: 'absolute',
     alignSelf: 'center',
-    marginTop: 80,
-    width: 80,
-    height: 80,
+    marginTop: 130,
+    width: 100,
+    height: 100,
     borderRadius: 200,
   },
-  text: {
-    textAlign: 'center',
+  fields: {
+    width: '100%',
   },
 });
 

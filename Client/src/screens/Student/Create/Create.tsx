@@ -1,7 +1,7 @@
 /**
  * @file    Create.tsx
- * @author  Alexis Allemann
- * @date    09.02.2021
+ * @author  Alexis Allemann & Alexandre Mottier
+ * @date    04.03.2021
  * @brief   Student create page
  */
 

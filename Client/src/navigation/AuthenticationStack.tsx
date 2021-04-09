@@ -1,24 +1,31 @@
 /**
- * @file    AuthStack.tsx
- * @author  Alexis Allemann
+ * @file    AuthenticationStackNavigator.tsx
+ * @author  Alexis Allemann & Alexandre Mottier
  * @date    22.03.2021
  * @brief   Stack with authentication screens
  */
 
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { AuthParamList } from './AuthParamList';
-import SignIn from '../../screens/NoProfile/SignIn/SignIn';
-import Welcome from '../../screens/NoProfile/Welcome/Welcome';
-import SignUp from '../../screens/NoProfile/SignUp/SignUp';
-import ProfileConfiguration from '../../screens/NoProfile/ProfileConfiguration/ProfileConfiguration';
+import SignIn from '../screens/NoProfile/SignIn/SignIn';
+import Welcome from '../screens/NoProfile/Welcome/Welcome';
+import SignUp from '../screens/NoProfile/SignUp/SignUp';
+import ProfileConfiguration from '../screens/NoProfile/ProfileConfiguration/ProfileConfiguration';
 import { Appbar, IconButton, useTheme } from 'react-native-paper';
-import Globals from '../../app/context/Globals';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Globals from '../app/context/Globals';
 
+// Parameters of the screens
+type AuthParamList = {
+  Welcome: undefined;
+  SignIn: undefined;
+  SignUp: undefined;
+  ProfileConfiguration: undefined;
+};
+
+// Creating the authentication stack
 const Stack = createStackNavigator<AuthParamList>();
 
-export const AuthStack: React.FC = () => {
+export const AuthenticationStack: React.FC = () => {
   const paperTheme = useTheme();
 
   return (
@@ -44,13 +51,7 @@ export const AuthStack: React.FC = () => {
               }}>
               {previous && (
                 <IconButton
-                  icon={() => (
-                    <MaterialCommunityIcons
-                      name={Globals.ICONS.ARROW_LEFT}
-                      color={Globals.COLORS.PRIMARY}
-                      size={Globals.SIZES.ICON_HEADER}
-                    />
-                  )}
+                  icon={Globals.ICONS.ARROW_LEFT}
                   color={Globals.COLORS.PRIMARY}
                   size={Globals.SIZES.ICON_BUTTON}
                   onPress={navigation.goBack}

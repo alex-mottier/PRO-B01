@@ -1,6 +1,6 @@
 /**
  * @file    Global.ts
- * @author  Alexis Allemann
+ * @author  Alexis Allemann & Alexandre Mottier
  * @date    22.03.2021
  * @brief   General application settings
  */
@@ -14,15 +14,29 @@ export default {
     PRIMARY: '#eb3b28',
     YELLOW: '#d7eb28',
     WHITE: '#ffffff',
+    FACEBOOK: '#4267B2',
+    GOOGLE: '#DB4437',
+    GRAY: '#d3d3d3',
   },
   ICONS: {
     ADD_PROFILE: 'account-plus',
-    ARROW_LEFT: 'arrow-left',
+    ARROW_LEFT: 'chevron-left',
+    ARROW_UP: 'chevron-up',
+    CALENDAR: 'calendar',
     CREATE: 'plus-circle',
+    FILTER: 'filter',
     HOME: 'home',
+    INFO: 'information-outline',
+    JOIN: 'calendar-check',
+    LOCATION: 'map-marker',
     LOGOUT: 'logout',
+    MESSAGE: 'message-text',
     PROFILE: 'account',
     SEARCH: 'magnify',
+    SEND: 'send',
+    GOOGLE: 'google',
+    FACEBOOK: 'facebook',
+    EDIT_IMAGE: 'circle-edit-outline',
   },
   PRECISION: 2,
   SIZES: {
