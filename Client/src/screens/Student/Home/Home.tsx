@@ -1,6 +1,6 @@
 /**
  * @file    Home.tsx
- * @author  Alexis Allemann
+ * @author  Alexis Allemann & Alexandre Mottier
  * @date    09.02.2021
  * @brief   Student home page
  */

@@ -1,6 +1,6 @@
 /**
  * @file    ProfileConfiguration.tsx
- * @author  Alexis Allemann
+ * @author  Alexis Allemann & Alexandre Mottier
  * @date    27.03.2021
  * @brief   Profile configuration page
  */

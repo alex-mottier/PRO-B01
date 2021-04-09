@@ -1,6 +1,6 @@
 /**
  * @file    User.test.ts
- * @author  Alexis Allemann
+ * @author  Alexis Allemann & Alexandre Mottier
  * @date    22.03.2021
  * @brief   Test class of users
  */

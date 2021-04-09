@@ -1,6 +1,6 @@
 /**
  * @file    App.tsx
- * @author  Alexis Allemann
+ * @author  Alexis Allemann & Alexandre Mottier
  * @date    22.03.2021
  * @brief   Root component of the application
  */

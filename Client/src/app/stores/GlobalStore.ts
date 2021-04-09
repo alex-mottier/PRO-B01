@@ -1,6 +1,6 @@
 /**
  * @file    GlobalStore.ts
- * @author  Alexis Allemann
+ * @author  Alexis Allemann & Alexandre Mottier
  * @date    22.03.2021
  * @brief   Global application state store
  */

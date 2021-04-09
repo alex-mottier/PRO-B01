@@ -1,6 +1,6 @@
 /**
  * @file    AuthenticationStackNavigator.tsx
- * @author  Alexis Allemann
+ * @author  Alexis Allemann & Alexandre Mottier
  * @date    22.03.2021
  * @brief   Stack with authentication screens
  */

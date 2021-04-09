@@ -1,6 +1,6 @@
 /**
  * @file    LoadingComponent.tsx
- * @author  Alexis Allemann
+ * @author  Alexis Allemann & Alexandre Mottier
  * @date    09.04.2021
  * @brief   Centered loading component
  */

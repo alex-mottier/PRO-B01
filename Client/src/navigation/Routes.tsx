@@ -1,6 +1,6 @@
 /**
  * @file    Routes.tsx
- * @author  Alexis Allemann
+ * @author  Alexis Allemann & Alexandre Mottier
  * @date    22.03.2021
  * @brief   Routing of application screens
  */
