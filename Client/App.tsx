@@ -15,6 +15,7 @@ import * as Font from 'expo-font';
 import LoadingComponent from './src/components/Loading/LoadingComponent';
 
 const App: React.FC = () => {
+  const [isLoading, setIsLoading] = React.useState(true);
   const store = React.useContext(GlobalStore);
 
   // Loading the font for icons
@@ -24,8 +25,17 @@ const App: React.FC = () => {
       MaterialCommunityIcons: require('./assets/MaterialCommunityIcons.ttf'),
     }).then(() => {
       store.setIsLoading(false);
+      setIsLoading(false);
     });
   }, []);
+
+  // Don't load the application until the font is loaded
+  if (isLoading)
+    return (
+      <PaperProvider theme={store.theme === 'light' ? lightTheme : darkTheme}>
+        <LoadingComponent />
+      </PaperProvider>
+    );
 
   return (
     <PaperProvider theme={store.theme === 'light' ? lightTheme : darkTheme}>
