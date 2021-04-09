@@ -11,7 +11,6 @@ import { FAB, TextInput } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import styles from './styles';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Meeting } from '../../../app/models/ApplicationTypes';
 
 const Search: React.FC = () => {
@@ -61,13 +60,7 @@ const Search: React.FC = () => {
             <FAB
               style={styles.fab}
               small
-              icon={() => (
-                <MaterialCommunityIcons
-                  name={Globals.ICONS.FILTER}
-                  color={Globals.COLORS.GRAY}
-                  size={25}
-                />
-              )}
+              icon={Globals.ICONS.FILTER}
               onPress={() => console.log('Pressed')}
             />
           </View>

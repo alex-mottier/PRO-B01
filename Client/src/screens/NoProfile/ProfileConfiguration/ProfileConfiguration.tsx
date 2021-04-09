@@ -60,13 +60,7 @@ const ProfileConfiguration: React.FC = () => {
                 style={styles.fields}
               />
               <Button
-                icon={() => (
-                  <MaterialCommunityIcons
-                    name={Globals.ICONS.SEND}
-                    color={Globals.COLORS.WHITE}
-                    size={Globals.SIZES.ICON_HEADER}
-                  />
-                )}
+                icon={Globals.ICONS.SEND}
                 mode="contained"
                 color={Globals.COLORS.PRIMARY}
                 labelStyle={{ color: Globals.COLORS.WHITE }}

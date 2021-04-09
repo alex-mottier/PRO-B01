@@ -12,9 +12,9 @@ import { Appbar, IconButton, Switch, useTheme } from 'react-native-paper';
 import { BottomTabs } from './BottomTabs';
 import Globals from '../app/context/Globals';
 import { View } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import GlobalStore from '../app/stores/GlobalStore';
 import { observer } from 'mobx-react-lite';
+import LoadingComponent from '../components/Loading/LoadingComponent';
 
 // Parameters of the screens
 type StackNavigatorParamlist = {
@@ -73,13 +73,7 @@ const StudentStack: React.FC = () => {
                     onValueChange={() => store.invertTheme}
                   />
                   <IconButton
-                    icon={() => (
-                      <MaterialCommunityIcons
-                        name={Globals.ICONS.LOGOUT}
-                        color={Globals.COLORS.PRIMARY}
-                        size={Globals.SIZES.ICON_HEADER}
-                      />
-                    )}
+                    icon={Globals.ICONS.LOGOUT}
                     color={Globals.COLORS.PRIMARY}
                     size={Globals.SIZES.ICON_BUTTON}
                     onPress={() => store.handleSignOutAsync}

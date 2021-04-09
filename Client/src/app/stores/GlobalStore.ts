@@ -6,7 +6,7 @@
  */
 
 import { authAsync, refreshAsync, revokeAsync } from 'expo-app-auth';
-import { makeAutoObservable } from 'mobx';
+import { action, makeAutoObservable } from 'mobx';
 import { createContext } from 'react';
 import { User } from '../models/ApplicationTypes';
 import LocalStorageDAO from '../../app/data/LocalStorageDAO';

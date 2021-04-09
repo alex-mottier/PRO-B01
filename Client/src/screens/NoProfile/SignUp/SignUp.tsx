@@ -21,9 +21,11 @@ const SignUp: React.FC = () => {
   const navigation = useNavigation();
 
   const handleSignUp = () => {
+    store.setIsLoading(true);
     void store.handleSignInAsync().then((isLoggedIn: boolean) => {
       if (isLoggedIn) navigation.navigate('ProfileConfiguration');
     });
+    store.setIsLoading(false);
   };
 
   return (

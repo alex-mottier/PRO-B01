@@ -11,13 +11,24 @@ import { observer } from 'mobx-react-lite';
 import GlobalStore from './src/app/stores/GlobalStore';
 import { lightTheme, darkTheme } from './src/app/context/Theme';
 import Routes from './src/navigation/Routes';
+import * as Font from 'expo-font';
+import LoadingComponent from './src/components/Loading/LoadingComponent';
 
 const App: React.FC = () => {
   const store = React.useContext(GlobalStore);
 
+  // Loading the font for icons
+  React.useEffect(() => {
+    store.setIsLoading(true);
+    void Font.loadAsync({
+      MaterialCommunityIcons: require('./assets/MaterialCommunityIcons.ttf'),
+    });
+    store.setIsLoading(false);
+  }, []);
+
   return (
     <PaperProvider theme={store.theme === 'light' ? lightTheme : darkTheme}>
-      <Routes />
+      {store.isLoading ? <LoadingComponent /> : <Routes />}
     </PaperProvider>
   );
 };

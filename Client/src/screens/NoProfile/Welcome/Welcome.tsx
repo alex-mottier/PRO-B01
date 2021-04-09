@@ -11,11 +11,11 @@ import { SafeAreaView, ScrollView, View } from 'react-native';
 import { Button, Text, Title } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
 import styles from './styles';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
 
 const Welcome: React.FC = () => {
   const navigation = useNavigation();
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1 }}>
@@ -41,32 +41,20 @@ const Welcome: React.FC = () => {
           </Text>
           <View style={styles.buttons}>
             <Button
-              icon={() => (
-                <MaterialCommunityIcons
-                  name={Globals.ICONS.PROFILE}
-                  color={Globals.COLORS.PRIMARY}
-                  size={Globals.SIZES.ICON_HEADER}
-                />
-              )}
+              icon={Globals.ICONS.PROFILE}
               mode="contained"
               style={styles.buttons}
-              color={Globals.COLORS.WHITE}
-              labelStyle={{ color: Globals.COLORS.PRIMARY }}
+              color={Globals.COLORS.PRIMARY}
+              labelStyle={{ color: Globals.COLORS.WHITE }}
               onPress={() => navigation.navigate('SignIn')}>
               Se connecter
             </Button>
             <Button
-              icon={() => (
-                <MaterialCommunityIcons
-                  name={Globals.ICONS.ADD_PROFILE}
-                  color={Globals.COLORS.BLUE}
-                  size={Globals.SIZES.ICON_HEADER}
-                />
-              )}
+              icon={Globals.ICONS.ADD_PROFILE}
               mode="contained"
               style={styles.buttons}
-              color={Globals.COLORS.WHITE}
-              labelStyle={{ color: Globals.COLORS.BLUE }}
+              color={Globals.COLORS.BLUE}
+              labelStyle={{ color: Globals.COLORS.WHITE }}
               onPress={() => navigation.navigate('SignUp')}>
               S&apos;inscrire
             </Button>

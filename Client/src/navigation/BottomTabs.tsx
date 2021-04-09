@@ -12,7 +12,6 @@ import Home from '../screens/Student/Home/Home';
 import Profile from '../screens/Student/Profile/Profile';
 import Search from '../screens/Student/Search/Search';
 import Create from '../screens/Student/Create/Create';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from 'react-native-paper';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -33,13 +32,7 @@ export const BottomTabs = (): React.ReactElement => {
           component={Home}
           options={{
             tabBarLabel: 'Accueil',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name={Globals.ICONS.HOME}
-                color={color}
-                size={Globals.SIZES.ICON_MENU}
-              />
-            ),
+            tabBarIcon: Globals.ICONS.HOME,
           }}
         />
         <Tab.Screen
@@ -47,13 +40,7 @@ export const BottomTabs = (): React.ReactElement => {
           component={Create}
           options={{
             tabBarLabel: 'Créer',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name={Globals.ICONS.CREATE}
-                color={color}
-                size={Globals.SIZES.ICON_MENU}
-              />
-            ),
+            tabBarIcon: Globals.ICONS.CREATE,
           }}
         />
         <Tab.Screen
@@ -61,13 +48,7 @@ export const BottomTabs = (): React.ReactElement => {
           component={Search}
           options={{
             tabBarLabel: 'Rechercher',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name={Globals.ICONS.SEARCH}
-                color={color}
-                size={Globals.SIZES.ICON_MENU}
-              />
-            ),
+            tabBarIcon: Globals.ICONS.SEARCH,
           }}
         />
         <Tab.Screen
@@ -75,13 +56,7 @@ export const BottomTabs = (): React.ReactElement => {
           component={Profile}
           options={{
             tabBarLabel: 'Profil',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name={Globals.ICONS.PROFILE}
-                color={color}
-                size={Globals.SIZES.ICON_MENU}
-              />
-            ),
+            tabBarIcon: Globals.ICONS.PROFILE,
           }}
         />
       </Tab.Navigator>

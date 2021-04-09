@@ -7,7 +7,6 @@
 
 import * as React from 'react';
 import { Button } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Globals from '../../app/context/Globals';
 import { StyleSheet } from 'react-native';
 
@@ -29,13 +28,7 @@ interface IProps {
 const CustomButton: React.FC<IProps> = ({ icon, color, onPress, text }) => {
   return (
     <Button
-      icon={() => (
-        <MaterialCommunityIcons
-          name={icon}
-          color={Globals.COLORS.WHITE}
-          size={Globals.SIZES.ICON_HEADER}
-        />
-      )}
+      icon={icon}
       mode="contained"
       style={styles.buttons}
       color={color}

@@ -108,41 +108,25 @@ const MeetingComponent: React.FC<IProps> = ({ meeting }) => {
           <Card.Actions style={styles.actions}>
             <View>
               <IconButton
-                icon={() => (
-                  <MaterialCommunityIcons
-                    name={Globals.ICONS.MESSAGE}
-                    color={Globals.COLORS.ORANGE}
-                    size={Globals.SIZES.ICON_BUTTON}
-                  />
-                )}
+                icon={Globals.ICONS.MESSAGE}
                 size={30}
+                color={Globals.COLORS.ORANGE}
                 onPress={() => console.log('Pressed')}
               />
               <Text style={[styles.gray, styles.buttonText]}>Discuter</Text>
             </View>
             <View>
               <IconButton
-                icon={() => (
-                  <MaterialCommunityIcons
-                    name={Globals.ICONS.JOIN}
-                    color={Globals.COLORS.GREEN}
-                    size={Globals.SIZES.ICON_BUTTON}
-                  />
-                )}
+                icon={Globals.ICONS.JOIN}
                 size={30}
                 onPress={() => console.log('Pressed')}
+                color={Globals.COLORS.GREEN}
               />
               <Text style={[styles.gray, styles.buttonText]}>Rejoindre</Text>
             </View>
           </Card.Actions>
           <IconButton
-            icon={() => (
-              <MaterialCommunityIcons
-                name={Globals.ICONS.ARROW_UP}
-                color={Globals.COLORS.GRAY}
-                size={Globals.SIZES.ICON_BUTTON}
-              />
-            )}
+            icon={Globals.ICONS.ARROW_UP}
             size={20}
             onPress={handleReduceOrDeploy}
             style={styles.arrowUp}

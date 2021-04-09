@@ -21,8 +21,10 @@ const SignIn: React.FC = () => {
   const navigation = useNavigation();
 
   const handleLogin = () => {
+    store.setIsLoading(true);
     void store.handleSignInAsync().then((loggedIn: boolean) => {
       store.setIsLoggedIn(loggedIn);
+      store.setIsLoading(false);
     });
   };
 

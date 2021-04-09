@@ -13,7 +13,6 @@ import SignUp from '../screens/NoProfile/SignUp/SignUp';
 import ProfileConfiguration from '../screens/NoProfile/ProfileConfiguration/ProfileConfiguration';
 import { Appbar, IconButton, useTheme } from 'react-native-paper';
 import Globals from '../app/context/Globals';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Parameters of the screens
 type AuthParamList = {
@@ -52,13 +51,7 @@ export const AuthenticationStack: React.FC = () => {
               }}>
               {previous && (
                 <IconButton
-                  icon={() => (
-                    <MaterialCommunityIcons
-                      name={Globals.ICONS.ARROW_LEFT}
-                      color={Globals.COLORS.PRIMARY}
-                      size={Globals.SIZES.ICON_HEADER}
-                    />
-                  )}
+                  icon={Globals.ICONS.ARROW_LEFT}
                   color={Globals.COLORS.PRIMARY}
                   size={Globals.SIZES.ICON_BUTTON}
                   onPress={navigation.goBack}
