@@ -114,11 +114,11 @@ class Store {
    * @param user to sign out
    * @returns Promise when the method is finished
    */
-  async handleSignOutAsync(user: User | null): Promise<void> {
+  @action async handleSignOutAsync(): Promise<void> {
     try {
-      if (!user) return;
+      if (!this.authenticatedUser) return;
       await revokeAsync(config, {
-        token: JSON.stringify(user.token),
+        token: JSON.stringify(this.authenticatedUser.token),
         isClientIdProvided: true,
       });
       await LocalStorageDAO.getInstance().removeUser();

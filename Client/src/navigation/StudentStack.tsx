@@ -14,7 +14,6 @@ import Globals from '../app/context/Globals';
 import { View } from 'react-native';
 import GlobalStore from '../app/stores/GlobalStore';
 import { observer } from 'mobx-react-lite';
-import LoadingComponent from '../components/Loading/LoadingComponent';
 
 // Parameters of the screens
 type StackNavigatorParamlist = {
@@ -70,13 +69,13 @@ const StudentStack: React.FC = () => {
                     value={store.theme === 'dark'}
                     color={Globals.COLORS.PRIMARY}
                     style={{ alignItems: 'center', justifyContent: 'center' }}
-                    onValueChange={() => store.invertTheme}
+                    onValueChange={() => store.invertTheme()}
                   />
                   <IconButton
                     icon={Globals.ICONS.LOGOUT}
                     color={Globals.COLORS.PRIMARY}
                     size={Globals.SIZES.ICON_BUTTON}
-                    onPress={() => store.handleSignOutAsync}
+                    onPress={() => store.handleSignOutAsync()}
                   />
                 </View>
               )}

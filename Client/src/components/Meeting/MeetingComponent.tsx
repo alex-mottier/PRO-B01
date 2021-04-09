@@ -129,6 +129,7 @@ const MeetingComponent: React.FC<IProps> = ({ meeting }) => {
             icon={Globals.ICONS.ARROW_UP}
             size={20}
             onPress={handleReduceOrDeploy}
+            color={Globals.COLORS.GRAY}
             style={styles.arrowUp}
           />
         </Card.Content>
