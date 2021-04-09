@@ -5,6 +5,7 @@
  * @brief   Application themes
  */
 
+import { DefaultTheme as DefaultThemeNavigation } from '@react-navigation/native';
 import { DarkTheme, DefaultTheme } from 'react-native-paper';
 import Globals from './Globals';
 
@@ -17,6 +18,15 @@ export const lightTheme = {
     primary: Globals.COLORS.PRIMARY,
     background: Globals.COLORS.WHITE,
     onBackground: Globals.COLORS.WHITE,
+  },
+};
+
+export const lightThemeNavigation = {
+  ...DefaultThemeNavigation,
+  colors: {
+    ...DefaultThemeNavigation.colors,
+    primary: Globals.COLORS.PRIMARY,
+    background: Globals.COLORS.WHITE,
   },
 };
 

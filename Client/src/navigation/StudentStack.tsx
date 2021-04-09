@@ -49,18 +49,13 @@ const StudentStack: React.FC = () => {
                 borderBottomColor: Globals.COLORS.PRIMARY,
                 borderBottomWidth: 1,
               }}>
-              {previous && (
-                <Appbar.BackAction onPress={navigation.goBack} color={Globals.COLORS.PRIMARY} />
-              )}
+              {previous && <Appbar.BackAction onPress={navigation.goBack} />}
               <Appbar.Content
                 title={title}
                 titleStyle={{
                   fontSize: 20,
                   color: Globals.COLORS.PRIMARY,
                   textAlign: 'center',
-                }}
-                style={{
-                  alignItems: 'center',
                 }}
               />
               {options.headerTitle == Globals.STRINGS.PROFILE && (

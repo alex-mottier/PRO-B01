@@ -40,7 +40,7 @@ const MeetingComponent: React.FC<IProps> = ({ meeting }) => {
   };
 
   return (
-    <Card style={styles.card}>
+    <Card style={styles.card} elevation={10}>
       <TouchableOpacity onPress={handleReduceOrDeploy}>
         <Card.Title
           title={meeting.name}
