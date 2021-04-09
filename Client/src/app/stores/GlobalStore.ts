@@ -27,7 +27,7 @@ class Store {
    * Inverting the theme colour
    */
   @action invertTheme(): void {
-    this.theme == 'light' ? 'dark' : 'light';
+    this.theme = this.theme === 'light' ? 'dark' : 'light';
   }
 
   /**
