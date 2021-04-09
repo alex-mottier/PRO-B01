@@ -7,7 +7,7 @@
 
 import * as React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
-import { Drawer, FAB, TextInput } from 'react-native-paper';
+import { FAB, TextInput } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import styles from './styles';

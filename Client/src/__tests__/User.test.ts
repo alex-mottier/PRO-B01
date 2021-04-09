@@ -17,15 +17,15 @@ describe('User', () => {
     tokenType: '',
   };
 
+  it('should create a new user instance', () => {
+    const user = { name: 'Username', token: mockToken };
+    expect(user).not.toBeNull();
+    expect(user).not.toBeUndefined();
+  });
+
   it('should return its name', () => {
     const user = { name: 'Username', token: mockToken };
     expect(user.name).toBe('Username');
-  });
-
-  it('should create a new user instance', () => {
-    const user = { name: 'Username', token: mockToken };
-    expect(user).not.toBe(null);
-    expect(user).not.toBe(undefined);
   });
 
   it('should render the token', () => {
