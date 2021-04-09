@@ -1,28 +1,32 @@
 /**
- * @file    StackNavigator.tsx
- * @author  Alexis Allemann
+ * @file    StudentStack.tsx
+ * @author  Alexis Allemann & Alexandre Mottier
  * @date    22.03.2021
- * @brief   Stack navigation
+ * @brief   Stack navigation when student is logged in
  */
 
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Appbar, IconButton, Switch, useTheme } from 'react-native-paper';
-import { StackNavigatorParamlist } from './StackNavigatorParameters';
-import { BottomTabs } from '../bottom-tabs/BottomTabs';
-import Globals from '../../app/context/Globals';
-import { AuthContext } from '../authentication/AuthProvider';
-import { PreferencesContext } from '../../app/context/ContextPreferences';
+import { BottomTabs } from './BottomTabs';
+import Globals from '../app/context/Globals';
 import { View } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import GlobalStore from '../app/stores/GlobalStore';
+import { observer } from 'mobx-react-lite';
 
+// Parameters of the screens
+type StackNavigatorParamlist = {
+  Main: undefined;
+  Settings: undefined;
+};
+
+// Creating the application stack
 const Stack = createStackNavigator<StackNavigatorParamlist>();
 
-export const StackNavigator = (): React.ReactElement => {
+const StudentStack: React.FC = () => {
   const paperTheme = useTheme();
-  const { logout } = React.useContext(AuthContext);
-  const { theme, toggleTheme } = React.useContext(PreferencesContext);
+  const store = React.useContext(GlobalStore);
 
   return (
     <Stack.Navigator
@@ -45,9 +49,7 @@ export const StackNavigator = (): React.ReactElement => {
                 borderBottomColor: Globals.COLORS.PRIMARY,
                 borderBottomWidth: 1,
               }}>
-              {previous && (
-                <Appbar.BackAction onPress={navigation.goBack} color={Globals.COLORS.PRIMARY} />
-              )}
+              {previous && <Appbar.BackAction onPress={navigation.goBack} />}
               <Appbar.Content
                 title={title}
                 titleStyle={{
@@ -55,29 +57,20 @@ export const StackNavigator = (): React.ReactElement => {
                   color: Globals.COLORS.PRIMARY,
                   textAlign: 'center',
                 }}
-                style={{
-                  alignItems: 'center',
-                }}
               />
               {options.headerTitle == Globals.STRINGS.PROFILE && (
                 <View style={{ flexDirection: 'row' }}>
                   <Switch
-                    value={theme === 'dark'}
+                    value={store.theme === 'dark'}
                     color={Globals.COLORS.PRIMARY}
                     style={{ alignItems: 'center', justifyContent: 'center' }}
-                    onValueChange={toggleTheme}
+                    onValueChange={() => store.invertTheme()}
                   />
                   <IconButton
-                    icon={() => (
-                      <MaterialCommunityIcons
-                        name={Globals.ICONS.LOGOUT}
-                        color={Globals.COLORS.PRIMARY}
-                        size={Globals.SIZES.ICON_HEADER}
-                      />
-                    )}
+                    icon={Globals.ICONS.LOGOUT}
                     color={Globals.COLORS.PRIMARY}
                     size={Globals.SIZES.ICON_BUTTON}
-                    onPress={logout}
+                    onPress={() => store.signOutWithGoogle()}
                   />
                 </View>
               )}
@@ -98,3 +91,5 @@ export const StackNavigator = (): React.ReactElement => {
     </Stack.Navigator>
   );
 };
+
+export default observer(StudentStack);
