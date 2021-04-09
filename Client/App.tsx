@@ -22,8 +22,9 @@ const App: React.FC = () => {
     store.setIsLoading(true);
     void Font.loadAsync({
       MaterialCommunityIcons: require('./assets/MaterialCommunityIcons.ttf'),
+    }).then(() => {
+      store.setIsLoading(false);
     });
-    store.setIsLoading(false);
   }, []);
 
   return (

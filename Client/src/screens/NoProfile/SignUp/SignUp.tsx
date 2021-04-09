@@ -22,7 +22,7 @@ const SignUp: React.FC = () => {
 
   const handleSignUp = () => {
     store.setIsLoading(true);
-    void store.handleSignInAsync().then((isLoggedIn: boolean) => {
+    void store.signInWithGoogle().then((isLoggedIn: boolean) => {
       if (isLoggedIn) navigation.navigate('ProfileConfiguration');
     });
     store.setIsLoading(false);

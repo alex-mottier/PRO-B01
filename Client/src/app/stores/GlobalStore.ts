@@ -5,24 +5,16 @@
  * @brief   Global application state store
  */
 
-import { authAsync, refreshAsync, revokeAsync } from 'expo-app-auth';
-import { action, makeAutoObservable } from 'mobx';
+import { action, makeAutoObservable, observable } from 'mobx';
 import { createContext } from 'react';
 import { User } from '../models/ApplicationTypes';
-import LocalStorageDAO from '../../app/data/LocalStorageDAO';
-
-// Google configuration to authenticate users
-const config = {
-  issuer: 'https://accounts.google.com',
-  scopes: ['openid', 'profile'],
-  clientId: '298748587556-mpio0261lovc0qkt660nbhgariolp1no.apps.googleusercontent.com',
-};
+import GoogleAuth from '../authentication/GoogleAuth';
 
 class Store {
-  theme: 'light' | 'dark' = 'light';
-  isLoading = false;
-  authenticatedUser: User | null = null;
-  isLoggedIn = false;
+  @observable theme: 'light' | 'dark' = 'light';
+  @observable isLoading = false;
+  @observable authenticatedUser: User | null = null;
+  @observable isLoggedIn = false;
 
   /**
    * Instantiation of the store
@@ -34,7 +26,7 @@ class Store {
   /**
    * Inverting the theme colour
    */
-  invertTheme(): void {
+  @action invertTheme(): void {
     this.theme == 'light' ? 'dark' : 'light';
   }
 
@@ -42,7 +34,7 @@ class Store {
    * Set if the application is loading
    * @param isLoading if the application is loading
    */
-  setIsLoading(isLoading: boolean): void {
+  @action setIsLoading(isLoading: boolean): void {
     this.isLoading = isLoading;
   }
 
@@ -50,7 +42,7 @@ class Store {
    * Set the authenticated user
    * @param userAuthenticated the authenticated user or null
    */
-  setAuthenticatedUser(userAuthenticated: User | null): void {
+  @action setAuthenticatedUser(userAuthenticated: User | null): void {
     this.authenticatedUser = userAuthenticated;
   }
 
@@ -58,75 +50,40 @@ class Store {
    * Set if the user is logged in
    * @param isLoggedIn if the user is logged in
    */
-  setIsLoggedIn(isLoggedIn: boolean): void {
+  @action setIsLoggedIn(isLoggedIn: boolean): void {
     this.isLoggedIn = isLoggedIn;
   }
 
   /**
    * Sign in with Google
+   * @returns promise if user is sucessfully signed in
    */
-  async handleSignInAsync(): Promise<boolean> {
-    try {
-      const authState = await authAsync(config);
-      const user = { name: 'Username', token: authState };
-      await LocalStorageDAO.getInstance().setUser(user);
-      this.authenticatedUser = user;
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  /**
-   * Get the cached user and update token if it is expired
-   * @returns the user cached with up to date token
-   */
-  async getCachedAuthAsync(): Promise<User | null> {
-    try {
-      let user = await LocalStorageDAO.getInstance().getUser();
-      if (user) {
-        const expirationDate = user.token.accessTokenExpirationDate;
-        if (expirationDate && new Date(expirationDate) < new Date())
-          user = await this.refreshAuthAsync(user);
-        return user;
-      }
-      return null;
-    } catch (e) {
-      // action to do if login is errored or canceled
-      return null;
-    }
-  }
-
-  /**
-   * Refresh user token when it is expired
-   * @param user
-   * @returns The updated user
-   */
-  async refreshAuthAsync(user: User): Promise<User> {
-    const token = await refreshAsync(config, JSON.stringify(user.token));
-    const newUser = { name: user.name, token: token };
-    await LocalStorageDAO.getInstance().setUser(newUser);
-    return user;
+  @action async signInWithGoogle(): Promise<boolean> {
+    return GoogleAuth.getInstance()
+      .handleSignInAsync()
+      .then((user: User | null) => {
+        if (user) {
+          this.setAuthenticatedUser(user);
+          return true;
+        }
+        return false;
+      });
   }
 
   /**
    * Action done when the user logs out
    * @param user to sign out
-   * @returns Promise when the method is finished
+   * @returns promise when sign out is completed
    */
-  @action async handleSignOutAsync(): Promise<void> {
-    try {
-      if (!this.authenticatedUser) return;
-      await revokeAsync(config, {
-        token: JSON.stringify(this.authenticatedUser.token),
-        isClientIdProvided: true,
+  @action signOutWithGoogle(): Promise<void> {
+    this.setIsLoading(true);
+    return GoogleAuth.getInstance()
+      .handleSignOutAsync(this.authenticatedUser)
+      .then(() => {
+        this.setAuthenticatedUser(null);
+        this.setIsLoggedIn(false);
+        this.setIsLoading(false);
       });
-      await LocalStorageDAO.getInstance().removeUser();
-      this.authenticatedUser = null;
-      this.isLoggedIn = false;
-    } catch (e) {
-      // action to do if login is errored or canceled
-    }
   }
 }
 

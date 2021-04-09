@@ -22,7 +22,7 @@ const SignIn: React.FC = () => {
 
   const handleLogin = () => {
     store.setIsLoading(true);
-    void store.handleSignInAsync().then((loggedIn: boolean) => {
+    void store.signInWithGoogle().then((loggedIn: boolean) => {
       store.setIsLoggedIn(loggedIn);
       store.setIsLoading(false);
     });

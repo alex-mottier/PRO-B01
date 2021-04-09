@@ -75,7 +75,7 @@ const StudentStack: React.FC = () => {
                     icon={Globals.ICONS.LOGOUT}
                     color={Globals.COLORS.PRIMARY}
                     size={Globals.SIZES.ICON_BUTTON}
-                    onPress={() => store.handleSignOutAsync()}
+                    onPress={() => store.signOutWithGoogle()}
                   />
                 </View>
               )}
