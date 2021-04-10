@@ -11,7 +11,9 @@ import java.util.ArrayList;
 @Document
 public class Location {
     private Host host;
-    private Address address;
+    private String street;
+    private Integer streetNr;
+    private String city;
     private ArrayList<Meeting> meetings;
     private ArrayList<Tag> tags;
     private ArrayList<OpeningHour> openingHours;
