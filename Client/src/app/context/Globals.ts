@@ -20,10 +20,13 @@ export default {
   },
   ICONS: {
     ADD_PROFILE: 'account-plus',
+    ADD_TAG: 'plus',
     ARROW_LEFT: 'chevron-left',
     ARROW_UP: 'chevron-up',
     CALENDAR: 'calendar',
+    CLOSE: 'close-circle',
     CREATE: 'plus-circle',
+    END_TIME: 'clock-time-nine',
     FILTER: 'filter',
     HOME: 'home',
     INFO: 'information-outline',
@@ -37,6 +40,8 @@ export default {
     GOOGLE: 'google',
     FACEBOOK: 'facebook',
     EDIT_IMAGE: 'circle-edit-outline',
+    START_TIME: 'clock-time-one',
+    EDIT: 'pencil',
   },
   PRECISION: 2,
   SIZES: {

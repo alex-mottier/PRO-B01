@@ -14,6 +14,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 15,
   },
+  name: { width: '75%', marginBottom: 10 },
+  fields: {
+    width: '100%',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
+  },
+  card: {
+    marginTop: 10,
+    width: '100%',
+    padding: 10,
+  },
+  button: {
+    marginTop: 20,
+  },
+  marginRigth: {
+    marginRight: 20,
+  },
+  marginLeft: {
+    marginLeft: 20,
+  },
 });
 
 export default styles;
