@@ -30,3 +30,8 @@ export type User = {
   name: string;
   token: TokenResponse;
 };
+
+export type Success = {
+  name: string;
+  message: string;
+};
