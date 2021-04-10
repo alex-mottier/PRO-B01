@@ -1,13 +1,8 @@
-package ch.amphytrion.project.repository;
-
-
+package ch.amphytrion.project.repositories;
 import ch.amphytrion.project.controller.MeetingController;
 import ch.amphytrion.project.controller.StudentController;
-import ch.amphytrion.project.entities.Chat;
-import ch.amphytrion.project.entities.Meeting;
-import ch.amphytrion.project.entities.Student;
-import ch.amphytrion.project.repositories.MeetingRepository;
-import ch.amphytrion.project.repositories.StudentRepository;
+import ch.amphytrion.project.entities.*;
+
 import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.StudentService;
 import org.junit.jupiter.api.Test;
@@ -15,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -32,35 +26,30 @@ public class MeetingRepositoryTest {
     StudentController studentController = new StudentController(studentService);
 
     @Test
-    void displayRequest() {
-      /*  // créer une personne
-        Student student = new Student("POmme de terre");
-        Student student2 = new Student ("au lardons");
-        Student student3 = new Student ("avec crème");
-        Chat chat = new Chat(null, null);
-        ArrayList<Student> students = new ArrayList<>();*/
-
-        Student student333 = studentService.findByUsername("POmme de terre");
-        student333.setFirstname("Coucou je me suis fait remplacé mon prenom");
-        studentService.save(student333);
-/*
-
-        students.add(student);
-        studentService.save(student);
-        students.add(student2);
-        studentService.save(student2);
-        students.add(student3);
-        studentService.save(student3);
-        Meeting meeting = new Meeting(students,
-               student,
-               null,
-               null,
-               chat,
-               "Recette",
-               0,
-               0);
-
-        meetingService.save(meeting);*/
-
+    void meetingGetIdTest() {
+        try{
+            Student s1 = new Student("s1");
+            Student s2 = new Student("s2");
+            ArrayList<Student> students = new ArrayList<>();
+            students.add(s1);
+            students.add(s2);
+            Location l1 = new Location(null, null, null, null, null, null, "l1");
+            Location l2 = new Location(null, null, null, null, null, null, "l2");
+            ArrayList<Location> locations = new ArrayList<>();
+            locations.add(l1);
+            locations.add(l2);
+            Tag t1 = new Tag(null, null, null, "t1");
+            Tag t2 = new Tag(null, null, null, "t2");
+            ArrayList<Tag> tags = new ArrayList<>();
+            tags.add(t1);
+            tags.add(t2);
+            Chat chat = new Chat(null,null);
+            Meeting meeting = new Meeting(students, s1, locations,tags,chat,"meeting", 0, 0);
+            meetingService.save(meeting);
+            assertEquals(meeting.getName(), meetingService.findById(meeting.getId()).getName() );
+            meetingService.deleteById(meeting.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

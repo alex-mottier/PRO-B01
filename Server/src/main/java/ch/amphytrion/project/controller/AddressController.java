@@ -25,7 +25,7 @@ public class AddressController extends BaseController implements IGenericControl
     }
 
     @Override
-    @GetMapping("/address")
+    //@GetMapping("/address")
     public ResponseEntity<List<Address>> getAll() {
         try {
             return ResponseEntity.ok(addressService.findAll());
@@ -35,7 +35,7 @@ public class AddressController extends BaseController implements IGenericControl
     }
 
     @Override
-    @PostMapping("/address")
+    //@PostMapping("/address")
     public ResponseEntity<Address> save(Address entity) {
         try {
             return ResponseEntity.ok(addressService.save(entity));
@@ -45,7 +45,7 @@ public class AddressController extends BaseController implements IGenericControl
     }
 
     @Override
-    @GetMapping("/address")
+    //@GetMapping("/address")
     public ResponseEntity<Address> getById(String id) {
         try {
             return ResponseEntity.ok(addressService.findById(id));
@@ -60,7 +60,7 @@ public class AddressController extends BaseController implements IGenericControl
             @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
             @ApiResponse(code = 403, message = "Access to this resource is forbidden")
     })
-    @GetMapping("/addressController")
+    //@GetMapping("/addressController")
     private String testController() {
         return this.getClass().getSimpleName();
     }
