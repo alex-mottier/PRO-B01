@@ -41,7 +41,7 @@ class GoogleAuth {
       const authState = await authAsync(config);
       const user = { name: 'Username', token: authState };
       await LocalStorageDAO.getInstance().setUser(user);
-
+		console.log(authState);
       return user;
     } catch (e) {
       return null;
