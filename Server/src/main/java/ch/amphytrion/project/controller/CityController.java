@@ -25,7 +25,7 @@ public class CityController extends BaseController implements IGenericController
     }
 
     @Override
-    @GetMapping("/city")
+    //@GetMapping("/city")
     public ResponseEntity<List<City>> getAll() {
         try {
             return ResponseEntity.ok(cityService.findAll());
@@ -35,7 +35,7 @@ public class CityController extends BaseController implements IGenericController
     }
 
     @Override
-    @PostMapping("/city")
+    //@PostMapping("/city")
     public ResponseEntity save(City entity) {
         try {
             return ResponseEntity.ok(cityService.save(entity));
@@ -45,7 +45,7 @@ public class CityController extends BaseController implements IGenericController
     }
 
     @Override
-    @GetMapping("/city")
+    //@GetMapping("/city")
     public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(cityService.findById(id));

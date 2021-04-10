@@ -25,7 +25,7 @@ public class ChatController extends BaseController implements IGenericController
     }
 
     @Override
-    @GetMapping("/chat")
+    //@GetMapping("/chat")
     public ResponseEntity<List<Chat>> getAll() {
         try {
             return ResponseEntity.ok(chatService.findAll());
@@ -35,7 +35,7 @@ public class ChatController extends BaseController implements IGenericController
     }
 
     @Override
-    @PostMapping("/chat")
+    //@PostMapping("/chat")
     public ResponseEntity save(Chat entity) {
         try {
             return ResponseEntity.ok(chatService.save(entity));
@@ -45,7 +45,7 @@ public class ChatController extends BaseController implements IGenericController
     }
 
     @Override
-    @GetMapping("/chat")
+    //@GetMapping("/chat")
     public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(chatService.findById(id));

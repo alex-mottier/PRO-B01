@@ -15,7 +15,6 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @Document
 public class Student extends User {
-    //private String id;
     @Field("studentFirstname")
     private String firstname;
     @Field("studentLastname")

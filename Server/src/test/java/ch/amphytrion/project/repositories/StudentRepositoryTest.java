@@ -1,18 +1,13 @@
-package ch.amphytrion.project.repository;
-
-
-import ch.amphytrion.project.entities.*;
+package ch.amphytrion.project.repositories;
 import ch.amphytrion.project.entities.Student;
-import ch.amphytrion.project.repositories.*;
 import ch.amphytrion.project.services.*;
 import ch.amphytrion.project.controller.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
 @SpringBootTest
 public class StudentRepositoryTest {
 
@@ -21,16 +16,14 @@ public class StudentRepositoryTest {
     private StudentService studentService;
     StudentController studentController = new StudentController(studentService);
 
-
     @Test
-    void displayRequest() {
-        // créer une personne
-       Student student = new Student("Kainomad");
-        studentService.save(student);
-        Student result = studentService.findByUsername("Kainomad");
-        assertEquals(result.getUsername(), student.getUsername());
+    void studentGetIdTest() {
 
-        System.out.println("mon id : " + result.getId());
+        Student student = new Student("student");
+        studentService.save(student);
+        Student result = studentService.findByUsername("student");
+        assertEquals(result.getUsername(), student.getUsername());
+        studentService.deleteById(student.getId());
 
     }
 }
