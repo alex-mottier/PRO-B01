@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
     @Override
+    @GetMapping("/locations")
     public ResponseEntity<List<Location>> getAll() {
         try {
             return ResponseEntity.ok(locationService.findAll());
@@ -31,6 +33,7 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
     @Override
+    @PostMapping("/locations")
     public ResponseEntity save(Location entity) {
         try {
             return ResponseEntity.ok(locationService.save(entity));
@@ -40,6 +43,7 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
     @Override
+    @GetMapping("/locations")
     public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(locationService.findById(id));
