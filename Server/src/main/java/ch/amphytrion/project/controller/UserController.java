@@ -41,7 +41,7 @@ public class UserController extends BaseController implements IGenericController
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id) {
+    public ResponseEntity<User> getById(@PathVariable String id) {
         try {
             return ResponseEntity.ok(userService.findById(id));
         } catch (Exception e) {
