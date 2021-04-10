@@ -2,7 +2,7 @@ package ch.amphytrion.project.repository;
 
 
 import ch.amphytrion.project.entities.*;
-import ch.amphytrion.project.entities.User;
+import ch.amphytrion.project.entities.Student;
 import ch.amphytrion.project.repositories.*;
 import ch.amphytrion.project.services.*;
 import ch.amphytrion.project.controller.*;
@@ -14,28 +14,29 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
-public class UserRepositoryTest {
+public class StudentRepositoryTest {
 
-    UserRepository userRepository;
+    StudentRepository studentRepository;
     @Autowired
-    private UserService userService;
-    UserController userController = new UserController(userService);
+    private StudentService studentService;
+    StudentController studentController = new StudentController(studentService);
 
 
     @Test
     void displayRequest() {
         // créer une personne
-        User user = new User("Kainomad");
-        //userService.save(user);
-        User result = userService.findByUsername("Kainomad");
+       Student student = new Student("Kainomad");
+        studentService.save(student);
+        Student result = studentService.findByStudentname("Kainomad");
 
 
-        assertEquals(result.getUsername(), user.getUsername());
+        assertEquals(result.getStudentname(), student.getStudentname());
 
         System.out.println("mon id : "+result.getId());
+
     }
 
-    void addUserToConversation (User user, Meeting meeting){
+    void addStudentToConversation (Student student, Meeting meeting){
         // lie une personne à une conversation
     }
 }
