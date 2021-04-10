@@ -55,4 +55,7 @@ export default {
     PROFILE: 'Profil',
     SEARCH: 'Rechercher une réunion',
   },
+  URLS: {
+    CREATE_MEETING: '',
+  },
 };
