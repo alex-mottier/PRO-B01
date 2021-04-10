@@ -28,7 +28,7 @@ public class ChatService implements IGenericService<Chat> {
     }
 
     @Override
-    public Chat findById(long id) {
+    public Chat findById(String id) {
         try {
             return chatRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class ChatService implements IGenericService<Chat> {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         chatRepository.deleteById(id);
     }
 

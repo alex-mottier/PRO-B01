@@ -10,6 +10,7 @@ import java.util.List;
 @Service
 public class StudentService implements IGenericService<Student> {
 
+    @Autowired
     private StudentRepository studentRepository;
 
     @Autowired
@@ -28,7 +29,7 @@ public class StudentService implements IGenericService<Student> {
     }
 
     @Override
-    public Student findById(long id) {
+    public Student findById(String id) {
         try {
             return studentRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -43,7 +44,7 @@ public class StudentService implements IGenericService<Student> {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         studentRepository.deleteById(id);
     }
 
@@ -52,4 +53,12 @@ public class StudentService implements IGenericService<Student> {
         return studentRepository.count();
     }
 
+    public Student findByUsername(String username) {
+        try{
+            return studentRepository.findByUsername(username);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

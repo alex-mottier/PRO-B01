@@ -28,7 +28,7 @@ public class HostService implements IGenericService<Host> {
     }
 
     @Override
-    public Host findById(long id) {
+    public Host findById(String id) {
         try {
             return hostRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class HostService implements IGenericService<Host> {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         hostRepository.deleteById(id);
     }
 

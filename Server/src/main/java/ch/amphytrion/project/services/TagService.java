@@ -28,7 +28,7 @@ public class TagService implements IGenericService<Tag> {
     }
 
     @Override
-    public Tag findById(long id) {
+    public Tag findById(String id) {
         try {
             return tagRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class TagService implements IGenericService<Tag> {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         tagRepository.deleteById(id);
     }
 

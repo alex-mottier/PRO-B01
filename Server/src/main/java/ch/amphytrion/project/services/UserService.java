@@ -27,7 +27,7 @@ public class UserService implements IGenericService<User> {
     }
     
     @Override
-    public User findById(long id) {
+    public User findById(String id) {
         try {
             return userRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class UserService implements IGenericService<User> {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         userRepository.deleteById(id);
     }
 
