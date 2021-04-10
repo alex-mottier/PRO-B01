@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class OpeningHourController extends BaseController implements IGenericCon
     }
 
     @Override
+    @GetMapping("/openingHour")
     public ResponseEntity<List<OpeningHour>> getAll() {
         try {
             return ResponseEntity.ok(openingHourService.findAll());
@@ -31,6 +33,7 @@ public class OpeningHourController extends BaseController implements IGenericCon
     }
 
     @Override
+    @PostMapping("/openingHour")
     public ResponseEntity save(OpeningHour entity) {
         try {
             return ResponseEntity.ok(openingHourService.save(entity));
@@ -40,6 +43,7 @@ public class OpeningHourController extends BaseController implements IGenericCon
     }
 
     @Override
+    @GetMapping("/openingHour")
     public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(openingHourService.findById(id));
