@@ -9,13 +9,9 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @Data
 @Document
-public class Location {
-    private Host host;
-    private Address address;
-    private City city;
-    private ArrayList<Meeting> meetings;
-    private ArrayList<Tag> tags;
-    private ArrayList<OpeningHour> openingHours;
+public class City {
+    private ArrayList<Address> adresses;
     private String name;
+    private Integer zip;
 
 }
