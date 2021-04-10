@@ -9,5 +9,5 @@ import java.util.List;
 public interface IGenericController<T> {
     ResponseEntity<List<T>> getAll();
     ResponseEntity<T> save(@RequestBody T entity);
-    ResponseEntity<T> getById(@PathVariable Long id);
+    ResponseEntity<T> getById(@PathVariable String id);
 }

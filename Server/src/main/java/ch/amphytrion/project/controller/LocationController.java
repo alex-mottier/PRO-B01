@@ -40,7 +40,7 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
     @Override
-    public ResponseEntity getById(Long id) {
+    public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(locationService.findById(id));
         } catch (Exception e) {

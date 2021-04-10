@@ -42,7 +42,7 @@ public class ChatController extends BaseController implements IGenericController
     }
 
     @Override
-    public ResponseEntity getById(Long id) {
+    public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(chatService.findById(id));
         } catch (Exception e) {

@@ -40,7 +40,7 @@ public class OpeningHourController extends BaseController implements IGenericCon
     }
 
     @Override
-    public ResponseEntity getById(Long id) {
+    public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(openingHourService.findById(id));
         } catch (Exception e) {
