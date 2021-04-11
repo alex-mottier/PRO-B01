@@ -42,6 +42,7 @@ export default {
     EDIT_IMAGE: 'circle-edit-outline',
     START_TIME: 'clock-time-one',
     EDIT: 'pencil',
+    CLOSE_LOCATION: 'close',
   },
   PRECISION: 2,
   SIZES: {

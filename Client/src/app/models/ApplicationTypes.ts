@@ -9,6 +9,8 @@ import { TokenResponse } from 'expo-app-auth';
 
 export type Location = {
   name: string;
+  desciption: string;
+  tags: Tag[];
   nbPeople: number;
 };
 
