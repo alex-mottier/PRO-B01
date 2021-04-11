@@ -3,13 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="bbfd888f-9ecb-4d3b-8bdd-abcdd779fb6d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/ch/amphytrion/project/controller/AddressController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/ch/amphytrion/project/controller/AddressController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/ch/amphytrion/project/controller/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/ch/amphytrion/project/controller/ChatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/ch/amphytrion/project/controller/CityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/ch/amphytrion/project/controller/CityController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/ch/amphytrion/project/controller/HostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/ch/amphytrion/project/controller/HostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/ch/amphytrion/project/controller/LocationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/ch/amphytrion/project/controller/LocationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/ch/amphytrion/project/controller/OpeningHourController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/ch/amphytrion/project/controller/OpeningHourController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,10 +44,25 @@
       <workItem from="1618149801222" duration="144000" />
       <workItem from="1618150041760" duration="127000" />
       <workItem from="1618150263574" duration="194000" />
+      <workItem from="1618150558495" duration="733000" />
+      <workItem from="1618151628247" duration="13000" />
+      <workItem from="1618168945685" duration="233000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
