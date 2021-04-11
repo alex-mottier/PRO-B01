@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    width: '100%',
   },
   card: {
     marginTop: 10,
@@ -38,6 +37,7 @@ const styles = StyleSheet.create({
   marginLeft: {
     marginLeft: 20,
   },
+  searchLocation: { width: '80%' },
 });
 
 export default styles;
