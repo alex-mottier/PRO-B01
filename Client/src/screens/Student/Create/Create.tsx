@@ -9,11 +9,12 @@ import * as React from 'react';
 import { Platform, SafeAreaView, ScrollView, View } from 'react-native';
 import { TextInput, Switch, IconButton, Button, Text, Card } from 'react-native-paper';
 import styles from './styles';
-import { Meeting, Tag } from '../../../app/models/ApplicationTypes';
+import { Location, Meeting, Tag } from '../../../app/models/ApplicationTypes';
 import Globals from '../../../app/context/Globals';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Moment from 'moment';
 import TagsComponent from '../../../components/Tags/TagsComponent';
+import LocationComponent from '../../../components/Location/LocationComponent';
 
 const Create: React.FC = () => {
   const meeting: Meeting = {
@@ -35,6 +36,13 @@ const Create: React.FC = () => {
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(new Date());
   const [tags, setTags] = React.useState([{ name: 'Android' }, { name: 'IOS' }]);
+  const [location, setLocation] = React.useState({
+    name: 'G02',
+    desciption: 'Salle de cours avec Wifi',
+    tags: [{ name: 'Canapés' }, { name: 'Silencieux' }],
+    nbPeople: 5,
+  });
+  const [searchLocation, setSearchLocation] = React.useState('');
 
   const onTogglePrivate = () => setIsPrivateOn(!isPrivateOn);
 
@@ -74,6 +82,12 @@ const Create: React.FC = () => {
     delete newTags[index];
     setTags(newTags);
   };
+
+  const handleDeleteLocation = () => {
+    setLocation({});
+  };
+
+  const handleSearchLocation = () => {};
 
   return (
     <SafeAreaView>
@@ -152,6 +166,24 @@ const Create: React.FC = () => {
               removeTag={(tag: Tag) => handleDeleteTag(tag)}
             />
           </Card>
+          <Card style={styles.card} elevation={10}>
+            <View style={styles.row}>
+              <TextInput
+                label="Rechercher un lieu..."
+                value={searchLocation}
+                onChangeText={(searchLocation) => setSearchLocation(searchLocation)}
+                style={styles.searchLocation}
+              />
+              <IconButton
+                icon={Globals.ICONS.SEARCH}
+                size={Globals.SIZES.ICON_BUTTON}
+                color={Globals.COLORS.PRIMARY}
+                onPress={() => handleSearchLocation()}
+              />
+            </View>
+            <LocationComponent location={location} onClose={() => handleDeleteLocation()} />
+          </Card>
+
           <Button
             icon={Globals.ICONS.CREATE}
             mode="contained"
