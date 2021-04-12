@@ -5,8 +5,7 @@
  * @brief   Authentication with Google
  */
 
-import { authAsync, refreshAsync, revokeAsync } from 'expo-app-auth';
-import { User } from '../models/ApplicationTypes';
+import { authAsync, refreshAsync, revokeAsync, TokenResponse } from 'expo-app-auth';
 import LocalStorageDAO from '../../app/data/LocalStorageDAO';
 
 // Google configuration to authenticate users
@@ -36,13 +35,12 @@ class GoogleAuth {
    * Sign in with Google
    * @returns the user or null if sign in failed
    */
-  async handleSignInAsync(): Promise<User | null> {
+  async handleSignInAsync(): Promise<TokenResponse | null> {
     try {
       const authState = await authAsync(config);
-      const user = { name: 'Username', token: authState };
-      await LocalStorageDAO.getInstance().setUser(user);
-		console.log(authState);
-      return user;
+      console.log(authState);
+      await LocalStorageDAO.getInstance().setToken(authState);
+      return authState;
     } catch (e) {
       return null;
     }
@@ -50,16 +48,16 @@ class GoogleAuth {
 
   /**
    * Get the cached user and update token if it is expired
-   * @returns the user cached with up to date token
+   * @returns up to date token
    */
-  async getCachedAuthAsync(): Promise<User | null> {
+  async getCachedAuthAsync(): Promise<TokenResponse | null> {
     try {
-      let user = await LocalStorageDAO.getInstance().getUser();
-      if (user) {
-        const expirationDate = user.token.accessTokenExpirationDate;
+      let token = await LocalStorageDAO.getInstance().getToken();
+      if (token) {
+        const expirationDate = token.accessTokenExpirationDate;
         if (expirationDate && new Date(expirationDate) < new Date())
-          user = await this.refreshAuthAsync(user);
-        return user;
+          token = await this.refreshAuthAsync(token);
+        return token;
       }
       return null;
     } catch (e) {
@@ -70,14 +68,13 @@ class GoogleAuth {
 
   /**
    * Refresh user token when it is expired
-   * @param user
-   * @returns The updated user
+   * @param token to refresh
+   * @returns The updated token
    */
-  async refreshAuthAsync(user: User): Promise<User> {
-    const token = await refreshAsync(config, JSON.stringify(user.token));
-    const newUser = { name: user.name, token: token };
-    await LocalStorageDAO.getInstance().setUser(newUser);
-    return user;
+  async refreshAuthAsync(token: TokenResponse): Promise<TokenResponse> {
+    const newToken = await refreshAsync(config, JSON.stringify(token));
+    await LocalStorageDAO.getInstance().setToken(newToken);
+    return newToken;
   }
 
   /**
@@ -85,14 +82,14 @@ class GoogleAuth {
    * @param user to sign out
    * @returns Promise when the method is finished
    */
-  async handleSignOutAsync(user: User | null): Promise<void> {
+  async handleSignOutAsync(token: TokenResponse | null): Promise<void> {
     try {
-      if (!user) return;
+      if (!token) return;
       await revokeAsync(config, {
-        token: JSON.stringify(user.token),
+        token: JSON.stringify(token),
         isClientIdProvided: true,
       });
-      await LocalStorageDAO.getInstance().removeUser();
+      await LocalStorageDAO.getInstance().removeToken();
     } catch (e) {
       // action to do if login is errored or canceled
     }

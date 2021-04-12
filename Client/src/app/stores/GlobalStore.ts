@@ -9,10 +9,19 @@ import { action, makeAutoObservable, observable } from 'mobx';
 import { createContext } from 'react';
 import { User } from '../models/ApplicationTypes';
 import GoogleAuth from '../authentication/GoogleAuth';
+import { TokenResponse } from 'expo-app-auth';
+import AmphitryonDAO from '../data/AmphitryonDAO';
+import LocalStorageDAO from '../data/LocalStorageDAO';
+import { AxiosResponse } from 'axios';
+import Globals from '../context/Globals';
 
 class Store {
+  private amphitryonDAO = AmphitryonDAO.getInstance();
+
   @observable theme: 'light' | 'dark' = 'light';
   @observable isLoading = false;
+  @observable userToken: TokenResponse | null = null;
+  @observable sessionToken: string | null = null;
   @observable authenticatedUser: User | null = null;
   @observable isLoggedIn = false;
 
@@ -20,6 +29,7 @@ class Store {
    * Instantiation of the store
    */
   constructor() {
+    void this.loadTokens();
     makeAutoObservable(this);
   }
 
@@ -39,6 +49,14 @@ class Store {
   }
 
   /**
+   * Set the user's token
+   * @param token user's token
+   */
+  @action setUserToken(token: TokenResponse | null): void {
+    this.userToken = token;
+  }
+
+  /**
    * Set the authenticated user
    * @param userAuthenticated the authenticated user or null
    */
@@ -55,15 +73,25 @@ class Store {
   }
 
   /**
+   * Loading the user's tokens
+   */
+  @action async loadTokens(): Promise<void> {
+    this.setIsLoading(true);
+    this.userToken = await LocalStorageDAO.getInstance().getToken();
+    this.sessionToken = await LocalStorageDAO.getInstance().getSessionToken();
+    this.setIsLoading(false);
+  }
+
+  /**
    * Sign in with Google
    * @returns promise if user is sucessfully signed in
    */
   @action async signInWithGoogle(): Promise<boolean> {
     return GoogleAuth.getInstance()
       .handleSignInAsync()
-      .then((user: User | null) => {
-        if (user) {
-          this.setAuthenticatedUser(user);
+      .then((token: TokenResponse | null) => {
+        if (token) {
+          this.setUserToken(token);
           return true;
         }
         return false;
@@ -78,12 +106,52 @@ class Store {
   @action signOutWithGoogle(): Promise<void> {
     this.setIsLoading(true);
     return GoogleAuth.getInstance()
-      .handleSignOutAsync(this.authenticatedUser)
+      .handleSignOutAsync(this.userToken)
       .then(() => {
         this.setAuthenticatedUser(null);
         this.setIsLoggedIn(false);
         this.setIsLoading(false);
       });
+  }
+
+  /**
+   * Create a new user
+   * @param user to create
+   */
+  @action signUp(user: User): void {
+    this.setIsLoading(true);
+    if (this.userToken?.idToken) {
+      this.amphitryonDAO
+        .createUser(this.userToken.idToken, user)
+        .then((response: AxiosResponse<string> | null) => {
+          if (response) {
+            this.sessionToken = response.headers[Globals.STRINGS.SESSION_TOKEN_NAME];
+            this.authenticatedUser = user;
+            this.setIsLoggedIn(true);
+          }
+        })
+        .catch(() => {});
+    }
+    this.setIsLoading(false);
+  }
+
+  /**
+   * Sign in method
+   */
+  @action signIn(): void {
+    this.setIsLoading(true);
+    if (this.userToken && this.userToken.idToken) {
+      void this.amphitryonDAO
+        .connectUser(this.userToken?.idToken)
+        .then((response: AxiosResponse | null) => {
+          if (response) {
+            this.sessionToken = response.headers[Globals.STRINGS.SESSION_TOKEN_NAME];
+            this.authenticatedUser = JSON.parse(response.data);
+            this.setIsLoggedIn(true);
+          }
+        });
+    }
+    this.setIsLoading(false);
   }
 }
 

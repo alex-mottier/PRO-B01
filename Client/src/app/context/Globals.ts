@@ -55,8 +55,12 @@ export default {
     CREATE: 'Créer une réunion',
     PROFILE: 'Profil',
     SEARCH: 'Rechercher une réunion',
+    SESSION_TOKEN_NAME: 'session_token_amphitryon',
   },
   URLS: {
+    API_URL: 'http://localhost:8080',
+    CONNECT: '/connect',
     CREATE_MEETING: '',
+    SIGN_UP_STUDENT: '/signUpStudent',
   },
 };

@@ -5,8 +5,6 @@
  * @brief   Application types for typing
  */
 
-import { TokenResponse } from 'expo-app-auth';
-
 export type Location = {
   name: string;
   desciption: string;
@@ -30,7 +28,6 @@ export type Tag = {
 
 export type User = {
   name: string;
-  token: TokenResponse;
 };
 
 export type Success = {
