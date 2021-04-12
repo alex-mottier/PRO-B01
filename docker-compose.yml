@@ -15,17 +15,17 @@ services:
           - 7474:7474
           - 7687:7687
           
-    #amphitryon_backend:
+    amphitryon_backend:
   
-    #    build:
-    #        context: .
-    #        dockerfile: Server/Dockerfile
-    #    restart : always
-    #    ports:
-    #      - 8080:8080
-    #    depends_on:
-    #        - amphitryon_db
-    #        - amphitryon_graphdb
+        build:
+            context: .
+            dockerfile: Server/Dockerfile
+        restart : always
+        ports:
+          - 8080:8080
+        depends_on:
+            - amphitryon_db
+            - amphitryon_graphdb
 
     #amphitryon_frontend: 
 

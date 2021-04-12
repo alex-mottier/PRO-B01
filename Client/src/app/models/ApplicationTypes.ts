@@ -34,3 +34,8 @@ export type Success = {
   name: string;
   message: string;
 };
+
+export type Success = {
+  name: string;
+  message: string;
+};
