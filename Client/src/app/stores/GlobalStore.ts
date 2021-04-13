@@ -11,12 +11,12 @@ import { User } from '../models/ApplicationTypes';
 import GoogleAuth from '../authentication/GoogleAuth';
 import { TokenResponse } from 'expo-app-auth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
-import LocalStorageDAO from '../data/LocalStorageDAO';
 import { AxiosResponse } from 'axios';
 import Globals from '../context/Globals';
 
 class Store {
   private amphitryonDAO = AmphitryonDAO.getInstance();
+  private googleAuth = GoogleAuth.getInstance();
 
   @observable theme: 'light' | 'dark' = 'light';
   @observable isLoading = false;
@@ -77,8 +77,17 @@ class Store {
    */
   @action async loadTokens(): Promise<void> {
     this.setIsLoading(true);
-    this.userToken = await LocalStorageDAO.getInstance().getToken();
-    this.sessionToken = await LocalStorageDAO.getInstance().getSessionToken();
+    const token = await this.googleAuth.getCachedAuthAsync();
+    this.userToken = token;
+    if (token?.idToken) {
+      void this.amphitryonDAO.connectUser(token.idToken).then((response: AxiosResponse | null) => {
+        if (response) {
+          this.sessionToken = response.headers[Globals.STRINGS.SESSION_TOKEN_NAME];
+          this.authenticatedUser = JSON.parse(response.data);
+          this.setIsLoggedIn(true);
+        }
+      });
+    }
     this.setIsLoading(false);
   }
 
@@ -87,15 +96,13 @@ class Store {
    * @returns promise if user is sucessfully signed in
    */
   @action async signInWithGoogle(): Promise<boolean> {
-    return GoogleAuth.getInstance()
-      .handleSignInAsync()
-      .then((token: TokenResponse | null) => {
-        if (token) {
-          this.setUserToken(token);
-          return true;
-        }
-        return false;
-      });
+    return this.googleAuth.handleSignInAsync().then((token: TokenResponse | null) => {
+      if (token) {
+        this.setUserToken(token);
+        return true;
+      }
+      return false;
+    });
   }
 
   /**
@@ -105,13 +112,11 @@ class Store {
    */
   @action signOutWithGoogle(): Promise<void> {
     this.setIsLoading(true);
-    return GoogleAuth.getInstance()
-      .handleSignOutAsync(this.userToken)
-      .then(() => {
-        this.setAuthenticatedUser(null);
-        this.setIsLoggedIn(false);
-        this.setIsLoading(false);
-      });
+    return this.googleAuth.handleSignOutAsync(this.userToken).then(() => {
+      this.setAuthenticatedUser(null);
+      this.setIsLoggedIn(false);
+      this.setIsLoading(false);
+    });
   }
 
   /**
@@ -140,18 +145,20 @@ class Store {
    */
   @action signIn(): void {
     this.setIsLoading(true);
-    if (this.userToken && this.userToken.idToken) {
-      void this.amphitryonDAO
-        .connectUser(this.userToken?.idToken)
-        .then((response: AxiosResponse | null) => {
-          if (response) {
-            this.sessionToken = response.headers[Globals.STRINGS.SESSION_TOKEN_NAME];
-            this.authenticatedUser = JSON.parse(response.data);
-            this.setIsLoggedIn(true);
-          }
-        });
-    }
-    this.setIsLoading(false);
+    void this.signInWithGoogle().then((loggedIn: boolean) => {
+      if (loggedIn && this.userToken && this.userToken.idToken) {
+        void this.amphitryonDAO
+          .connectUser(this.userToken?.idToken)
+          .then((response: AxiosResponse | null) => {
+            if (response) {
+              this.sessionToken = response.headers[Globals.STRINGS.SESSION_TOKEN_NAME];
+              this.authenticatedUser = JSON.parse(response.data);
+              this.setIsLoggedIn(true);
+            }
+          });
+      }
+      this.setIsLoading(false);
+    });
   }
 }
 

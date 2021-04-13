@@ -6,6 +6,7 @@
  */
 
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { Alert } from 'react-native';
 import Globals from '../context/Globals';
 import { Meeting, Success, User } from '../models/ApplicationTypes';
 
@@ -36,65 +37,61 @@ export default class AmphitryonDAO {
    * @returns the session token
    */
   async createUser(tokenId: string, user: User): Promise<AxiosResponse<string> | null> {
-    try {
-      return await this.restAPI({
-        method: 'POST',
-        url: Globals.URLS.SIGN_UP_STUDENT,
-        data: { userid: user, tokenId: tokenId },
+    return await this.restAPI({
+      method: 'POST',
+      url: Globals.URLS.SIGN_UP_STUDENT,
+      data: { tokenID: tokenId, userName: user.name },
+    })
+      .then((response: AxiosResponse<string>) => {
+        return response;
       })
-        .then((response: AxiosResponse<string>) => {
-          console.log(response);
-          return response;
-        })
-        .catch((error: AxiosError<string>) => {
-          console.log(error);
-          return null;
-        });
-    } catch (error) {
-      return null;
-    }
+      .catch(() => {
+        Alert.alert("Une erreur s'est produite", "Erreur lors de la création de l 'utilisateur");
+        return null;
+      });
   }
 
   /**
    * Connect a user
    * @param tokenId of the user
-   * @returns the session token
+   * @returns Réponse axios
    */
   async connectUser(tokenId: string): Promise<AxiosResponse<string> | null> {
-    try {
-      return await this.restAPI({
-        method: 'POST',
-        url: Globals.URLS.CONNECT,
-        data: tokenId,
+    return await this.restAPI({
+      method: 'POST',
+      url: Globals.URLS.CONNECT,
+      data: { tokenID: tokenId },
+    })
+      .then((response: AxiosResponse<string>) => {
+        console.log(response);
+        return response;
       })
-        .then((response: AxiosResponse<string>) => {
-          return response;
-        })
-        .catch((error: AxiosError<string>) => {
-          console.log(error);
-          return null;
-        });
-    } catch (error) {
-      return null;
-    }
+      .catch(() => {
+        Alert.alert(
+          "Une erreur s'est produite",
+          'Erreur lors de la récupération des informations de votre compte',
+        );
+        return null;
+      });
   }
 
-  // FAIRE ENTETES
-  async createMeeting(meeting: Meeting): Promise<Success | Error> {
-    const success: Success = {
-      name: 'success',
-      message: 'The meeting has been successfully added',
-    };
-    try {
-      await this.restAPI({
-        method: 'post',
-        url: Globals.URLS.CREATE_MEETING,
-        data: meeting,
+  /**
+   * Create a meeting
+   * @param meeting to create
+   * @returns if the meeting has been successfully added or the error
+   */
+  async createMeeting(meeting: Meeting): Promise<AxiosResponse<string> | null> {
+    return await this.restAPI({
+      method: 'post',
+      url: Globals.URLS.CREATE_MEETING,
+      data: meeting,
+    })
+      .then((response: AxiosResponse<string>) => {
+        return response;
+      })
+      .catch(() => {
+        Alert.alert("Une erreur s'est produite", 'Erreur lors de la création de la réunion');
+        return null;
       });
-
-      return success;
-    } catch (error) {
-      return error;
-    }
   }
 }

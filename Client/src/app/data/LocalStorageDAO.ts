@@ -51,29 +51,4 @@ export default class LocalStorageDAO {
   removeToken = async (): Promise<void> => {
     return await asyncStorage.removeItem(LocalStorageDAO.publicToken);
   };
-
-  /**
-   * Get the session token saved locally
-   * @returns session token or null if it does not exist
-   */
-  getSessionToken = async (): Promise<string | null> => {
-    return await asyncStorage.getItem(LocalStorageDAO.privateToken);
-  };
-
-  /**
-   * Set the user session token
-   * @param token to save locally
-   * @returns promise when token is saved
-   */
-  setSessionToken = async (token: string): Promise<void> => {
-    return await asyncStorage.setItem(LocalStorageDAO.privateToken, token);
-  };
-
-  /**
-   * Remove the user session token
-   * @returns promise when token is removed
-   */
-  removeSessionToken = async (): Promise<void> => {
-    return await asyncStorage.removeItem(LocalStorageDAO.privateToken);
-  };
 }
