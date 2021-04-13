@@ -7,19 +7,51 @@
 
 export type Location = {
   name: string;
-  desciption: string;
+  description: string;
   tags: Tag[];
   nbPeople: number;
+  openingHours: OpeningHour[];
 };
+
+export type OpeningHour = {
+  startTime: Date;
+  endTime: Date;
+  day: Day;
+};
+
+export enum Day {
+  SUN,
+  LUN,
+  TUE,
+  WED,
+  THU,
+  FRI,
+  SAT,
+}
 
 export type Meeting = {
   name: string;
   description: string;
   tags: Tag[];
-  location: Location;
+  locationID: string;
+  locationName: string;
   nbPeople: number;
   start: Date;
   end: Date;
+  ownerID: string;
+  chatId: string;
+};
+
+export type Chat = {
+  id: string;
+  messages: Message[];
+};
+
+export type Message = {
+  id: string;
+  message: string;
+  username: string;
+  date: Date;
 };
 
 export type Tag = {
@@ -35,7 +67,11 @@ export type Success = {
   message: string;
 };
 
-export type Success = {
-  name: string;
-  message: string;
+export type Filter = {
+  name: string | null;
+  startDate: Date | null;
+  endDate: Date | null;
+  tags: Tag[] | null;
+  locations: Location[] | null;
+  // hosts: Host[] | null
 };

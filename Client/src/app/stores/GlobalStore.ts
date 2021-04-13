@@ -82,7 +82,9 @@ class Store {
     if (token?.idToken) {
       void this.amphitryonDAO.connectUser(token.idToken).then((response: AxiosResponse | null) => {
         if (response) {
-          this.sessionToken = response.headers[Globals.STRINGS.SESSION_TOKEN_NAME];
+          const token = response.headers[Globals.STRINGS.SESSION_TOKEN_NAME];
+          this.sessionToken = token;
+          this.amphitryonDAO.setSessionToken(token);
           this.authenticatedUser = JSON.parse(response.data);
           this.setIsLoggedIn(true);
         }

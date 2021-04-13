@@ -59,8 +59,5 @@ export default {
   },
   URLS: {
     API_URL: 'http://localhost:8080/item',
-    CONNECT: '/connect',
-    CREATE_MEETING: '',
-    SIGN_UP_STUDENT: '/signUpStudent',
   },
 };
