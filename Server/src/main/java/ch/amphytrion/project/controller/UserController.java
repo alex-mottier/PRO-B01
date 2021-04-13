@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 @RestController
@@ -38,7 +39,9 @@ public class UserController extends BaseController implements IGenericController
     }
 
     @PostMapping("/signUpStudent")
-    public ResponseEntity signUpStudent(@RequestBody String userName  ,@RequestBody String tokenID) {
+    public ResponseEntity signUpStudent(@RequestBody Map<String, String> json) {
+        String userName = json.get("userName");
+        String tokenID = json.get("tokenID");
         String ClIENT_ID = "298748587556-mpio0261lovc0qkt660nbhgariolp1no.apps.googleusercontent.com";
         JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), JSON_FACTORY)
