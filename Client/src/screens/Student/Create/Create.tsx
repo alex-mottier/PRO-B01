@@ -7,7 +7,7 @@
 
 import * as React from 'react';
 import { Platform, SafeAreaView, ScrollView, View } from 'react-native';
-import { TextInput, Switch, IconButton, Button, Text, Card } from 'react-native-paper';
+import { TextInput, Switch, IconButton, Button, Text, Card, Provider } from 'react-native-paper';
 import styles from './styles';
 import { Location, Meeting, Tag } from '../../../app/models/ApplicationTypes';
 import Globals from '../../../app/context/Globals';
@@ -97,140 +97,142 @@ const Create: React.FC = () => {
   const handleSearchLocation = () => {};
 
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <View style={styles.container}>
-          <Card style={styles.card} elevation={10}>
-            <View style={styles.row}>
+    <Provider>
+      <SafeAreaView>
+        <ScrollView>
+          <View style={styles.container}>
+            <Card style={styles.card} elevation={10}>
+              <View style={styles.row}>
+                <TextInput
+                  label="Nom de la réunion"
+                  value={meetingName}
+                  onChangeText={(meetingName) => setMeetingName(meetingName)}
+                  style={styles.name}
+                />
+                <Switch
+                  value={isPrivateOn}
+                  onValueChange={onTogglePrivate}
+                  color={Globals.COLORS.PRIMARY}
+                />
+                <Text style={{ color: 'gray' }}>Privé</Text>
+              </View>
               <TextInput
-                label="Nom de la réunion"
-                value={meetingName}
-                onChangeText={(meetingName) => setMeetingName(meetingName)}
-                style={styles.name}
+                label="Description de la réunion"
+                value={meetingDescription}
+                onChangeText={(meetingDescription) => setMeetingDescription(meetingDescription)}
+                style={styles.fields}
               />
-              <Switch
-                value={isPrivateOn}
-                onValueChange={onTogglePrivate}
-                color={Globals.COLORS.PRIMARY}
+            </Card>
+            <Card style={styles.card} elevation={10}>
+              <View style={styles.row}>
+                <IconButton
+                  icon={Globals.ICONS.CALENDAR}
+                  size={Globals.SIZES.ICON_BUTTON}
+                  color={Globals.COLORS.PRIMARY}
+                />
+                <Text style={{ color: 'gray' }}>Date : </Text>
+                <Text style={{ color: 'gray' }}>{format(startDate, 'dd.MM.yyyy')}</Text>
+                <IconButton
+                  icon={Globals.ICONS.EDIT}
+                  size={Globals.SIZES.ICON_BUTTON}
+                  color={Globals.COLORS.GRAY}
+                  onPress={() => setShowDate(true)}
+                />
+              </View>
+              <View style={styles.row}>
+                <IconButton
+                  icon={Globals.ICONS.END_TIME}
+                  size={Globals.SIZES.ICON_BUTTON}
+                  color={Globals.COLORS.PRIMARY}
+                />
+                <Text style={{ color: 'gray' }}>Début : </Text>
+                <Text style={{ color: 'gray' }}>{format(startDate, 'hh:mm')}</Text>
+                <IconButton
+                  icon={Globals.ICONS.EDIT}
+                  size={Globals.SIZES.ICON_BUTTON}
+                  color={Globals.COLORS.GRAY}
+                  onPress={() => setShowStartTime(true)}
+                />
+                <Text style={styles.marginLeft}>Fin : </Text>
+                <Text style={{ color: 'gray' }}>{format(endDate, 'hh:mm')}</Text>
+                <IconButton
+                  icon={Globals.ICONS.EDIT}
+                  size={Globals.SIZES.ICON_BUTTON}
+                  color={Globals.COLORS.GRAY}
+                  onPress={() => setShowEndTime(true)}
+                  style={styles.marginRigth}
+                />
+              </View>
+            </Card>
+            <Card style={styles.card} elevation={10}>
+              <TagsComponent
+                tags={tags}
+                addTag={(tag: Tag) => handleAddTag(tag)}
+                removeTag={(tag: Tag) => handleDeleteTag(tag)}
               />
-              <Text>Privé</Text>
+            </Card>
+            <Card style={styles.card} elevation={10}>
+              <View style={styles.row}>
+                <TextInput
+                  label="Rechercher un lieu..."
+                  value={searchLocation}
+                  onChangeText={(searchLocation) => setSearchLocation(searchLocation)}
+                  style={styles.searchLocation}
+                />
+                <IconButton
+                  icon={Globals.ICONS.SEARCH}
+                  size={Globals.SIZES.ICON_BUTTON}
+                  color={Globals.COLORS.PRIMARY}
+                  onPress={() => handleSearchLocation()}
+                />
+              </View>
+              {location && (
+                <LocationComponent location={location} onClose={() => handleDeleteLocation()} />
+              )}
+            </Card>
+            <Button
+              icon={Globals.ICONS.CREATE}
+              mode="contained"
+              color={Globals.COLORS.PRIMARY}
+              labelStyle={{ color: Globals.COLORS.WHITE }}
+              onPress={handleSubmit}
+              style={styles.button}>
+              Créer la réunion
+            </Button>
+            <View>
+              {showDate && (
+                <DateTimePicker
+                  value={startDate}
+                  mode={'date'}
+                  display="default"
+                  onChange={handleChangeDate}
+                />
+              )}
             </View>
-            <TextInput
-              label="Description de la réunion"
-              value={meetingDescription}
-              onChangeText={(meetingDescription) => setMeetingDescription(meetingDescription)}
-              style={styles.fields}
-            />
-          </Card>
-          <Card style={styles.card} elevation={10}>
-            <View style={styles.row}>
-              <IconButton
-                icon={Globals.ICONS.CALENDAR}
-                size={Globals.SIZES.ICON_BUTTON}
-                color={Globals.COLORS.PRIMARY}
-              />
-              <Text>Date : </Text>
-              <Text>{format(startDate, 'dd.MM.yyyy')}</Text>
-              <IconButton
-                icon={Globals.ICONS.EDIT}
-                size={Globals.SIZES.ICON_BUTTON}
-                color={Globals.COLORS.GRAY}
-                onPress={() => setShowDate(true)}
-              />
+            <View>
+              {showStartTime && (
+                <DateTimePicker
+                  value={startDate}
+                  mode={'time'}
+                  display="default"
+                  onChange={handleChangeStartTime}
+                />
+              )}
             </View>
-            <View style={styles.row}>
-              <IconButton
-                icon={Globals.ICONS.END_TIME}
-                size={Globals.SIZES.ICON_BUTTON}
-                color={Globals.COLORS.PRIMARY}
-              />
-              <Text>Début : </Text>
-              <Text>{format(startDate, 'hh:mm')}</Text>
-              <IconButton
-                icon={Globals.ICONS.EDIT}
-                size={Globals.SIZES.ICON_BUTTON}
-                color={Globals.COLORS.GRAY}
-                onPress={() => setShowStartTime(true)}
-              />
-              <Text style={styles.marginLeft}>Fin : </Text>
-              <Text>{format(endDate, 'hh:mm')}</Text>
-              <IconButton
-                icon={Globals.ICONS.EDIT}
-                size={Globals.SIZES.ICON_BUTTON}
-                color={Globals.COLORS.GRAY}
-                onPress={() => setShowEndTime(true)}
-                style={styles.marginRigth}
-              />
+            <View>
+              {showEndTime && (
+                <DateTimePicker
+                  value={endDate}
+                  mode={'time'}
+                  display="default"
+                  onChange={handleChangeEndTime}
+                />
+              )}
             </View>
-          </Card>
-          <Card style={styles.card} elevation={10}>
-            <TagsComponent
-              tags={tags}
-              addTag={(tag: Tag) => handleAddTag(tag)}
-              removeTag={(tag: Tag) => handleDeleteTag(tag)}
-            />
-          </Card>
-          <Card style={styles.card} elevation={10}>
-            <View style={styles.row}>
-              <TextInput
-                label="Rechercher un lieu..."
-                value={searchLocation}
-                onChangeText={(searchLocation) => setSearchLocation(searchLocation)}
-                style={styles.searchLocation}
-              />
-              <IconButton
-                icon={Globals.ICONS.SEARCH}
-                size={Globals.SIZES.ICON_BUTTON}
-                color={Globals.COLORS.PRIMARY}
-                onPress={() => handleSearchLocation()}
-              />
-            </View>
-            {location && (
-              <LocationComponent location={location} onClose={() => handleDeleteLocation()} />
-            )}
-          </Card>
-          <Button
-            icon={Globals.ICONS.CREATE}
-            mode="contained"
-            color={Globals.COLORS.PRIMARY}
-            labelStyle={{ color: Globals.COLORS.WHITE }}
-            onPress={handleSubmit}
-            style={styles.button}>
-            Créer la réunion
-          </Button>
-          <View>
-            {showDate && (
-              <DateTimePicker
-                value={startDate}
-                mode={'date'}
-                display="default"
-                onChange={handleChangeDate}
-              />
-            )}
           </View>
-          <View>
-            {showStartTime && (
-              <DateTimePicker
-                value={startDate}
-                mode={'time'}
-                display="default"
-                onChange={handleChangeStartTime}
-              />
-            )}
-          </View>
-          <View>
-            {showEndTime && (
-              <DateTimePicker
-                value={endDate}
-                mode={'time'}
-                display="default"
-                onChange={handleChangeEndTime}
-              />
-            )}
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </Provider>
   );
 };
 

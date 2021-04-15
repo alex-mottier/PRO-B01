@@ -20,7 +20,7 @@ export default {
   },
   ICONS: {
     ADD_PROFILE: 'account-plus',
-    ADD_TAG: 'plus',
+    ADD_TAG: 'plus-circle',
     ARROW_LEFT: 'chevron-left',
     ARROW_UP: 'chevron-up',
     CALENDAR: 'calendar',

@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   },
   marginLeft: {
     marginLeft: 20,
+    color: 'gray',
   },
   searchLocation: { width: '80%' },
 });

@@ -39,7 +39,7 @@ const LocationComponent: React.FC<IProps> = ({ location, onClose }) => {
         right={() => (
           <View>
             <View style={styles.nbPeople}>
-              <Text>{location.nbPeople}</Text>
+              <Text style={{ color: 'gray' }}>{location.nbPeople}</Text>
               <MaterialCommunityIcons
                 name={Globals.ICONS.PROFILE}
                 color={Globals.COLORS.GRAY}
