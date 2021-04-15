@@ -12,39 +12,12 @@ import Globals from '../../../app/context/Globals';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import styles from './styles';
 import { Meeting } from '../../../app/models/ApplicationTypes';
+import { mockMeetings } from '../../../mock/Meetings';
 
 const Search: React.FC = () => {
   const [search, setSearch] = React.useState('');
 
-  const meetings: Meeting[] = [
-    {
-      name: 'PRO - Coordination',
-      description: "Réunion pour coordiner l'avancement du projet",
-      tags: [{ name: 'PRO' }, { name: 'Coordination' }],
-      location: { name: 'Salle G02', nbPeople: 5 },
-      nbPeople: 2,
-      start: new Date(),
-      end: new Date(),
-    },
-    {
-      name: 'RES - Préparation TE1',
-      description: 'Java IO et programmation TCP',
-      tags: [{ name: 'RES' }, { name: 'Java IO' }, { name: 'TCP' }],
-      location: { name: 'Bibliothèque', nbPeople: 3 },
-      nbPeople: 1,
-      start: new Date(),
-      end: new Date(),
-    },
-    {
-      name: 'PCO - Labo train',
-      description: 'Laboratoire train PCO',
-      tags: [{ name: 'PCO' }, { name: 'Laboratoire' }],
-      location: { name: 'salle G04', nbPeople: 5 },
-      nbPeople: 4,
-      start: new Date(),
-      end: new Date(),
-    },
-  ];
+  const meetings: Meeting[] = mockMeetings;
 
   return (
     <SafeAreaView>
@@ -65,7 +38,7 @@ const Search: React.FC = () => {
             />
           </View>
           {meetings.map((meeting: Meeting) => (
-            <MeetingComponent key={meeting.name} meeting={meeting} />
+            <MeetingComponent key={meeting.name} meeting={meeting} isOwner={false} />
           ))}
         </View>
       </ScrollView>

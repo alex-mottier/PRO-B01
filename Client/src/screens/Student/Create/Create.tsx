@@ -30,7 +30,7 @@ const Create: React.FC = () => {
     chatId: '',
   };
 
-  const [meetingName, setmMeetingName] = React.useState(meeting.name);
+  const [meetingName, setMeetingName] = React.useState(meeting.name);
   const [meetingDescription, setMeetingDescription] = React.useState(meeting.description);
   const [isPrivateOn, setIsPrivateOn] = React.useState(false);
   const [showDate, setShowDate] = React.useState(false);
@@ -105,7 +105,7 @@ const Create: React.FC = () => {
               <TextInput
                 label="Nom de la réunion"
                 value={meetingName}
-                onChangeText={(meetingName) => setmMeetingName(meetingName)}
+                onChangeText={(meetingName) => setMeetingName(meetingName)}
                 style={styles.name}
               />
               <Switch
@@ -189,7 +189,6 @@ const Create: React.FC = () => {
               <LocationComponent location={location} onClose={() => handleDeleteLocation()} />
             )}
           </Card>
-
           <Button
             icon={Globals.ICONS.CREATE}
             mode="contained"

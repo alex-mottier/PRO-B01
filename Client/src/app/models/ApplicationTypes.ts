@@ -35,6 +35,7 @@ export type Meeting = {
   tags: Tag[];
   locationID: string;
   locationName: string;
+  maxPeople: number;
   nbPeople: number;
   start: Date;
   end: Date;

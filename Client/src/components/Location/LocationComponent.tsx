@@ -18,7 +18,7 @@ interface IProps {
   onClose(): void | null;
 }
 
-const LocationComponent: React.FC<IProps> = ({ location }) => {
+const LocationComponent: React.FC<IProps> = ({ location, onClose }) => {
   let nbColors = 0;
   const colors = [
     Globals.COLORS.ORANGE,
@@ -34,7 +34,7 @@ const LocationComponent: React.FC<IProps> = ({ location }) => {
     <Card style={styles.card}>
       <Card.Title
         title={location.name}
-        subtitle={location.desciption}
+        subtitle={location.description}
         left={() => <Avatar.Image size={40} source={require('../../../assets/HEIG-VD.png')} />}
         right={() => (
           <View>
@@ -67,6 +67,7 @@ const LocationComponent: React.FC<IProps> = ({ location }) => {
             size={Globals.SIZES.ICON_BUTTON}
             color={Globals.COLORS.GRAY}
             style={styles.icon}
+            onPress={onClose}
           />
         </View>
       </Card.Content>

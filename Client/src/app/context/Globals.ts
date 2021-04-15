@@ -43,6 +43,8 @@ export default {
     START_TIME: 'clock-time-one',
     EDIT: 'pencil',
     CLOSE_LOCATION: 'close',
+    SAD: 'emoticon-sad-outline',
+    DELETE: 'delete-outline',
   },
   PRECISION: 2,
   SIZES: {

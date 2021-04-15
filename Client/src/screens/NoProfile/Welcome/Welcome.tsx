@@ -77,7 +77,7 @@ const Welcome: React.FC = () => {
               color={Globals.COLORS.GRAY}
               onPress={() => {
                 store.setIsLoggedIn(true);
-                store.setAuthenticatedUser({ name: 'mock', token: mockToken });
+                store.setAuthenticatedUser({ name: 'Développeur' });
               }}
               text={'Développement'}
             />
