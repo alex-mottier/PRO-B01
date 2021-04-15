@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { IconButton, Chip, TextInput } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
 import { Tag } from '../../app/models/ApplicationTypes';
@@ -31,14 +31,16 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
   const [tagName, setTagName] = React.useState('');
 
   const handleRemoveTag = (tag: Tag) => {
-    console.log('Deleting tag');
     removeTag(tag);
   };
 
   const handleAddTag = () => {
-    console.log('add tag');
-    addTag({ name: tagName });
-    setTagName('');
+    if (tagName !== '') {
+      addTag({ name: tagName });
+      setTagName('');
+    } else {
+      Alert.alert('Tag nul', 'Veuillez saisir un tag non nul');
+    }
   };
 
   return (

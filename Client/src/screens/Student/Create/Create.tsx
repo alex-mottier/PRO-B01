@@ -12,19 +12,22 @@ import styles from './styles';
 import { Location, Meeting, Tag } from '../../../app/models/ApplicationTypes';
 import Globals from '../../../app/context/Globals';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Moment from 'moment';
 import TagsComponent from '../../../components/Tags/TagsComponent';
 import LocationComponent from '../../../components/Location/LocationComponent';
+import { format } from 'date-fns';
 
 const Create: React.FC = () => {
   const meeting: Meeting = {
     name: '',
     description: '',
     tags: [],
-    location: { name: '', nbPeople: 0 },
+    locationID: '',
+    locationName: '',
     nbPeople: 0,
     start: new Date(),
     end: new Date(),
+    ownerID: '',
+    chatId: '',
   };
 
   const [meetingName, setmMeetingName] = React.useState(meeting.name);
@@ -36,11 +39,12 @@ const Create: React.FC = () => {
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(new Date());
   const [tags, setTags] = React.useState([{ name: 'Android' }, { name: 'IOS' }]);
-  const [location, setLocation] = React.useState({
+  const [location, setLocation] = React.useState<Location | null>({
     name: 'G02',
-    desciption: 'Salle de cours avec Wifi',
+    description: 'Salle de cours avec Wifi',
     tags: [{ name: 'Canapés' }, { name: 'Silencieux' }],
     nbPeople: 5,
+    openingHours: [],
   });
   const [searchLocation, setSearchLocation] = React.useState('');
 
@@ -70,21 +74,24 @@ const Create: React.FC = () => {
   };
 
   const handleAddTag = (tag: Tag) => {
-    console.log('test');
-    setTags([...tags, tag]);
+    tag.name = tag.name.toUpperCase();
+    if (
+      !tags.find((current: Tag) => {
+        return current.name == tag.name;
+      })
+    )
+      setTags([...tags, tag]);
   };
 
   const handleDeleteTag = (tag: Tag) => {
-    console.log('test2');
-    // TODO : FIX refresh of screen when delete chip
-    const index = tags.indexOf(tag);
-    const newTags = tags;
-    delete newTags[index];
+    const newTags = tags.filter((current: Tag) => {
+      return current.name !== tag.name;
+    });
     setTags(newTags);
   };
 
   const handleDeleteLocation = () => {
-    setLocation({});
+    setLocation(null);
   };
 
   const handleSearchLocation = () => {};
@@ -123,12 +130,11 @@ const Create: React.FC = () => {
                 color={Globals.COLORS.PRIMARY}
               />
               <Text>Date : </Text>
-              <Text>{Moment(startDate).format('DD.MM.yyyy')}</Text>
+              <Text>{format(startDate, 'dd.MM.yyyy')}</Text>
               <IconButton
                 icon={Globals.ICONS.EDIT}
                 size={Globals.SIZES.ICON_BUTTON}
                 color={Globals.COLORS.GRAY}
-                size={16}
                 onPress={() => setShowDate(true)}
               />
             </View>
@@ -139,21 +145,19 @@ const Create: React.FC = () => {
                 color={Globals.COLORS.PRIMARY}
               />
               <Text>Début : </Text>
-              <Text>{Moment(startDate).format('hh:mm')}</Text>
+              <Text>{format(startDate, 'hh:mm')}</Text>
               <IconButton
                 icon={Globals.ICONS.EDIT}
                 size={Globals.SIZES.ICON_BUTTON}
                 color={Globals.COLORS.GRAY}
-                size={16}
                 onPress={() => setShowStartTime(true)}
               />
               <Text style={styles.marginLeft}>Fin : </Text>
-              <Text>{Moment(endDate).format('hh:mm')}</Text>
+              <Text>{format(endDate, 'hh:mm')}</Text>
               <IconButton
                 icon={Globals.ICONS.EDIT}
                 size={Globals.SIZES.ICON_BUTTON}
                 color={Globals.COLORS.GRAY}
-                size={16}
                 onPress={() => setShowEndTime(true)}
                 style={styles.marginRigth}
               />
@@ -181,7 +185,9 @@ const Create: React.FC = () => {
                 onPress={() => handleSearchLocation()}
               />
             </View>
-            <LocationComponent location={location} onClose={() => handleDeleteLocation()} />
+            {location && (
+              <LocationComponent location={location} onClose={() => handleDeleteLocation()} />
+            )}
           </Card>
 
           <Button
