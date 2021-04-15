@@ -13,13 +13,16 @@ import java.util.ArrayList;
 public class Host extends User {
     private String firstname;
     private String lastname;
+    private String username;
     private Address address;
     private ArrayList<Tag> tags;
     private ArrayList<Location> locations;
 
     @Builder
-    public Host(String firstname, String lastname, Address address, ArrayList<Tag> tags, ArrayList<Location> locations) {
-        super(firstname, lastname);
+    public Host(String firstname, String lastname, String username, Address address, ArrayList<Tag> tags, ArrayList<Location> locations) {
+        super(username);
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.address = address;
         this.tags = tags;
         this.locations = locations;

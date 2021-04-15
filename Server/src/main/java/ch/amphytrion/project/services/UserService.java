@@ -25,11 +25,20 @@ public class UserService implements IGenericService<User> {
     public User save(User user) {
         return userRepository.save(user);
     }
-
+    
     @Override
     public User findById(long id) {
         try {
             return userRepository.findById(id).orElseThrow(Exception::new);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public User findByUsername(String username) {
+        try{
+            return userRepository.findByUsername(username);
         } catch (Exception e) {
             e.printStackTrace();
         }
