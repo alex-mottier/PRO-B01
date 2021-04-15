@@ -23,7 +23,7 @@ public class OpeningHourController extends BaseController implements IGenericCon
     }
 
     @Override
-    //@GetMapping("/openingHour")
+    @GetMapping("/openingHour")
     public ResponseEntity<List<OpeningHour>> getAll() {
         try {
             return ResponseEntity.ok(openingHourService.findAll());
@@ -33,7 +33,7 @@ public class OpeningHourController extends BaseController implements IGenericCon
     }
 
     @Override
-    //@PostMapping("/openingHour")
+    @PostMapping("/openingHour")
     public ResponseEntity save(OpeningHour entity) {
         try {
             return ResponseEntity.ok(openingHourService.save(entity));
@@ -43,7 +43,7 @@ public class OpeningHourController extends BaseController implements IGenericCon
     }
 
     @Override
-    //@GetMapping("/openingHour")
+    @GetMapping("/openingHour/{id}")
     public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(openingHourService.findById(id));

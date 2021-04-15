@@ -23,7 +23,7 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
     @Override
-    //@GetMapping("/locations")
+    @GetMapping("/locations")
     public ResponseEntity<List<Location>> getAll() {
         try {
             return ResponseEntity.ok(locationService.findAll());
@@ -33,7 +33,7 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
     @Override
-    //@PostMapping("/locations")
+    @PostMapping("/locations")
     public ResponseEntity save(Location entity) {
         try {
             return ResponseEntity.ok(locationService.save(entity));
@@ -43,7 +43,7 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
     @Override
-    //@GetMapping("/locations")
+    @GetMapping("/locations/{id}")
     public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(locationService.findById(id));

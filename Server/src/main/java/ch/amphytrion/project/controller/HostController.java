@@ -25,7 +25,7 @@ public class HostController extends BaseController implements IGenericController
     }
 
     @Override
-    //@GetMapping("/host")
+    @GetMapping("/host")
     public ResponseEntity<List<Host>> getAll() {
         try {
             return ResponseEntity.ok(hostService.findAll());
@@ -35,7 +35,7 @@ public class HostController extends BaseController implements IGenericController
     }
 
     @Override
-    //@PostMapping("/host")
+    @PostMapping("/host")
     public ResponseEntity save(Host entity) {
         try {
             return ResponseEntity.ok(hostService.save(entity));
@@ -45,7 +45,7 @@ public class HostController extends BaseController implements IGenericController
     }
 
     @Override
-    //@GetMapping("/host")
+    @GetMapping("/host/{id}")
     public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(hostService.findById(id));
