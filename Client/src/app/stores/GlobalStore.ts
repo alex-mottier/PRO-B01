@@ -80,12 +80,13 @@ class Store {
     const token = await this.googleAuth.getCachedAuthAsync();
     this.userToken = token;
     if (token?.idToken) {
-      void this.amphitryonDAO.connectUser(token.idToken).then((response: AxiosResponse | null) => {
+      void this.amphitryonDAO.connectUser(token.idToken).then((response: Response | null) => {
         if (response) {
-          const token = response.headers[Globals.STRINGS.SESSION_TOKEN_NAME];
+          const token = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
           this.sessionToken = token;
+          console.log(response);
           this.amphitryonDAO.setSessionToken(token);
-          this.authenticatedUser = JSON.parse(response.data);
+          this.authenticatedUser = JSON.parse(response.json);
           this.setIsLoggedIn(true);
         }
       });
@@ -130,9 +131,9 @@ class Store {
     if (this.userToken?.idToken) {
       this.amphitryonDAO
         .createUser(this.userToken.idToken, user)
-        .then((response: AxiosResponse<string> | null) => {
+        .then((response: Response | null) => {
           if (response) {
-            this.sessionToken = response.headers[Globals.STRINGS.SESSION_TOKEN_NAME];
+            this.sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
             this.authenticatedUser = user;
             this.setIsLoggedIn(true);
           }
@@ -151,7 +152,7 @@ class Store {
       if (loggedIn && this.userToken && this.userToken.idToken) {
         void this.amphitryonDAO
           .connectUser(this.userToken?.idToken)
-          .then((response: AxiosResponse | null) => {
+          .then((response: Response | null) => {
             if (response) {
               this.sessionToken = response.headers[Globals.STRINGS.SESSION_TOKEN_NAME];
               this.authenticatedUser = JSON.parse(response.data);

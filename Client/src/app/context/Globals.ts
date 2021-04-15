@@ -58,6 +58,6 @@ export default {
     SESSION_TOKEN_NAME: 'session_token_amphitryon',
   },
   URLS: {
-    API_URL: 'http://localhost:8080/item',
+    API_URL: '192.168.100.169:8080/item',
   },
 };

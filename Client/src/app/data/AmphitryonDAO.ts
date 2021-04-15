@@ -5,7 +5,6 @@
  * @brief   Amphitryon DAO to retrieve data
  */
 
-import axios, { AxiosResponse } from 'axios';
 import { Alert } from 'react-native';
 import Globals from '../context/Globals';
 import { Filter, Meeting, Message, User } from '../models/ApplicationTypes';
@@ -14,10 +13,10 @@ export default class AmphitryonDAO {
   private static instance: AmphitryonDAO = new AmphitryonDAO();
 
   private sessionToken = '';
-  private restAPI = axios.create({
-    baseURL: Globals.URLS.API_URL,
-    timeout: 1000,
-  });
+  private header = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  };
 
   /**
    * Private instantiation to apply singleton pattern
@@ -46,16 +45,18 @@ export default class AmphitryonDAO {
    * @param user to create
    * @returns the session token
    */
-  async createUser(tokenId: string, user: User): Promise<AxiosResponse<string> | null> {
-    return await this.restAPI({
+  async createUser(tokenId: string, user: User): Promise<Response | null> {
+    return fetch(Globals.URLS.API_URL + '/signUpStudent', {
       method: 'POST',
-      url: '/signUpStudent',
-      data: { tokenID: tokenId, userName: user.name },
+      headers: this.header,
+      body: JSON.stringify({ tokenID: tokenId, userName: user.name }),
     })
-      .then((response: AxiosResponse<string>) => {
+      .then((response: Response) => {
+        console.log(response.json);
         return response;
       })
-      .catch(() => {
+      .catch((response: string) => {
+        console.log(response);
         Alert.alert("Une erreur s'est produite", "Erreur lors de la création de l 'utilisateur");
         return null;
       });
@@ -66,13 +67,13 @@ export default class AmphitryonDAO {
    * @param tokenId of the user
    * @returns Réponse axios
    */
-  async connectUser(tokenId: string): Promise<AxiosResponse<string> | null> {
-    return await this.restAPI({
+  async connectUser(tokenId: string): Promise<Response | null> {
+    return fetch(Globals.URLS.API_URL + '/connect', {
       method: 'POST',
-      url: '/connect',
-      data: { tokenID: tokenId },
+      headers: this.header,
+      body: JSON.stringify({ tokenID: tokenId }),
     })
-      .then((response: AxiosResponse<string>) => {
+      .then((response: Response) => {
         console.log(response);
         return response;
       })
@@ -90,14 +91,13 @@ export default class AmphitryonDAO {
    * @param meeting to create
    * @returns if the meeting has been successfully added or null
    */
-  async createMeeting(meeting: Meeting): Promise<AxiosResponse<string> | null> {
-    return await this.restAPI({
+  async createMeeting(meeting: Meeting): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/', {
       method: 'POST',
-      url: '/',
-      headers: this.sessionToken,
-      data: meeting,
+      headers: this.header,
+      body: JSON.stringify(meeting),
     })
-      .then((response: AxiosResponse<string>) => {
+      .then((response: Response) => {
         return response;
       })
       .catch(() => {
@@ -111,14 +111,13 @@ export default class AmphitryonDAO {
    * @param meeting to update
    * @returns if the meeting has been successfully updated or null
    */
-  async updateMeeting(meeting: Meeting): Promise<AxiosResponse<string> | null> {
-    return await this.restAPI({
+  async updateMeeting(meeting: Meeting): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/', {
       method: 'PATCH',
-      url: '/',
-      headers: this.sessionToken,
-      data: meeting,
+      headers: this.header,
+      body: JSON.stringify(meeting),
     })
-      .then((response: AxiosResponse<string>) => {
+      .then((response: Response) => {
         return response;
       })
       .catch(() => {
@@ -132,14 +131,13 @@ export default class AmphitryonDAO {
    * @param meeting to delete
    * @returns if the meeting has been successfully deleted or null
    */
-  async deleteMeeting(meeting: Meeting): Promise<AxiosResponse<string> | null> {
-    return await this.restAPI({
+  async deleteMeeting(meeting: Meeting): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/', {
       method: 'DELETE',
-      url: '/',
-      headers: this.sessionToken,
-      data: meeting,
+      headers: this.header,
+      body: JSON.stringify(meeting),
     })
-      .then((response: AxiosResponse<string>) => {
+      .then((response: Response) => {
         return response;
       })
       .catch(() => {
@@ -152,13 +150,12 @@ export default class AmphitryonDAO {
    * Load the user's meeting
    * @returns list of meetings
    */
-  async loadUserMeetings(): Promise<AxiosResponse<string> | null> {
-    return await this.restAPI({
+  async loadUserMeetings(): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/', {
       method: 'GET',
-      url: '/',
-      headers: this.sessionToken,
+      headers: this.header,
     })
-      .then((response: AxiosResponse<string>) => {
+      .then((response: Response) => {
         return response;
       })
       .catch(() => {
@@ -172,14 +169,13 @@ export default class AmphitryonDAO {
    * @param meetingID to search
    * @returns list of meetings
    */
-  async searchMeetingWithID(meetingID: string): Promise<AxiosResponse<string> | null> {
-    return await this.restAPI({
+  async searchMeetingWithID(meetingID: string): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/', {
       method: 'GET',
-      url: '/',
-      headers: this.sessionToken,
-      data: { meetingID: meetingID },
+      headers: this.header,
+      body: JSON.stringify({ meetingID: meetingID }),
     })
-      .then((response: AxiosResponse<string>) => {
+      .then((response: Response) => {
         return response;
       })
       .catch(() => {
@@ -193,14 +189,13 @@ export default class AmphitryonDAO {
    * @param filter filter
    * @returns list of meetings
    */
-  async searchMeeting(filter: Filter): Promise<AxiosResponse<string> | null> {
-    return await this.restAPI({
+  async searchMeeting(filter: Filter): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/', {
       method: 'GET',
-      url: '/',
-      headers: this.sessionToken,
-      data: filter,
+      headers: this.header,
+      body: JSON.stringify(filter),
     })
-      .then((response: AxiosResponse<string>) => {
+      .then((response: Response) => {
         return response;
       })
       .catch(() => {
@@ -214,14 +209,13 @@ export default class AmphitryonDAO {
    * @param meetingID to join
    * @returns if the meeting has been joined by user
    */
-  async joinMeeting(meetingID: string): Promise<AxiosResponse<string> | null> {
-    return await this.restAPI({
+  async joinMeeting(meetingID: string): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/', {
       method: 'POST',
-      url: '/',
-      headers: this.sessionToken,
-      data: meetingID,
+      headers: this.header,
+      body: JSON.stringify({ meetingID: meetingID }),
     })
-      .then((response: AxiosResponse<string>) => {
+      .then((response: Response) => {
         return response;
       })
       .catch(() => {
@@ -235,14 +229,13 @@ export default class AmphitryonDAO {
    * @param chatID to load
    * @returns list of messages
    */
-  async loadMessages(chatID: string): Promise<AxiosResponse<string> | null> {
-    return await this.restAPI({
+  async loadMessages(chatID: string): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/', {
       method: 'GET',
-      url: '/',
-      headers: this.sessionToken,
-      data: chatID,
+      headers: this.header,
+      body: JSON.stringify({ chatID: chatID }),
     })
-      .then((response: AxiosResponse<string>) => {
+      .then((response: Response) => {
         return response;
       })
       .catch(() => {
@@ -256,14 +249,13 @@ export default class AmphitryonDAO {
    * @param message to send
    * @returns if the messages was successfully sent
    */
-  async sendMesssage(message: Message): Promise<AxiosResponse<string> | null> {
-    return await this.restAPI({
+  async sendMesssage(message: Message): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/', {
       method: 'POST',
-      url: '/',
-      headers: this.sessionToken,
-      data: message,
+      headers: this.header,
+      body: JSON.stringify(message),
     })
-      .then((response: AxiosResponse<string>) => {
+      .then((response: Response) => {
         return response;
       })
       .catch(() => {
@@ -277,14 +269,13 @@ export default class AmphitryonDAO {
    * @param locationID to load
    * @returns the location
    */
-  async getLocationDetails(locationID: string): Promise<AxiosResponse<string> | null> {
-    return await this.restAPI({
+  async getLocationDetails(locationID: string): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/', {
       method: 'GET',
-      url: '/',
-      headers: this.sessionToken,
-      data: locationID,
+      headers: this.header,
+      body: JSON.stringify({ locationID: locationID }),
     })
-      .then((response: AxiosResponse<string>) => {
+      .then((response: Response) => {
         return response;
       })
       .catch(() => {
@@ -299,14 +290,13 @@ export default class AmphitryonDAO {
    * @param end date of the meeting
    * @returns the location
    */
-  async getAllLocations(start: Date, end: Date): Promise<AxiosResponse<string> | null> {
-    return await this.restAPI({
+  async getAllLocations(start: Date, end: Date): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/', {
       method: 'GET',
-      url: '/',
-      headers: this.sessionToken,
-      data: { start: start, end: end },
+      headers: this.header,
+      body: JSON.stringify({ start: start, end: end }),
     })
-      .then((response: AxiosResponse<string>) => {
+      .then((response: Response) => {
         return response;
       })
       .catch(() => {
