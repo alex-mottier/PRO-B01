@@ -7,6 +7,16 @@ export const mockLocations: Location[] = [
     tags: [{ name: 'Salle de cours' }, { name: 'HEIG-VD' }],
     nbPeople: 10,
     openingHours: [],
+    host: {
+      name: 'HEIG-VD',
+      description: 'Prix Béton !',
+      tags: [{ name: 'HES-SO' }, { name: 'HEIG-VD' }],
+      address: {
+        streetName: 'Rue du vieux Port 1',
+        city: 'Yverdon-les-bains',
+        npa: 1400,
+      },
+    },
   },
   {
     name: 'G02',
@@ -14,6 +24,16 @@ export const mockLocations: Location[] = [
     tags: [{ name: 'Salle de cours' }, { name: 'HEIG-VD' }],
     nbPeople: 8,
     openingHours: [],
+    host: {
+      name: 'HEIG-VD',
+      description: 'Prix Béton !',
+      tags: [{ name: 'HES-SO' }, { name: 'HEIG-VD' }],
+      address: {
+        streetName: 'Rue du vieux Port 1',
+        city: 'Yverdon-les-bains',
+        npa: 1400,
+      },
+    },
   },
   {
     name: 'G03',
@@ -21,6 +41,16 @@ export const mockLocations: Location[] = [
     tags: [{ name: 'Salle de cours' }, { name: 'HEIG-VD' }],
     nbPeople: 6,
     openingHours: [],
+    host: {
+      name: 'HEIG-VD',
+      description: 'Prix Béton !',
+      tags: [{ name: 'HES-SO' }, { name: 'HEIG-VD' }],
+      address: {
+        streetName: 'Rue du vieux Port 1',
+        city: 'Yverdon-les-bains',
+        npa: 1400,
+      },
+    },
   },
   {
     name: 'G04',
@@ -28,6 +58,16 @@ export const mockLocations: Location[] = [
     tags: [{ name: 'Salle de cours' }, { name: 'HEIG-VD' }],
     nbPeople: 7,
     openingHours: [],
+    host: {
+      name: 'HEIG-VD',
+      description: 'Prix Béton !',
+      tags: [{ name: 'HES-SO' }, { name: 'HEIG-VD' }],
+      address: {
+        streetName: 'Rue du vieux Port 1',
+        city: 'Yverdon-les-bains',
+        npa: 1400,
+      },
+    },
   },
   {
     name: 'G05',
@@ -35,6 +75,16 @@ export const mockLocations: Location[] = [
     tags: [{ name: 'Salle de cours' }, { name: 'HEIG-VD' }],
     nbPeople: 6,
     openingHours: [],
+    host: {
+      name: 'HEIG-VD',
+      description: 'Prix Béton !',
+      tags: [{ name: 'HES-SO' }, { name: 'HEIG-VD' }],
+      address: {
+        streetName: 'Rue du vieux Port 1',
+        city: 'Yverdon-les-bains',
+        npa: 1400,
+      },
+    },
   },
   {
     name: 'G06',
@@ -42,6 +92,16 @@ export const mockLocations: Location[] = [
     tags: [{ name: 'Salle de cours' }, { name: 'HEIG-VD' }],
     nbPeople: 4,
     openingHours: [],
+    host: {
+      name: 'HEIG-VD',
+      description: 'Prix Béton !',
+      tags: [{ name: 'HES-SO' }, { name: 'HEIG-VD' }],
+      address: {
+        streetName: 'Rue du vieux Port 1',
+        city: 'Yverdon-les-bains',
+        npa: 1400,
+      },
+    },
   },
   {
     name: 'Bibliothèque',
@@ -49,5 +109,15 @@ export const mockLocations: Location[] = [
     tags: [{ name: 'Canapés' }, { name: 'TV' }, { name: 'Silencieux' }],
     nbPeople: 3,
     openingHours: [],
+    host: {
+      name: 'HEIG-VD',
+      description: 'Prix Béton !',
+      tags: [{ name: 'HES-SO' }, { name: 'HEIG-VD' }],
+      address: {
+        streetName: 'Rue du vieux Port 1',
+        city: 'Yverdon-les-bains',
+        npa: 1400,
+      },
+    },
   },
 ];

@@ -31,5 +31,14 @@ export const mockLocation: Location = {
       days: [{ name: 'Dimanche', day: DayEnum.SUN }],
     },
   ],
-  host: { name: 'HEIG-VD' },
+  host: {
+    name: 'HEIG-VD',
+    description: 'Prix Béton !',
+    tags: [{ name: 'HES-SO' }, { name: 'HEIG-VD' }],
+    address: {
+      streetName: 'Rue du vieux Port 1',
+      city: 'Yverdon-les-bains',
+      npa: 1400,
+    },
+  },
 };
