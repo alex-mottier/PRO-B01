@@ -14,8 +14,19 @@ export type Location = {
   host: Host;
 };
 
+// TODO : Sujet à modification
 export type Host = {
   name: string;
+  description: string;
+  address: Address;
+  tags: Tag[];
+};
+
+// TODO : Sujet à modification
+export type Address = {
+  streetName: string;
+  city: string;
+  npa: number;
 };
 
 export type OpeningHour = {

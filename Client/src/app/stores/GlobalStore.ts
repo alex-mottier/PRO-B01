@@ -7,13 +7,14 @@
 
 import { action, makeAutoObservable, observable } from 'mobx';
 import { createContext } from 'react';
-import { Meeting, User, Location } from '../models/ApplicationTypes';
+import { Meeting, User, Location, Host } from '../models/ApplicationTypes';
 import GoogleAuth from '../authentication/GoogleAuth';
 import { TokenResponse } from 'expo-app-auth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 import Globals from '../context/Globals';
 import { mockMeetings } from '../../mock/Meetings';
 import { mockLocation } from '../../mock/Location';
+import { mockHost } from '../../mock/Host';
 
 class Store {
   private amphitryonDAO = AmphitryonDAO.getInstance();
@@ -171,6 +172,10 @@ class Store {
 
   @action loadMyLocation(): Location {
     return mockLocation;
+  }
+
+  @action loadMyHost(): Host {
+    return mockHost;
   }
 }
 
