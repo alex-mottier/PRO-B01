@@ -68,7 +68,7 @@ const Search: React.FC = () => {
               <Modal
                 visible={visible}
                 onDismiss={hideModal}
-                contentContainerStyle={styles.container}>
+                contentContainerStyle={styles.modalcontainer}>
                 <View style={styles.modal}>
                   <Title style={styles.title}>Filtres</Title>
                   <View style={{ width: '100%' }}>

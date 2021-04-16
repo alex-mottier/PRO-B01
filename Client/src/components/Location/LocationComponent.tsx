@@ -13,6 +13,7 @@ import Globals from '../../app/context/Globals';
 import { Location, Tag } from '../../app/models/ApplicationTypes';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../app/context/Theme';
+import { useNavigation } from '@react-navigation/core';
 
 interface IProps {
   location: Location;
@@ -21,6 +22,7 @@ interface IProps {
 }
 
 const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) => {
+  const navigation = useNavigation();
   const [isReduced, setIsReduced] = React.useState(true);
 
   let nbColors = 3;
@@ -41,6 +43,14 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
           left={() => <Avatar.Image size={40} source={require('../../../assets/HEIG-VD.png')} />}
           right={() => (
             <View>
+              <View style={styles.nbPeople}>
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.INFO}
+                  color={Globals.COLORS.GRAY}
+                  size={Globals.SIZES.ICON_BUTTON}
+                  onPress={() => navigation.navigate('LocationDetails')}
+                />
+              </View>
               <View style={styles.nbPeople}>
                 <Text style={{ color: 'gray' }}>{location.nbPeople}</Text>
                 <MaterialCommunityIcons

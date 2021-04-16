@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { IconButton, TextInput, Text, Portal, Modal, Title } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
 import { Location } from '../../app/models/ApplicationTypes';

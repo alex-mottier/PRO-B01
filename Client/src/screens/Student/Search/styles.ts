@@ -11,13 +11,18 @@ import Globals from '../../../app/context/Globals';
 const styles = StyleSheet.create({
   button: {
     marginTop: 20,
-    width: '90%',
+  },
+  modalcontainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 20,
+    backgroundColor: 'white',
   },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 15,
+    margin: 20,
     backgroundColor: 'white',
   },
   fab: {
@@ -28,6 +33,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   modal: {
+    padding: 10,
     width: '100%',
     alignItems: 'center',
   },

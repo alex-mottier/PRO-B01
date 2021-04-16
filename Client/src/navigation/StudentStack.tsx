@@ -14,11 +14,13 @@ import Globals from '../app/context/Globals';
 import { View } from 'react-native';
 import GlobalStore from '../app/stores/GlobalStore';
 import { observer } from 'mobx-react-lite';
+import Profile from '../screens/Student/Profile/Profile';
 
 // Parameters of the screens
 type StackNavigatorParamlist = {
   Main: undefined;
   Settings: undefined;
+  LocationDetails: undefined;
 };
 
 // Creating the application stack
@@ -81,6 +83,16 @@ const StudentStack: React.FC = () => {
       <Stack.Screen
         name="Main"
         component={BottomTabs}
+        options={({ route }) => {
+          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+          return {
+            headerTitle: routeName,
+          };
+        }}
+      />
+      <Stack.Screen
+        name="LocationDetails"
+        component={Profile}
         options={({ route }) => {
           const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
           return {

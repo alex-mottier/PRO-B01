@@ -11,7 +11,6 @@ import Globals from '../../app/context/Globals';
 const styles = StyleSheet.create({
   button: {
     marginTop: 20,
-    width: '60%',
   },
   chip: {
     width: 'auto',
