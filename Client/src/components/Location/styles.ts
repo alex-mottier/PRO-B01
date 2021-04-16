@@ -62,6 +62,11 @@ const styles = StyleSheet.create({
   gray: {
     color: 'gray',
   },
+  infos: { marginRight: 10 },
+  iconsRight: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
 });
 
 export default styles;

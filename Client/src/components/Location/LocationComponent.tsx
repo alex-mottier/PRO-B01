@@ -42,8 +42,8 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
           subtitle={location.description}
           left={() => <Avatar.Image size={40} source={require('../../../assets/HEIG-VD.png')} />}
           right={() => (
-            <View>
-              <View style={styles.nbPeople}>
+            <View style={styles.iconsRight}>
+              <View style={styles.infos}>
                 <MaterialCommunityIcons
                   name={Globals.ICONS.INFO}
                   color={Globals.COLORS.GRAY}
