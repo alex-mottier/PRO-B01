@@ -2,7 +2,7 @@
  * @file    stlyes.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    04.03.2021
- * @brief   Authentication page styles
+ * @brief   Location component page styles
  */
 
 import { StyleSheet } from 'react-native';
@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   card: {
     marginTop: 10,
     width: '100%',
+    elevation: 5,
   },
   chip: {
     width: 'auto',
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
   nbPeople: {
-    width: 70,
+    width: 50,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -60,11 +61,6 @@ const styles = StyleSheet.create({
   },
   gray: {
     color: 'gray',
-  },
-  close: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
   },
 });
 

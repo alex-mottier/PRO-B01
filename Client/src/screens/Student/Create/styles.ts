@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     color: 'gray',
   },
-  searchLocation: { width: '80%' },
 });
 
 export default styles;

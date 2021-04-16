@@ -7,26 +7,20 @@
 
 import * as React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
-import { Button, FAB, Modal, Portal, Provider, Text, TextInput, Title } from 'react-native-paper';
+import { Button, FAB, Modal, Portal, Provider, TextInput, Title } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import styles from './styles';
 import { Location, Meeting, Tag } from '../../../app/models/ApplicationTypes';
 import { mockMeetings } from '../../../mock/Meetings';
 import TagsComponent from '../../../components/Tags/TagsComponent';
-import LocationComponent from '../../../components/Location/LocationComponent';
+import SearchLocation from '../../../components/SearchLocation/SearchLocation';
 
 const Search: React.FC = () => {
   const [search, setSearch] = React.useState('');
   const [visible, setVisible] = React.useState(false);
   const [tags, setTags] = React.useState([{ name: 'Android' }, { name: 'IOS' }]);
-  const [location, setLocation] = React.useState<Location | null>({
-    name: 'G02',
-    description: 'Salle de cours avec Wifi',
-    tags: [{ name: 'Canapés' }, { name: 'Silencieux' }],
-    nbPeople: 5,
-    openingHours: [],
-  });
+  const [location, setLocation] = React.useState<Location | null>(null);
   const meetings: Meeting[] = mockMeetings;
 
   const showModal = () => setVisible(true);
@@ -53,10 +47,6 @@ const Search: React.FC = () => {
     setTags(newTags);
   };
 
-  const handleDeleteLocation = () => {
-    setLocation(null);
-  };
-
   return (
     <Provider>
       <SafeAreaView>
@@ -81,14 +71,19 @@ const Search: React.FC = () => {
                 contentContainerStyle={styles.container}>
                 <View style={styles.modal}>
                   <Title style={styles.title}>Filtres</Title>
-                  <TagsComponent
-                    tags={tags}
-                    addTag={(tag: Tag) => handleAddTag(tag)}
-                    removeTag={(tag: Tag) => handleDeleteTag(tag)}
-                  />
-                  {location && (
-                    <LocationComponent location={location} onClose={() => handleDeleteLocation()} />
-                  )}
+                  <View style={{ width: '100%' }}>
+                    <TagsComponent
+                      tags={tags}
+                      addTag={(tag: Tag) => handleAddTag(tag)}
+                      removeTag={(tag: Tag) => handleDeleteTag(tag)}
+                    />
+                  </View>
+                  <View style={{ width: '100%' }}>
+                    <SearchLocation
+                      location={location}
+                      chooseLocation={(location: Location | null) => setLocation(location)}
+                    />
+                  </View>
                   <Button
                     icon={Globals.ICONS.SEARCH}
                     mode="contained"

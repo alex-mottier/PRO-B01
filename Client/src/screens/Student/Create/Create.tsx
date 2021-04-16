@@ -15,23 +15,11 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import TagsComponent from '../../../components/Tags/TagsComponent';
 import LocationComponent from '../../../components/Location/LocationComponent';
 import { format } from 'date-fns';
+import SearchLocation from '../../../components/SearchLocation/SearchLocation';
 
 const Create: React.FC = () => {
-  const meeting: Meeting = {
-    name: '',
-    description: '',
-    tags: [],
-    locationID: '',
-    locationName: '',
-    nbPeople: 0,
-    start: new Date(),
-    end: new Date(),
-    ownerID: '',
-    chatId: '',
-  };
-
-  const [meetingName, setMeetingName] = React.useState(meeting.name);
-  const [meetingDescription, setMeetingDescription] = React.useState(meeting.description);
+  const [meetingName, setMeetingName] = React.useState('');
+  const [meetingDescription, setMeetingDescription] = React.useState('');
   const [isPrivateOn, setIsPrivateOn] = React.useState(false);
   const [showDate, setShowDate] = React.useState(false);
   const [showStartTime, setShowStartTime] = React.useState(false);
@@ -39,14 +27,7 @@ const Create: React.FC = () => {
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(new Date());
   const [tags, setTags] = React.useState([{ name: 'Android' }, { name: 'IOS' }]);
-  const [location, setLocation] = React.useState<Location | null>({
-    name: 'G02',
-    description: 'Salle de cours avec Wifi',
-    tags: [{ name: 'Canapés' }, { name: 'Silencieux' }],
-    nbPeople: 5,
-    openingHours: [],
-  });
-  const [searchLocation, setSearchLocation] = React.useState('');
+  const [location, setLocation] = React.useState<Location | null>(null);
 
   const onTogglePrivate = () => setIsPrivateOn(!isPrivateOn);
 
@@ -89,12 +70,6 @@ const Create: React.FC = () => {
     });
     setTags(newTags);
   };
-
-  const handleDeleteLocation = () => {
-    setLocation(null);
-  };
-
-  const handleSearchLocation = () => {};
 
   return (
     <Provider>
@@ -173,22 +148,11 @@ const Create: React.FC = () => {
             </Card>
             <Card style={styles.card} elevation={10}>
               <View style={styles.row}>
-                <TextInput
-                  label="Rechercher un lieu..."
-                  value={searchLocation}
-                  onChangeText={(searchLocation) => setSearchLocation(searchLocation)}
-                  style={styles.searchLocation}
-                />
-                <IconButton
-                  icon={Globals.ICONS.SEARCH}
-                  size={Globals.SIZES.ICON_BUTTON}
-                  color={Globals.COLORS.PRIMARY}
-                  onPress={() => handleSearchLocation()}
+                <SearchLocation
+                  location={location}
+                  chooseLocation={(location: Location | null) => setLocation(location)}
                 />
               </View>
-              {location && (
-                <LocationComponent location={location} onClose={() => handleDeleteLocation()} />
-              )}
             </Card>
             <Button
               icon={Globals.ICONS.CREATE}

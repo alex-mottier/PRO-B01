@@ -1,75 +1,93 @@
 /**
- * @file    Meeting.tsx
+ * @file    LocationComponent.tsx
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    08.04.2021
- * @brief   Meeting component
+ * @brief   Location component
  */
 
 import * as React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { Card, Avatar, Text, Chip, IconButton } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
 import { Location, Tag } from '../../app/models/ApplicationTypes';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { colors } from '../../app/context/Theme';
 
 interface IProps {
   location: Location;
-  onClose(): void | null;
+  onChoose(location: Location): void;
+  isAddView: boolean;
 }
 
-const LocationComponent: React.FC<IProps> = ({ location, onClose }) => {
-  let nbColors = 0;
-  const colors = [
-    Globals.COLORS.ORANGE,
-    Globals.COLORS.GREEN,
-    Globals.COLORS.GREEN,
-    Globals.COLORS.YELLOW,
-    Globals.COLORS.BLUE,
-    Globals.COLORS.BLUE,
-    Globals.COLORS.ORANGE,
-    Globals.COLORS.GREEN,
-  ];
+const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) => {
+  const [isReduced, setIsReduced] = React.useState(true);
+
+  let nbColors = 3;
+
+  /**
+   * Deploy or reduce meeting informations
+   */
+  const handleReduceOrDeploy = () => {
+    isReduced ? setIsReduced(false) : setIsReduced(true);
+  };
+
   return (
     <Card style={styles.card}>
-      <Card.Title
-        title={location.name}
-        subtitle={location.description}
-        left={() => <Avatar.Image size={40} source={require('../../../assets/HEIG-VD.png')} />}
-        right={() => (
-          <View>
-            <View style={styles.nbPeople}>
-              <Text style={{ color: 'gray' }}>{location.nbPeople}</Text>
-              <MaterialCommunityIcons
-                name={Globals.ICONS.PROFILE}
-                color={Globals.COLORS.GRAY}
-                size={Globals.SIZES.ICON_BUTTON}
-              />
+      <TouchableOpacity onPress={handleReduceOrDeploy}>
+        <Card.Title
+          title={location.name}
+          subtitle={location.description}
+          left={() => <Avatar.Image size={40} source={require('../../../assets/HEIG-VD.png')} />}
+          right={() => (
+            <View>
+              <View style={styles.nbPeople}>
+                <Text style={{ color: 'gray' }}>{location.nbPeople}</Text>
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.PROFILE}
+                  color={Globals.COLORS.GRAY}
+                  size={Globals.SIZES.ICON_BUTTON}
+                />
+              </View>
             </View>
+          )}
+        />
+      </TouchableOpacity>
+      {!isReduced && (
+        <Card.Content>
+          <View style={styles.chips}>
+            {location.tags.map((tag: Tag) => {
+              return (
+                <Chip
+                  key={tag.name}
+                  style={[styles.chip, { backgroundColor: colors[nbColors++ % colors.length] }]}>
+                  {tag.name}
+                </Chip>
+              );
+            })}
           </View>
-        )}
-      />
-      <Card.Content>
-        <View style={styles.chips}>
-          {location.tags.map((tag: Tag) => {
-            return (
-              <Chip
-                key={tag.name}
-                style={[styles.chip, { backgroundColor: colors[nbColors++ % colors.length] }]}>
-                {tag.name}
-              </Chip>
-            );
-          })}
-        </View>
-        <View style={styles.close}>
+          {isAddView && (
+            <Card.Actions style={styles.actions}>
+              <View>
+                <IconButton
+                  icon={Globals.ICONS.CREATE}
+                  size={30}
+                  color={Globals.COLORS.GREEN}
+                  onPress={() => onChoose(location)}
+                />
+                <Text style={[styles.gray, styles.buttonText]}>Choisir</Text>
+              </View>
+            </Card.Actions>
+          )}
           <IconButton
-            icon={Globals.ICONS.CLOSE_LOCATION}
-            size={Globals.SIZES.ICON_BUTTON}
+            icon={Globals.ICONS.ARROW_UP}
+            size={20}
+            onPress={handleReduceOrDeploy}
             color={Globals.COLORS.GRAY}
-            onPress={onClose}
+            style={styles.arrowUp}
           />
-        </View>
-      </Card.Content>
+        </Card.Content>
+      )}
     </Card>
   );
 };
