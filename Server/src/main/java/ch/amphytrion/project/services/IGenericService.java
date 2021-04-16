@@ -5,8 +5,8 @@ import java.util.List;
 public interface IGenericService<T> {
     List<T> findAll();
     T save(T entity);
-    T findById(long id);
+    T findById(String id);
     void delete(T entity);
-    void deleteById(long id);
+    void deleteById(String id);
     long count();
 }

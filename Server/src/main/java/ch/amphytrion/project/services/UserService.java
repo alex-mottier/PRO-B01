@@ -1,6 +1,6 @@
 package ch.amphytrion.project.services;
 
-import ch.amphytrion.project.entities.User;
+import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class UserService implements IGenericService<User> {
     }
 
     @Override
-    public User findById(long id) {
+    public User findById(String id) {
         try {
             return userRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class UserService implements IGenericService<User> {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         userRepository.deleteById(id);
     }
 

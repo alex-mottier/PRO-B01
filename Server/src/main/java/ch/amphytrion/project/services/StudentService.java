@@ -1,6 +1,6 @@
 package ch.amphytrion.project.services;
 
-import ch.amphytrion.project.entities.Student;
+import ch.amphytrion.project.entities.databaseentities.Student;
 import ch.amphytrion.project.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class StudentService implements IGenericService<Student> {
     }
 
     @Override
-    public Student findById(long id) {
+    public Student findById(String id) {
         try {
             return studentRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class StudentService implements IGenericService<Student> {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         studentRepository.deleteById(id);
     }
 
