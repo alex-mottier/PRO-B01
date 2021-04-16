@@ -40,7 +40,6 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation }) => {
   const handleLocationNameChange = (locationName: string) => {
     setLocationName(locationName);
     const newLocations = mockLocations.filter((current: Location) => {
-      console.log(current.name.search(locationName));
       return current.name.search(locationName) !== -1;
     });
     setLocations(newLocations);

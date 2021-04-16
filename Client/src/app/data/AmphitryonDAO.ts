@@ -52,11 +52,9 @@ export default class AmphitryonDAO {
       body: JSON.stringify({ tokenID: tokenId, userName: user.name }),
     })
       .then((response: Response) => {
-        console.log(response.json);
         return response;
       })
       .catch((response: string) => {
-        console.log(response);
         Alert.alert("Une erreur s'est produite", "Erreur lors de la création de l 'utilisateur");
         return null;
       });
@@ -74,7 +72,6 @@ export default class AmphitryonDAO {
       body: JSON.stringify({ tokenID: tokenId }),
     })
       .then((response: Response) => {
-        console.log(response);
         return response;
       })
       .catch(() => {
