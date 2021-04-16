@@ -1,5 +1,5 @@
 /**
- * @file    Meeting.tsx
+ * @file    TagComponent.tsx
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    10.04.2021
  * @brief   Tags component
@@ -15,10 +15,10 @@ import {
   Portal,
   Modal,
   Button,
-  Provider,
   Title,
 } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
+import { colors } from '../../app/context/Theme';
 import { Tag } from '../../app/models/ApplicationTypes';
 import styles from './styles';
 
@@ -29,28 +29,17 @@ interface IProps {
 }
 
 const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
-  let nbColors = 0;
-  const colors = [
-    Globals.COLORS.YELLOW,
-    Globals.COLORS.BLUE,
-    Globals.COLORS.PINK,
-    Globals.COLORS.ORANGE,
-    Globals.COLORS.GREEN,
-  ];
-
   const [tagName, setTagName] = React.useState('');
-  const [visible, setVisible] = React.useState(false);
+  const [modalVisible, setModalVisible] = React.useState(false);
 
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
+  let nbColors = 0;
 
-  const handleRemoveTag = (tag: Tag) => {
-    removeTag(tag);
-  };
-
+  /**
+   * Action when adding a tag
+   */
   const handleAddTag = () => {
     if (tagName !== '') {
-      hideModal();
+      setModalVisible(false);
       addTag({ name: tagName });
       setTagName('');
     } else {
@@ -66,7 +55,7 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
           icon={Globals.ICONS.ADD_TAG}
           size={Globals.SIZES.ICON_MENU}
           color={Globals.COLORS.PRIMARY}
-          onPress={showModal}
+          onPress={() => setModalVisible(true)}
         />
       </View>
       <View style={styles.chips}>
@@ -74,7 +63,7 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
           return (
             <Chip
               key={tag.name}
-              onClose={() => handleRemoveTag(tag)}
+              onClose={() => removeTag(tag)}
               style={[styles.chip, { backgroundColor: colors[nbColors++ % colors.length] }]}>
               {tag.name}
             </Chip>
@@ -82,8 +71,19 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
         })}
       </View>
       <Portal>
-        <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.container}>
+        <Modal
+          visible={modalVisible}
+          onDismiss={() => setModalVisible(false)}
+          contentContainerStyle={styles.container}>
           <View style={styles.modal}>
+            <View style={styles.close}>
+              <IconButton
+                icon={Globals.ICONS.CLOSE_LOCATION}
+                size={Globals.SIZES.ICON_BUTTON}
+                color={Globals.COLORS.GRAY}
+                onPress={() => setModalVisible(false)}
+              />
+            </View>
             <Title style={styles.title}>Ajout de tags</Title>
             <TextInput
               label="Nom du tag"

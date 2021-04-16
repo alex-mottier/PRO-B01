@@ -17,6 +17,11 @@ const styles = StyleSheet.create({
     width: 'auto',
     margin: 5,
   },
+  close: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  },
   chips: {
     marginTop: 10,
     flexDirection: 'row',

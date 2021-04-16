@@ -66,7 +66,6 @@ const LocationComponent: React.FC<IProps> = ({ location, onClose }) => {
             icon={Globals.ICONS.CLOSE_LOCATION}
             size={Globals.SIZES.ICON_BUTTON}
             color={Globals.COLORS.GRAY}
-            style={styles.icon}
             onPress={onClose}
           />
         </View>

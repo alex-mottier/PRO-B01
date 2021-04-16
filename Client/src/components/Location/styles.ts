@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
   },
-  icon: {},
   infoWithIcon: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
