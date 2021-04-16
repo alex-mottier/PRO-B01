@@ -18,7 +18,7 @@ public class UserController extends BaseController implements IGenericController
     private final UserService userService;
 
     @Autowired
-    UserController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -41,7 +41,7 @@ public class UserController extends BaseController implements IGenericController
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id) {
+    public ResponseEntity<User> getById(@PathVariable String id) {
         try {
             return ResponseEntity.ok(userService.findById(id));
         } catch (Exception e) {

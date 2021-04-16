@@ -29,7 +29,7 @@ public class AddressService implements IGenericService<Address> {
     }
 
     @Override
-    public Address findById(long id) {
+    public Address findById(String id) {
         try {
             return addressRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -44,7 +44,7 @@ public class AddressService implements IGenericService<Address> {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         addressRepository.deleteById(id);
     }
 

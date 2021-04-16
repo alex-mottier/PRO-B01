@@ -45,7 +45,7 @@ public class TagController extends BaseController implements IGenericController<
 
     @Override
     @GetMapping("/tags/{id}")
-    public ResponseEntity getById(Long id) {
+    public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(tagService.findById(id));
         } catch (Exception e) {
