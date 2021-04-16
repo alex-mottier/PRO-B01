@@ -6,14 +6,13 @@
  */
 
 import * as React from 'react';
-import { Platform, SafeAreaView, ScrollView, View, ViewBase } from 'react-native';
-import { TextInput, Switch, IconButton, Button, Text, Card, Provider } from 'react-native-paper';
+import { Platform, SafeAreaView, ScrollView, View } from 'react-native';
+import { TextInput, IconButton, Button, Text, Card, Provider } from 'react-native-paper';
 import styles from './styles';
-import { Location, Meeting, Tag } from '../../../app/models/ApplicationTypes';
+import { Location, Tag } from '../../../app/models/ApplicationTypes';
 import Globals from '../../../app/context/Globals';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import TagsComponent from '../../../components/Tags/TagsComponent';
-import LocationComponent from '../../../components/Location/LocationComponent';
 import { format } from 'date-fns';
 import SearchLocation from '../../../components/SearchLocation/SearchLocation';
 
