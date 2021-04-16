@@ -17,6 +17,7 @@ import Globals from '../../../app/context/Globals';
 import { colors } from '../../../app/context/Theme';
 import OpeninHourComponent from '../../../components/OpeningHour/OpeningHourComponent';
 import { useNavigation } from '@react-navigation/core';
+import LoadingComponent from '../../../components/Loading/LoadingComponent';
 
 const LocationDetails: React.FC = () => {
   const navigation = useNavigation();
@@ -35,54 +36,61 @@ const LocationDetails: React.FC = () => {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.host}>
-            <Text style={styles.text}>{location?.host.name}</Text>
-            <IconButton
-              icon={Globals.ICONS.INFO}
-              size={Globals.SIZES.ICON_HEADER}
-              color={Globals.COLORS.GRAY}
-              onPress={() => navigation.navigate('HostDetails')}
-            />
-          </View>
-          <View style={styles.row}>
-            <View style={styles.room}>
-              <Avatar.Image size={80} source={require('../../../../assets/Classroom.jpg')} />
-              <Title style={styles.title}>{location?.name}</Title>
-            </View>
-            <View style={styles.nbPeople}>
-              <Text style={styles.gray}>{location?.nbPeople}</Text>
-              <MaterialCommunityIcons
-                name={Globals.ICONS.PROFILE}
+        {isLoading ? (
+          <LoadingComponent />
+        ) : (
+          <View style={styles.container}>
+            <View style={styles.host}>
+              <Text style={styles.text}>{location?.host.name}</Text>
+              <IconButton
+                icon={Globals.ICONS.INFO}
+                size={Globals.SIZES.ICON_HEADER}
                 color={Globals.COLORS.GRAY}
-                size={Globals.SIZES.ICON_BUTTON}
+                onPress={() => navigation.navigate('HostDetails')}
               />
             </View>
-          </View>
-          <View style={styles.container}>
-            <Text style={styles.gray}>{location?.description}</Text>
-            <View style={styles.chips}>
-              {location?.tags?.map((tag: Tag) => {
-                return (
-                  <Chip
-                    key={tag.name}
-                    style={[styles.chip, { backgroundColor: colors[nbColors++ % colors.length] }]}>
-                    {tag.name}
-                  </Chip>
-                );
-              })}
+            <View style={styles.row}>
+              <View style={styles.room}>
+                <Avatar.Image size={80} source={require('../../../../assets/Classroom.jpg')} />
+                <Title style={styles.title}>{location?.name}</Title>
+              </View>
+              <View style={styles.nbPeople}>
+                <Text style={styles.gray}>{location?.nbPeople}</Text>
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.PROFILE}
+                  color={Globals.COLORS.GRAY}
+                  size={Globals.SIZES.ICON_BUTTON}
+                />
+              </View>
             </View>
-            <View>
-              {location?.openingHours?.map((openingHour: OpeningHour) => {
-                return (
-                  <OpeninHourComponent
-                    key={openingHour.id}
-                    openingHour={openingHour}></OpeninHourComponent>
-                );
-              })}
+            <View style={styles.container}>
+              <Text style={styles.gray}>{location?.description}</Text>
+              <View style={styles.chips}>
+                {location?.tags?.map((tag: Tag) => {
+                  return (
+                    <Chip
+                      key={tag.name}
+                      style={[
+                        styles.chip,
+                        { backgroundColor: colors[nbColors++ % colors.length] },
+                      ]}>
+                      {tag.name}
+                    </Chip>
+                  );
+                })}
+              </View>
+              <View>
+                {location?.openingHours?.map((openingHour: OpeningHour) => {
+                  return (
+                    <OpeninHourComponent
+                      key={openingHour.id}
+                      openingHour={openingHour}></OpeninHourComponent>
+                  );
+                })}
+              </View>
             </View>
           </View>
-        </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

@@ -7,14 +7,13 @@
 
 import * as React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
-import { Avatar, Text, Title, IconButton, Chip } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Avatar, Text, Title, Chip } from 'react-native-paper';
 import styles from './styles';
 import { observer } from 'mobx-react-lite';
 import GlobalStore from '../../../app/stores/GlobalStore';
 import { Host, Tag } from '../../../app/models/ApplicationTypes';
-import Globals from '../../../app/context/Globals';
 import { colors } from '../../../app/context/Theme';
+import LoadingComponent from '../../../components/Loading/LoadingComponent';
 
 const HostDetails: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -32,33 +31,40 @@ const HostDetails: React.FC = () => {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.row}>
-            <View style={styles.room}>
-              <Avatar.Image size={80} source={require('../../../../assets/HEIG-VD.png')} />
-              <Title style={styles.title}>{host?.name}</Title>
-            </View>
-          </View>
+        {isLoading ? (
+          <LoadingComponent />
+        ) : (
           <View style={styles.container}>
-            <Text style={styles.gray}>{host?.description}</Text>
-            <View>
-              <Text>
-                {host?.address.streetName}, {host?.address.npa} {host?.address.city}
-              </Text>
+            <View style={styles.row}>
+              <View style={styles.room}>
+                <Avatar.Image size={80} source={require('../../../../assets/HEIG-VD.png')} />
+                <Title style={styles.title}>{host?.name}</Title>
+              </View>
             </View>
-            <View style={styles.chips}>
-              {host?.tags?.map((tag: Tag) => {
-                return (
-                  <Chip
-                    key={tag.name}
-                    style={[styles.chip, { backgroundColor: colors[nbColors++ % colors.length] }]}>
-                    {tag.name}
-                  </Chip>
-                );
-              })}
+            <View style={styles.container}>
+              <Text style={styles.gray}>{host?.description}</Text>
+              <View>
+                <Text>
+                  {host?.address.streetName}, {host?.address.npa} {host?.address.city}
+                </Text>
+              </View>
+              <View style={styles.chips}>
+                {host?.tags?.map((tag: Tag) => {
+                  return (
+                    <Chip
+                      key={tag.name}
+                      style={[
+                        styles.chip,
+                        { backgroundColor: colors[nbColors++ % colors.length] },
+                      ]}>
+                      {tag.name}
+                    </Chip>
+                  );
+                })}
+              </View>
             </View>
           </View>
-        </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
