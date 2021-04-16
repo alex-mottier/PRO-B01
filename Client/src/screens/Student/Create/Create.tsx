@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { Platform, SafeAreaView, ScrollView, View } from 'react-native';
+import { Platform, SafeAreaView, ScrollView, View, ViewBase } from 'react-native';
 import { TextInput, Switch, IconButton, Button, Text, Card, Provider } from 'react-native-paper';
 import styles from './styles';
 import { Location, Meeting, Tag } from '../../../app/models/ApplicationTypes';
@@ -84,12 +84,17 @@ const Create: React.FC = () => {
                   onChangeText={(meetingName) => setMeetingName(meetingName)}
                   style={styles.name}
                 />
-                <Switch
-                  value={isPrivateOn}
-                  onValueChange={onTogglePrivate}
-                  color={Globals.COLORS.PRIMARY}
-                />
-                <Text style={{ color: 'gray' }}>Privé</Text>
+                <View style={styles.private}>
+                  <IconButton
+                    icon={isPrivateOn ? Globals.ICONS.LOCK : Globals.ICONS.UNLOCK}
+                    size={Globals.SIZES.ICON_MENU}
+                    color={Globals.COLORS.PRIMARY}
+                    onPress={onTogglePrivate}
+                  />
+                  <Text style={{ color: 'gray', marginTop: -5 }}>
+                    {isPrivateOn ? 'Privée' : 'Publique'}
+                  </Text>
+                </View>
               </View>
               <TextInput
                 label="Description de la réunion"
@@ -99,44 +104,37 @@ const Create: React.FC = () => {
               />
             </Card>
             <Card style={styles.card} elevation={10}>
-              <View style={styles.row}>
-                <IconButton
-                  icon={Globals.ICONS.CALENDAR}
-                  size={Globals.SIZES.ICON_BUTTON}
-                  color={Globals.COLORS.PRIMARY}
-                />
-                <Text style={{ color: 'gray' }}>Date : </Text>
-                <Text style={{ color: 'gray' }}>{format(startDate, 'dd.MM.yyyy')}</Text>
-                <IconButton
-                  icon={Globals.ICONS.EDIT}
-                  size={Globals.SIZES.ICON_BUTTON}
-                  color={Globals.COLORS.GRAY}
-                  onPress={() => setShowDate(true)}
-                />
+              <View style={styles.dateHeure}>
+                <Text style={{ color: 'gray' }}>Date / Heure :</Text>
               </View>
-              <View style={styles.row}>
-                <IconButton
-                  icon={Globals.ICONS.END_TIME}
-                  size={Globals.SIZES.ICON_BUTTON}
-                  color={Globals.COLORS.PRIMARY}
-                />
-                <Text style={{ color: 'gray' }}>Début : </Text>
-                <Text style={{ color: 'gray' }}>{format(startDate, 'hh:mm')}</Text>
-                <IconButton
-                  icon={Globals.ICONS.EDIT}
-                  size={Globals.SIZES.ICON_BUTTON}
-                  color={Globals.COLORS.GRAY}
-                  onPress={() => setShowStartTime(true)}
-                />
-                <Text style={styles.marginLeft}>Fin : </Text>
-                <Text style={{ color: 'gray' }}>{format(endDate, 'hh:mm')}</Text>
-                <IconButton
-                  icon={Globals.ICONS.EDIT}
-                  size={Globals.SIZES.ICON_BUTTON}
-                  color={Globals.COLORS.GRAY}
-                  onPress={() => setShowEndTime(true)}
-                  style={styles.marginRigth}
-                />
+              <View style={styles.date}>
+                <View style={styles.row}>
+                  <Text style={{ color: 'gray' }}>{format(startDate, 'dd.MM.yyyy')}</Text>
+                  <IconButton
+                    icon={Globals.ICONS.CALENDAR}
+                    size={Globals.SIZES.ICON_MENU}
+                    color={Globals.COLORS.PRIMARY}
+                    onPress={() => setShowDate(true)}
+                  />
+                </View>
+                <View style={styles.row}>
+                  <Text style={{ color: 'gray' }}>{format(startDate, 'hh:mm')}</Text>
+                  <IconButton
+                    icon={Globals.ICONS.END_TIME}
+                    size={Globals.SIZES.ICON_MENU}
+                    color={Globals.COLORS.PRIMARY}
+                    onPress={() => setShowStartTime(true)}
+                  />
+                </View>
+                <View style={styles.row}>
+                  <Text style={{ color: 'gray' }}>{format(endDate, 'hh:mm')}</Text>
+                  <IconButton
+                    icon={Globals.ICONS.END_TIME}
+                    size={Globals.SIZES.ICON_MENU}
+                    color={Globals.COLORS.PRIMARY}
+                    onPress={() => setShowEndTime(true)}
+                  />
+                </View>
               </View>
             </Card>
             <Card style={styles.card} elevation={10}>

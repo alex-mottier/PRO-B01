@@ -45,6 +45,8 @@ export default {
     CLOSE_LOCATION: 'close',
     SAD: 'emoticon-sad-outline',
     DELETE: 'delete-outline',
+    LOCK: 'lock',
+    UNLOCK: 'lock-open-variant',
   },
   PRECISION: 2,
   SIZES: {
