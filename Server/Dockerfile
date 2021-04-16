@@ -9,7 +9,7 @@ FROM openjdk:8-jre-alpine
 
 WORKDIR /app
 
-EXPOSE 27018
+EXPOSE 27017
 EXPOSE 8080
 
 COPY --from=MAVEN_BUILD /build/target/*.jar /app/application.jar

@@ -44,7 +44,7 @@ public class MessageController extends BaseController implements IGenericControl
 
     @Override
     @GetMapping("/messages/{id}")
-    public ResponseEntity getById(Long id) {
+    public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(messageService.findById(id));
         } catch (Exception e) {

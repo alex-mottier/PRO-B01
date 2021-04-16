@@ -28,7 +28,7 @@ public class OpeningHourService implements IGenericService<OpeningHour> {
     }
 
     @Override
-    public OpeningHour findById(long id) {
+    public OpeningHour findById(String id) {
         try {
             return openingHourRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class OpeningHourService implements IGenericService<OpeningHour> {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         openingHourRepository.deleteById(id);
     }
 

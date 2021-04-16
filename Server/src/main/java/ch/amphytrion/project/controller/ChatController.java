@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class ChatController extends BaseController implements IGenericController
     }
 
     @Override
+    @GetMapping("/chat")
     public ResponseEntity<List<Chat>> getAll() {
         try {
             return ResponseEntity.ok(chatService.findAll());
@@ -33,6 +35,7 @@ public class ChatController extends BaseController implements IGenericController
     }
 
     @Override
+    @PostMapping("/chat")
     public ResponseEntity save(Chat entity) {
         try {
             return ResponseEntity.ok(chatService.save(entity));
@@ -42,7 +45,8 @@ public class ChatController extends BaseController implements IGenericController
     }
 
     @Override
-    public ResponseEntity getById(Long id) {
+    @GetMapping("/chat/{id}")
+    public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(chatService.findById(id));
         } catch (Exception e) {

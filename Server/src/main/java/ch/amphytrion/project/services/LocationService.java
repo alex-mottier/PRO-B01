@@ -28,7 +28,7 @@ public class LocationService implements IGenericService<Location> {
     }
 
     @Override
-    public Location findById(long id) {
+    public Location findById(String id) {
         try {
             return locationRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class LocationService implements IGenericService<Location> {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         locationRepository.deleteById(id);
     }
 

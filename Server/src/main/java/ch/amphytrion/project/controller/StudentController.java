@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-class StudentController extends BaseController implements IGenericController<Student>{
+public class StudentController extends BaseController implements IGenericController<Student>{
 
     private final StudentService studentService;
 
     @Autowired
-    StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
@@ -40,7 +40,7 @@ class StudentController extends BaseController implements IGenericController<Stu
         }    }
 
     @GetMapping("/students/{id}")
-    public ResponseEntity<Student> getById(@PathVariable Long id) {
+    public ResponseEntity<Student> getById(@PathVariable String id) {
         try {
             return ResponseEntity.ok(studentService.findById(id));
         } catch (Exception e) {
