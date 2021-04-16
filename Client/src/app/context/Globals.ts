@@ -27,6 +27,7 @@ export default {
     CLOSE: 'close-circle',
     CREATE: 'plus-circle',
     END_TIME: 'clock-time-nine',
+    END_TIME_OUT: 'clock-time-nine-outline',
     FILTER: 'filter',
     HOME: 'home',
     INFO: 'information-outline',

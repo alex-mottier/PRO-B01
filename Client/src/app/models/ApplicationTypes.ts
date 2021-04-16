@@ -11,15 +11,26 @@ export type Location = {
   tags: Tag[];
   nbPeople: number;
   openingHours: OpeningHour[];
+  host: Host;
+};
+
+export type Host = {
+  name: string;
 };
 
 export type OpeningHour = {
+  id: string;
   startTime: Date;
   endTime: Date;
-  day: Day;
+  days: Day[];
 };
 
-export enum Day {
+export type Day = {
+  name: string;
+  day: DayEnum;
+};
+
+export enum DayEnum {
   SUN,
   MON,
   TUE,
