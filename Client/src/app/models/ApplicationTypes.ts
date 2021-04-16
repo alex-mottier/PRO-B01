@@ -21,7 +21,7 @@ export type OpeningHour = {
 
 export enum Day {
   SUN,
-  LUN,
+  MON,
   TUE,
   WED,
   THU,
@@ -64,16 +64,10 @@ export type User = {
   name: string;
 };
 
-export type Success = {
-  name: string;
-  message: string;
-};
-
 export type Filter = {
   name: string | null;
   startDate: Date | null;
   endDate: Date | null;
   tags: Tag[] | null;
   locations: Location[] | null;
-  // hosts: Host[] | null
 };

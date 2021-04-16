@@ -26,14 +26,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     margin: 20,
-    backgroundColor: 'white',
   },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     margin: 20,
-    backgroundColor: 'white',
   },
   fab: {
     marginTop: 10,

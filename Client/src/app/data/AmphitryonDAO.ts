@@ -11,11 +11,11 @@ import { Filter, Meeting, Message, User } from '../models/ApplicationTypes';
 
 export default class AmphitryonDAO {
   private static instance: AmphitryonDAO = new AmphitryonDAO();
-
   private sessionToken = '';
   private header = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
+    session_token_amphitryon: this.sessionToken,
   };
 
   /**
@@ -54,7 +54,7 @@ export default class AmphitryonDAO {
       .then((response: Response) => {
         return response;
       })
-      .catch((response: string) => {
+      .catch(() => {
         Alert.alert("Une erreur s'est produite", "Erreur lors de la création de l 'utilisateur");
         return null;
       });

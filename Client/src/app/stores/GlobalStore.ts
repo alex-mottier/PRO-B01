@@ -11,7 +11,6 @@ import { Meeting, User } from '../models/ApplicationTypes';
 import GoogleAuth from '../authentication/GoogleAuth';
 import { TokenResponse } from 'expo-app-auth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
-import { AxiosResponse } from 'axios';
 import Globals from '../context/Globals';
 import { mockMeetings } from '../../mock/Meetings';
 
@@ -80,14 +79,14 @@ class Store {
     this.setIsLoading(true);
     const token = await this.googleAuth.getCachedAuthAsync();
     this.userToken = token;
-    if (token?.idToken) {
+    if (token && token.idToken) {
       void this.amphitryonDAO.connectUser(token.idToken).then((response: Response | null) => {
         if (response) {
-          const token = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
-          this.sessionToken = token;
+          const sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
+          this.sessionToken = sessionToken;
           console.log(response);
-          this.amphitryonDAO.setSessionToken(token);
-          this.authenticatedUser = JSON.parse(response.json);
+          this.amphitryonDAO.setSessionToken(sessionToken ? sessionToken : '');
+          this.authenticatedUser = response.json;
           this.setIsLoggedIn(true);
         }
       });
@@ -155,8 +154,8 @@ class Store {
           .connectUser(this.userToken?.idToken)
           .then((response: Response | null) => {
             if (response) {
-              this.sessionToken = response.headers[Globals.STRINGS.SESSION_TOKEN_NAME];
-              this.authenticatedUser = JSON.parse(response.data);
+              this.sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
+              this.authenticatedUser = response.json;
               this.setIsLoggedIn(true);
             }
           });

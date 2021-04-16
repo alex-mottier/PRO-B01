@@ -17,6 +17,7 @@ import {
   Text,
   TextInput,
   Title,
+  useTheme,
 } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
@@ -42,6 +43,7 @@ const Search: React.FC = () => {
   const [endDate, setEndDate] = React.useState(addDays(new Date(), 7));
 
   const meetings: Meeting[] = mockMeetings;
+  const paperTheme = useTheme();
 
   const handleChangeStartDate = (_event: Event, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || startDate;
@@ -81,7 +83,7 @@ const Search: React.FC = () => {
     <Provider>
       <SafeAreaView>
         <ScrollView>
-          <View style={styles.container}>
+          <View style={[styles.container, { backgroundColor: paperTheme.colors.surface }]}>
             <View style={styles.search}>
               <TextInput
                 label="Rechercher..."
@@ -107,7 +109,10 @@ const Search: React.FC = () => {
               <Modal
                 visible={visible}
                 onDismiss={() => setModalVisible(false)}
-                contentContainerStyle={styles.modalcontainer}>
+                contentContainerStyle={[
+                  styles.modalcontainer,
+                  { backgroundColor: paperTheme.colors.surface },
+                ]}>
                 <View style={styles.modal}>
                   <View style={styles.close}>
                     <IconButton

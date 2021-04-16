@@ -5,31 +5,17 @@
  * @brief   Test class of users
  */
 
-import { TokenResponse } from 'expo-app-auth';
+import { User } from '../app/models/ApplicationTypes';
 
 describe('User', () => {
-  const mockToken: TokenResponse = {
-    accessToken: '',
-    accessTokenExpirationDate: '',
-    additionalParameters: null,
-    idToken: '',
-    refreshToken: '',
-    tokenType: '',
-  };
-
   it('should create a new user instance', () => {
-    const user = { name: 'Username', token: mockToken };
+    const user: User = { name: 'Username' };
     expect(user).not.toBeNull();
     expect(user).not.toBeUndefined();
   });
 
   it('should return its name', () => {
-    const user = { name: 'Username', token: mockToken };
+    const user = { name: 'Username' };
     expect(user.name).toBe('Username');
-  });
-
-  it('should render the token', () => {
-    const user = { name: 'Username', token: mockToken };
-    expect(user.token).toBe(mockToken);
   });
 });
