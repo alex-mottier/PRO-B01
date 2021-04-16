@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MeetingControllerTest {
+class MeetingResponseControllerTest {
 
     MeetingRepository meetingRepository;
     MeetingService meetingService = new MeetingService(meetingRepository);

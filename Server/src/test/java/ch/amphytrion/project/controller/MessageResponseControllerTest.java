@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MessageControllerTest {
+class MessageResponseControllerTest {
 
     MessageRepository messageRepository;
     MessageService messageService = new MessageService(messageRepository);
