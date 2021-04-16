@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 15,
     backgroundColor: 'white',
-    padding: 20,
   },
   fab: {
     marginTop: 10,
@@ -43,6 +42,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
     color: Globals.COLORS.BLUE,
+  },
+  main: {
+    width: '100%',
+    padding: 10,
   },
 });
 

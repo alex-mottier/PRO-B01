@@ -41,6 +41,7 @@ export type Meeting = {
   end: Date;
   ownerID: string;
   chatId: string;
+  isPrivate: boolean;
 };
 
 export type Chat = {

@@ -13,6 +13,7 @@ export const mockMeetings: Meeting[] = [
     end: new Date(),
     ownerID: '',
     chatId: '',
+    isPrivate: true,
   },
   {
     name: 'RES - Préparation TE1',
@@ -26,6 +27,7 @@ export const mockMeetings: Meeting[] = [
     end: new Date(),
     ownerID: '',
     chatId: '',
+    isPrivate: true,
   },
   {
     name: 'PCO - Labo train',
@@ -39,5 +41,6 @@ export const mockMeetings: Meeting[] = [
     end: new Date(),
     ownerID: '',
     chatId: '',
+    isPrivate: false,
   },
 ];

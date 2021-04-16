@@ -91,14 +91,16 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation }) => {
               style={styles.field}
             />
             <ScrollView style={styles.scrollview}>
-              {locations.map((location: Location) => (
-                <LocationComponent
-                  key={location.name}
-                  location={location}
-                  onChoose={(location: Location) => handleChooseLocation(location)}
-                  isAddView={true}
-                />
-              ))}
+              <View style={styles.locations}>
+                {locations.map((location: Location) => (
+                  <LocationComponent
+                    key={location.name}
+                    location={location}
+                    onChoose={(location: Location) => handleChooseLocation(location)}
+                    isAddView={true}
+                  />
+                ))}
+              </View>
             </ScrollView>
           </View>
         </Modal>

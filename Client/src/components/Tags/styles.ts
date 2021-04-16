@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 30,
+    margin: 20,
     backgroundColor: 'white',
   },
   field: {

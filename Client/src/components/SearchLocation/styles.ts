@@ -38,18 +38,19 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 30,
+    margin: 20,
     backgroundColor: 'white',
   },
   field: {
     width: '80%',
+    marginBottom: 20,
   },
   card: {
     marginTop: 10,
     width: '100%',
   },
   modal: {
-    padding: 20,
+    padding: 10,
     width: '100%',
     alignItems: 'center',
   },
@@ -60,8 +61,14 @@ const styles = StyleSheet.create({
   title: {
     justifyContent: 'center',
     textAlign: 'center',
+    marginTop: 10,
     marginBottom: 20,
     color: Globals.COLORS.BLUE,
+  },
+  locations: {
+    padding: 10,
+    paddingTop: 0,
+    width: '98%',
   },
 });
 
