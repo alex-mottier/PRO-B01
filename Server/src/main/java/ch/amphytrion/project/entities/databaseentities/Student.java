@@ -1,6 +1,5 @@
-package ch.amphytrion.project.entities.notdatabaseentities.databaseentities;
+package ch.amphytrion.project.entities.databaseentities;
 
-import ch.amphytrion.project.entities.notdatabaseentities.MeetingResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,6 +13,6 @@ import java.util.ArrayList;
 @Document
 public class Student extends User {
     private ArrayList<Message> messages;
-    private ArrayList<MeetingResponse> meetingsParticipations;
-    private ArrayList<MeetingResponse> meetingsOwner;
+    private ArrayList<Meeting> meetingsParticipations;
+    private ArrayList<Meeting> meetingsOwner;
 }

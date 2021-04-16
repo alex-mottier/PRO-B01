@@ -1,24 +1,10 @@
-package ch.amphytrion.project.notdatabaseentities;
+package ch.amphytrion.project.entities.notdatabaseentities;
 
-import ch.amphytrion.project.databaseentities.apiresponse.Tag;
-import lombok.AllArgsConstructor;
+import ch.amphytrion.project.entities.databaseentities.Meeting;
 import lombok.Data;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-
-@AllArgsConstructor
 @Data
-@Document
-public class MeetingResponse {
-    private String name;
-    private String description;
-    private ArrayList<Tag> tags;
-    private String locationID;
-    private Integer nbPeople;
-    private LocalDateTime start;
-    private LocalDateTime end;
-    private String ownerID;
-    private String chatID;
+public class MeetingResponse extends Meeting {
+    private String locationName;
+    private Integer maxPeople;
 }

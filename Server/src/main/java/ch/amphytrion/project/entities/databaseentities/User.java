@@ -1,4 +1,4 @@
-package ch.amphytrion.project.entities.notdatabaseentities.databaseentities;
+package ch.amphytrion.project.entities.databaseentities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
