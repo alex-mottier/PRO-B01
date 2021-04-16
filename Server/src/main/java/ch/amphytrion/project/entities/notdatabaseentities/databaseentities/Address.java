@@ -1,4 +1,4 @@
-package ch.amphytrion.project.entities;
+package ch.amphytrion.project.entities.apiresponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

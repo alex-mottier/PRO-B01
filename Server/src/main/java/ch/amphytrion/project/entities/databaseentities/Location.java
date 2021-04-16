@@ -1,4 +1,4 @@
-package ch.amphytrion.project.entities;
+package ch.amphytrion.project.entities.notdatabaseentities.databaseentities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,11 +10,9 @@ import java.util.ArrayList;
 @Data
 @Document
 public class Location {
-    private Host host;
-    private Address address;
-    private ArrayList<Meeting> meetings;
+    private Integer nbPeople;
     private ArrayList<Tag> tags;
     private ArrayList<OpeningHour> openingHours;
     private String name;
-
+    private String description;
 }

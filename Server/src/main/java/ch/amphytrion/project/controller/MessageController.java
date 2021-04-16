@@ -1,6 +1,6 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.entities.Message;
+import ch.amphytrion.project.entities.databaseentities.Message;
 import ch.amphytrion.project.services.MessageService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -34,7 +34,7 @@ public class MessageController extends BaseController implements IGenericControl
 
     @Override
     @PostMapping("/messages")
-    public ResponseEntity save(Message entity) {
+    public ResponseEntity<Message> save(Message entity) {
         try {
             return ResponseEntity.ok(messageService.save(entity));
         } catch (Exception e) {
@@ -44,7 +44,7 @@ public class MessageController extends BaseController implements IGenericControl
 
     @Override
     @GetMapping("/messages/{id}")
-    public ResponseEntity getById(Long id) {
+    public ResponseEntity<Message> getById(String id) {
         try {
             return ResponseEntity.ok(messageService.findById(id));
         } catch (Exception e) {

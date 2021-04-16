@@ -1,6 +1,6 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.entities.Location;
+import ch.amphytrion.project.entities.databaseentities.Location;
 import ch.amphytrion.project.services.LocationService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
     @Override
+    @GetMapping("/locations")
     public ResponseEntity<List<Location>> getAll() {
         try {
             return ResponseEntity.ok(locationService.findAll());
@@ -31,7 +33,8 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
     @Override
-    public ResponseEntity save(Location entity) {
+    @PostMapping("/location")
+    public ResponseEntity<Location> save(Location entity) {
         try {
             return ResponseEntity.ok(locationService.save(entity));
         } catch (Exception e) {
@@ -40,7 +43,8 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
     @Override
-    public ResponseEntity getById(Long id) {
+    @GetMapping("/location/{id}")
+    public ResponseEntity<Location> getById(String id) {
         try {
             return ResponseEntity.ok(locationService.findById(id));
         } catch (Exception e) {

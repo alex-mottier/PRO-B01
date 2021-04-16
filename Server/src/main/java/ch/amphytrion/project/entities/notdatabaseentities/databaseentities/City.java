@@ -1,4 +1,4 @@
-package ch.amphytrion.project.entities;
+package ch.amphytrion.project.entities.apiresponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +9,9 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @Data
 @Document
-public class Chat {
+public class City {
+    private ArrayList<Address> adresses;
+    private String name;
+    private Integer zip;
 
-    private ArrayList<Message> messages = new ArrayList<>();
-    private Meeting meeting;
 }

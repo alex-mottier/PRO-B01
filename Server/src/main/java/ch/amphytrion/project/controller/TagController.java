@@ -1,6 +1,6 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.entities.Tag;
+import ch.amphytrion.project.entities.databaseentities.Tag;
 import ch.amphytrion.project.services.TagService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -34,7 +34,7 @@ public class TagController extends BaseController implements IGenericController<
         }    }
 
     @Override
-    @PostMapping("/tags")
+    @PostMapping("/tag")
     public ResponseEntity<Tag> save(Tag entity) {
         try {
             return ResponseEntity.ok(tagService.save(entity));
@@ -44,8 +44,8 @@ public class TagController extends BaseController implements IGenericController<
     }
 
     @Override
-    @GetMapping("/tags/{id}")
-    public ResponseEntity getById(Long id) {
+    @GetMapping("/tag/{id}")
+    public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(tagService.findById(id));
         } catch (Exception e) {

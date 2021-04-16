@@ -1,4 +1,4 @@
-package ch.amphytrion.project.entities;
+package ch.amphytrion.project.entities.notdatabaseentities.databaseentities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,8 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @AllArgsConstructor
 @Document
 public class User {
-    @Field("UserFirstname")
-    private String firstname;
-    @Field("UserLastname")
-    private String lastname;
+    @Field("username")
+    private String name;
+    private String tokenResponse;
 }

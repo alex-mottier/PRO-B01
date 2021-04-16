@@ -1,10 +1,10 @@
-package ch.amphytrion.project.entities;
+package ch.amphytrion.project.entities.notdatabaseentities.databaseentities;
 
+import ch.amphytrion.project.entities.notdatabaseentities.MeetingResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
 
@@ -13,13 +13,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @Document
 public class Student extends User {
-    @Field("studentFirstname")
-    private String firstname;
-    @Field("studentLastname")
-    private String lastname;
     private ArrayList<Message> messages;
-    private ArrayList<Meeting> meetingsParticipations;
-    private ArrayList<Meeting> meetingsOwner;
-
-
+    private ArrayList<MeetingResponse> meetingsParticipations;
+    private ArrayList<MeetingResponse> meetingsOwner;
 }
