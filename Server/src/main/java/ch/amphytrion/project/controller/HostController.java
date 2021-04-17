@@ -1,6 +1,6 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.entities.Host;
+import ch.amphytrion.project.entities.databaseentities.Host;
 import ch.amphytrion.project.services.HostService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -25,7 +25,7 @@ public class HostController extends BaseController implements IGenericController
     }
 
     @Override
-    @GetMapping("/host")
+    @GetMapping("/hosts")
     public ResponseEntity<List<Host>> getAll() {
         try {
             return ResponseEntity.ok(hostService.findAll());
@@ -36,7 +36,7 @@ public class HostController extends BaseController implements IGenericController
 
     @Override
     @PostMapping("/host")
-    public ResponseEntity save(Host entity) {
+    public ResponseEntity<Host> save(Host entity) {
         try {
             return ResponseEntity.ok(hostService.save(entity));
         } catch (Exception e) {

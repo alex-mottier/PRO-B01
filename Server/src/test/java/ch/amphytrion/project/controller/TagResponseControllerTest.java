@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TagControllerTest {
+class TagResponseControllerTest {
 
     TagRepository tagRepository;
     TagService tagService = new TagService(tagRepository);

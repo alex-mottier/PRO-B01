@@ -1,6 +1,6 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.entities.City;
+import ch.amphytrion.project.entities.databaseentities.City;
 import ch.amphytrion.project.services.CityService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -25,7 +25,7 @@ public class CityController extends BaseController implements IGenericController
     }
 
     @Override
-    @GetMapping("/city")
+    @GetMapping("/cities")
     public ResponseEntity<List<City>> getAll() {
         try {
             return ResponseEntity.ok(cityService.findAll());
@@ -36,7 +36,7 @@ public class CityController extends BaseController implements IGenericController
 
     @Override
     @PostMapping("/city")
-    public ResponseEntity save(City entity) {
+    public ResponseEntity<City> save(City entity) {
         try {
             return ResponseEntity.ok(cityService.save(entity));
         } catch (Exception e) {

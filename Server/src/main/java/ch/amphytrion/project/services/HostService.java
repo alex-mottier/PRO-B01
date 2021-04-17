@@ -1,6 +1,6 @@
 package ch.amphytrion.project.services;
 
-import ch.amphytrion.project.entities.Host;
+import ch.amphytrion.project.entities.databaseentities.Host;
 import ch.amphytrion.project.repositories.HostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

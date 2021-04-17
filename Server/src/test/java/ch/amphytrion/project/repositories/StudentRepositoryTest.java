@@ -1,11 +1,9 @@
 package ch.amphytrion.project.repositories;
-import ch.amphytrion.project.entities.Student;
-import ch.amphytrion.project.services.*;
-import ch.amphytrion.project.controller.*;
+import ch.amphytrion.project.controller.StudentController;
+import ch.amphytrion.project.services.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @SpringBootTest
