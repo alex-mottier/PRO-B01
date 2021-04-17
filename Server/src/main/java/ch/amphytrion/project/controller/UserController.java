@@ -18,7 +18,7 @@ public class UserController extends BaseController implements IGenericController
     private final UserService userService;
 
     @Autowired
-    UserController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 

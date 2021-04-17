@@ -33,7 +33,7 @@ public class MessageController extends BaseController implements IGenericControl
     }
 
     @Override
-    @PostMapping("/messages")
+    @PostMapping("/message")
     public ResponseEntity<Message> save(Message entity) {
         try {
             return ResponseEntity.ok(messageService.save(entity));
@@ -43,7 +43,7 @@ public class MessageController extends BaseController implements IGenericControl
     }
 
     @Override
-    @GetMapping("/messages/{id}")
+    @GetMapping("/message/{id}")
     public ResponseEntity<Message> getById(String id) {
         try {
             return ResponseEntity.ok(messageService.findById(id));

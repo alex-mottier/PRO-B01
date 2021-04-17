@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class AddressController extends BaseController implements IGenericControl
     }
 
     @Override
-    @GetMapping("/adress/{id}")
+    @GetMapping("/address/{id}")
     public ResponseEntity<Address> getById(String id) {
         try {
             return ResponseEntity.ok(addressService.findById(id));
@@ -59,7 +60,7 @@ public class AddressController extends BaseController implements IGenericControl
             @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
             @ApiResponse(code = 403, message = "Access to this resource is forbidden")
     })
-    @GetMapping("/addressController")
+    //@GetMapping("/addressController")
     private String testController() {
         return this.getClass().getSimpleName();
     }

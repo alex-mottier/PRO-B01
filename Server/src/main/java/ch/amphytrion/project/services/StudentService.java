@@ -10,6 +10,7 @@ import java.util.List;
 @Service
 public class StudentService implements IGenericService<Student> {
 
+    @Autowired
     private StudentRepository studentRepository;
 
     @Autowired
@@ -52,4 +53,12 @@ public class StudentService implements IGenericService<Student> {
         return studentRepository.count();
     }
 
+    public Student findByUsername(String username) {
+        try{
+            return studentRepository.findByUsername(username);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

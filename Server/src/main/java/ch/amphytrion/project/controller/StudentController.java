@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-class StudentController extends BaseController implements IGenericController<Student>{
+public class StudentController extends BaseController implements IGenericController<Student>{
 
     private final StudentService studentService;
 
     @Autowired
-    StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 

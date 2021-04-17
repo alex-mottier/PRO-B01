@@ -33,8 +33,8 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
     @Override
-    @PostMapping("/location")
-    public ResponseEntity<Location> save(Location entity) {
+    @PostMapping("/locations")
+    public ResponseEntity save(Location entity) {
         try {
             return ResponseEntity.ok(locationService.save(entity));
         } catch (Exception e) {
