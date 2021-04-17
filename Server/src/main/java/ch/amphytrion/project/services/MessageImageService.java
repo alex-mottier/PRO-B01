@@ -1,6 +1,6 @@
 package ch.amphytrion.project.services;
 
-import ch.amphytrion.project.entities.MessageImage;
+import ch.amphytrion.project.entities.databaseentities.MessageImage;
 import ch.amphytrion.project.repositories.MessageImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class MessageImageService implements IGenericService<MessageImage> {
     }
 
     @Override
-    public MessageImage findById(long id) {
+    public MessageImage findById(String id) {
         try {
             return messageImageRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class MessageImageService implements IGenericService<MessageImage> {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         messageImageRepository.deleteById(id);
     }
 

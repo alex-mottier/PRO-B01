@@ -1,6 +1,6 @@
 package ch.amphytrion.project.services;
 
-import ch.amphytrion.project.entities.City;
+import ch.amphytrion.project.entities.databaseentities.City;
 import ch.amphytrion.project.repositories.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class CityService implements IGenericService<City> {
     }
 
     @Override
-    public City findById(long id) {
+    public City findById(String id) {
         try {
             return cityRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class CityService implements IGenericService<City> {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         cityRepository.deleteById(id);
     }
 

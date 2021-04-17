@@ -1,6 +1,6 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.entities.OpeningHour;
+import ch.amphytrion.project.entities.databaseentities.OpeningHour;
 import ch.amphytrion.project.services.OpeningHourService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class OpeningHourController extends BaseController implements IGenericCon
     }
 
     @Override
+    @GetMapping("/openinghours")
     public ResponseEntity<List<OpeningHour>> getAll() {
         try {
             return ResponseEntity.ok(openingHourService.findAll());
@@ -31,7 +33,8 @@ public class OpeningHourController extends BaseController implements IGenericCon
     }
 
     @Override
-    public ResponseEntity save(OpeningHour entity) {
+    @PostMapping("/openinghour")
+    public ResponseEntity<OpeningHour> save(OpeningHour entity) {
         try {
             return ResponseEntity.ok(openingHourService.save(entity));
         } catch (Exception e) {
@@ -40,7 +43,8 @@ public class OpeningHourController extends BaseController implements IGenericCon
     }
 
     @Override
-    public ResponseEntity getById(Long id) {
+    @GetMapping("/openinghour/{id}")
+    public ResponseEntity<OpeningHour> getById(String id) {
         try {
             return ResponseEntity.ok(openingHourService.findById(id));
         } catch (Exception e) {

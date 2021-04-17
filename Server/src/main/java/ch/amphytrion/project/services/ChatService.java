@@ -1,7 +1,7 @@
 package ch.amphytrion.project.services;
 
 import ch.amphytrion.project.repositories.ChatRepository;
-import ch.amphytrion.project.entities.Chat;
+import ch.amphytrion.project.entities.databaseentities.Chat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ public class ChatService implements IGenericService<Chat> {
     }
 
     @Override
-    public Chat findById(long id) {
+    public Chat findById(String id) {
         try {
             return chatRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class ChatService implements IGenericService<Chat> {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         chatRepository.deleteById(id);
     }
 

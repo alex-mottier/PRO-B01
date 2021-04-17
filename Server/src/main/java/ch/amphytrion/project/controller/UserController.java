@@ -1,8 +1,8 @@
 package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.dto.ConnectedUser;
-import ch.amphytrion.project.entities.User;
 import ch.amphytrion.project.repositories.UserRepository;
+import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.UserService;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -34,7 +34,7 @@ public class UserController extends BaseController implements IGenericController
     private final UserService userService;
 
     @Autowired
-    UserController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -106,7 +106,7 @@ public class UserController extends BaseController implements IGenericController
         }
     }
 
-    @PostMapping("/users")
+    @PostMapping("/user")
     public ResponseEntity<User> save(@RequestBody User entity){
         try {
             return ResponseEntity.ok(userService.save(entity));
@@ -115,8 +115,8 @@ public class UserController extends BaseController implements IGenericController
         }
     }
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id) {
+    @GetMapping("/user/{id}")
+    public ResponseEntity<User> getById(@PathVariable String id) {
         try {
             return ResponseEntity.ok(userService.findById(id));
         } catch (Exception e) {

@@ -1,10 +1,11 @@
 package ch.amphytrion.project.services;
 
-import ch.amphytrion.project.entities.Meeting;
+import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.repositories.MeetingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,12 +24,12 @@ public class MeetingService implements IGenericService<Meeting> {
     }
 
     @Override
-    public Meeting save(Meeting meeting) {
-        return meetingRepository.save(meeting);
+    public Meeting save(Meeting meetingResponse) {
+        return meetingRepository.save(meetingResponse);
     }
 
     @Override
-    public Meeting findById(long id) {
+    public Meeting findById(String id) {
         try {
             return meetingRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -38,12 +39,12 @@ public class MeetingService implements IGenericService<Meeting> {
     }
 
     @Override
-    public void delete(Meeting meeting) {
-        meetingRepository.delete(meeting);
+    public void delete(Meeting meetingResponse) {
+        meetingRepository.delete(meetingResponse);
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         meetingRepository.deleteById(id);
     }
 
@@ -51,5 +52,7 @@ public class MeetingService implements IGenericService<Meeting> {
     public long count() {
         return meetingRepository.count();
     }
+
+    ArrayList<Meeting> findByName(String name){ return meetingRepository.findByName(name);}
 
 }

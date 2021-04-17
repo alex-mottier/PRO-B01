@@ -1,13 +1,15 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.entities.Meeting;
+import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.services.MeetingService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -15,14 +17,15 @@ import java.util.List;
 @RestController
 public class MeetingController extends BaseController implements IGenericController<Meeting> {
 
-
     private final MeetingService meetingService;
 
+    @Autowired
     public MeetingController(MeetingService meetingService) {
         this.meetingService = meetingService;
     }
 
     @Override
+    @GetMapping("/meetings")
     public ResponseEntity<List<Meeting>> getAll() {
         try {
             return ResponseEntity.ok(meetingService.findAll());
@@ -32,7 +35,8 @@ public class MeetingController extends BaseController implements IGenericControl
     }
 
     @Override
-    public ResponseEntity save(Meeting entity) {
+    @PostMapping("/meeting")
+    public ResponseEntity<Meeting> save(Meeting entity) {
         try {
             return ResponseEntity.ok(meetingService.save(entity));
         } catch (Exception e) {
@@ -41,7 +45,8 @@ public class MeetingController extends BaseController implements IGenericControl
     }
 
     @Override
-    public ResponseEntity getById(Long id) {
+    @GetMapping("/meeting/{id}")
+    public ResponseEntity<Meeting> getById(String id) {
         try {
             return ResponseEntity.ok(meetingService.findById(id));
         } catch (Exception e) {

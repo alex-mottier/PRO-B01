@@ -1,6 +1,6 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.entities.Host;
+import ch.amphytrion.project.entities.databaseentities.Host;
 import ch.amphytrion.project.services.HostService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class HostController extends BaseController implements IGenericController
     }
 
     @Override
+    @GetMapping("/hosts")
     public ResponseEntity<List<Host>> getAll() {
         try {
             return ResponseEntity.ok(hostService.findAll());
@@ -33,7 +35,8 @@ public class HostController extends BaseController implements IGenericController
     }
 
     @Override
-    public ResponseEntity save(Host entity) {
+    @PostMapping("/host")
+    public ResponseEntity<Host> save(Host entity) {
         try {
             return ResponseEntity.ok(hostService.save(entity));
         } catch (Exception e) {
@@ -42,7 +45,8 @@ public class HostController extends BaseController implements IGenericController
     }
 
     @Override
-    public ResponseEntity getById(Long id) {
+    @GetMapping("/host/{id}")
+    public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(hostService.findById(id));
         } catch (Exception e) {

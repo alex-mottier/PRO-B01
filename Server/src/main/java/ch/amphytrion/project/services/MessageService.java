@@ -1,6 +1,6 @@
 package ch.amphytrion.project.services;
 
-import ch.amphytrion.project.entities.Message;
+import ch.amphytrion.project.entities.databaseentities.Message;
 import ch.amphytrion.project.repositories.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class MessageService implements IGenericService<Message> {
     }
 
     @Override
-    public Message findById(long id) {
+    public Message findById(String id) {
         try {
             return messageRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class MessageService implements IGenericService<Message> {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         messageRepository.deleteById(id);
     }
 
