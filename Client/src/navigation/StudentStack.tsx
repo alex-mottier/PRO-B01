@@ -16,6 +16,7 @@ import GlobalStore from '../app/stores/GlobalStore';
 import { observer } from 'mobx-react-lite';
 import LocationDetails from '../screens/Student/Location/LocationDetails';
 import HostDetails from '../screens/Student/Host/HostDetails';
+import ChatMeeting from '../screens/Student/Chat/ChatMeeting';
 
 // Parameters of the screens
 type StackNavigatorParamlist = {
@@ -23,6 +24,7 @@ type StackNavigatorParamlist = {
   Settings: undefined;
   LocationDetails: undefined;
   HostDetails: undefined;
+  Chat: undefined;
 };
 
 // Creating the application stack
@@ -105,6 +107,16 @@ const StudentStack: React.FC = () => {
       <Stack.Screen
         name="HostDetails"
         component={HostDetails}
+        options={({ route }) => {
+          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+          return {
+            headerTitle: routeName,
+          };
+        }}
+      />
+      <Stack.Screen
+        name="Chat"
+        component={ChatMeeting}
         options={({ route }) => {
           const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
           return {
