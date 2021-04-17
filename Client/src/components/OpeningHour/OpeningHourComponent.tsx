@@ -18,13 +18,13 @@ interface IProps {
 }
 
 const OpeninHourComponent: React.FC<IProps> = ({ openingHour }) => {
-  let startHour = format(openingHour.startTime, 'hh');
-  let startMinute = format(openingHour.startTime, 'mm');
+  const startHour = format(openingHour.startTime, 'hh');
+  const startMinute = format(openingHour.startTime, 'mm');
 
-  let endHour = format(openingHour.endTime, 'hh');
-  let endMinute = format(openingHour.endTime, 'mm');
+  const endHour = format(openingHour.endTime, 'hh');
+  const endMinute = format(openingHour.endTime, 'mm');
 
-  let days = openingHour.days;
+  const days = openingHour.days;
   return (
     <View>
       <Card elevation={10} style={styles.card}>

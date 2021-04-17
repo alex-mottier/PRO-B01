@@ -14,7 +14,6 @@ import Globals from '../app/context/Globals';
 import { View } from 'react-native';
 import GlobalStore from '../app/stores/GlobalStore';
 import { observer } from 'mobx-react-lite';
-import Location from '../screens/Student/Location/LocationDetails';
 import LocationDetails from '../screens/Student/Location/LocationDetails';
 import HostDetails from '../screens/Student/Host/HostDetails';
 

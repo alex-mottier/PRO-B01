@@ -1,7 +1,7 @@
-import { Day, DayEnum, Location } from '../app/models/ApplicationTypes';
+import { DayEnum, Location } from '../app/models/ApplicationTypes';
 
-let date = new Date();
-let endDate = new Date(date.getHours() + 1);
+const date = new Date();
+const endDate = new Date(date.getHours() + 1);
 
 export const mockLocation: Location = {
   name: 'G01',
