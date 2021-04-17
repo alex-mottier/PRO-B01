@@ -5,7 +5,7 @@
  * @brief   Test class of location
  */
 
-import { Day, Location } from '../app/models/ApplicationTypes';
+import { DayEnum, Location } from '../app/models/ApplicationTypes';
 
 describe('Location', () => {
   const location: Location = {
@@ -14,9 +14,29 @@ describe('Location', () => {
     tags: [{ name: 'Salle de cours' }, { name: 'HEIG-VD' }],
     nbPeople: 8,
     openingHours: [
-      { startTime: new Date(), endTime: new Date(), day: Day.MON },
-      { startTime: new Date(), endTime: new Date(), day: Day.TUE },
+      {
+        id: '1',
+        startTime: new Date(),
+        endTime: new Date(),
+        days: [{ name: 'Lundi', day: DayEnum.MON }],
+      },
+      {
+        id: '2',
+        startTime: new Date(),
+        endTime: new Date(),
+        days: [{ name: 'Lundi', day: DayEnum.TUE }],
+      },
     ],
+    host: {
+      name: 'HEIG-VD',
+      description: 'Prix Béton !',
+      tags: [{ name: 'HES-SO' }, { name: 'HEIG-VD' }],
+      address: {
+        streetName: 'Rue du vieux Port 1',
+        city: 'Yverdon-les-bains',
+        npa: 1400,
+      },
+    },
   };
 
   it('should create a new location instance', () => {
@@ -43,5 +63,9 @@ describe('Location', () => {
   it('should return its opening hours', () => {
     expect(location.openingHours).not.toBe(null);
     expect(location.openingHours.length).toBe(2);
+  });
+
+  it('should return its host', () => {
+    expect(location.host).not.toBe(null);
   });
 });

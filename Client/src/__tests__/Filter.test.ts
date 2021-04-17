@@ -5,7 +5,7 @@
  * @brief   Test class of a filter
  */
 
-import { Day, Filter } from '../app/models/ApplicationTypes';
+import { DayEnum, Filter } from '../app/models/ApplicationTypes';
 
 describe('Filter', () => {
   const filter: Filter = {
@@ -20,9 +20,29 @@ describe('Filter', () => {
         tags: [{ name: 'Salle de cours' }, { name: 'HEIG-VD' }],
         nbPeople: 8,
         openingHours: [
-          { startTime: new Date(), endTime: new Date(), day: Day.MON },
-          { startTime: new Date(), endTime: new Date(), day: Day.TUE },
+          {
+            id: '1',
+            startTime: new Date(),
+            endTime: new Date(),
+            days: [{ name: 'Lundi', day: DayEnum.MON }],
+          },
+          {
+            id: '2',
+            startTime: new Date(),
+            endTime: new Date(),
+            days: [{ name: 'Lundi', day: DayEnum.TUE }],
+          },
         ],
+        host: {
+          name: 'HEIG-VD',
+          description: 'Prix Béton !',
+          tags: [{ name: 'HES-SO' }, { name: 'HEIG-VD' }],
+          address: {
+            streetName: 'Rue du vieux Port 1',
+            city: 'Yverdon-les-bains',
+            npa: 1400,
+          },
+        },
       },
     ],
   };
