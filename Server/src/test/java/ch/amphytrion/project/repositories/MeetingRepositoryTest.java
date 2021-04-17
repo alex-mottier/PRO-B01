@@ -1,17 +1,12 @@
 package ch.amphytrion.project.repositories;
+
 import ch.amphytrion.project.controller.MeetingController;
 import ch.amphytrion.project.controller.StudentController;
-import ch.amphytrion.project.entities.*;
-
 import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class MeetingRepositoryTest {
