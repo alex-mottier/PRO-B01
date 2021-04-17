@@ -6,11 +6,12 @@
  */
 
 import asyncStorage from '@react-native-async-storage/async-storage';
-import { User } from '../models/ApplicationTypes';
+import { TokenResponse } from 'expo-app-auth';
 
 export default class LocalStorageDAO {
   private static instance: LocalStorageDAO = new LocalStorageDAO();
-  public static readonly storageKey = '@Amphitryon:user';
+  public static readonly publicToken = '@Amphitryon:token';
+  public static readonly privateToken = '@Amphitryon:session';
 
   /**
    * Private instantiation to apply singleton pattern
@@ -26,28 +27,28 @@ export default class LocalStorageDAO {
   }
 
   /**
-   * Get the user registered
-   * @returns user registered or null if user is not found
+   * Get the token saved locally
+   * @returns token or null if it does not exist
    */
-  getUser = async (): Promise<User | null> => {
-    const user = await asyncStorage.getItem(LocalStorageDAO.storageKey);
+  getToken = async (): Promise<TokenResponse | null> => {
+    const user = await asyncStorage.getItem(LocalStorageDAO.publicToken);
     return user === null ? null : JSON.parse(user);
   };
 
   /**
-   * Set the registered user
-   * @param user the registered user
-   * @returns promise when user is registred
+   * Set the user token
+   * @param token to save locally
+   * @returns promise when token is saved
    */
-  setUser = async (user: User): Promise<void> => {
-    return await asyncStorage.setItem(LocalStorageDAO.storageKey, JSON.stringify(user));
+  setToken = async (token: TokenResponse): Promise<void> => {
+    return await asyncStorage.setItem(LocalStorageDAO.publicToken, JSON.stringify(token));
   };
 
   /**
-   * Remove the current registered user
-   * @returns promise when user is removed
+   * Remove the user token
+   * @returns promise when token is removed
    */
-  removeUser = async (): Promise<void> => {
-    return await asyncStorage.removeItem(LocalStorageDAO.storageKey);
+  removeToken = async (): Promise<void> => {
+    return await asyncStorage.removeItem(LocalStorageDAO.publicToken);
   };
 }

@@ -15,12 +15,15 @@ import { format } from 'date-fns';
 import frenchLocale from 'date-fns/locale/fr';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Meeting, Tag } from '../../app/models/ApplicationTypes';
+import { useNavigation } from '@react-navigation/core';
 
 interface IProps {
   meeting: Meeting;
+  isOwner: boolean;
 }
 
-const MeetingComponent: React.FC<IProps> = ({ meeting }) => {
+const MeetingComponent: React.FC<IProps> = ({ meeting, isOwner }) => {
+  const navigation = useNavigation();
   const [isReduced, setIsReduced] = React.useState(true);
 
   let nbColors = 0;
@@ -50,7 +53,7 @@ const MeetingComponent: React.FC<IProps> = ({ meeting }) => {
             <View>
               <View style={styles.nbPeople}>
                 <Text style={styles.gray}>
-                  {meeting.nbPeople}/{meeting.location.nbPeople}
+                  {meeting.nbPeople}/{meeting.maxPeople}
                 </Text>
                 <MaterialCommunityIcons
                   name={Globals.ICONS.PROFILE}
@@ -103,7 +106,7 @@ const MeetingComponent: React.FC<IProps> = ({ meeting }) => {
               size={Globals.SIZES.ICON_BUTTON}
               style={styles.icon}
             />
-            <Text style={styles.gray}>{meeting.location.name}</Text>
+            <Text style={styles.gray}>{meeting.locationName}</Text>
           </View>
           <Card.Actions style={styles.actions}>
             <View>
@@ -115,15 +118,39 @@ const MeetingComponent: React.FC<IProps> = ({ meeting }) => {
               />
               <Text style={[styles.gray, styles.buttonText]}>Discuter</Text>
             </View>
-            <View>
-              <IconButton
-                icon={Globals.ICONS.JOIN}
-                size={30}
-                onPress={() => console.log('Pressed')}
-                color={Globals.COLORS.GREEN}
-              />
-              <Text style={[styles.gray, styles.buttonText]}>Rejoindre</Text>
-            </View>
+            {!isOwner && (
+              <View>
+                <IconButton
+                  icon={Globals.ICONS.JOIN}
+                  size={30}
+                  onPress={() => console.log('Pressed')}
+                  color={Globals.COLORS.GREEN}
+                />
+                <Text style={[styles.gray, styles.buttonText]}>Rejoindre</Text>
+              </View>
+            )}
+            {isOwner && (
+              <View>
+                <IconButton
+                  icon={Globals.ICONS.EDIT}
+                  size={30}
+                  onPress={() => navigation.navigate(Globals.STRINGS.CREATE)}
+                  color={Globals.COLORS.BLUE}
+                />
+                <Text style={[styles.gray, styles.buttonText]}>Modifier</Text>
+              </View>
+            )}
+            {isOwner && (
+              <View>
+                <IconButton
+                  icon={Globals.ICONS.DELETE}
+                  size={30}
+                  onPress={() => console.log('Pressed')}
+                  color={Globals.COLORS.PINK}
+                />
+                <Text style={[styles.gray, styles.buttonText]}>Supprimer</Text>
+              </View>
+            )}
           </Card.Actions>
           <IconButton
             icon={Globals.ICONS.ARROW_UP}

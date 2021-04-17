@@ -5,21 +5,77 @@
  * @brief   Application types for typing
  */
 
-import { TokenResponse } from 'expo-app-auth';
-
 export type Location = {
   name: string;
+  description: string;
+  tags: Tag[];
   nbPeople: number;
+  openingHours: OpeningHour[];
+  host: Host;
 };
+
+// TODO : Sujet à modification
+export type Host = {
+  name: string;
+  description: string;
+  address: Address;
+  tags: Tag[];
+};
+
+// TODO : Sujet à modification
+export type Address = {
+  streetName: string;
+  city: string;
+  npa: number;
+};
+
+export type OpeningHour = {
+  id: string;
+  startTime: Date;
+  endTime: Date;
+  days: Day[];
+};
+
+export type Day = {
+  name: string;
+  day: DayEnum;
+};
+
+export enum DayEnum {
+  SUN,
+  MON,
+  TUE,
+  WED,
+  THU,
+  FRI,
+  SAT,
+}
 
 export type Meeting = {
   name: string;
   description: string;
   tags: Tag[];
-  location: Location;
+  locationID: string;
+  locationName: string;
+  maxPeople: number;
   nbPeople: number;
   start: Date;
   end: Date;
+  ownerID: string;
+  chatId: string;
+  isPrivate: boolean;
+};
+
+export type Chat = {
+  id: string;
+  messages: Message[];
+};
+
+export type Message = {
+  id: string;
+  message: string;
+  username: string;
+  date: Date;
 };
 
 export type Tag = {
@@ -28,5 +84,12 @@ export type Tag = {
 
 export type User = {
   name: string;
-  token: TokenResponse;
+};
+
+export type Filter = {
+  name: string | null;
+  startDate: Date | null;
+  endDate: Date | null;
+  tags: Tag[] | null;
+  locations: Location[] | null;
 };
