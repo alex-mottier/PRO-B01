@@ -18,11 +18,12 @@ import { Meeting, Tag } from '../../app/models/ApplicationTypes';
 import { useNavigation } from '@react-navigation/core';
 
 interface IProps {
-  meeting: Meeting;
+  meeting: Meeting | undefined;
   isOwner: boolean;
+  isChatable: boolean;
 }
 
-const MeetingComponent: React.FC<IProps> = ({ meeting, isOwner }) => {
+const MeetingComponent: React.FC<IProps> = ({ meeting, isOwner, isChatable = true }) => {
   const navigation = useNavigation();
   const [isReduced, setIsReduced] = React.useState(true);
 
@@ -109,15 +110,17 @@ const MeetingComponent: React.FC<IProps> = ({ meeting, isOwner }) => {
             <Text style={styles.gray}>{meeting.locationName}</Text>
           </View>
           <Card.Actions style={styles.actions}>
-            <View>
-              <IconButton
-                icon={Globals.ICONS.MESSAGE}
-                size={30}
-                color={Globals.COLORS.ORANGE}
-                onPress={() => console.log('Pressed')}
-              />
-              <Text style={[styles.gray, styles.buttonText]}>Discuter</Text>
-            </View>
+            {isChatable && (
+              <View>
+                <IconButton
+                  icon={Globals.ICONS.MESSAGE}
+                  size={30}
+                  color={Globals.COLORS.ORANGE}
+                  onPress={() => navigation.navigate('Chat')}
+                />
+                <Text style={[styles.gray, styles.buttonText]}>Discuter</Text>
+              </View>
+            )}
             {!isOwner && (
               <View>
                 <IconButton
