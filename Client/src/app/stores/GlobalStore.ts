@@ -7,7 +7,7 @@
 
 import { action, makeAutoObservable, observable } from 'mobx';
 import { createContext } from 'react';
-import { Meeting, User, Location, Host } from '../models/ApplicationTypes';
+import { Meeting, User, Location, Host, Chat } from '../models/ApplicationTypes';
 import GoogleAuth from '../authentication/GoogleAuth';
 import { TokenResponse } from 'expo-app-auth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
@@ -15,6 +15,7 @@ import Globals from '../context/Globals';
 import { mockMeetings } from '../../mock/Meetings';
 import { mockLocation } from '../../mock/Location';
 import { mockHost } from '../../mock/Host';
+import { mockChat } from '../../mock/Chat';
 
 class Store {
   private amphitryonDAO = AmphitryonDAO.getInstance();
@@ -56,6 +57,14 @@ class Store {
    */
   @action setUserToken(token: TokenResponse | null): void {
     this.userToken = token;
+  }
+
+  /**
+   * Set the authenticated user
+   * @param userAuthenticated the authenticated user or null
+   */
+  @action getAuthenticatedUser(): User | null {
+    return this.authenticatedUser;
   }
 
   /**
@@ -176,6 +185,10 @@ class Store {
 
   @action loadMyHost(): Host {
     return mockHost;
+  }
+
+  @action loadMyChat(): Chat {
+    return mockChat;
   }
 }
 
