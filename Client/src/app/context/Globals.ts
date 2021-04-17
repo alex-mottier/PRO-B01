@@ -17,6 +17,7 @@ export default {
     FACEBOOK: '#4267B2',
     GOOGLE: '#DB4437',
     GRAY: '#d3d3d3',
+    DARK_GRAY: '#525252',
   },
   ICONS: {
     ADD_PROFILE: 'account-plus',

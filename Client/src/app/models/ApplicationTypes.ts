@@ -74,7 +74,7 @@ export type Chat = {
 export type Message = {
   id: string;
   message: string;
-  username: string;
+  username: string | undefined;
   date: Date;
 };
 
