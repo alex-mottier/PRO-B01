@@ -20,6 +20,7 @@ export default {
     DARK_GRAY: '#525252',
   },
   ICONS: {
+    ABC: 'alphabetical',
     ADD_PROFILE: 'account-plus',
     ADD_TAG: 'plus-circle',
     ARROW_LEFT: 'chevron-left',

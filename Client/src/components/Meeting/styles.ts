@@ -42,6 +42,9 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 10,
   },
+  iconLittle: {
+    paddingLeft: 10,
+  },
   infoWithIcon: {
     flexDirection: 'row',
     justifyContent: 'flex-start',

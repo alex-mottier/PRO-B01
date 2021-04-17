@@ -81,7 +81,7 @@ const MeetingComponent: React.FC<IProps> = ({ meeting, isOwner, isChatable = tru
           </View>
           <View style={styles.infoWithIcon}>
             <MaterialCommunityIcons
-              name={Globals.ICONS.INFO}
+              name={Globals.ICONS.ABC}
               color={Globals.COLORS.GRAY}
               size={Globals.SIZES.ICON_BUTTON}
               style={styles.icon}
@@ -108,6 +108,14 @@ const MeetingComponent: React.FC<IProps> = ({ meeting, isOwner, isChatable = tru
               style={styles.icon}
             />
             <Text style={styles.gray}>{meeting.locationName}</Text>
+            <View style={styles.iconLittle}>
+              <MaterialCommunityIcons
+                name={Globals.ICONS.INFO}
+                color={Globals.COLORS.GRAY}
+                size={Globals.SIZES.ICON_HEADER}
+                onPress={() => navigation.navigate('LocationDetails')}
+              />
+            </View>
           </View>
           <Card.Actions style={styles.actions}>
             {isChatable && (
