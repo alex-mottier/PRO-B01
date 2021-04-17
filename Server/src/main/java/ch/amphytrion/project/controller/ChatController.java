@@ -68,8 +68,8 @@ public class ChatController extends BaseController implements IGenericController
         return this.getClass().getSimpleName();
     }
 
-    @GetMapping("/chat/{id}")
-    private ResponseEntity<ArrayList<Message>> getAllMessages(String id) {
+    @GetMapping("/chat/{id}/allMessages")
+    private ResponseEntity<ArrayList<Message>> getAllMessagesFromChatID(String id) {
          return ResponseEntity.ok((chatService.findById(id)).getMessages());
     }
 
