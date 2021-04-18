@@ -1,5 +1,5 @@
 /**
- * @file    Tag.test.ts
+ * @file    Meeting.test.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    22.03.2021
  * @brief   Test class of meeting

@@ -1,8 +1,8 @@
 /**
- * @file    TagComponent.tsx
+ * @file    OpeningHour.tsx
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    10.04.2021
- * @brief   Tags component
+ * @brief   Opening hour component
  */
 
 import * as React from 'react';
@@ -13,18 +13,21 @@ import { OpeningHour, Day } from '../../app/models/ApplicationTypes';
 import styles from './styles';
 import { format } from 'date-fns';
 
+/**
+ * Component props
+ */
 interface IProps {
   openingHour: OpeningHour;
 }
 
 const OpeninHourComponent: React.FC<IProps> = ({ openingHour }) => {
+  /* Local variables */
   const startHour = format(openingHour.startTime, 'hh');
   const startMinute = format(openingHour.startTime, 'mm');
-
   const endHour = format(openingHour.endTime, 'hh');
   const endMinute = format(openingHour.endTime, 'mm');
-
   const days = openingHour.days;
+
   return (
     <View>
       <Card elevation={10} style={styles.card}>

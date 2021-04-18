@@ -1,8 +1,8 @@
 /**
- * @file    Profile.tsx
+ * @file    HostDetails.tsx
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    04.03.2021
- * @brief   Student profile page
+ * @brief   Host details page
  */
 
 import * as React from 'react';
@@ -16,17 +16,24 @@ import { colors } from '../../../app/context/Theme';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
 
 const HostDetails: React.FC = () => {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [host, setHost] = React.useState<Host>();
+  /* Usage of MobX global state store */
   const store = React.useContext(GlobalStore);
 
+  /* Component states */
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [host, setHost] = React.useState<Host>();
+
+  /* Local variables */
+  let nbColors = 0;
+
+  /**
+   * Action when component is loaded
+   */
   React.useEffect(() => {
     setIsLoading(true);
-    setHost(store.loadMyHost());
+    setHost(store.loadHost());
     setIsLoading(false);
   }, []);
-
-  let nbColors = 0;
 
   return (
     <SafeAreaView>

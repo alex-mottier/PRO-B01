@@ -14,18 +14,23 @@ import { mockLocations } from '../../mock/Locations';
 import LocationComponent from '../Location/LocationComponent';
 import styles from './styles';
 
+/**
+ * Component props
+ */
 interface IProps {
   location: Location | null;
   chooseLocation(location: Location | null): void;
 }
 
 const SearchLocation: React.FC<IProps> = ({ location, chooseLocation }) => {
+  /* Component states */
   const [locationName, setLocationName] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
   const [locations, setLocations] = React.useState<Location[]>(mockLocations);
 
   /**
    * Action when a location is choosen
+   * @param location new location
    */
   const handleChooseLocation = (location: Location) => {
     chooseLocation(location);
@@ -36,6 +41,7 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation }) => {
 
   /**
    * Action when a location is choosen
+   * @param locationName new location name
    */
   const handleLocationNameChange = (locationName: string) => {
     setLocationName(locationName);
@@ -48,7 +54,7 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation }) => {
   return (
     <View>
       <View style={styles.tags}>
-        <Text style={{ color: 'gray' }}>Lieu</Text>
+        <Text style={{ color: Globals.COLORS.TEXT }}>Lieu</Text>
         <IconButton
           icon={Globals.ICONS.SEARCH}
           size={Globals.SIZES.ICON_MENU}
@@ -58,7 +64,7 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation }) => {
         <IconButton
           icon={Globals.ICONS.DELETE}
           size={Globals.SIZES.ICON_MENU}
-          color={'gray'}
+          color={Globals.COLORS.TEXT}
           disabled={location === null}
           style={styles.deleteLocation}
           onPress={() => chooseLocation(null)}

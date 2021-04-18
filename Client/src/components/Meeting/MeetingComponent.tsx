@@ -17,7 +17,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Meeting, Tag } from '../../app/models/ApplicationTypes';
 import { useNavigation } from '@react-navigation/core';
 import GlobalStore from '../../app/stores/GlobalStore';
+import { colors } from '../../app/context/Theme';
 
+/**
+ * Component props
+ */
 interface IProps {
   meeting: Meeting;
   isOwner: boolean;
@@ -25,18 +29,17 @@ interface IProps {
 }
 
 const MeetingComponent: React.FC<IProps> = ({ meeting, isOwner, isChatable = true }) => {
+  /* Usage of React Navigation */
   const navigation = useNavigation();
+
+  /* Usage of MobX global state store */
   const store = React.useContext(GlobalStore);
+
+  /* Component states */
   const [isReduced, setIsReduced] = React.useState(true);
 
+  /* Local variables */
   let nbColors = 0;
-  const colors = [
-    Globals.COLORS.YELLOW,
-    Globals.COLORS.BLUE,
-    Globals.COLORS.PINK,
-    Globals.COLORS.ORANGE,
-    Globals.COLORS.GREEN,
-  ];
 
   /**
    * Deploy or reduce meeting informations

@@ -15,12 +15,19 @@ import * as Font from 'expo-font';
 import LoadingComponent from './src/components/Loading/LoadingComponent';
 
 const App: React.FC = () => {
-  const [isLoading, setIsLoading] = React.useState(true);
+  /* Usage of MobX global state store */
   const store = React.useContext(GlobalStore);
 
-  // Loading the font for icons
+  /* Component states */
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  /**
+   * Action when component is loaded
+   */
   React.useEffect(() => {
     store.setIsLoading(true);
+
+    // Loading icons font
     void Font.loadAsync({
       MaterialCommunityIcons: require('./assets/MaterialCommunityIcons.ttf'),
     }).then(() => {

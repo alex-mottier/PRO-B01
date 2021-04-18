@@ -2,7 +2,7 @@
  * @file    SignIn.tsx
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    27.03.2021
- * @brief   Authentication page of the application
+ * @brief   Sign in page
  */
 
 import * as React from 'react';
@@ -17,12 +17,15 @@ import CustomButton from '../../../components/Buttons/CustomButton';
 import GlobalStore from '../../../app/stores/GlobalStore';
 
 const SignIn: React.FC = () => {
-  const store = React.useContext(GlobalStore);
+  /* Usage of React Navigation */
   const navigation = useNavigation();
+
+  /* Usage of MobX global state store */
+  const store = React.useContext(GlobalStore);
 
   const handleLogin = () => {
     store.setIsLoading(true);
-    store.signIn();
+    void store.signIn();
   };
 
   return (

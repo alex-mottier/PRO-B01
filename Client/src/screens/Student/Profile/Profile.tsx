@@ -17,13 +17,19 @@ import NoMeeting from '../../../components/NoMeeting/NoMeeting';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 
 const Profile: React.FC = () => {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [meetings, setMeetings] = React.useState<Meeting[]>([]);
+  /* Usage of MobX global state store */
   const store = React.useContext(GlobalStore);
 
+  /* Component states */
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [meetings, setMeetings] = React.useState<Meeting[]>([]);
+
+  /**
+   * Action when component is loaded
+   */
   React.useEffect(() => {
     setIsLoading(true);
-    setMeetings(store.loadMyMeetings());
+    setMeetings(store.loadUserMeetings());
     setIsLoading(false);
   }, []);
 
@@ -41,7 +47,12 @@ const Profile: React.FC = () => {
             <NoMeeting />
           ) : (
             meetings.map((meeting: Meeting) => (
-              <MeetingComponent key={meeting.name} meeting={meeting} isOwner={true} />
+              <MeetingComponent
+                key={meeting.name}
+                meeting={meeting}
+                isOwner={true}
+                isChatable={true}
+              />
             ))
           )}
         </View>

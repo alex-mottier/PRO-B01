@@ -1,8 +1,8 @@
 /**
  * @file    styles.ts
  * @author  Alexis Allemann & Alexandre Mottier
- * @date    04.03.2021
- * @brief   Authentication page styles
+ * @date    17.04.2021
+ * @brief   Meeting chat page styles
  */
 
 import { StyleSheet } from 'react-native';

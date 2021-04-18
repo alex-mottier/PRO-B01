@@ -2,7 +2,7 @@
  * @file    AmphitryonDAO.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    09.04.2021
- * @brief   Amphitryon DAO to retrieve data
+ * @brief   Amphitryon DAO to retrieve data from API
  */
 
 import { Alert } from 'react-native';

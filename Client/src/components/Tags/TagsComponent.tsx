@@ -22,6 +22,9 @@ import { colors } from '../../app/context/Theme';
 import { Tag } from '../../app/models/ApplicationTypes';
 import styles from './styles';
 
+/**
+ * Component props
+ */
 interface IProps {
   tags: Tag[];
   addTag(tag: Tag): void;
@@ -29,9 +32,11 @@ interface IProps {
 }
 
 const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
+  /* Component states */
   const [tagName, setTagName] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
 
+  /* Local variables */
   let nbColors = 0;
 
   /**
@@ -50,7 +55,7 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
   return (
     <View>
       <View style={styles.tags}>
-        <Text style={{ color: 'gray' }}>Tags</Text>
+        <Text style={{ color: Globals.COLORS.TEXT }}>Tags</Text>
         <IconButton
           icon={Globals.ICONS.ADD_TAG}
           size={Globals.SIZES.ICON_MENU}

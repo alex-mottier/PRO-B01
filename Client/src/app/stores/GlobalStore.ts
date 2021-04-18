@@ -2,7 +2,7 @@
  * @file    GlobalStore.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    22.03.2021
- * @brief   Global application state store
+ * @brief   MobX global application state store
  */
 
 import { action, computed, makeAutoObservable, observable } from 'mobx';
@@ -171,6 +171,10 @@ class Store {
     this.meetingToUpdate = meeting;
   }
 
+  /**
+   * Get the meeting to create or edit default values
+   * @returns the meeting to create or edit default values
+   */
   @computed getMeetingDefaultValues(): Meeting {
     if (this.meetingToUpdate) {
       return this.meetingToUpdate;
@@ -191,19 +195,19 @@ class Store {
       };
   }
 
-  @action loadMyMeetings(): Meeting[] {
+  @action loadUserMeetings(): Meeting[] {
     return mockMeetings;
   }
 
-  @action loadMyLocation(): Location {
+  @action loadLocations(): Location {
     return mockLocation;
   }
 
-  @action loadMyHost(): Host {
+  @action loadHost(): Host {
     return mockHost;
   }
 
-  @action loadMyChat(): Chat {
+  @action loadChat(): Chat {
     return mockChat;
   }
 }

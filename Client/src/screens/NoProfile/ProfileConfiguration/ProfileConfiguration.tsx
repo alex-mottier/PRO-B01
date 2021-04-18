@@ -14,8 +14,13 @@ import { Tabs, TabScreen } from 'react-native-paper-tabs';
 import GlobalStore from '../../../app/stores/GlobalStore';
 
 const ProfileConfiguration: React.FC = () => {
+  // Usage of react native paper theme library
   const paperTheme = useTheme();
+
+  /* Usage of MobX global state store */
   const store = React.useContext(GlobalStore);
+
+  /* Component states */
   const [username, setUsername] = React.useState('');
   const [establishment, setEstablishment] = React.useState('');
 

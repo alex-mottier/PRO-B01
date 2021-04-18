@@ -1,8 +1,8 @@
 /**
- * @file    Profile.tsx
+ * @file    LocationDetails.tsx
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    04.03.2021
- * @brief   Student profile page
+ * @brief   Location details page
  */
 
 import * as React from 'react';
@@ -20,18 +20,27 @@ import { useNavigation } from '@react-navigation/core';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
 
 const LocationDetails: React.FC = () => {
+  /* Usage of React Navigation */
   const navigation = useNavigation();
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [location, setLocation] = React.useState<Location>();
+
+  /* Usage of MobX global state store */
   const store = React.useContext(GlobalStore);
 
+  /* Component states */
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [location, setLocation] = React.useState<Location>();
+
+  /* Local variables */
+  let nbColors = 0;
+
+  /**
+   * Action when component is loaded
+   */
   React.useEffect(() => {
     setIsLoading(true);
-    setLocation(store.loadMyLocation());
+    setLocation(store.loadLocations());
     setIsLoading(false);
   }, []);
-
-  let nbColors = 0;
 
   return (
     <SafeAreaView>

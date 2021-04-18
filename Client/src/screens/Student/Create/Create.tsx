@@ -2,7 +2,7 @@
  * @file    Create.tsx
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    04.03.2021
- * @brief   Student create page
+ * @brief   Meeting creation page
  */
 
 import * as React from 'react';
@@ -19,7 +19,10 @@ import GlobalStore from '../../../app/stores/GlobalStore';
 import { observer } from 'mobx-react-lite';
 
 const Create: React.FC = () => {
+  /* Usage of MobX global state store */
   const store = React.useContext(GlobalStore);
+
+  /* Component states */
   const meeting = store.getMeetingDefaultValues();
   const [meetingName, setMeetingName] = React.useState(meeting.name);
   const [meetingDescription, setMeetingDescription] = React.useState(meeting.description);
@@ -32,31 +35,48 @@ const Create: React.FC = () => {
   const [tags, setTags] = React.useState(meeting.tags);
   const [location, setLocation] = React.useState<Location | null>(null);
 
-  const onTogglePrivate = () => setIsPrivateOn(!isPrivateOn);
-
-  const handleChangeDate = (_event: Event, selectedDate: Date | undefined) => {
+  /**
+   * Action when date is changed
+   * @param selectedDate new date selected
+   */
+  const handleChangeDate = (selectedDate: Date | undefined) => {
     const currentDate = selectedDate || startDate;
     setShowDate(Platform.OS === 'ios');
     setStartDate(currentDate);
     setEndDate(currentDate);
   };
 
-  const handleChangeStartTime = (_event: Event, selectedDate: Date | undefined) => {
+  /**
+   * Action when start date is changed
+   * @param selectedDate new date selected
+   */
+  const handleChangeStartTime = (selectedDate: Date | undefined) => {
     const currentDate = selectedDate || startDate;
     setShowStartTime(Platform.OS === 'ios');
     setStartDate(currentDate);
   };
 
-  const handleChangeEndTime = (_event: Event, selectedDate: Date | undefined) => {
+  /**
+   * Action when end date is changed
+   * @param selectedDate new date selected
+   */
+  const handleChangeEndTime = (selectedDate: Date | undefined) => {
     const currentDate = selectedDate || startDate;
     setShowEndTime(Platform.OS === 'ios');
     setEndDate(currentDate);
   };
 
+  /**
+   * Action when submit button is pressed
+   */
   const handleSubmit = () => {
     console.log('Meeting created');
   };
 
+  /**
+   * Add a tag
+   * @param tag new tag added
+   */
   const handleAddTag = (tag: Tag) => {
     tag.name = tag.name.toUpperCase();
     if (
@@ -67,6 +87,10 @@ const Create: React.FC = () => {
       setTags([...tags, tag]);
   };
 
+  /**
+   * Remove a tag
+   * @param tag to remove
+   */
   const handleDeleteTag = (tag: Tag) => {
     const newTags = tags.filter((current: Tag) => {
       return current.name !== tag.name;
@@ -92,9 +116,9 @@ const Create: React.FC = () => {
                     icon={isPrivateOn ? Globals.ICONS.LOCK : Globals.ICONS.UNLOCK}
                     size={Globals.SIZES.ICON_MENU}
                     color={Globals.COLORS.PRIMARY}
-                    onPress={onTogglePrivate}
+                    onPress={() => setIsPrivateOn(!isPrivateOn)}
                   />
-                  <Text style={{ color: 'gray', marginTop: -5 }}>
+                  <Text style={{ color: Globals.COLORS.TEXT, marginTop: -5 }}>
                     {isPrivateOn ? 'Privée' : 'Publique'}
                   </Text>
                 </View>
@@ -108,11 +132,13 @@ const Create: React.FC = () => {
             </Card>
             <Card style={styles.card} elevation={10}>
               <View style={styles.dateHeure}>
-                <Text style={{ color: 'gray' }}>Date / Heure :</Text>
+                <Text style={{ color: Globals.COLORS.TEXT }}>Date / Heure :</Text>
               </View>
               <View style={styles.date}>
                 <View style={styles.row}>
-                  <Text style={{ color: 'gray' }}>{format(startDate, 'dd.MM.yyyy')}</Text>
+                  <Text style={{ color: Globals.COLORS.TEXT }}>
+                    {format(startDate, 'dd.MM.yyyy')}
+                  </Text>
                   <IconButton
                     icon={Globals.ICONS.CALENDAR}
                     size={Globals.SIZES.ICON_MENU}
@@ -121,7 +147,7 @@ const Create: React.FC = () => {
                   />
                 </View>
                 <View style={styles.row}>
-                  <Text style={{ color: 'gray' }}>{format(startDate, 'hh:mm')}</Text>
+                  <Text style={{ color: Globals.COLORS.TEXT }}>{format(startDate, 'hh:mm')}</Text>
                   <IconButton
                     icon={Globals.ICONS.END_TIME}
                     size={Globals.SIZES.ICON_MENU}
@@ -130,7 +156,7 @@ const Create: React.FC = () => {
                   />
                 </View>
                 <View style={styles.row}>
-                  <Text style={{ color: 'gray' }}>{format(endDate, 'hh:mm')}</Text>
+                  <Text style={{ color: Globals.COLORS.TEXT }}>{format(endDate, 'hh:mm')}</Text>
                   <IconButton
                     icon={Globals.ICONS.END_TIME}
                     size={Globals.SIZES.ICON_MENU}
@@ -170,7 +196,7 @@ const Create: React.FC = () => {
                   value={startDate}
                   mode={'date'}
                   display="default"
-                  onChange={handleChangeDate}
+                  onChange={(_event: Event, newDate: Date | undefined) => handleChangeDate(newDate)}
                 />
               )}
             </View>
@@ -180,7 +206,9 @@ const Create: React.FC = () => {
                   value={startDate}
                   mode={'time'}
                   display="default"
-                  onChange={handleChangeStartTime}
+                  onChange={(_event: Event, newDate: Date | undefined) =>
+                    handleChangeStartTime(newDate)
+                  }
                 />
               )}
             </View>
@@ -190,7 +218,9 @@ const Create: React.FC = () => {
                   value={endDate}
                   mode={'time'}
                   display="default"
-                  onChange={handleChangeEndTime}
+                  onChange={(_event: Event, newDate: Date | undefined) =>
+                    handleChangeEndTime(newDate)
+                  }
                 />
               )}
             </View>

@@ -15,6 +15,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../app/context/Theme';
 import { useNavigation } from '@react-navigation/core';
 
+/**
+ * Component props
+ */
 interface IProps {
   location: Location;
   onChoose(location: Location): void;
@@ -22,9 +25,13 @@ interface IProps {
 }
 
 const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) => {
+  /* Usage of React Navigation */
   const navigation = useNavigation();
+
+  /* Component states */
   const [isReduced, setIsReduced] = React.useState(true);
 
+  /* Local variables */
   let nbColors = 3;
 
   /**
@@ -52,7 +59,7 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
                 />
               </View>
               <View style={styles.nbPeople}>
-                <Text style={{ color: 'gray' }}>{location.nbPeople}</Text>
+                <Text style={{ color: Globals.COLORS.TEXT }}>{location.nbPeople}</Text>
                 <MaterialCommunityIcons
                   name={Globals.ICONS.PROFILE}
                   color={Globals.COLORS.GRAY}

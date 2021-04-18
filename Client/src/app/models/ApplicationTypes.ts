@@ -1,26 +1,9 @@
 /**
- * @file    Interfaces.ts
+ * @file    ApplicationTypes.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    08.04.2021
  * @brief   Application types for typing
  */
-
-export type Location = {
-  name: string;
-  description: string;
-  tags: Tag[];
-  nbPeople: number;
-  openingHours: OpeningHour[];
-  host: Host;
-};
-
-// TODO : Sujet à modification
-export type Host = {
-  name: string;
-  description: string;
-  address: Address;
-  tags: Tag[];
-};
 
 // TODO : Sujet à modification
 export type Address = {
@@ -29,11 +12,9 @@ export type Address = {
   npa: number;
 };
 
-export type OpeningHour = {
+export type Chat = {
   id: string;
-  startTime: Date;
-  endTime: Date;
-  days: Day[];
+  messages: Message[];
 };
 
 export type Day = {
@@ -51,6 +32,38 @@ export enum DayEnum {
   SAT,
 }
 
+export type Filter = {
+  name: string | null;
+  startDate: Date | null;
+  endDate: Date | null;
+  tags: Tag[] | null;
+  locations: Location[] | null;
+};
+
+// TODO : Sujet à modification
+export type Host = {
+  name: string;
+  description: string;
+  address: Address;
+  tags: Tag[];
+};
+
+export type Location = {
+  name: string;
+  description: string;
+  tags: Tag[];
+  nbPeople: number;
+  openingHours: OpeningHour[];
+  host: Host;
+};
+
+export type OpeningHour = {
+  id: string;
+  startTime: Date;
+  endTime: Date;
+  days: Day[];
+};
+
 export type Meeting = {
   name: string;
   description: string;
@@ -66,11 +79,6 @@ export type Meeting = {
   isPrivate: boolean;
 };
 
-export type Chat = {
-  id: string;
-  messages: Message[];
-};
-
 export type Message = {
   id: string;
   message: string;
@@ -84,12 +92,4 @@ export type Tag = {
 
 export type User = {
   name: string;
-};
-
-export type Filter = {
-  name: string | null;
-  startDate: Date | null;
-  endDate: Date | null;
-  tags: Tag[] | null;
-  locations: Location[] | null;
 };

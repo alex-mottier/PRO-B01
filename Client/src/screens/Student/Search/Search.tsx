@@ -2,7 +2,7 @@
  * @file    Search.tsx
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    04.03.2021
- * @brief   Student search page
+ * @brief   Search meeting page
  */
 
 import * as React from 'react';
@@ -32,6 +32,10 @@ import { addDays } from 'date-fns/esm';
 import NoMeeting from '../../../components/NoMeeting/NoMeeting';
 
 const Search: React.FC = () => {
+  // Usage of react native paper theme library
+  const paperTheme = useTheme();
+
+  /* Component states */
   const [search, setSearch] = React.useState('');
   const [visible, setModalVisible] = React.useState(false);
   const [tags, setTags] = React.useState([{ name: 'Android' }, { name: 'IOS' }]);
@@ -42,26 +46,41 @@ const Search: React.FC = () => {
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(addDays(new Date(), 7));
 
+  /* Local variables */
   const meetings: Meeting[] = mockMeetings;
-  const paperTheme = useTheme();
 
-  const handleChangeStartDate = (_event: Event, selectedDate: Date | undefined) => {
+  /**
+   * Action when start date is changed
+   * @param selectedDate new date selected
+   */
+  const handleChangeStartDate = (selectedDate: Date | undefined) => {
     const currentDate = selectedDate || startDate;
     setShowStartDate(Platform.OS === 'ios');
     setStartDate(currentDate);
   };
 
-  const handleChangeEndDate = (_event: Event, selectedDate: Date | undefined) => {
+  /**
+   * Action when end date is changed
+   * @param selectedDate new date selected
+   */
+  const handleChangeEndDate = (selectedDate: Date | undefined) => {
     const currentDate = selectedDate || endDate;
     setShowEndDate(Platform.OS === 'ios');
     setEndDate(currentDate);
   };
 
+  /**
+   * Action when filter button is pressed
+   */
   const handleSubmit = () => {
     setModalVisible(false);
     console.log('Filter');
   };
 
+  /**
+   * Add tag to filter
+   * @param tag to add
+   */
   const handleAddTag = (tag: Tag) => {
     tag.name = tag.name.toUpperCase();
     if (
@@ -72,6 +91,10 @@ const Search: React.FC = () => {
       setTags([...tags, tag]);
   };
 
+  /**
+   * Remove tag from filter
+   * @param tag to remove
+   */
   const handleDeleteTag = (tag: Tag) => {
     const newTags = tags.filter((current: Tag) => {
       return current.name !== tag.name;
@@ -102,7 +125,12 @@ const Search: React.FC = () => {
               <NoMeeting />
             ) : (
               meetings.map((meeting: Meeting) => (
-                <MeetingComponent key={meeting.name} meeting={meeting} isOwner={false} />
+                <MeetingComponent
+                  key={meeting.name}
+                  meeting={meeting}
+                  isOwner={false}
+                  isChatable={true}
+                />
               ))
             )}
             <Portal>
@@ -131,11 +159,13 @@ const Search: React.FC = () => {
                       style={styles.fields}
                     />
                     <View style={styles.dateHeure}>
-                      <Text style={{ color: 'gray' }}>Entre les dates :</Text>
+                      <Text style={{ color: Globals.COLORS.TEXT }}>Entre les dates :</Text>
                     </View>
                     <View style={styles.date}>
                       <View style={styles.row}>
-                        <Text style={{ color: 'gray' }}>{format(startDate, 'dd.MM.yyyy')}</Text>
+                        <Text style={{ color: Globals.COLORS.TEXT }}>
+                          {format(startDate, 'dd.MM.yyyy')}
+                        </Text>
                         <IconButton
                           icon={Globals.ICONS.CALENDAR}
                           size={Globals.SIZES.ICON_MENU}
@@ -144,7 +174,9 @@ const Search: React.FC = () => {
                         />
                       </View>
                       <View style={styles.row}>
-                        <Text style={{ color: 'gray' }}>{format(endDate, 'dd.MM.yyyy')}</Text>
+                        <Text style={{ color: Globals.COLORS.TEXT }}>
+                          {format(endDate, 'dd.MM.yyyy')}
+                        </Text>
                         <IconButton
                           icon={Globals.ICONS.CALENDAR}
                           size={Globals.SIZES.ICON_MENU}
@@ -182,7 +214,9 @@ const Search: React.FC = () => {
                         value={startDate}
                         mode={'date'}
                         display="default"
-                        onChange={handleChangeStartDate}
+                        onChange={(_event: Event, newDate: Date | undefined) =>
+                          handleChangeStartDate(newDate)
+                        }
                       />
                     )}
                   </View>
@@ -192,7 +226,9 @@ const Search: React.FC = () => {
                         value={endDate}
                         mode={'date'}
                         display="default"
-                        onChange={handleChangeEndDate}
+                        onChange={(_event: Event, newDate: Date | undefined) =>
+                          handleChangeEndDate(newDate)
+                        }
                       />
                     )}
                   </View>

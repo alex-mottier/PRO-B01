@@ -15,11 +15,18 @@ import GoogleButton from '../../../components/Buttons/GoogleButton';
 import CustomButton from '../../../components/Buttons/CustomButton';
 import FacebookButton from '../../../components/Buttons/FacebookButton';
 import GlobalStore from '../../../app/stores/GlobalStore';
+import { observer } from 'mobx-react-lite';
 
 const SignUp: React.FC = () => {
-  const store = React.useContext(GlobalStore);
+  /* Usage of React Navigation */
   const navigation = useNavigation();
 
+  /* Usage of MobX global state store */
+  const store = React.useContext(GlobalStore);
+
+  /**
+   * Sign up button pressed
+   */
   const handleSignUp = () => {
     store.setIsLoading(true);
     void store.signInWithGoogle().then((isLoggedIn: boolean) => {
@@ -61,4 +68,4 @@ const SignUp: React.FC = () => {
   );
 };
 
-export default SignUp;
+export default observer(SignUp);

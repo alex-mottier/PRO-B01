@@ -1,8 +1,8 @@
 /**
- * @file    stlyes.ts
+ * @file    styles.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    04.03.2021
- * @brief   Search component page styles
+ * @brief   Search component styles
  */
 
 import { StyleSheet } from 'react-native';

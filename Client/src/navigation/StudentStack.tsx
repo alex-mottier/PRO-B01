@@ -31,7 +31,10 @@ type StackNavigatorParamlist = {
 const Stack = createStackNavigator<StackNavigatorParamlist>();
 
 const StudentStack: React.FC = () => {
+  // Usage of react native paper theme library
   const paperTheme = useTheme();
+
+  /* Usage of MobX global state store */
   const store = React.useContext(GlobalStore);
 
   return (

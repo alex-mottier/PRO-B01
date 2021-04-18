@@ -1,8 +1,8 @@
 /**
- * @file    Profile.tsx
+ * @file    ChatMeeting.tsx
  * @author  Alexis Allemann & Alexandre Mottier
- * @date    04.03.2021
- * @brief   Student profile page
+ * @date    17.03.2021
+ * @brief   Meeting chat page
  */
 
 import * as React from 'react';
@@ -18,25 +18,36 @@ import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import Globals from '../../../app/context/Globals';
 
 const ChatMeeting: React.FC = () => {
+  /* Usage of MobX global state store */
+  const store = React.useContext(GlobalStore);
+
+  /* Component states */
   const [isLoading, setIsLoading] = React.useState(true);
   const [chat, setChat] = React.useState<Chat>();
-  const [meeting, setMeeting] = React.useState<Meeting | undefined>();
+  const [meeting, setMeeting] = React.useState<Meeting | null>();
   const [authenticedUser, setAuthenticedUser] = React.useState<User | null>();
   const [message, setMessage] = React.useState<string>('');
-  const store = React.useContext(GlobalStore);
-  let currentChat = store.loadMyChat();
 
+  /* Local variables */
+  const currentChat = store.loadChat();
+
+  /**
+   * Action done on component loading
+   */
   React.useEffect(() => {
     setIsLoading(true);
     setChat(currentChat);
-    setMeeting(store.loadMyMeetings()[0]);
+    setMeeting(store.loadUserMeetings()[0]);
     setAuthenticedUser(store.getAuthenticatedUser());
     setIsLoading(false);
   }, []);
 
+  /**
+   * Action done when submit button is pressed
+   */
   const handleSubmit = () => {
     const newMessage: Message = {
-      id: currentChat['messages'][currentChat['messages'].length - 1].id + 1,
+      id: '',
       message: message,
       username: store.getAuthenticatedUser()?.name,
       date: new Date(),
@@ -53,10 +64,12 @@ const ChatMeeting: React.FC = () => {
           <LoadingComponent />
         ) : (
           <View style={styles.container}>
-            <MeetingComponent
-              meeting={meeting}
-              isOwner={false}
-              isChatable={false}></MeetingComponent>
+            {meeting && (
+              <MeetingComponent
+                meeting={meeting}
+                isOwner={false}
+                isChatable={false}></MeetingComponent>
+            )}
             <View style={styles.messages}>
               {chat?.messages.map((message: Message) => {
                 return (
@@ -103,7 +116,7 @@ const ChatMeeting: React.FC = () => {
                   color={Globals.COLORS.PRIMARY}
                   onPress={() => handleSubmit()}
                 />
-                <Text style={{ color: 'gray', marginTop: -5 }}>{'Envovez'}</Text>
+                <Text style={{ color: Globals.COLORS.TEXT, marginTop: -5 }}>{'Envovez'}</Text>
               </View>
             </View>
           </View>

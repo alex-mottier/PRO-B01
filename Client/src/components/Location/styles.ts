@@ -1,11 +1,12 @@
 /**
- * @file    stlyes.ts
+ * @file    styles.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    04.03.2021
- * @brief   Location component page styles
+ * @brief   Location component styles
  */
 
 import { StyleSheet } from 'react-native';
+import Globals from '../../app/context/Globals';
 
 const styles = StyleSheet.create({
   arrowUp: {
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     maxWidth: '80%',
   },
   gray: {
-    color: 'gray',
+    color: Globals.COLORS.TEXT,
   },
   infos: { marginRight: 10 },
   iconsRight: {

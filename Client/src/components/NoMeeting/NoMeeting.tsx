@@ -14,6 +14,7 @@ import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 
 const NoMeeting: React.FC = () => {
+  /* Usage of React Navigation */
   const navigation = useNavigation();
 
   return (
