@@ -58,7 +58,14 @@ const StudentStack: React.FC = () => {
                 borderBottomColor: Globals.COLORS.PRIMARY,
                 borderBottomWidth: 1,
               }}>
-              {previous && <Appbar.BackAction onPress={navigation.goBack} />}
+              {previous && (
+                <IconButton
+                  icon={Globals.ICONS.ARROW_LEFT}
+                  color={Globals.COLORS.PRIMARY}
+                  size={Globals.SIZES.ICON_BUTTON}
+                  onPress={navigation.goBack}
+                />
+              )}
               <Appbar.Content
                 title={title}
                 titleStyle={{
