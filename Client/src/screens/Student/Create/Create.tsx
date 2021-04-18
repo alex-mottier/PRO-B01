@@ -15,17 +15,21 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import TagsComponent from '../../../components/Tags/TagsComponent';
 import { format } from 'date-fns';
 import SearchLocation from '../../../components/SearchLocation/SearchLocation';
+import GlobalStore from '../../../app/stores/GlobalStore';
+import { observer } from 'mobx-react-lite';
 
 const Create: React.FC = () => {
-  const [meetingName, setMeetingName] = React.useState('');
-  const [meetingDescription, setMeetingDescription] = React.useState('');
-  const [isPrivateOn, setIsPrivateOn] = React.useState(false);
+  const store = React.useContext(GlobalStore);
+  const meeting = store.getMeetingDefaultValues();
+  const [meetingName, setMeetingName] = React.useState(meeting.name);
+  const [meetingDescription, setMeetingDescription] = React.useState(meeting.description);
+  const [isPrivateOn, setIsPrivateOn] = React.useState(meeting.isPrivate);
   const [showDate, setShowDate] = React.useState(false);
   const [showStartTime, setShowStartTime] = React.useState(false);
   const [showEndTime, setShowEndTime] = React.useState(false);
-  const [startDate, setStartDate] = React.useState(new Date());
-  const [endDate, setEndDate] = React.useState(new Date());
-  const [tags, setTags] = React.useState([{ name: 'Android' }, { name: 'IOS' }]);
+  const [startDate, setStartDate] = React.useState(meeting.start);
+  const [endDate, setEndDate] = React.useState(meeting.end);
+  const [tags, setTags] = React.useState(meeting.tags);
   const [location, setLocation] = React.useState<Location | null>(null);
 
   const onTogglePrivate = () => setIsPrivateOn(!isPrivateOn);
@@ -197,4 +201,4 @@ const Create: React.FC = () => {
   );
 };
 
-export default Create;
+export default observer(Create);

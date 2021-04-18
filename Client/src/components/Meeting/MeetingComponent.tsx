@@ -16,15 +16,17 @@ import frenchLocale from 'date-fns/locale/fr';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Meeting, Tag } from '../../app/models/ApplicationTypes';
 import { useNavigation } from '@react-navigation/core';
+import GlobalStore from '../../app/stores/GlobalStore';
 
 interface IProps {
-  meeting: Meeting | undefined;
+  meeting: Meeting;
   isOwner: boolean;
   isChatable: boolean;
 }
 
 const MeetingComponent: React.FC<IProps> = ({ meeting, isOwner, isChatable = true }) => {
   const navigation = useNavigation();
+  const store = React.useContext(GlobalStore);
   const [isReduced, setIsReduced] = React.useState(true);
 
   let nbColors = 0;
@@ -41,6 +43,14 @@ const MeetingComponent: React.FC<IProps> = ({ meeting, isOwner, isChatable = tru
    */
   const handleReduceOrDeploy = () => {
     isReduced ? setIsReduced(false) : setIsReduced(true);
+  };
+
+  /**
+   * Action when the edit button is pressed
+   */
+  const handleEdit = () => {
+    store.setMeetingToUpdate(meeting);
+    navigation.navigate(Globals.STRINGS.CREATE);
   };
 
   return (
@@ -145,7 +155,7 @@ const MeetingComponent: React.FC<IProps> = ({ meeting, isOwner, isChatable = tru
                 <IconButton
                   icon={Globals.ICONS.EDIT}
                   size={30}
-                  onPress={() => navigation.navigate(Globals.STRINGS.CREATE)}
+                  onPress={handleEdit}
                   color={Globals.COLORS.BLUE}
                 />
                 <Text style={[styles.gray, styles.buttonText]}>Modifier</Text>

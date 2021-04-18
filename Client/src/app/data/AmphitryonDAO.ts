@@ -69,7 +69,7 @@ export default class AmphitryonDAO {
     return fetch(Globals.URLS.API_URL + '/connect', {
       method: 'POST',
       headers: this.header,
-      body: JSON.stringify({ tokenID: tokenId }),
+      body: tokenId,
     })
       .then((response: Response) => {
         return response;

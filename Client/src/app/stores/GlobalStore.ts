@@ -5,7 +5,7 @@
  * @brief   Global application state store
  */
 
-import { action, makeAutoObservable, observable } from 'mobx';
+import { action, computed, makeAutoObservable, observable } from 'mobx';
 import { createContext } from 'react';
 import { Meeting, User, Location, Host, Chat } from '../models/ApplicationTypes';
 import GoogleAuth from '../authentication/GoogleAuth';
@@ -27,6 +27,7 @@ class Store {
   @observable sessionToken: string | null = null;
   @observable authenticatedUser: User | null = null;
   @observable isLoggedIn = false;
+  @observable meetingToUpdate: Meeting | null = null;
 
   /**
    * Instantiation of the store
@@ -91,16 +92,14 @@ class Store {
     const token = await this.googleAuth.getCachedAuthAsync();
     this.userToken = token;
     if (token && token.idToken) {
-      void this.amphitryonDAO.connectUser(token.idToken).then((response: Response | null) => {
-        if (response) {
-          const sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
-          this.sessionToken = sessionToken;
-          console.log(response);
-          this.amphitryonDAO.setSessionToken(sessionToken ? sessionToken : '');
-          this.authenticatedUser = response.json;
-          this.setIsLoggedIn(true);
-        }
-      });
+      const response = await this.amphitryonDAO.connectUser(token.idToken);
+      if (response) {
+        const sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
+        this.sessionToken = sessionToken;
+        this.amphitryonDAO.setSessionToken(sessionToken ? sessionToken : '');
+        this.setAuthenticatedUser(await response.json());
+        this.setIsLoggedIn(true);
+      }
     }
     this.setIsLoading(false);
   }
@@ -110,13 +109,12 @@ class Store {
    * @returns promise if user is sucessfully signed in
    */
   @action async signInWithGoogle(): Promise<boolean> {
-    return this.googleAuth.handleSignInAsync().then((token: TokenResponse | null) => {
-      if (token) {
-        this.setUserToken(token);
-        return true;
-      }
-      return false;
-    });
+    const token = await this.googleAuth.handleSignInAsync();
+    if (token) {
+      this.setUserToken(token);
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -124,32 +122,27 @@ class Store {
    * @param user to sign out
    * @returns promise when sign out is completed
    */
-  @action signOutWithGoogle(): Promise<void> {
+  @action async signOutWithGoogle(): Promise<void> {
     this.setIsLoading(true);
-    return this.googleAuth.handleSignOutAsync(this.userToken).then(() => {
-      this.setAuthenticatedUser(null);
-      this.setIsLoggedIn(false);
-      this.setIsLoading(false);
-    });
+    await this.googleAuth.handleSignOutAsync(this.userToken);
+    this.setAuthenticatedUser(null);
+    this.setIsLoggedIn(false);
+    this.setIsLoading(false);
   }
 
   /**
    * Create a new user
    * @param user to create
    */
-  @action signUp(user: User): void {
+  @action async signUp(user: User): Promise<void> {
     this.setIsLoading(true);
     if (this.userToken?.idToken) {
-      this.amphitryonDAO
-        .createUser(this.userToken.idToken, user)
-        .then((response: Response | null) => {
-          if (response) {
-            this.sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
-            this.authenticatedUser = user;
-            this.setIsLoggedIn(true);
-          }
-        })
-        .catch(() => {});
+      const response = await this.amphitryonDAO.createUser(this.userToken.idToken, user);
+      if (response) {
+        this.sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
+        this.setAuthenticatedUser(user);
+        this.setIsLoggedIn(true);
+      }
     }
     this.setIsLoading(false);
   }
@@ -157,22 +150,45 @@ class Store {
   /**
    * Sign in method
    */
-  @action signIn(): void {
+  @action async signIn(): Promise<void> {
     this.setIsLoading(true);
-    void this.signInWithGoogle().then((loggedIn: boolean) => {
-      if (loggedIn && this.userToken && this.userToken.idToken) {
-        void this.amphitryonDAO
-          .connectUser(this.userToken?.idToken)
-          .then((response: Response | null) => {
-            if (response) {
-              this.sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
-              this.authenticatedUser = response.json;
-              this.setIsLoggedIn(true);
-            }
-          });
+    const loggedIn = await this.signInWithGoogle();
+    if (loggedIn && this.userToken && this.userToken.idToken) {
+      const response = await this.amphitryonDAO.connectUser(this.userToken?.idToken);
+      if (response) {
+        this.sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
+        this.setAuthenticatedUser(await response.json());
       }
-      this.setIsLoading(false);
-    });
+    }
+    this.setIsLoading(false);
+  }
+
+  /**
+   * Set meeting to update
+   * @param meeting réunion à mettre à jour
+   */
+  @action setMeetingToUpdate(meeting: Meeting) {
+    this.meetingToUpdate = meeting;
+  }
+
+  @computed getMeetingDefaultValues(): Meeting {
+    if (this.meetingToUpdate) {
+      return this.meetingToUpdate;
+    } else
+      return {
+        name: '',
+        description: '',
+        tags: [],
+        locationID: '',
+        locationName: '',
+        maxPeople: 0,
+        nbPeople: 0,
+        start: new Date(),
+        end: new Date(),
+        ownerID: '',
+        chatId: '',
+        isPrivate: false,
+      };
   }
 
   @action loadMyMeetings(): Meeting[] {
