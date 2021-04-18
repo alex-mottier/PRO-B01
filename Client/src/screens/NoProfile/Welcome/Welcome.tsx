@@ -14,21 +14,12 @@ import styles from './styles';
 import { useNavigation } from '@react-navigation/core';
 import CustomButton from '../../../components/Buttons/CustomButton';
 import GlobalStore from '../../../app/stores/GlobalStore';
-import { TokenResponse } from 'expo-app-auth';
 
 const Welcome: React.FC = () => {
   const navigation = useNavigation();
 
   // To be deleted (just to simplify the connection during development)
   const store = React.useContext(GlobalStore);
-  const mockToken: TokenResponse = {
-    accessToken: '',
-    accessTokenExpirationDate: '',
-    additionalParameters: null,
-    idToken: '',
-    refreshToken: '',
-    tokenType: '',
-  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -77,7 +68,7 @@ const Welcome: React.FC = () => {
               color={Globals.COLORS.GRAY}
               onPress={() => {
                 store.setIsLoggedIn(true);
-                store.setAuthenticatedUser({ name: 'mock', token: mockToken });
+                store.setAuthenticatedUser({ name: 'Développeur' });
               }}
               text={'Développement'}
             />

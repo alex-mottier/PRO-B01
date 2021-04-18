@@ -6,34 +6,40 @@
  */
 
 import { StyleSheet } from 'react-native';
-import Globals from '../../../app/context/Globals';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 15,
-  },
   row: {
+    flex: 1,
     width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    padding: 10,
+    paddingRight: 30,
+  },
+  card: {
+    marginTop: 10,
+    width: '100%',
+    elevation: 5,
+  },
+  icon: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    padding: 10,
-  },
-  title: {
-    color: 'gray',
-    marginLeft: 20,
-    fontSize: 25,
   },
   text: {
-    width: '100%',
-    color: Globals.COLORS.PRIMARY,
-    alignItems: 'flex-start',
-    paddingTop: 15,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    padding: 10,
   },
+  days: {
+    marginRight: 20,
+  },
+  hours: {},
 });
 
 export default styles;

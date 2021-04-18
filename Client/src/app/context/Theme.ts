@@ -39,3 +39,12 @@ export const darkTheme = {
     primary: Globals.COLORS.PRIMARY,
   },
 };
+
+// Application colors
+export const colors = [
+  Globals.COLORS.YELLOW,
+  Globals.COLORS.BLUE,
+  Globals.COLORS.PINK,
+  Globals.COLORS.ORANGE,
+  Globals.COLORS.GREEN,
+];
