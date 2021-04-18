@@ -1,6 +1,6 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.entities.Location;
+import ch.amphytrion.project.entities.databaseentities.Location;
 import ch.amphytrion.project.services.LocationService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -43,8 +43,8 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
     @Override
-    @GetMapping("/locations/{id}")
-    public ResponseEntity getById(String id) {
+    @GetMapping("/location/{id}")
+    public ResponseEntity<Location> getById(String id) {
         try {
             return ResponseEntity.ok(locationService.findById(id));
         } catch (Exception e) {

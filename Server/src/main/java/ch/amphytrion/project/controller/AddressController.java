@@ -1,6 +1,6 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.entities.Address;
+import ch.amphytrion.project.entities.databaseentities.Address;
 import ch.amphytrion.project.services.AddressService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -25,7 +25,7 @@ public class AddressController extends BaseController implements IGenericControl
     }
 
     @Override
-    @GetMapping("/address")
+    @GetMapping("/addresses")
     public ResponseEntity<List<Address>> getAll() {
         try {
             return ResponseEntity.ok(addressService.findAll());

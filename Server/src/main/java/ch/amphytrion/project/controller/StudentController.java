@@ -1,6 +1,6 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.entities.Student;
+import ch.amphytrion.project.entities.databaseentities.Student;
 import ch.amphytrion.project.services.StudentService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

@@ -1,19 +1,10 @@
 package ch.amphytrion.project.repositories;
 
 import ch.amphytrion.project.controller.ChatController;
-import ch.amphytrion.project.controller.MeetingController;
-import ch.amphytrion.project.controller.StudentController;
-import ch.amphytrion.project.entities.*;
 import ch.amphytrion.project.services.ChatService;
-import ch.amphytrion.project.services.MeetingService;
-import ch.amphytrion.project.services.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class ChatRepositoryTest {
@@ -25,8 +16,8 @@ public class ChatRepositoryTest {
 
 
     @Test
-    void meetingGetIdTest() {
-       /*try{
+    void meetingGetIdTest() {/*
+       try{
             Student s1 = new Student();
             Message m1 = new Message();
             Message m2 = new Message();

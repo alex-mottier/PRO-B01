@@ -6,6 +6,7 @@
  */
 
 import { StyleSheet } from 'react-native';
+import Globals from '../../../app/context/Globals';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,6 +14,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     margin: 15,
+  },
+  row: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    padding: 10,
+  },
+  title: {
+    color: 'gray',
+    marginLeft: 20,
+    fontSize: 25,
+  },
+  text: {
+    width: '100%',
+    color: Globals.COLORS.PRIMARY,
+    alignItems: 'flex-start',
+    paddingTop: 15,
   },
 });
 

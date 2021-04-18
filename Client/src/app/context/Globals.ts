@@ -20,10 +20,14 @@ export default {
   },
   ICONS: {
     ADD_PROFILE: 'account-plus',
+    ADD_TAG: 'plus-circle',
     ARROW_LEFT: 'chevron-left',
     ARROW_UP: 'chevron-up',
     CALENDAR: 'calendar',
+    CLOSE: 'close-circle',
     CREATE: 'plus-circle',
+    END_TIME: 'clock-time-nine',
+    END_TIME_OUT: 'clock-time-nine-outline',
     FILTER: 'filter',
     HOME: 'home',
     INFO: 'information-outline',
@@ -37,6 +41,13 @@ export default {
     GOOGLE: 'google',
     FACEBOOK: 'facebook',
     EDIT_IMAGE: 'circle-edit-outline',
+    START_TIME: 'clock-time-one',
+    EDIT: 'pencil',
+    CLOSE_LOCATION: 'close',
+    SAD: 'emoticon-sad-outline',
+    DELETE: 'delete-outline',
+    LOCK: 'lock',
+    UNLOCK: 'lock-open-variant',
   },
   PRECISION: 2,
   SIZES: {
@@ -49,5 +60,9 @@ export default {
     CREATE: 'Créer une réunion',
     PROFILE: 'Profil',
     SEARCH: 'Rechercher une réunion',
+    SESSION_TOKEN_NAME: 'session_token_amphitryon',
+  },
+  URLS: {
+    API_URL: '192.168.100.169:8080/item',
   },
 };
