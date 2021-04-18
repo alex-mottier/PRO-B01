@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { Platform, SafeAreaView, ScrollView, View } from 'react-native';
+import { Alert, Platform, SafeAreaView, ScrollView, View } from 'react-native';
 import { TextInput, IconButton, Button, Text, Card, Provider } from 'react-native-paper';
 import styles from './styles';
 import { Location, Tag } from '../../../app/models/ApplicationTypes';
@@ -70,7 +70,35 @@ const Create: React.FC = () => {
    * Action when submit button is pressed
    */
   const handleSubmit = () => {
+    // Validation of form entries
+    if (meetingName === '') {
+      Alert.alert('Nom nul', 'Le nom de la réunion ne peut pas être nul');
+      return;
+    } else if (meetingDescription === '') {
+      Alert.alert('Description nulle', 'La description de la réunion ne peut pas être nulle');
+      return;
+    } else if (startDate >= endDate) {
+      Alert.alert('Erreur de date', "L'heure de fin doit être après l'heure de début");
+      return;
+    } else if (tags.length === 0) {
+      Alert.alert('Aucun tag', 'Veuillez définir un moins un tag à la réunion');
+      return;
+    } else if (location === null) {
+      Alert.alert('Aucun lieu', 'Veuillez définir le lieu de la réunion');
+      return;
+    }
+
+    // Everything is well filled => meeting can be created
     console.log('Meeting created');
+
+    handleReset();
+  };
+
+  /**
+   * Reset form field states
+   */
+  const handleReset = () => {
+    store.setMeetingToUpdate(null);
   };
 
   /**

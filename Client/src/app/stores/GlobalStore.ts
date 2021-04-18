@@ -167,7 +167,7 @@ class Store {
    * Set meeting to update
    * @param meeting réunion à mettre à jour
    */
-  @action setMeetingToUpdate(meeting: Meeting) {
+  @action setMeetingToUpdate(meeting: Meeting | null) {
     this.meetingToUpdate = meeting;
   }
 
