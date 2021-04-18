@@ -7,13 +7,13 @@
 
 import * as React from 'react';
 import { Alert, Platform, SafeAreaView, ScrollView, View } from 'react-native';
-import { TextInput, IconButton, Button, Text, Card, Provider } from 'react-native-paper';
+import { TextInput, IconButton, Button, Text, Card, Provider, FAB } from 'react-native-paper';
 import styles from './styles';
 import { Location, Tag } from '../../../app/models/ApplicationTypes';
 import Globals from '../../../app/context/Globals';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import TagsComponent from '../../../components/Tags/TagsComponent';
-import { format } from 'date-fns';
+import { addHours, format } from 'date-fns';
 import SearchLocation from '../../../components/SearchLocation/SearchLocation';
 import GlobalStore from '../../../app/stores/GlobalStore';
 import { observer } from 'mobx-react-lite';
@@ -99,6 +99,12 @@ const Create: React.FC = () => {
    */
   const handleReset = () => {
     store.setMeetingToUpdate(null);
+    setMeetingName('');
+    setMeetingDescription('');
+    setStartDate(new Date());
+    setEndDate(addHours(new Date(), 2));
+    setTags([]);
+    setLocation(null);
   };
 
   /**
@@ -209,15 +215,18 @@ const Create: React.FC = () => {
                 />
               </View>
             </Card>
-            <Button
-              icon={Globals.ICONS.CREATE}
-              mode="contained"
-              color={Globals.COLORS.PRIMARY}
-              labelStyle={{ color: Globals.COLORS.WHITE }}
-              onPress={handleSubmit}
-              style={styles.button}>
-              Créer la réunion
-            </Button>
+            <View style={styles.buttons}>
+              <FAB style={styles.fab} small icon={Globals.ICONS.DELETE} onPress={handleReset} />
+              <Button
+                icon={Globals.ICONS.CREATE}
+                mode="contained"
+                color={Globals.COLORS.PRIMARY}
+                labelStyle={{ color: Globals.COLORS.WHITE }}
+                onPress={handleSubmit}
+                style={styles.button}>
+                Créer la réunion
+              </Button>
+            </View>
             <View>
               {showDate && (
                 <DateTimePicker

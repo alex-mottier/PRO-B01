@@ -16,6 +16,7 @@ import { mockMeetings } from '../../mock/Meetings';
 import { mockLocation } from '../../mock/Location';
 import { mockHost } from '../../mock/Host';
 import { mockChat } from '../../mock/Chat';
+import { addHours } from 'date-fns';
 
 class Store {
   private amphitryonDAO = AmphitryonDAO.getInstance();
@@ -176,7 +177,7 @@ class Store {
    * @returns the meeting to create or edit default values
    */
   @computed getMeetingDefaultValues(): Meeting {
-    if (this.meetingToUpdate) {
+    if (this.meetingToUpdate !== null) {
       return this.meetingToUpdate;
     } else
       return {
@@ -188,7 +189,7 @@ class Store {
         maxPeople: 0,
         nbPeople: 0,
         start: new Date(),
-        end: new Date(),
+        end: addHours(new Date(), 2),
         ownerID: '',
         chatId: '',
         isPrivate: false,

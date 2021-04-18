@@ -9,6 +9,12 @@ import { StyleSheet } from 'react-native';
 import Globals from '../../../app/context/Globals';
 
 const styles = StyleSheet.create({
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '100%',
+  },
+  fab: { marginTop: 20 },
   container: {
     flex: 1,
     alignItems: 'center',
