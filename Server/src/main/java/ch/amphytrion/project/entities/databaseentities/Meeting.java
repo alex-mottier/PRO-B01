@@ -22,5 +22,4 @@ public class Meeting {
     private Integer nbPeople;
     private LocalDateTime start;
     private LocalDateTime end;
-
 }

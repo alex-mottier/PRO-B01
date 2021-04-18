@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FilterResponse {
+public class FilterRequest {
     private String name;
     private Date startDate;
     private Date endDate;

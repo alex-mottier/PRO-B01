@@ -1,6 +1,7 @@
 package ch.amphytrion.project.services;
 
 import ch.amphytrion.project.entities.databaseentities.Meeting;
+import ch.amphytrion.project.entities.notdatabaseentities.FilterRequest;
 import ch.amphytrion.project.repositories.MeetingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,4 +56,7 @@ public class MeetingService implements IGenericService<Meeting> {
 
     ArrayList<Meeting> findByName(String name){ return meetingRepository.findByName(name);}
 
+    public List<Meeting> findByFilter(FilterRequest filter) {
+        return meetingRepository.findByName(filter.getName());
+    }
 }

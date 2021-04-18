@@ -1,7 +1,9 @@
 package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.entities.databaseentities.Meeting;
+import ch.amphytrion.project.entities.notdatabaseentities.FilterRequest;
 import ch.amphytrion.project.services.MeetingService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,6 +32,26 @@ public class MeetingController extends BaseController implements IGenericControl
     public ResponseEntity<List<Meeting>> getAll() {
         try {
             return ResponseEntity.ok(meetingService.findAll());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/meeting/{id}/join")
+    public ResponseEntity<Meeting> joinMeeting(String id) {
+        try {
+            Meeting meeting = meetingService.findById(id);
+            meetingService.save(meeting);
+            return ResponseEntity.ok(meeting);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/meetings/search")
+    public ResponseEntity<List<Meeting>> searchByFilter(@RequestBody FilterRequest filter){
+        try {
+            return ResponseEntity.ok(meetingService.findByFilter(filter));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
