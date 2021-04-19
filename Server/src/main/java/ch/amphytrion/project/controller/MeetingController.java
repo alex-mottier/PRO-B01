@@ -3,7 +3,6 @@ package ch.amphytrion.project.controller;
 import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.entities.notdatabaseentities.FilterRequest;
 import ch.amphytrion.project.services.MeetingService;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -77,6 +76,14 @@ public class MeetingController extends BaseController implements IGenericControl
         }
     }
 
+
+    public ResponseEntity<List<Meeting>> findByNameLike(String name){
+        try {
+            return ResponseEntity.ok(meetingService.findAll());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     @ApiOperation(value = "Retrieve meetingController")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully reached meetingController"),

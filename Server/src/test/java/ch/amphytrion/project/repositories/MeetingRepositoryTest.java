@@ -2,11 +2,15 @@ package ch.amphytrion.project.repositories;
 
 import ch.amphytrion.project.controller.MeetingController;
 import ch.amphytrion.project.controller.StudentController;
+import ch.amphytrion.project.entities.databaseentities.Meeting;
+import ch.amphytrion.project.entities.notdatabaseentities.FilterRequest;
 import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.StudentService;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.ArrayList;
 
 @SpringBootTest
 public class MeetingRepositoryTest {
@@ -21,9 +25,9 @@ public class MeetingRepositoryTest {
     StudentController studentController = new StudentController(studentService);
 
     @Test
-    void meetingGetIdTest() {
-       /*try{
-            Student s1 = new Student("s1");
+    public void meetingGetIdTest() {
+    try{
+            /*Student s1 = new Student("s1");
             Student s2 = new Student("s2");
             ArrayList<Student> students = new ArrayList<>();
             students.add(s1);
@@ -42,9 +46,11 @@ public class MeetingRepositoryTest {
             Meeting meeting = new Meeting(students, s1, locations,tags,chat,"meeting", 0, 0);
             meetingService.save(meeting);
             assertEquals(meeting.getName(), meetingService.findById(meeting.getId()).getName() );
-            meetingService.deleteById(meeting.getId());
+            meetingService.deleteById(meeting.getId());*/
+        FilterRequest filter = new FilterRequest("rec", null, null, null, null);
+        ArrayList<Meeting> test = meetingService.findByFilter(filter);
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
 }

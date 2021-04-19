@@ -1,12 +1,15 @@
 package ch.amphytrion.project.services;
 
+import ch.amphytrion.project.entities.databaseentities.Location;
 import ch.amphytrion.project.entities.databaseentities.Meeting;
+import ch.amphytrion.project.entities.databaseentities.Tag;
 import ch.amphytrion.project.entities.notdatabaseentities.FilterRequest;
 import ch.amphytrion.project.repositories.MeetingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -54,9 +57,21 @@ public class MeetingService implements IGenericService<Meeting> {
         return meetingRepository.count();
     }
 
+    ArrayList<Meeting> findByNameLike(String name){
+        return meetingRepository.findByNameLike(name);
+    }
+
     ArrayList<Meeting> findByName(String name){ return meetingRepository.findByName(name);}
 
-    public List<Meeting> findByFilter(FilterRequest filter) {
-        return meetingRepository.findByName(filter.getName());
+    public ArrayList<Meeting> findByFilter(FilterRequest filter) {
+        ArrayList<Meeting> result = new ArrayList<>();
+        ArrayList<Meeting> names = findByNameLike(filter.getName());
+        result.addAll(names);
+        return result;
+        //return this.findByFilterExploded(filter.getName(), filter.getStartDate(),filter.getEndDate(),filter.getTags(),filter.getLocations());
     }
+
+    /*public List<Meeting> findByFilterExploded(String name, Date startDate, Date endDate, ArrayList<Tag> tags, ArrayList<Location> locations){
+        return meetingRepository.finByFilterExploded(name, startDate, endDate, tags, locations);
+    }*/
 }
