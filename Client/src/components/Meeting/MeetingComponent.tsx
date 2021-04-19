@@ -26,9 +26,15 @@ interface IProps {
   meeting: Meeting;
   isOwner: boolean;
   isChatable: boolean;
+  isInCalendar: boolean;
 }
 
-const MeetingComponent: React.FC<IProps> = ({ meeting, isOwner, isChatable = true }) => {
+const MeetingComponent: React.FC<IProps> = ({
+  meeting,
+  isOwner,
+  isChatable = true,
+  isInCalendar = false,
+}) => {
   /* Usage of React Navigation */
   const navigation = useNavigation();
 
@@ -63,20 +69,22 @@ const MeetingComponent: React.FC<IProps> = ({ meeting, isOwner, isChatable = tru
           title={meeting.name}
           subtitle={isReduced ? meeting.description : ''}
           left={() => <Avatar.Image size={40} source={require('../../../assets/HEIG-VD.png')} />}
-          right={() => (
-            <View>
-              <View style={styles.nbPeople}>
-                <Text style={styles.gray}>
-                  {meeting.nbPeople}/{meeting.maxPeople}
-                </Text>
-                <MaterialCommunityIcons
-                  name={Globals.ICONS.PROFILE}
-                  color={Globals.COLORS.GRAY}
-                  size={Globals.SIZES.ICON_BUTTON}
-                />
+          right={() =>
+            !isInCalendar && (
+              <View>
+                <View style={styles.nbPeople}>
+                  <Text style={styles.gray}>
+                    {meeting.nbPeople}/{meeting.maxPeople}
+                  </Text>
+                  <MaterialCommunityIcons
+                    name={Globals.ICONS.PROFILE}
+                    color={Globals.COLORS.GRAY}
+                    size={Globals.SIZES.ICON_BUTTON}
+                  />
+                </View>
               </View>
-            </View>
-          )}
+            )
+          }
         />
       </TouchableOpacity>
       {!isReduced && (
@@ -142,7 +150,7 @@ const MeetingComponent: React.FC<IProps> = ({ meeting, isOwner, isChatable = tru
                 <Text style={[styles.gray, styles.buttonText]}>Discuter</Text>
               </View>
             )}
-            {!isOwner && (
+            {!isOwner && !isInCalendar && (
               <View>
                 <IconButton
                   icon={Globals.ICONS.JOIN}
@@ -173,6 +181,17 @@ const MeetingComponent: React.FC<IProps> = ({ meeting, isOwner, isChatable = tru
                   color={Globals.COLORS.PINK}
                 />
                 <Text style={[styles.gray, styles.buttonText]}>Supprimer</Text>
+              </View>
+            )}
+            {!isOwner && (
+              <View>
+                <IconButton
+                  icon={Globals.ICONS.LEAVE}
+                  size={30}
+                  onPress={() => console.log('Pressed')}
+                  color={Globals.COLORS.PINK}
+                />
+                <Text style={[styles.gray, styles.buttonText]}>Quitter</Text>
               </View>
             )}
           </Card.Actions>

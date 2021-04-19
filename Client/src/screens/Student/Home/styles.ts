@@ -14,6 +14,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 15,
   },
+  meetings: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  meeting: {
+    width: '90%',
+  },
 });
 
 export default styles;

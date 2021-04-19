@@ -68,7 +68,9 @@ const ChatMeeting: React.FC = () => {
               <MeetingComponent
                 meeting={meeting}
                 isOwner={false}
-                isChatable={false}></MeetingComponent>
+                isChatable={false}
+                isInCalendar={false}
+              />
             )}
             <View style={styles.messages}>
               {chat?.messages.map((message: Message) => {

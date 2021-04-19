@@ -52,6 +52,7 @@ const Profile: React.FC = () => {
                 meeting={meeting}
                 isOwner={true}
                 isChatable={true}
+                isInCalendar={false}
               />
             ))
           )}

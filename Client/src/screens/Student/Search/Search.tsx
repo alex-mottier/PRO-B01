@@ -130,6 +130,7 @@ const Search: React.FC = () => {
                   meeting={meeting}
                   isOwner={false}
                   isChatable={true}
+                  isInCalendar={false}
                 />
               ))
             )}
