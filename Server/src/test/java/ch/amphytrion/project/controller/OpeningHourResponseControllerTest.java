@@ -4,6 +4,8 @@ import ch.amphytrion.project.repositories.OpeningHourRepository;
 import ch.amphytrion.project.services.OpeningHourService;
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class OpeningHourResponseControllerTest {

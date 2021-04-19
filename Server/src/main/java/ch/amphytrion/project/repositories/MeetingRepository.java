@@ -20,10 +20,10 @@ public interface MeetingRepository extends MongoRepository<Meeting, String> {
 
     //@Query(value="{ 'name' : ?0, 'start' : ?1, 'end' : ?2, 'tags' : ?3, 'locationID' : ?4 }", fields="{ 'firstname' : 1, 'lastname' : 1}")
     ArrayList<Meeting> findByNameLike(String name);
-    /*ArrayList<Meeting> findByStartBetween(LocalDateTime start, LocalDateTime end);
-    ArrayList<Meeting> findByEndBetween(LocalDateTime start, LocalDateTime end);
+    ArrayList<Meeting> findByStartAfter(Date start);
+    ArrayList<Meeting> findByEndBefore(Date end);
     ArrayList<Meeting> findByTagsEquals(ArrayList<Tag> tags);
-    ArrayList<Meeting> findByLocationID();*/
+    //ArrayList<Meeting> findByLocationID();
     //ArrayList<Meeting> searchFilter(FilterRequest filter);
 }
 

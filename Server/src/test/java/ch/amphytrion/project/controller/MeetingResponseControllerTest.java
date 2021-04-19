@@ -20,9 +20,8 @@ class MeetingResponseControllerTest {
     void saveMeeting(){
 
         Meeting meeting = new Meeting();
-        meetingRepository.save(meeting);
         assertEquals(meetingRepository.save(meeting), meeting);
+        meetingRepository.delete(meeting);
+
     }
 }
-
-
