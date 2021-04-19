@@ -1,9 +1,11 @@
 package ch.amphytrion.project.services;
 
+import ch.amphytrion.project.entities.databaseentities.Chat;
 import ch.amphytrion.project.entities.databaseentities.Location;
 import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.entities.databaseentities.Tag;
 import ch.amphytrion.project.entities.notdatabaseentities.FilterRequest;
+import ch.amphytrion.project.repositories.ChatRepository;
 import ch.amphytrion.project.repositories.MeetingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ public class MeetingService implements IGenericService<Meeting> {
 
     private MeetingRepository meetingRepository;
 
+    private ChatRepository chatRepository;
     @Autowired
     public MeetingService(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
@@ -29,6 +32,15 @@ public class MeetingService implements IGenericService<Meeting> {
 
     @Override
     public Meeting save(Meeting meetingResponse) {
+        if (meetingResponse.getId() != null && !meetingResponse.getId().isEmpty()){
+            Chat chat = new Chat();
+            try {
+                chatRepository.save(chat);
+                meetingResponse.setChatID(chat.getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return meetingRepository.save(meetingResponse);
     }
 
@@ -57,13 +69,14 @@ public class MeetingService implements IGenericService<Meeting> {
         return meetingRepository.count();
     }
 
-    ArrayList<Meeting> findByNameLike(String name){
+
+    public ArrayList<Meeting> findByNameLike(String name){
         return meetingRepository.findByNameLike(name);
     }
 
-    ArrayList<Meeting> findByName(String name){ return meetingRepository.findByName(name);}
+    public ArrayList<Meeting> findByName(String name){ return meetingRepository.findByName(name);}
 
-    public ArrayList<Meeting> findByFilter(FilterRequest filter) {
+    public ArrayList<Meeting> searchFilter(FilterRequest filter) {
         ArrayList<Meeting> result = new ArrayList<>();
         ArrayList<Meeting> names = findByNameLike(filter.getName());
         result.addAll(names);

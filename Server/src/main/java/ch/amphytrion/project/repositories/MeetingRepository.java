@@ -24,6 +24,6 @@ public interface MeetingRepository extends MongoRepository<Meeting, String> {
     ArrayList<Meeting> findByEndBetween(LocalDateTime start, LocalDateTime end);
     ArrayList<Meeting> findByTagsEquals(ArrayList<Tag> tags);
     ArrayList<Meeting> findByLocationID();*/
-    ArrayList<Meeting> findByFilter(FilterRequest filter);
+    //ArrayList<Meeting> searchFilter(FilterRequest filter);
 }
 

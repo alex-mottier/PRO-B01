@@ -1,5 +1,6 @@
 package ch.amphytrion.project.controller;
 
+import ch.amphytrion.project.entities.databaseentities.Chat;
 import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.entities.notdatabaseentities.FilterRequest;
 import ch.amphytrion.project.services.MeetingService;
@@ -19,11 +20,12 @@ import java.util.List;
 @RestController
 public class MeetingController extends BaseController implements IGenericController<Meeting> {
 
-    private final MeetingService meetingService;
+    private MeetingService meetingService;
 
     @Autowired
     public MeetingController(MeetingService meetingService) {
         this.meetingService = meetingService;
+
     }
 
     @Override
@@ -48,9 +50,9 @@ public class MeetingController extends BaseController implements IGenericControl
     }
 
     @PostMapping("/meetings/search")
-    public ResponseEntity<List<Meeting>> searchByFilter(@RequestBody FilterRequest filter){
+    public ResponseEntity<List<Meeting>> searchFilter(@RequestBody FilterRequest filter){
         try {
-            return ResponseEntity.ok(meetingService.findByFilter(filter));
+            return ResponseEntity.ok(meetingService.searchFilter(filter));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -76,10 +78,9 @@ public class MeetingController extends BaseController implements IGenericControl
         }
     }
 
-
-    public ResponseEntity<List<Meeting>> findByNameLike(String name){
+    public ResponseEntity<List<Meeting>>findByNameLike(String name){
         try {
-            return ResponseEntity.ok(meetingService.findAll());
+            return ResponseEntity.ok(meetingService.findByName(name));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -94,4 +95,5 @@ public class MeetingController extends BaseController implements IGenericControl
     private String testController() {
         return this.getClass().getSimpleName();
     }
+
 }
