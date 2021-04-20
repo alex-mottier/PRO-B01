@@ -48,7 +48,7 @@ const Profile: React.FC = () => {
           ) : (
             meetings.map((meeting: Meeting) => (
               <MeetingComponent
-                key={meeting.name}
+                key={meeting.id}
                 meeting={meeting}
                 isOwner={true}
                 isChatable={true}

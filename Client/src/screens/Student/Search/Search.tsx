@@ -126,7 +126,7 @@ const Search: React.FC = () => {
             ) : (
               meetings.map((meeting: Meeting) => (
                 <MeetingComponent
-                  key={meeting.name}
+                  key={meeting.id}
                   meeting={meeting}
                   isOwner={false}
                   isChatable={true}

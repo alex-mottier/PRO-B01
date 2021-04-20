@@ -30,6 +30,7 @@ export default {
     CALENDAR: 'calendar',
     CLOSE: 'close-circle',
     CLOSE_LOCATION: 'close',
+    COPY: 'box-shadow',
     CREATE: 'plus-circle',
     DELETE: 'delete-outline',
     EDIT: 'pencil',

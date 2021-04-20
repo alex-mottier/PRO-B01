@@ -65,6 +65,7 @@ export type OpeningHour = {
 };
 
 export type Meeting = {
+  id: string;
   name: string;
   description: string;
   tags: Tag[];

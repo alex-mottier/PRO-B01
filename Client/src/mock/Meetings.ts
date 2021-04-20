@@ -2,6 +2,7 @@ import { Meeting } from '../app/models/ApplicationTypes';
 
 export const mockMeetings: Meeting[] = [
   {
+    id: '#1',
     name: 'PRO - Coordination',
     description: "Réunion pour coordiner l'avancement du projet",
     tags: [{ name: 'PRO' }, { name: 'Coordination' }],
@@ -16,6 +17,7 @@ export const mockMeetings: Meeting[] = [
     isPrivate: true,
   },
   {
+    id: '#2',
     name: 'RES - Préparation TE1',
     description: 'Java IO et programmation TCP',
     tags: [{ name: 'RES' }, { name: 'Java IO' }, { name: 'TCP' }],
@@ -30,6 +32,7 @@ export const mockMeetings: Meeting[] = [
     isPrivate: true,
   },
   {
+    id: '#3',
     name: 'PCO - Labo train',
     description: 'Laboratoire train PCO',
     tags: [{ name: 'PCO' }, { name: 'Laboratoire' }],

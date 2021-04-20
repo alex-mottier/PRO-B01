@@ -10,7 +10,7 @@ import { Avatar, Card, Chip, IconButton, Paragraph, Text } from 'react-native-pa
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from './styles';
 import Globals from '../../app/context/Globals';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { format } from 'date-fns';
 import frenchLocale from 'date-fns/locale/fr';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -18,6 +18,7 @@ import { Meeting, Tag } from '../../app/models/ApplicationTypes';
 import { useNavigation } from '@react-navigation/core';
 import GlobalStore from '../../app/stores/GlobalStore';
 import { colors } from '../../app/context/Theme';
+import Clipboard from 'expo-clipboard';
 
 /**
  * Component props
@@ -60,6 +61,14 @@ const MeetingComponent: React.FC<IProps> = ({
   const handleEdit = () => {
     store.setMeetingToUpdate(meeting);
     navigation.navigate(Globals.STRINGS.CREATE);
+  };
+
+  /**
+   * Copy meeting id to clipboard
+   */
+  const copyToClipboard = () => {
+    Clipboard.setString(meeting.id);
+    Alert.alert('Copié', "L'id de la réunion a été copié");
   };
 
   return (
@@ -148,6 +157,17 @@ const MeetingComponent: React.FC<IProps> = ({
                   onPress={() => navigation.navigate('Chat')}
                 />
                 <Text style={[styles.gray, styles.buttonText]}>Discuter</Text>
+              </View>
+            )}
+            {isOwner && !isInCalendar && (
+              <View>
+                <IconButton
+                  icon={Globals.ICONS.COPY}
+                  size={30}
+                  onPress={copyToClipboard}
+                  color={Globals.COLORS.GRAY}
+                />
+                <Text style={[styles.gray, styles.buttonText]}>Copier ID</Text>
               </View>
             )}
             {!isOwner && !isInCalendar && (
