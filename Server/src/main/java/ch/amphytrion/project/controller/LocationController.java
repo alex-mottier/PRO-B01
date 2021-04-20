@@ -1,5 +1,6 @@
 package ch.amphytrion.project.controller;
 
+import ch.amphytrion.project.dto.DatesFilterDTO;
 import ch.amphytrion.project.entities.databaseentities.Location;
 import ch.amphytrion.project.services.LocationService;
 import io.swagger.annotations.ApiOperation;
@@ -7,9 +8,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class LocationController extends BaseController implements IGenericContro
         this.locationService = locationService;
     }
 
-    @Override
+    //X
     @GetMapping("/locations")
     public ResponseEntity<List<Location>> getAll() {
         try {
@@ -32,16 +31,44 @@ public class LocationController extends BaseController implements IGenericContro
         }
     }
 
-    @Override
-    @PostMapping("/locations")
-    public ResponseEntity save(Location entity) {
+    //X
+    @GetMapping("/locations/withDate")
+    public ResponseEntity<List<Location>> getAllWithDate(@RequestBody DatesFilterDTO filters) {
+        //TODO logique & model dto with startDate & endDate
         try {
-            return ResponseEntity.ok(locationService.save(entity));
+            return ResponseEntity.ok(locationService.findAll());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
+    //X
+    @PostMapping("/location")
+    public ResponseEntity create(@RequestBody Location entity) {
+        try {
+            if(entity.getId() == null){
+                return ResponseEntity.ok(locationService.save(entity));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    //X
+    @PatchMapping("/location")
+    public ResponseEntity update(@RequestBody Location entity) {
+        try {
+            if(entity.getId() != null && locationService.findById(entity.getId()) != null){
+                return ResponseEntity.ok(locationService.save(entity));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    //X
     @Override
     @GetMapping("/location/{id}")
     public ResponseEntity<Location> getById(String id) {
