@@ -143,13 +143,32 @@ export default class AmphitryonDAO {
   }
 
   /**
-   * Load the user's meeting
+   * Load meetings created by user
    * @returns list of meetings
    */
-  async loadUserMeetings(): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/getMyMeetings', {
+  async loadMeetingCreatedByUser(): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/getCreatedMeetings', {
       method: 'GET',
       headers: this.header,
+    })
+      .then((response: Response) => {
+        return response;
+      })
+      .catch(() => {
+        Alert.alert("Une erreur s'est produite", 'Erreur lors du chargement de vos réunions');
+        return null;
+      });
+  }
+
+  /**
+   * Load user meetings
+   * @returns list of meetings
+   */
+  async loadUserMeetings(startDate: Date, endDate: Date): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/getMyMeetings ', {
+      method: 'GET',
+      headers: this.header,
+      body: JSON.stringify({ startDate: startDate.toISOString(), endDate: endDate.toISOString() }),
     })
       .then((response: Response) => {
         return response;
@@ -214,6 +233,25 @@ export default class AmphitryonDAO {
       })
       .catch(() => {
         Alert.alert("Une erreur s'est produite", "Erreur lors de l'inscription");
+        return null;
+      });
+  }
+
+  /**
+   * Leave a meeting
+   * @param meetingID to leave
+   * @returns if the meeting has been leaved by user
+   */
+  async leaveMeeting(meetingID: string): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/meeting/leave/' + meetingID, {
+      method: 'POST',
+      headers: this.header,
+    })
+      .then((response: Response) => {
+        return response;
+      })
+      .catch(() => {
+        Alert.alert("Une erreur s'est produite", 'Erreur lors de la désinscription');
         return null;
       });
   }

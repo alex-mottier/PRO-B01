@@ -126,8 +126,10 @@ const MeetingComponent: React.FC<IProps> = ({
               style={styles.icon}
             />
             <Text style={styles.gray}>
-              {format(meeting.start, 'EEEE MM LLLL yyyy | HH:mm', { locale: frenchLocale })} -
-              {format(meeting.end, 'HH:mm', { locale: frenchLocale })}
+              {format(new Date(meeting.startDate), 'EEEE MM LLLL yyyy | HH:mm', {
+                locale: frenchLocale,
+              })}{' '}
+              -{format(new Date(meeting.endDate), 'HH:mm', { locale: frenchLocale })}
             </Text>
           </View>
           <View style={styles.infoWithIcon}>

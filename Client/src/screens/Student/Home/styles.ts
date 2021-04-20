@@ -22,6 +22,9 @@ const styles = StyleSheet.create({
   meeting: {
     width: '90%',
   },
+  knob: {
+    marginTop: -15,
+  },
 });
 
 export default styles;

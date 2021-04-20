@@ -7,62 +7,60 @@
 
 import * as React from 'react';
 import { View } from 'react-native';
-import { IconButton, Text } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import styles from './styles';
-import { Agenda } from 'react-native-calendars';
+import { Agenda, AgendaItemsMap } from 'react-native-calendars';
 import Globals from '../../../app/context/Globals';
 import { LocaleConfig } from 'react-native-calendars';
 import { observer } from 'mobx-react-lite';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import { Meeting } from '../../../app/models/ApplicationTypes';
+import { addDays, addYears, format } from 'date-fns';
+import { dateLocale } from '../../../app/context/DateFormat';
 
+// Format date definition
+LocaleConfig.locales['fr'] = dateLocale;
 LocaleConfig.defaultLocale = 'fr';
 
 const Home: React.FC = () => {
+  /* Component states */
+  const [items, setItems] = React.useState<AgendaItemsMap<Meeting> | undefined>();
+
+  /**
+   * Action when component is loaded
+   */
+  React.useEffect(() => {
+    generateItems(new Date());
+  }, []);
+
+  /**
+   * Generate next 10 days agenda items from a given date
+   * @param from date from to generate items
+   */
+  const generateItems = (from: Date) => {
+    const nbDays = 10;
+    const items = ['{ '];
+    for (let i = 0; i <= nbDays; ++i) {
+      items.push('"' + format(addDays(from, i), 'yyyy-MM-dd') + '" : []');
+      if (i != nbDays) items.push(',');
+    }
+    items.push(' }');
+    setItems(JSON.parse(items.join('')));
+  };
+
   return (
     <Agenda
-      items={{
-        '2021-04-17': [],
-        '2021-04-18': [],
-        '2021-04-19': [],
-        '2021-04-20': [],
-        '2021-04-21': [],
-        '2021-04-22': [],
-        '2021-04-23': [
-          {
-            id: '#1',
-            name: 'PRO - Coordination',
-            description: "Réunion pour coordiner l'avancement du projet",
-            tags: [{ name: 'PRO' }, { name: 'Coordination' }],
-            locationID: '',
-            locationName: 'Salle G01',
-            nbPeople: 2,
-            maxPeople: 5,
-            startDate: '2021-03-15T15:00:00',
-            endDate: '2021-03-15T16:00:00',
-            ownerID: '',
-            chatId: '',
-            isPrivate: true,
-          },
-        ],
-        '2021-04-24': [],
-        '2021-04-25': [],
-        '2021-04-26': [],
-        '2021-04-27': [],
-        '2021-04-28': [],
-      }}
-      markingType={'simple'}
-      loadItemsForMonth={(month) => {
-        // TODO : load meetings
-      }}
-      onDayChange={(day) => {
-        // TODO : load older meetings
-      }}
-      selected={'2021-04-19'}
-      minDate={'2020-04-19'}
-      maxDate={'2022-04-19'}
+      items={items}
       pastScrollRange={1}
-      futureScrollRange={1}
+      futureScrollRange={12}
+      selected={format(new Date(), 'yyyy-MM-dd')}
+      minDate={format(new Date(), 'yyyy-MM-dd')}
+      maxDate={format(addYears(new Date(), 1), 'yyyy-MM-dd')}
+      onDayPress={(day) => {
+        const newDate = new Date(day.dateString);
+        console.log(newDate);
+        generateItems(newDate);
+      }}
       renderItem={(item) => {
         return (
           <View style={styles.meetings}>
@@ -82,7 +80,7 @@ const Home: React.FC = () => {
       }}
       renderKnob={() => {
         return (
-          <View style={{ marginTop: -15 }}>
+          <View style={styles.knob}>
             <IconButton
               icon={Globals.ICONS.ARROW_DOWN}
               size={Globals.SIZES.ICON_MENU}
@@ -91,23 +89,15 @@ const Home: React.FC = () => {
           </View>
         );
       }}
-      // Specify what should be rendered instead of ActivityIndicator
-      renderEmptyData={() => {
-        return <Text />;
-      }}
       rowHasChanged={(r1: Meeting, r2: Meeting) => {
         return r1.id !== r2.id;
       }}
-      onRefresh={() => console.log('refreshing...')}
-      refreshing={false}
-      refreshControl={null}
       theme={{
         agendaDayTextColor: Globals.COLORS.TEXT,
         agendaDayNumColor: Globals.COLORS.TEXT,
         agendaTodayColor: Globals.COLORS.PRIMARY,
         agendaKnobColor: Globals.COLORS.PRIMARY,
       }}
-      markedDates={{}}
     />
   );
 };
