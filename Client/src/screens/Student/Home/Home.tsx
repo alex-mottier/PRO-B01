@@ -17,14 +17,19 @@ import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import { Meeting } from '../../../app/models/ApplicationTypes';
 import { addDays, addYears, format } from 'date-fns';
 import { dateLocale } from '../../../app/context/DateFormat';
+import GlobalStore from '../../../app/stores/GlobalStore';
 
 // Format date definition
 LocaleConfig.locales['fr'] = dateLocale;
 LocaleConfig.defaultLocale = 'fr';
 
 const Home: React.FC = () => {
+  /* Usage of MobX global state store */
+  const store = React.useContext(GlobalStore);
+
   /* Component states */
   const [items, setItems] = React.useState<AgendaItemsMap<Meeting> | undefined>();
+  const [meetings, setMeetings] = React.useState([]);
 
   /**
    * Action when component is loaded

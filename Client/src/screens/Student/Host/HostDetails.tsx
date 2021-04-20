@@ -21,7 +21,7 @@ const HostDetails: React.FC = () => {
 
   /* Component states */
   const [isLoading, setIsLoading] = React.useState(true);
-  const [host, setHost] = React.useState<Host>();
+  const [host, setHost] = React.useState<Host | null>();
 
   /* Local variables */
   let nbColors = 0;
@@ -31,7 +31,7 @@ const HostDetails: React.FC = () => {
    */
   React.useEffect(() => {
     setIsLoading(true);
-    setHost(store.loadHost());
+    setHost(store.hostToDisplay);
     setIsLoading(false);
   }, []);
 

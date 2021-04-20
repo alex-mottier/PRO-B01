@@ -9,9 +9,12 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { IconButton, Card, Text } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
-import { OpeningHour, Day } from '../../app/models/ApplicationTypes';
+import { OpeningHour } from '../../app/models/ApplicationTypes';
+import frenchLocale from 'date-fns/locale/fr';
 import styles from './styles';
 import { format } from 'date-fns';
+import { LocaleConfig } from 'react-native-calendars';
+import { dateLocale } from '../../app/context/DateFormat';
 
 /**
  * Component props
@@ -26,7 +29,6 @@ const OpeninHourComponent: React.FC<IProps> = ({ openingHour }) => {
   const startMinute = format(new Date(openingHour.startTime), 'mm');
   const endHour = format(new Date(openingHour.endTime), 'hh');
   const endMinute = format(new Date(openingHour.endTime), 'mm');
-  const days = openingHour.days;
 
   return (
     <View>
@@ -41,12 +43,7 @@ const OpeninHourComponent: React.FC<IProps> = ({ openingHour }) => {
           </View>
           <View style={styles.text}>
             <View style={styles.days}>
-              <Text>
-                {days.map((day: Day, i) => {
-                  if (days.length !== i + 1) return day.name + ' - ';
-                  else return day.name;
-                })}
-              </Text>
+              <Text>{dateLocale.dayNames[openingHour.day]}</Text>
             </View>
             <View style={styles.hours}>
               <Text>

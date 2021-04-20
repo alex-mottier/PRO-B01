@@ -28,7 +28,7 @@ const LocationDetails: React.FC = () => {
 
   /* Component states */
   const [isLoading, setIsLoading] = React.useState(true);
-  const [location, setLocation] = React.useState<Location>();
+  const [location, setLocation] = React.useState<Location | null>();
 
   /* Local variables */
   let nbColors = 0;
@@ -38,7 +38,7 @@ const LocationDetails: React.FC = () => {
    */
   React.useEffect(() => {
     setIsLoading(true);
-    setLocation(store.loadLocations());
+    setLocation(store.locationToDisplay);
     setIsLoading(false);
   }, []);
 
@@ -55,7 +55,10 @@ const LocationDetails: React.FC = () => {
                 icon={Globals.ICONS.INFO}
                 size={Globals.SIZES.ICON_HEADER}
                 color={Globals.COLORS.GRAY}
-                onPress={() => navigation.navigate('HostDetails')}
+                onPress={() => {
+                  if (location) navigation.navigate('HostDetails');
+                  if (location?.hostId) void store.loadHost(location?.hostId);
+                }}
               />
             </View>
             <View style={styles.row}>

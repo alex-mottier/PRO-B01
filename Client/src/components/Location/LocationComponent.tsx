@@ -14,6 +14,7 @@ import { Location, Tag } from '../../app/models/ApplicationTypes';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../app/context/Theme';
 import { useNavigation } from '@react-navigation/core';
+import GlobalStore from '../../app/stores/GlobalStore';
 
 /**
  * Component props
@@ -27,6 +28,9 @@ interface IProps {
 const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) => {
   /* Usage of React Navigation */
   const navigation = useNavigation();
+
+  /* Usage of MobX global state store */
+  const store = React.useContext(GlobalStore);
 
   /* Component states */
   const [isReduced, setIsReduced] = React.useState(true);
@@ -55,7 +59,10 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
                   name={Globals.ICONS.INFO}
                   color={Globals.COLORS.GRAY}
                   size={Globals.SIZES.ICON_BUTTON}
-                  onPress={() => navigation.navigate('LocationDetails')}
+                  onPress={() => {
+                    navigation.navigate('LocationDetails');
+                    void store.loadLocation(location.id);
+                  }}
                 />
               </View>
               <View style={styles.nbPeople}>

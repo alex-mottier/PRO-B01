@@ -334,4 +334,23 @@ export default class AmphitryonDAO {
         return null;
       });
   }
+
+  /**
+   * Get a host
+   * @param hostId to load
+   * @returns the host
+   */
+  async getHostDetails(hostId: string): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/host/' + hostId, {
+      method: 'GET',
+      headers: this.header,
+    })
+      .then((response: Response) => {
+        return response;
+      })
+      .catch(() => {
+        Alert.alert("Une erreur s'est produite", 'Erreur lors du lieu');
+        return null;
+      });
+  }
 }

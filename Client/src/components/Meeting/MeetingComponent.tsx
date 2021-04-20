@@ -64,6 +64,15 @@ const MeetingComponent: React.FC<IProps> = ({
   };
 
   /**
+   * Suppression de la réunion
+   */
+  const handleDelete = () => {
+    void store.deleteMeeting(meeting.id).then(() => {
+      Alert.alert('Supprimée', 'La réunion a correctement été supprimée');
+    });
+  };
+
+  /**
    * Copy meeting id to clipboard
    */
   const copyToClipboard = () => {
@@ -145,7 +154,10 @@ const MeetingComponent: React.FC<IProps> = ({
                 name={Globals.ICONS.INFO}
                 color={Globals.COLORS.GRAY}
                 size={Globals.SIZES.ICON_HEADER}
-                onPress={() => navigation.navigate('LocationDetails')}
+                onPress={() => {
+                  navigation.navigate('LocationDetails');
+                  void store.loadLocationToDisplay(meeting.locationID);
+                }}
               />
             </View>
           </View>
@@ -199,7 +211,7 @@ const MeetingComponent: React.FC<IProps> = ({
                 <IconButton
                   icon={Globals.ICONS.DELETE}
                   size={30}
-                  onPress={() => console.log('Pressed')}
+                  onPress={handleDelete}
                   color={Globals.COLORS.PINK}
                 />
                 <Text style={[styles.gray, styles.buttonText]}>Supprimer</Text>

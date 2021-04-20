@@ -30,10 +30,15 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
 import { addDays } from 'date-fns/esm';
 import NoMeeting from '../../../components/NoMeeting/NoMeeting';
+import { observer } from 'mobx-react-lite';
+import GlobalStore from '../../../app/stores/GlobalStore';
 
 const Search: React.FC = () => {
   // Usage of react native paper theme library
   const paperTheme = useTheme();
+
+  /* Usage of MobX global state store */
+  const store = React.useContext(GlobalStore);
 
   /* Component states */
   const [search, setSearch] = React.useState('');
@@ -243,4 +248,4 @@ const Search: React.FC = () => {
   );
 };
 
-export default Search;
+export default observer(Search);
