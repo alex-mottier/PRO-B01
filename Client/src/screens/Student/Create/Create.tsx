@@ -39,11 +39,14 @@ const Create: React.FC<IProps> = ({ isEditMode, meetingToEdit }) => {
   const [meetingName, setMeetingName] = React.useState(meeting.name);
   const [meetingDescription, setMeetingDescription] = React.useState(meeting.description);
   const [isPrivateOn, setIsPrivateOn] = React.useState(meeting.isPrivate);
+
   const [showDate, setShowDate] = React.useState(false);
   const [showStartTime, setShowStartTime] = React.useState(false);
   const [showEndTime, setShowEndTime] = React.useState(false);
+
   const [startDate, setStartDate] = React.useState(new Date(Date.parse(meeting.startDate)));
   const [endDate, setEndDate] = React.useState(new Date(Date.parse(meeting.endDate)));
+
   const [tags, setTags] = React.useState(meeting.tags);
   const [location, setLocation] = React.useState<Location | null>(null);
 
@@ -215,7 +218,7 @@ const Create: React.FC<IProps> = ({ isEditMode, meetingToEdit }) => {
                   />
                 </View>
                 <View style={styles.row}>
-                  <Text style={{ color: Globals.COLORS.TEXT }}>{format(startDate, 'hh:mm')}</Text>
+                  <Text style={{ color: Globals.COLORS.TEXT }}>{format(startDate, 'HH:mm')}</Text>
                   <IconButton
                     icon={Globals.ICONS.END_TIME}
                     size={Globals.SIZES.ICON_MENU}
@@ -224,7 +227,7 @@ const Create: React.FC<IProps> = ({ isEditMode, meetingToEdit }) => {
                   />
                 </View>
                 <View style={styles.row}>
-                  <Text style={{ color: Globals.COLORS.TEXT }}>{format(endDate, 'hh:mm')}</Text>
+                  <Text style={{ color: Globals.COLORS.TEXT }}>{format(endDate, 'HH:mm')}</Text>
                   <IconButton
                     icon={Globals.ICONS.END_TIME}
                     size={Globals.SIZES.ICON_MENU}
