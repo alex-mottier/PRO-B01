@@ -10,6 +10,7 @@ import ch.amphytrion.project.repositories.ChatRepository;
 import ch.amphytrion.project.services.ChatService;
 import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.StudentService;
+import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -26,12 +27,14 @@ public class MeetingController extends BaseController implements IGenericControl
     private MeetingService meetingService;
     private StudentService studentService;
     private ChatService chatService;
+    private UserService userService;
 
     @Autowired
-    public MeetingController(MeetingService meetingService, StudentService studentService, ChatService chatService) {
+    public MeetingController(MeetingService meetingService, StudentService studentService, ChatService chatService, UserService userService) {
         this.meetingService = meetingService;
         this.studentService = studentService;
         this.chatService = chatService;
+        this.userService = userService;
     }
 
     //X
@@ -82,9 +85,12 @@ public class MeetingController extends BaseController implements IGenericControl
     @PostMapping("/meeting/join/{meetingID}")
     public ResponseEntity<Meeting> joinMeeting(@PathVariable String meetingID) {
         try {
-            Student student = null; // TODO Use current user
+            User user = new User();
+            userService.save(user);
+            Student student = (Student) user; // TODO Use current user
             Meeting meeting = meetingService.findById(meetingID);
             if (student instanceof Student) {
+                studentService.save(student);
                 student.getMeetingsParticipations().add(meeting);
                 studentService.save(student);
                 return ResponseEntity.ok(meeting);
@@ -110,6 +116,7 @@ public class MeetingController extends BaseController implements IGenericControl
     public ResponseEntity<Meeting> create(@RequestBody Meeting entity) {
         try {
             if(entity.getId() == null){
+                //TODO : AJOUTER USER
                 Chat chat = new Chat();
                 chatService.save(chat);
                 entity.setChatID(chat.getId());
@@ -125,18 +132,25 @@ public class MeetingController extends BaseController implements IGenericControl
     @PatchMapping("/meeting")
     public ResponseEntity<Meeting> update(@RequestBody Meeting entity) {
         try {
-            if(entity.getId() != null && meetingService.findById(entity.getId()) != null){
-                return ResponseEntity.ok(meetingService.save(entity));
+            if(entity.getId() != null){
+                //TODO : AJOUTER USER
+                try {
+                    Meeting existantMeeting = meetingService.findById(entity.getId());
+                    existantMeeting = entity;
+                    return ResponseEntity.ok(meetingService.save(existantMeeting));
+                } catch (Exception e){
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                }
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     //X
     @DeleteMapping("/meeting/{meetingID}")
-    public ResponseEntity delete(@PathVariable String meetingID) {
+    public ResponseEntity<Meeting> delete(@PathVariable String meetingID) {
         try {
             Meeting meeting = meetingService.findById(meetingID);
             if(meeting != null){

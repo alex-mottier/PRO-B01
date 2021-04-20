@@ -34,8 +34,10 @@ public class MeetingService implements IGenericService<Meeting> {
     private ChatRepository chatRepository;
 
     @Autowired
-    public MeetingService(MeetingRepository meetingRepository) {
+    public MeetingService(MeetingRepository meetingRepository, LocationRepository locationRepository, ChatRepository chatRepository) {
         this.meetingRepository = meetingRepository;
+        this.chatRepository = chatRepository;
+        this.locationRepository = locationRepository;
     }
 
     @Override
@@ -46,13 +48,6 @@ public class MeetingService implements IGenericService<Meeting> {
     @Override
     public Meeting save(Meeting meetingResponse) {
         if (meetingResponse.getId() != null && !meetingResponse.getId().isEmpty()) {
-            Chat chat = new Chat();
-            try {
-                chatRepository.save(chat);
-                meetingResponse.setChatID(chat.getId());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         return meetingRepository.save(meetingResponse);
     }
