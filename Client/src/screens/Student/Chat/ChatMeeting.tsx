@@ -46,15 +46,18 @@ const ChatMeeting: React.FC = () => {
    * Action done when submit button is pressed
    */
   const handleSubmit = () => {
-    const newMessage: Message = {
-      id: '',
-      message: message,
-      username: store.getAuthenticatedUser()?.name,
-      date: new Date(),
-    };
-    currentChat['messages'].push(newMessage);
-    setChat(currentChat);
-    setMessage('');
+    const user = store.getAuthenticatedUser();
+    if (user) {
+      const newMessage: Message = {
+        id: '',
+        message: message,
+        username: user.username,
+        date: new Date().toISOString(),
+      };
+      currentChat['messages'].push(newMessage);
+      setChat(currentChat);
+      setMessage('');
+    }
   };
 
   return (
@@ -76,14 +79,16 @@ const ChatMeeting: React.FC = () => {
               {chat?.messages.map((message: Message) => {
                 return (
                   <View key={message.id}>
-                    {message.username === authenticedUser?.name ? (
+                    {message.username === authenticedUser?.username ? (
                       <View style={styles.authenticedUserContainer}>
                         <View style={styles.authenticedUserMessage}>
                           <Text style={styles.authenticedUserMessageText}>{message.message}</Text>
                         </View>
                         <View style={styles.authenticedUserDate}>
                           <Text style={styles.dateText}>
-                            {formatDistance(message.date, new Date(), { addSuffix: true })}
+                            {formatDistance(new Date(message.date), new Date(), {
+                              addSuffix: true,
+                            })}
                           </Text>
                         </View>
                       </View>
@@ -94,8 +99,10 @@ const ChatMeeting: React.FC = () => {
                         </View>
                         <View style={styles.userDate}>
                           <Text style={styles.dateText}>
-                            {formatDistance(message.date, new Date(), { addSuffix: true })} -{' '}
-                            {message.username}
+                            {formatDistance(new Date(message.date), new Date(), {
+                              addSuffix: true,
+                            })}{' '}
+                            - {message.username}
                           </Text>
                         </View>
                       </View>

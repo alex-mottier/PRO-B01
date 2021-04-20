@@ -42,8 +42,8 @@ const Create: React.FC<IProps> = ({ isEditMode, meetingToEdit }) => {
   const [showDate, setShowDate] = React.useState(false);
   const [showStartTime, setShowStartTime] = React.useState(false);
   const [showEndTime, setShowEndTime] = React.useState(false);
-  const [startDate, setStartDate] = React.useState(meeting.start);
-  const [endDate, setEndDate] = React.useState(meeting.end);
+  const [startDate, setStartDate] = React.useState(new Date(meeting.startDate));
+  const [endDate, setEndDate] = React.useState(new Date(meeting.endDate));
   const [tags, setTags] = React.useState(meeting.tags);
   const [location, setLocation] = React.useState<Location | null>(null);
 
@@ -266,7 +266,7 @@ const Create: React.FC<IProps> = ({ isEditMode, meetingToEdit }) => {
               )}
               {isEditMode && (
                 <Button
-                  icon={Globals.ICONS.CREATE}
+                  icon={Globals.ICONS.EDIT}
                   mode="contained"
                   color={Globals.COLORS.PRIMARY}
                   labelStyle={{ color: Globals.COLORS.WHITE }}

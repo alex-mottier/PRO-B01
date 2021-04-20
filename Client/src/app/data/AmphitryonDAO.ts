@@ -49,7 +49,7 @@ export default class AmphitryonDAO {
     return fetch(Globals.URLS.API_URL + '/signUpStudent', {
       method: 'POST',
       headers: this.header,
-      body: JSON.stringify({ tokenID: tokenId, userName: user.name }),
+      body: JSON.stringify({ tokenID: tokenId, username: user.username }),
     })
       .then((response: Response) => {
         return response;
@@ -66,10 +66,10 @@ export default class AmphitryonDAO {
    * @returns Réponse axios
    */
   async connectUser(tokenId: string): Promise<Response | null> {
-    return fetch(Globals.URLS.API_URL + '/connect', {
+    return fetch(Globals.URLS.API_URL + '/login', {
       method: 'POST',
       headers: this.header,
-      body: tokenId,
+      body: JSON.stringify({ tokenID: tokenId }),
     })
       .then((response: Response) => {
         return response;
@@ -89,7 +89,7 @@ export default class AmphitryonDAO {
    * @returns if the meeting has been successfully added or null
    */
   async createMeeting(meeting: Meeting): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/', {
+    return await fetch(Globals.URLS.API_URL + '/meeting', {
       method: 'POST',
       headers: this.header,
       body: JSON.stringify(meeting),
@@ -109,7 +109,7 @@ export default class AmphitryonDAO {
    * @returns if the meeting has been successfully updated or null
    */
   async updateMeeting(meeting: Meeting): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/', {
+    return await fetch(Globals.URLS.API_URL + '/meeting', {
       method: 'PATCH',
       headers: this.header,
       body: JSON.stringify(meeting),
@@ -128,11 +128,10 @@ export default class AmphitryonDAO {
    * @param meeting to delete
    * @returns if the meeting has been successfully deleted or null
    */
-  async deleteMeeting(meeting: Meeting): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/', {
+  async deleteMeeting(meetingID: string): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/meeting/' + meetingID, {
       method: 'DELETE',
       headers: this.header,
-      body: JSON.stringify(meeting),
     })
       .then((response: Response) => {
         return response;
@@ -148,7 +147,7 @@ export default class AmphitryonDAO {
    * @returns list of meetings
    */
   async loadUserMeetings(): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/', {
+    return await fetch(Globals.URLS.API_URL + '/getMyMeetings', {
       method: 'GET',
       headers: this.header,
     })
@@ -167,10 +166,9 @@ export default class AmphitryonDAO {
    * @returns list of meetings
    */
   async searchMeetingWithID(meetingID: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/', {
+    return await fetch(Globals.URLS.API_URL + '/meeting/' + meetingID, {
       method: 'GET',
       headers: this.header,
-      body: JSON.stringify({ meetingID: meetingID }),
     })
       .then((response: Response) => {
         return response;
@@ -187,8 +185,8 @@ export default class AmphitryonDAO {
    * @returns list of meetings
    */
   async searchMeeting(filter: Filter): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/', {
-      method: 'GET',
+    return await fetch(Globals.URLS.API_URL + '/meetings/filter', {
+      method: 'POST',
       headers: this.header,
       body: JSON.stringify(filter),
     })
@@ -207,10 +205,9 @@ export default class AmphitryonDAO {
    * @returns if the meeting has been joined by user
    */
   async joinMeeting(meetingID: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/', {
+    return await fetch(Globals.URLS.API_URL + '/meeting/join/' + meetingID, {
       method: 'POST',
       headers: this.header,
-      body: JSON.stringify({ meetingID: meetingID }),
     })
       .then((response: Response) => {
         return response;
@@ -227,10 +224,9 @@ export default class AmphitryonDAO {
    * @returns list of messages
    */
   async loadMessages(chatID: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/', {
+    return await fetch(Globals.URLS.API_URL + '/chat/' + chatID, {
       method: 'GET',
       headers: this.header,
-      body: JSON.stringify({ chatID: chatID }),
     })
       .then((response: Response) => {
         return response;
@@ -246,8 +242,8 @@ export default class AmphitryonDAO {
    * @param message to send
    * @returns if the messages was successfully sent
    */
-  async sendMesssage(message: Message): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/', {
+  async sendMessage(chatId: string, message: Message): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/chat/createMessage/' + chatId, {
       method: 'POST',
       headers: this.header,
       body: JSON.stringify(message),
@@ -267,10 +263,9 @@ export default class AmphitryonDAO {
    * @returns the location
    */
   async getLocationDetails(locationID: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/', {
+    return await fetch(Globals.URLS.API_URL + '/location/' + locationID, {
       method: 'GET',
       headers: this.header,
-      body: JSON.stringify({ locationID: locationID }),
     })
       .then((response: Response) => {
         return response;
@@ -283,15 +278,15 @@ export default class AmphitryonDAO {
 
   /**
    * Get all locations available
-   * @param start date of the meeting
-   * @param end date of the meeting
+   * @param start date of the meeting (at 00h00)
+   * @param end date of the meeting (at 23h59)
    * @returns the location
    */
   async getAllLocations(start: Date, end: Date): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/', {
+    return await fetch(Globals.URLS.API_URL + '/locations/withDate', {
       method: 'GET',
       headers: this.header,
-      body: JSON.stringify({ start: start, end: end }),
+      body: JSON.stringify({ startDate: start.toISOString(), endDate: end.toISOString() }),
     })
       .then((response: Response) => {
         return response;

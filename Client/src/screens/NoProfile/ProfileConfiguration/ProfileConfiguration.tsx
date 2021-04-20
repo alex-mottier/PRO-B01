@@ -28,7 +28,7 @@ const ProfileConfiguration: React.FC = () => {
    * Action done when submit button is pressed
    */
   const handleSubmit = () => {
-    void store.signUp({ name: username });
+    void store.signUp({ username: username });
   };
 
   return (

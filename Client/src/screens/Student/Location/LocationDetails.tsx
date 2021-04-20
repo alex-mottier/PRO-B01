@@ -50,7 +50,7 @@ const LocationDetails: React.FC = () => {
         ) : (
           <View style={styles.container}>
             <View style={styles.host}>
-              <Text style={styles.text}>{location?.host.name}</Text>
+              <Text style={styles.text}>{location?.hostName}</Text>
               <IconButton
                 icon={Globals.ICONS.INFO}
                 size={Globals.SIZES.ICON_HEADER}

@@ -5,11 +5,12 @@
  * @brief   Application types for typing
  */
 
-// TODO : Sujet à modification
 export type Address = {
-  streetName: string;
-  city: string;
-  npa: number;
+  id: string;
+  street: string;
+  streetNb: string;
+  cityName: string;
+  npa: string;
 };
 
 export type Chat = {
@@ -17,74 +18,62 @@ export type Chat = {
   messages: Message[];
 };
 
-export type Day = {
-  name: string;
-  day: DayEnum;
-};
-
-export enum DayEnum {
-  SUN,
-  MON,
-  TUE,
-  WED,
-  THU,
-  FRI,
-  SAT,
-}
-
 export type Filter = {
   name: string | null;
-  startDate: Date | null;
-  endDate: Date | null;
+  startDate: string | null;
+  endDate: string | null;
   tags: Tag[] | null;
-  locations: Location[] | null;
+  location: Location | null;
 };
 
-// TODO : Sujet à modification
 export type Host = {
+  id: string;
   name: string;
-  description: string;
   address: Address;
+  description: string;
   tags: Tag[];
 };
 
 export type Location = {
+  id: string;
   name: string;
   description: string;
-  tags: Tag[];
   nbPeople: number;
+  hostId: string;
+  hostName: string;
+  tags: Tag[];
   openingHours: OpeningHour[];
-  host: Host;
 };
 
 export type OpeningHour = {
   id: string;
-  startTime: Date;
-  endTime: Date;
-  days: Day[];
+  // Format hh:mm
+  startTime: string;
+  endTime: string;
+  day: number;
 };
 
 export type Meeting = {
   id: string;
   name: string;
   description: string;
-  tags: Tag[];
   locationID: string;
   locationName: string;
-  maxPeople: number;
-  nbPeople: number;
-  start: Date;
-  end: Date;
   ownerID: string;
   chatId: string;
+  tags: Tag[];
+  nbPeople: number;
+  maxPeople: number;
+  startDate: string;
+  endDate: string;
   isPrivate: boolean;
 };
 
 export type Message = {
   id: string;
   message: string;
-  username: string | undefined;
-  date: Date;
+  username: string;
+  date: string;
 };
 
 export type Tag = {
@@ -92,5 +81,5 @@ export type Tag = {
 };
 
 export type User = {
-  name: string;
+  username: string;
 };

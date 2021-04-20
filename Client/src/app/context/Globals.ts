@@ -66,7 +66,7 @@ export default {
     CREATE: 'Créer une réunion',
     PROFILE: 'Profil',
     SEARCH: 'Rechercher une réunion',
-    SESSION_TOKEN_NAME: 'session_token_amphitryon',
+    SESSION_TOKEN_NAME: 'SESSION_TOKEN_AMPHITRYON',
   },
   URLS: {
     API_URL: 'http://amphitryon.herokuapp.com/item',

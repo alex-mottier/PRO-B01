@@ -39,7 +39,7 @@ const Profile: React.FC = () => {
         <View style={styles.container}>
           <View style={styles.row}>
             <Avatar.Image size={80} source={require('../../../../assets/Logo.png')} />
-            <Title style={styles.title}>{store.authenticatedUser?.name}</Title>
+            <Title style={styles.title}>{store.authenticatedUser?.username}</Title>
           </View>
           <Text style={styles.text}>Réunions que j&apos;ai crées :</Text>
           {isLoading && <LoadingComponent />}
