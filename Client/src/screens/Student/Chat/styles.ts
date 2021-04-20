@@ -5,11 +5,18 @@
  * @brief   Meeting chat page styles
  */
 
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import Globals from '../../../app/context/Globals';
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
+    width: '100%',
+    alignContent: 'space-between',
+  },
   authenticedUserMessage: {
     backgroundColor: Globals.COLORS.BLUE,
     width: 'auto',
@@ -32,11 +39,9 @@ const styles = StyleSheet.create({
     color: Globals.COLORS.WHITE,
   },
   authenticedUserContainer: {
-    display: 'flex',
     alignSelf: 'flex-end',
   },
   userContainer: {
-    display: 'flex',
     alignSelf: 'flex-start',
   },
   userDate: {
@@ -49,20 +54,21 @@ const styles = StyleSheet.create({
     color: Globals.COLORS.DARK_GRAY,
   },
   userMessageText: {},
-  message: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  messages: {
-    display: 'flex',
-    alignContent: 'flex-start',
-  },
+  message: {},
+  messages: {},
   fields: { width: '80%' },
-  private: {
+  send: {
     flexDirection: 'column',
     alignItems: 'center',
     paddingRight: 20,
     width: '25%',
+  },
+  meeting: {
+    marginTop: -10,
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
   },
 });
 
