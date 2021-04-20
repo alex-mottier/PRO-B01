@@ -16,6 +16,7 @@ public class Location {
     private String name;
     private String description;
     private Integer nbPeople;
+    private Host host;
     private ArrayList<Tag> tags;
     private ArrayList<OpeningHour> openingHours;
 

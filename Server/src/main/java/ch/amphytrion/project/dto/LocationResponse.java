@@ -1,4 +1,4 @@
-package ch.amphytrion.project.entities.notdatabaseentities;
+package ch.amphytrion.project.dto;
 
 import ch.amphytrion.project.entities.databaseentities.Host;
 import ch.amphytrion.project.entities.databaseentities.OpeningHour;

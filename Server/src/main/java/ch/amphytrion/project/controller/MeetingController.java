@@ -1,14 +1,12 @@
 package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.dto.DatesFilterDTO;
-import ch.amphytrion.project.entities.databaseentities.Chat;
 import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.entities.databaseentities.Student;
 import ch.amphytrion.project.entities.databaseentities.User;
-import ch.amphytrion.project.entities.notdatabaseentities.FilterRequest;
+import ch.amphytrion.project.dto.FilterRequest;
 import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.StudentService;
-import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -16,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.spi.service.contexts.SecurityContext;
 
 import java.util.List;
 

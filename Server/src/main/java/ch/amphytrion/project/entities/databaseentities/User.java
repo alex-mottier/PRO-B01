@@ -13,11 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
     @Id
     private String id;
+    private String googleId;
     private String username;
-    private String tokenResponse;
-
-    public User(String username, String tokenResponse) {
-        this.username = username;
-        this.tokenResponse = tokenResponse;
-    }
 }

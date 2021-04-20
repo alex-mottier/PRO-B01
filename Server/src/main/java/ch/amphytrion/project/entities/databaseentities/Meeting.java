@@ -26,6 +26,7 @@ public class Meeting {
     private Integer nbPeople;
     private LocalDateTime start;
     private LocalDateTime end;
+    private Boolean isPrivate;
 
     @Autowired
     public Meeting(String name, String description, String locationID, String ownerID, String chatID, ArrayList<Tag> tags, Integer nbPeople, LocalDateTime start, LocalDateTime end) {

@@ -4,7 +4,7 @@ import ch.amphytrion.project.entities.databaseentities.Chat;
 import ch.amphytrion.project.entities.databaseentities.Location;
 import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.entities.databaseentities.Tag;
-import ch.amphytrion.project.entities.notdatabaseentities.FilterRequest;
+import ch.amphytrion.project.dto.FilterRequest;
 import ch.amphytrion.project.repositories.ChatRepository;
 import ch.amphytrion.project.repositories.LocationRepository;
 import ch.amphytrion.project.repositories.MeetingRepository;
@@ -59,6 +59,10 @@ public class MeetingService implements IGenericService<Meeting> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public ArrayList<Meeting> findByOwnerID(String ownerID){
+        return meetingRepository.findByOwnerID(ownerID);
     }
 
     @Override

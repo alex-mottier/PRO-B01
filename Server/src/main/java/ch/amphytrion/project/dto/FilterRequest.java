@@ -1,4 +1,4 @@
-package ch.amphytrion.project.entities.notdatabaseentities;
+package ch.amphytrion.project.dto;
 
 import ch.amphytrion.project.entities.databaseentities.Location;
 import ch.amphytrion.project.entities.databaseentities.Tag;
@@ -14,8 +14,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class FilterRequest {
     private String name;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
     private ArrayList<Tag> tags;
-    private ArrayList<Location> locations;
+    private Location location;
 }
