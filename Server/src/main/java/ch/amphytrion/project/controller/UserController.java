@@ -55,7 +55,7 @@ public class UserController extends BaseController implements IGenericController
             GoogleIdToken idToken = verifier.verify(tokenID);
             if (idToken != null) {
                 Payload payload = idToken.getPayload();
-                userService.save(new User("Alexis", userName));
+                userService.save(new User(null, payload.get("sub").toString(), userName));
 
                 HttpHeaders responseHeaders = new HttpHeaders();
                 responseHeaders.set("SESSION_TOKEN_AMPHITRYON",
@@ -79,11 +79,10 @@ public class UserController extends BaseController implements IGenericController
                 HttpHeaders responseHeaders = new HttpHeaders();
                 responseHeaders.set("SESSION_TOKEN_AMPHITRYON",
                         "VALID_SESSION_TOKEN_AMPHITRYON");
-                return ResponseEntity.ok().headers(responseHeaders).body(new ConnectedUser(username));
+                return ResponseEntity.ok().headers(responseHeaders).body(new User(null, null, null));
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @GetMapping("/user/{username}")
