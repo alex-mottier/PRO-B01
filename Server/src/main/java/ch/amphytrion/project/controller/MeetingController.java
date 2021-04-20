@@ -1,10 +1,13 @@
 package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.dto.DatesFilterDTO;
+import ch.amphytrion.project.entities.databaseentities.Chat;
 import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.entities.databaseentities.Student;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.dto.FilterRequest;
+import ch.amphytrion.project.repositories.ChatRepository;
+import ch.amphytrion.project.services.ChatService;
 import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.StudentService;
 import io.swagger.annotations.ApiOperation;
@@ -22,11 +25,13 @@ public class MeetingController extends BaseController implements IGenericControl
 
     private MeetingService meetingService;
     private StudentService studentService;
+    private ChatService chatService;
 
     @Autowired
-    public MeetingController(MeetingService meetingService, StudentService studentService) {
+    public MeetingController(MeetingService meetingService, StudentService studentService, ChatService chatService) {
         this.meetingService = meetingService;
         this.studentService = studentService;
+        this.chatService = chatService;
     }
 
     //X
@@ -105,6 +110,9 @@ public class MeetingController extends BaseController implements IGenericControl
     public ResponseEntity<Meeting> create(@RequestBody Meeting entity) {
         try {
             if(entity.getId() == null){
+                Chat chat = new Chat();
+                chatService.save(chat);
+                entity.setChatID(chat.getId());
                 return ResponseEntity.ok(meetingService.save(entity));
             }
         } catch (Exception e) {

@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,12 +25,12 @@ public class Meeting {
     private String chatID;
     private ArrayList<Tag> tags;
     private Integer nbPeople;
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private String start;
+    private String end;
     private Boolean isPrivate;
 
     @Autowired
-    public Meeting(String name, String description, String locationID, String ownerID, String chatID, ArrayList<Tag> tags, Integer nbPeople, LocalDateTime start, LocalDateTime end) {
+    public Meeting(String name, String description, String locationID, String ownerID, String chatID, ArrayList<Tag> tags, Integer nbPeople, String start, String end) {
         this.name = name;
         this.description = description;
         this.locationID = locationID;

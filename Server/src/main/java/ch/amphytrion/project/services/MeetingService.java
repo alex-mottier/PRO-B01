@@ -12,8 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -99,24 +105,32 @@ public class MeetingService implements IGenericService<Meeting> {
 
     public ArrayList<Meeting> searchFilter(FilterRequest filter) {
         ArrayList<Meeting> meetings = new ArrayList<>();
-        meetings = findByStartAfter(filter.getStartDate());
+        TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(filter.getStartDate());
+        Instant i = Instant.from(ta);
+        Date startDate = Date.from(i);
+        meetings = findByStartAfter(startDate);
 
         if (filter.getName() != null && !filter.getName().isEmpty()) {
             meetings = searchFilterName(meetings, filter.getName());
         }
         if (filter.getEndDate() != null) {
-            meetings = searchFilterDateEnd(meetings, LocalDateTime.ofInstant(filter.getEndDate().toInstant(), ZoneId.systemDefault()));
+            TemporalAccessor taend = DateTimeFormatter.ISO_INSTANT.parse(filter.getStartDate());
+            Instant iend = Instant.from(taend);
+            Date endDate = Date.from(iend);
+            meetings = findByStartAfter(endDate);
+            meetings = searchFilterDateEnd(meetings, endDate);
         }
         if (filter.getTags() != null && filter.getTags().size() > 0) {
             meetings = searchFilterTags(meetings, filter.getTags());
         }
-        if (filter.getLocations()!= null && filter.getLocations().size() > 0) {
-            meetings = searchFilterLocations(meetings, filter.getLocations());
+        if (filter.getLocation()!= null) {
+            meetings = searchFilterLocations(meetings, filter.getLocation());
         }
 
         return meetings;
 
     }
+
 
     public ArrayList<Meeting> searchFilterName(ArrayList<Meeting> meetings, String name) {
         return (ArrayList<Meeting>) meetings.stream()
@@ -124,34 +138,31 @@ public class MeetingService implements IGenericService<Meeting> {
                         meeting.getName().contains(name));
     }
 
-    public ArrayList<Meeting> searchFilterDateEnd(ArrayList<Meeting> meetings, LocalDateTime end) {
-        return (ArrayList<Meeting>) meetings.stream()
+    public ArrayList<Meeting> searchFilterDateEnd(ArrayList<Meeting> meetings, Date end) {
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        String string1 = "2001-07-04T12:08:56.235-0700";
+        Date result1 = null;
+        try {
+             result1= df1.parse(string1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return meetings ;/*(ArrayList<Meeting>) meetings.stream()
                 .filter(meeting ->
-                        meeting.getEnd().isBefore(end));
+                        result1.parse(meeting.getEnd()) <= end.getTime());*/
     }
 
     public ArrayList<Meeting> searchFilterTags(ArrayList<Meeting> meetings, ArrayList<Tag> tags){
-        return (ArrayList<Meeting>) meetings.stream().filter(meeting -> CollectionUtils.containsAny(meeting.getTags(), tags));
+        return (ArrayList<Meeting>) meetings.stream()
+                .filter(meeting ->
+                        CollectionUtils.containsAny(meeting.getTags(), tags));
     }
 
-    public ArrayList<Meeting> searchFilterLocations(ArrayList<Meeting> meetings, ArrayList<Location> locations){
-       /* ArrayList<Location> locationsFilter = new ArrayList<>();
-        for(Meeting m : meetings) {
-            locationsFilter.add(locationRepository.findById(m.getLocationID()));
-        }*/
-        ArrayList<String> locationsID = new ArrayList<>();
-        locations.forEach(location -> locationsID.add(location.getId()));
-        ArrayList<String> meetingsID = new ArrayList();
-        meetings.forEach(meeting -> meetingsID.add(meeting.getLocationID()));
-        List<String> intersectionID = locationsID.stream()
-                .filter(meetingsID::contains)
-                .collect(Collectors.toList());
-        ArrayList<Optional<Meeting>> meetingsArrayList = new ArrayList<>();
-        for(String id : intersectionID) {
-            meetingsArrayList.add(meetingRepository.findById(id));
-        }
-
-        return ((ArrayList<Meeting>) meetings.stream().filter(meeting -> CollectionUtils.containsAny(meeting.getLocationID()))
+    public ArrayList<Meeting> searchFilterLocations(ArrayList<Meeting> meetings, Location location){
+        return (ArrayList<Meeting>) meetings.stream()
+                .filter(meeting ->
+                        meeting.getLocationID() == location.getId());
     }
 }
 
