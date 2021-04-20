@@ -68,64 +68,74 @@ const ChatMeeting: React.FC = () => {
         ) : (
           <View style={styles.container}>
             {meeting && (
-              <MeetingComponent
-                meeting={meeting}
-                isOwner={false}
-                isChatable={false}
-                isInCalendar={false}
-              />
+              <View style={styles.meeting}>
+                <MeetingComponent
+                  meeting={meeting}
+                  isOwner={false}
+                  isChatable={false}
+                  isInCalendar={false}
+                />
+              </View>
             )}
             <View style={styles.messages}>
-              {chat?.messages.map((message: Message) => {
+              {currentChat.messages.map((message: Message) => {
                 return (
-                  <View key={message.id}>
-                    {message.username === authenticedUser?.username ? (
-                      <View style={styles.authenticedUserContainer}>
-                        <View style={styles.authenticedUserMessage}>
-                          <Text style={styles.authenticedUserMessageText}>{message.message}</Text>
-                        </View>
-                        <View style={styles.authenticedUserDate}>
-                          <Text style={styles.dateText}>
-                            {formatDistance(new Date(message.date), new Date(), {
-                              addSuffix: true,
-                            })}
-                          </Text>
-                        </View>
+                  <SafeAreaView>
+                    <ScrollView>
+                      <View key={message.id}>
+                        {message.username === authenticedUser?.username ? (
+                          <View style={styles.authenticedUserContainer}>
+                            <View style={styles.authenticedUserMessage}>
+                              <Text style={styles.authenticedUserMessageText}>
+                                {message.message}
+                              </Text>
+                            </View>
+                            <View style={styles.authenticedUserDate}>
+                              <Text style={styles.dateText}>
+                                {formatDistance(new Date(message.date), new Date(), {
+                                  addSuffix: true,
+                                })}
+                              </Text>
+                            </View>
+                          </View>
+                        ) : (
+                          <View style={styles.userContainer}>
+                            <View style={styles.userMessage}>
+                              <Text style={styles.userMessageText}>{message.message}</Text>
+                            </View>
+                            <View style={styles.userDate}>
+                              <Text style={styles.dateText}>
+                                {formatDistance(new Date(message.date), new Date(), {
+                                  addSuffix: true,
+                                })}{' '}
+                                - {message.username}
+                              </Text>
+                            </View>
+                          </View>
+                        )}
                       </View>
-                    ) : (
-                      <View style={styles.userContainer}>
-                        <View style={styles.userMessage}>
-                          <Text style={styles.userMessageText}>{message.message}</Text>
-                        </View>
-                        <View style={styles.userDate}>
-                          <Text style={styles.dateText}>
-                            {formatDistance(new Date(message.date), new Date(), {
-                              addSuffix: true,
-                            })}{' '}
-                            - {message.username}
-                          </Text>
-                        </View>
-                      </View>
-                    )}
-                  </View>
+                    </ScrollView>
+                  </SafeAreaView>
                 );
               })}
             </View>
             <View style={styles.message}>
-              <TextInput
-                label="Tapez votre texte ici ..."
-                value={message}
-                onChangeText={(message) => setMessage(message)}
-                style={styles.fields}
-              />
-              <View style={styles.private}>
-                <IconButton
-                  icon={Globals.ICONS.SEND}
-                  size={Globals.SIZES.ICON_MENU}
-                  color={Globals.COLORS.PRIMARY}
-                  onPress={() => handleSubmit()}
+              <View style={styles.row}>
+                <TextInput
+                  label="Tapez votre texte ici ..."
+                  value={message}
+                  onChangeText={(message) => setMessage(message)}
+                  style={styles.fields}
                 />
-                <Text style={{ color: Globals.COLORS.TEXT, marginTop: -5 }}>{'Envovez'}</Text>
+                <View style={styles.send}>
+                  <IconButton
+                    icon={Globals.ICONS.SEND}
+                    size={Globals.SIZES.ICON_MENU}
+                    color={Globals.COLORS.PRIMARY}
+                    onPress={() => handleSubmit()}
+                  />
+                  <Text style={{ color: Globals.COLORS.TEXT, marginTop: -5 }}>{'Envovez'}</Text>
+                </View>
               </View>
             </View>
           </View>
