@@ -9,7 +9,7 @@ import * as React from 'react';
 import { Alert, Platform, SafeAreaView, ScrollView, View } from 'react-native';
 import { TextInput, IconButton, Button, Text, Card, Provider, FAB } from 'react-native-paper';
 import styles from './styles';
-import { Location, Tag } from '../../../app/models/ApplicationTypes';
+import { Location, Meeting, Tag } from '../../../app/models/ApplicationTypes';
 import Globals from '../../../app/context/Globals';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import TagsComponent from '../../../components/Tags/TagsComponent';
@@ -17,8 +17,20 @@ import { addHours, format } from 'date-fns';
 import SearchLocation from '../../../components/SearchLocation/SearchLocation';
 import GlobalStore from '../../../app/stores/GlobalStore';
 import { observer } from 'mobx-react-lite';
+import { useNavigation } from '@react-navigation/native';
 
-const Create: React.FC = () => {
+/**
+ * Component props
+ */
+interface IProps {
+  isEditMode?: boolean | undefined;
+  meetingToEdit?: Meeting | undefined;
+}
+
+const Create: React.FC<IProps> = ({ isEditMode, meetingToEdit }) => {
+  /* Usage of React Navigation */
+  const navigation = useNavigation();
+
   /* Usage of MobX global state store */
   const store = React.useContext(GlobalStore);
 
@@ -67,26 +79,48 @@ const Create: React.FC = () => {
   };
 
   /**
+   * Validate the form
+   * @returns is the form is valid
+   */
+  const isValid = (): boolean => {
+    if (meetingName === '') {
+      Alert.alert('Nom nul', 'Le nom de la réunion ne peut pas être nul');
+      return false;
+    } else if (meetingDescription === '') {
+      Alert.alert('Description nulle', 'La description de la réunion ne peut pas être nulle');
+      return false;
+    } else if (startDate >= endDate) {
+      Alert.alert('Erreur de date', "L'heure de fin doit être après l'heure de début");
+      return false;
+    } else if (tags.length === 0) {
+      Alert.alert('Aucun tag', 'Veuillez définir un moins un tag à la réunion');
+      return false;
+    } else if (location === null) {
+      Alert.alert('Aucun lieu', 'Veuillez définir le lieu de la réunion');
+      return false;
+    }
+    return true;
+  };
+
+  /**
+   * Action when edit button is pressed
+   */
+  const handleEdit = () => {
+    // Validation of form entries
+    if (!isValid) return;
+
+    // Everything is well filled => meeting can be created
+    console.log('Meeting edited');
+
+    navigation.goBack();
+  };
+
+  /**
    * Action when submit button is pressed
    */
   const handleSubmit = () => {
     // Validation of form entries
-    if (meetingName === '') {
-      Alert.alert('Nom nul', 'Le nom de la réunion ne peut pas être nul');
-      return;
-    } else if (meetingDescription === '') {
-      Alert.alert('Description nulle', 'La description de la réunion ne peut pas être nulle');
-      return;
-    } else if (startDate >= endDate) {
-      Alert.alert('Erreur de date', "L'heure de fin doit être après l'heure de début");
-      return;
-    } else if (tags.length === 0) {
-      Alert.alert('Aucun tag', 'Veuillez définir un moins un tag à la réunion');
-      return;
-    } else if (location === null) {
-      Alert.alert('Aucun lieu', 'Veuillez définir le lieu de la réunion');
-      return;
-    }
+    if (!isValid) return;
 
     // Everything is well filled => meeting can be created
     console.log('Meeting created');
@@ -216,16 +250,31 @@ const Create: React.FC = () => {
               </View>
             </Card>
             <View style={styles.buttons}>
-              <FAB style={styles.fab} small icon={Globals.ICONS.DELETE} onPress={handleReset} />
-              <Button
-                icon={Globals.ICONS.CREATE}
-                mode="contained"
-                color={Globals.COLORS.PRIMARY}
-                labelStyle={{ color: Globals.COLORS.WHITE }}
-                onPress={handleSubmit}
-                style={styles.button}>
-                Créer la réunion
-              </Button>
+              {!isEditMode && (
+                <FAB style={styles.fab} small icon={Globals.ICONS.DELETE} onPress={handleReset} />
+              )}
+              {!isEditMode && (
+                <Button
+                  icon={Globals.ICONS.CREATE}
+                  mode="contained"
+                  color={Globals.COLORS.PRIMARY}
+                  labelStyle={{ color: Globals.COLORS.WHITE }}
+                  onPress={handleSubmit}
+                  style={styles.button}>
+                  Créer la réunion
+                </Button>
+              )}
+              {isEditMode && (
+                <Button
+                  icon={Globals.ICONS.CREATE}
+                  mode="contained"
+                  color={Globals.COLORS.PRIMARY}
+                  labelStyle={{ color: Globals.COLORS.WHITE }}
+                  onPress={handleEdit}
+                  style={styles.button}>
+                  Modifier la réunion
+                </Button>
+              )}
             </View>
             <View>
               {showDate && (

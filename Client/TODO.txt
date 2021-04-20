@@ -1,4 +1,3 @@
-Copier id de la réunion dans press papier
-Créer une page pour l'édition de réunion
 Passer les id du chat, du lieu et du host lors de la navigation
 Bug des date / time picker
+Couleur du dark theme

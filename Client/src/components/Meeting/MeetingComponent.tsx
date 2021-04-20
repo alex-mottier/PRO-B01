@@ -60,7 +60,7 @@ const MeetingComponent: React.FC<IProps> = ({
    */
   const handleEdit = () => {
     store.setMeetingToUpdate(meeting);
-    navigation.navigate(Globals.STRINGS.CREATE);
+    navigation.navigate('Edit');
   };
 
   /**
