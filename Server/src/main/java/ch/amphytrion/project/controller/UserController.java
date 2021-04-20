@@ -38,6 +38,7 @@ public class UserController extends BaseController implements IGenericController
         this.userService = userService;
     }
 
+    // X
     @PostMapping("/signUpStudent")
     public ResponseEntity signUpStudent(@RequestBody Map<String, String> json) {
         String userName = json.get("userName");
@@ -69,56 +70,26 @@ public class UserController extends BaseController implements IGenericController
         }
     }
 
-    @PostMapping("/connect")
-    public ResponseEntity<ConnectedUser> connect(@RequestBody String tokenID) {
-        String ClIENT_ID = "298748587556-mpio0261lovc0qkt660nbhgariolp1no.apps.googleusercontent.com";
-        JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), JSON_FACTORY)
-                // Specify the CLIENT_ID of the app that accesses the backend:
-                .setAudience(Collections.singletonList(ClIENT_ID))
-                // Or, if multiple clients access the backend:
-                //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
-                .build();
-        try {
-            GoogleIdToken idToken = verifier.verify(tokenID);
-            if (idToken != null) {
-                Payload payload = idToken.getPayload();
-                String username = "AllemannAlexis"; //userService.findById(payload.get("at_hash"));
+    // X
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@RequestBody Map<String, String> json) {
+            String tokenID = json.get("tokenID");
+            User current = null; // TODO use token
+            if (current != null) {
                 HttpHeaders responseHeaders = new HttpHeaders();
                 responseHeaders.set("SESSION_TOKEN_AMPHITRYON",
                         "VALID_SESSION_TOKEN_AMPHITRYON");
-
                 return ResponseEntity.ok().headers(responseHeaders).body(new ConnectedUser(username));
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
-        } catch (IOException | GeneralSecurityException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> getAll() {
+    @GetMapping("/user/{username}")
+    public ResponseEntity<User> getById(@PathVariable String username) {
         try {
-            return ResponseEntity.ok(userService.findAll());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @PostMapping("/user")
-    public ResponseEntity<User> save(@RequestBody User entity){
-        try {
-            return ResponseEntity.ok(userService.save(entity));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @GetMapping("/user/{id}")
-    public ResponseEntity<User> getById(@PathVariable String id) {
-        try {
-            return ResponseEntity.ok(userService.findById(id));
+            return ResponseEntity.ok(userService.findByUsername(username));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
