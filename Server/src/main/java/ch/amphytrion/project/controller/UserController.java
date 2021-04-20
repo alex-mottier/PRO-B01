@@ -1,5 +1,8 @@
 package ch.amphytrion.project.controller;
 
+import ch.amphytrion.project.authentication.GoogleTokenValider;
+import ch.amphytrion.project.authentication.SecurityConstants;
+import ch.amphytrion.project.authentication.UserDetailsImpl;
 import ch.amphytrion.project.dto.ConnectedUser;
 import ch.amphytrion.project.repositories.UserRepository;
 import ch.amphytrion.project.entities.databaseentities.User;
@@ -15,6 +18,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
@@ -40,27 +45,16 @@ public class UserController extends BaseController implements IGenericController
 
     @PostMapping("/signUpStudent")
     public ResponseEntity signUpStudent(@RequestBody Map<String, String> json) {
-        String userName = json.get("userName");
-        String tokenID = json.get("tokenID");
-        String ClIENT_ID = "298748587556-mpio0261lovc0qkt660nbhgariolp1no.apps.googleusercontent.com";
-        JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), JSON_FACTORY)
-                // Specify the CLIENT_ID of the app that accesses the backend:
-                .setAudience(Collections.singletonList(ClIENT_ID))
-                // Or, if multiple clients access the backend:
-                //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
-                .build();
+        String userName = json.get("username");
+        String tokenInput = json.get("tokenID");
         try {
-            GoogleIdToken idToken = verifier.verify(tokenID);
-            if (idToken != null) {
-                Payload payload = idToken.getPayload();
-                userService.save(new User("Alexis", userName));
-
-                HttpHeaders responseHeaders = new HttpHeaders();
-                responseHeaders.set("SESSION_TOKEN_AMPHITRYON",
-                        "VALID_SESSION_TOKEN_AMPHITRYON");
-
-                return ResponseEntity.ok().headers(responseHeaders).build();
+            GoogleIdToken tokenID = GoogleTokenValider.validateToken(tokenInput);
+            if(tokenID != null) {
+                GoogleIdToken.Payload payload = tokenID.getPayload();
+                String userId = payload.get("sub").toString();
+                User newUser = new User(userId, userName);
+                userService.save(newUser);
+                return ResponseEntity.ok().headers(responseHeaders).body(user);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
@@ -70,31 +64,20 @@ public class UserController extends BaseController implements IGenericController
     }
 
     @PostMapping("/connect")
-    public ResponseEntity<ConnectedUser> connect(@RequestBody String tokenID) {
-        String ClIENT_ID = "298748587556-mpio0261lovc0qkt660nbhgariolp1no.apps.googleusercontent.com";
-        JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), JSON_FACTORY)
-                // Specify the CLIENT_ID of the app that accesses the backend:
-                .setAudience(Collections.singletonList(ClIENT_ID))
-                // Or, if multiple clients access the backend:
-                //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
-                .build();
-        try {
-            GoogleIdToken idToken = verifier.verify(tokenID);
-            if (idToken != null) {
-                Payload payload = idToken.getPayload();
-                String username = "AllemannAlexis"; //userService.findById(payload.get("at_hash"));
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@RequestBody Map<String, String> json) {
+            String tokenID = json.get("tokenID");
+            User current = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (current != null) {
+
                 HttpHeaders responseHeaders = new HttpHeaders();
-                responseHeaders.set("SESSION_TOKEN_AMPHITRYON",
+                responseHeaders.set(SecurityConstants.HEADER_STRING,
                         "VALID_SESSION_TOKEN_AMPHITRYON");
 
-                return ResponseEntity.ok().headers(responseHeaders).body(new ConnectedUser(username));
+                return ResponseEntity.ok().headers(responseHeaders).body(current);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
-        } catch (IOException | GeneralSecurityException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
     }
 
     @GetMapping("/users")
