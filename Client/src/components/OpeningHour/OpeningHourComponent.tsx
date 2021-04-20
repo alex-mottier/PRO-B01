@@ -22,10 +22,10 @@ interface IProps {
 
 const OpeninHourComponent: React.FC<IProps> = ({ openingHour }) => {
   /* Local variables */
-  const startHour = format(openingHour.startTime, 'hh');
-  const startMinute = format(openingHour.startTime, 'mm');
-  const endHour = format(openingHour.endTime, 'hh');
-  const endMinute = format(openingHour.endTime, 'mm');
+  const startHour = format(new Date(openingHour.startTime), 'hh');
+  const startMinute = format(new Date(openingHour.startTime), 'mm');
+  const endHour = format(new Date(openingHour.endTime), 'hh');
+  const endMinute = format(new Date(openingHour.endTime), 'mm');
   const days = openingHour.days;
 
   return (

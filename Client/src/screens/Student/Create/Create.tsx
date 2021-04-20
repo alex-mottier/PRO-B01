@@ -205,7 +205,7 @@ const Create: React.FC<IProps> = ({ isEditMode, meetingToEdit }) => {
               <View style={styles.date}>
                 <View style={styles.row}>
                   <Text style={{ color: Globals.COLORS.TEXT }}>
-                    {format(startDate, 'dd.MM.yyyy')}
+                    {format(new Date(startDate), 'dd.MM.yyyy')}
                   </Text>
                   <IconButton
                     icon={Globals.ICONS.CALENDAR}
@@ -215,7 +215,9 @@ const Create: React.FC<IProps> = ({ isEditMode, meetingToEdit }) => {
                   />
                 </View>
                 <View style={styles.row}>
-                  <Text style={{ color: Globals.COLORS.TEXT }}>{format(startDate, 'hh:mm')}</Text>
+                  <Text style={{ color: Globals.COLORS.TEXT }}>
+                    {format(new Date(startDate), 'hh:mm')}
+                  </Text>
                   <IconButton
                     icon={Globals.ICONS.END_TIME}
                     size={Globals.SIZES.ICON_MENU}
@@ -224,7 +226,9 @@ const Create: React.FC<IProps> = ({ isEditMode, meetingToEdit }) => {
                   />
                 </View>
                 <View style={styles.row}>
-                  <Text style={{ color: Globals.COLORS.TEXT }}>{format(endDate, 'hh:mm')}</Text>
+                  <Text style={{ color: Globals.COLORS.TEXT }}>
+                    {format(new Date(endDate), 'hh:mm')}
+                  </Text>
                   <IconButton
                     icon={Globals.ICONS.END_TIME}
                     size={Globals.SIZES.ICON_MENU}

@@ -15,7 +15,10 @@ import { LocaleConfig } from 'react-native-calendars';
 import { observer } from 'mobx-react-lite';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import { Meeting } from '../../../app/models/ApplicationTypes';
+import { dateLocale } from '../../../app/context/DateFormat';
 
+// Format date definition
+LocaleConfig.locales['fr'] = dateLocale;
 LocaleConfig.defaultLocale = 'fr';
 
 const Home: React.FC = () => {

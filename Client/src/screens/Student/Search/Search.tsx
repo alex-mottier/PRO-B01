@@ -165,7 +165,7 @@ const Search: React.FC = () => {
                     <View style={styles.date}>
                       <View style={styles.row}>
                         <Text style={{ color: Globals.COLORS.TEXT }}>
-                          {format(startDate, 'dd.MM.yyyy')}
+                          {format(new Date(startDate), 'dd.MM.yyyy')}
                         </Text>
                         <IconButton
                           icon={Globals.ICONS.CALENDAR}
@@ -176,7 +176,7 @@ const Search: React.FC = () => {
                       </View>
                       <View style={styles.row}>
                         <Text style={{ color: Globals.COLORS.TEXT }}>
-                          {format(endDate, 'dd.MM.yyyy')}
+                          {format(new Date(endDate), 'dd.MM.yyyy')}
                         </Text>
                         <IconButton
                           icon={Globals.ICONS.CALENDAR}

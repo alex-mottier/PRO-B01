@@ -1,9 +1,7 @@
-import { DayEnum, Location } from '../app/models/ApplicationTypes';
-
-const date = new Date();
-const endDate = new Date(date.getHours() + 1);
+import { Location } from '../app/models/ApplicationTypes';
 
 export const mockLocation: Location = {
+  id: '1',
   name: 'G01',
   description: 'Salle de cours avec Wifi',
   tags: [{ name: 'Salle de cours' }, { name: 'HEIG-VD' }],
@@ -11,34 +9,23 @@ export const mockLocation: Location = {
   openingHours: [
     {
       id: '1',
-      startTime: date,
-      endTime: endDate,
-      days: [
-        { name: 'Lundi', day: DayEnum.MON },
-        { name: 'Vendredi', day: DayEnum.FRI },
-      ],
+      startTime: '2021-04-20T15:00:00',
+      endTime: '2021-04-20T16:00:00',
+      day: 2,
     },
     {
       id: '2',
-      startTime: date,
-      endTime: endDate,
-      days: [{ name: 'Samedi', day: DayEnum.SAT }],
+      startTime: '2021-04-20T15:00:00',
+      endTime: '2021-04-20T16:00:00',
+      day: 2,
     },
     {
       id: '3',
-      startTime: date,
-      endTime: endDate,
-      days: [{ name: 'Dimanche', day: DayEnum.SUN }],
+      startTime: '2021-04-20T15:00:00',
+      endTime: '2021-04-20T16:00:00',
+      day: 2,
     },
   ],
-  host: {
-    name: 'HEIG-VD',
-    description: 'Prix Béton !',
-    tags: [{ name: 'HES-SO' }, { name: 'HEIG-VD' }],
-    address: {
-      streetName: 'Rue du vieux Port 1',
-      city: 'Yverdon-les-bains',
-      npa: 1400,
-    },
-  },
+  hostId: '1',
+  hostName: 'HEIG-VD',
 };
