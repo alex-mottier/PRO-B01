@@ -12,6 +12,6 @@ import java.util.ArrayList;
 @Data
 @Document
 public class Chat {
-    private String ID;
+    private String id;
     private ArrayList<Message> messages;
 }

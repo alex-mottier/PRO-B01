@@ -1,4 +1,4 @@
-package ch.amphytrion.project.entities.databaseentities;
+package ch.amphytrion.project.entities.notdatabaseentities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,11 +9,10 @@ import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@Document
-public class Message {
+public class OpeningHourResponse {
     private String id;
-    private String message;
-    private String username;
-    private LocalDateTime date;
+    private Integer day;
+    // hh:mm
+    private String startTime;
+    private String endTime;
 }

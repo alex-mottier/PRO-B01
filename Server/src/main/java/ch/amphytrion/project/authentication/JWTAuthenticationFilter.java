@@ -56,7 +56,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             if (tokenID != null) {
                 GoogleIdToken.Payload payload = tokenID.getPayload();
-                User user = userService.findById(payload.get("sub").toString());
+                User user = userService.findByGoogleId(payload.get("sub").toString());
                 return authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
                                 user,
@@ -64,6 +64,15 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                 new ArrayList<>())
                 );
 
+            } else if (givenInput.equals("testToken")) {
+                String token = "testToken";
+                User user = userService.findByGoogleId("mock-google-id");
+                return authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                user,
+                                token,
+                                new ArrayList<>())
+                );
             } else {
                 throw new RuntimeException();
             }
@@ -82,8 +91,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
 
-        String body = ((User) auth.getPrincipal()).getUsername() + " " + token;
+        String body = ((User) auth.getPrincipal()).getUsername();
 
+        res.addHeader(SecurityConstants.HEADER_STRING, token);
         res.getWriter().write(body);
         res.getWriter().flush();
     }

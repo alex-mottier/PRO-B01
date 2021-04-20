@@ -12,10 +12,10 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FilterResponse {
+public class FilterRequest {
     private String name;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
     private ArrayList<Tag> tags;
-    private ArrayList<Location> locations;
+    private Location location;
 }

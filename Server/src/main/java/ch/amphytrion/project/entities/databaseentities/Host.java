@@ -13,6 +13,6 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class Host extends User {
     private Address address;
+    private String description;
     private ArrayList<Tag> tags;
-    private ArrayList<Location> locations;
 }

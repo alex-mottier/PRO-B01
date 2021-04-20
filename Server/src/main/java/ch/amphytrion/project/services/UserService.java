@@ -3,11 +3,14 @@ package ch.amphytrion.project.services;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService implements IGenericService<User> {
+public class UserService implements IGenericService<User>{
 
     private UserRepository userRepository;
 
@@ -30,6 +33,15 @@ public class UserService implements IGenericService<User> {
     public User findById(String id) {
         try {
             return userRepository.findById(id).orElseThrow(Exception::new);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public User findByGoogleId(String id) {
+        try {
+            return userRepository.findByGoogleId(id);
         } catch (Exception e) {
             e.printStackTrace();
         }

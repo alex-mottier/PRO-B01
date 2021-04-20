@@ -8,9 +8,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,7 +22,7 @@ public class MeetingController extends BaseController implements IGenericControl
         this.meetingService = meetingService;
     }
 
-    @Override
+
     @GetMapping("/meetings")
     public ResponseEntity<List<Meeting>> getAll() {
         try {
@@ -34,11 +32,34 @@ public class MeetingController extends BaseController implements IGenericControl
         }
     }
 
-    @Override
+    //X
     @PostMapping("/meeting")
-    public ResponseEntity<Meeting> save(Meeting entity) {
+    public ResponseEntity<Meeting> create(Meeting entity) {
+        // TODO logique
         try {
             return ResponseEntity.ok(meetingService.save(entity));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    //X
+    @PatchMapping("/meeting")
+    public ResponseEntity<Meeting> update(Meeting entity) {
+        // TODO logique
+        try {
+            return ResponseEntity.ok(meetingService.save(entity));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    //X
+    @DeleteMapping("/meeting/{id}")
+    public ResponseEntity<Meeting> delete(String id) {
+        // TODO logique
+        try {
+            return ResponseEntity.ok(meetingService.findById(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
