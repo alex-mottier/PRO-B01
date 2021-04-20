@@ -22,7 +22,6 @@ public class MessageController extends BaseController implements IGenericControl
        this.messageService = messageService;
     }
 
-    @Override
     @GetMapping("/messages")
     public ResponseEntity<List<Message>> getAll() {
         try {
@@ -32,7 +31,6 @@ public class MessageController extends BaseController implements IGenericControl
         }
     }
 
-    @Override
     @PostMapping("/message")
     public ResponseEntity<Message> save(Message entity) {
         try {

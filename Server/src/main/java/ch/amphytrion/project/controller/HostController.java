@@ -24,7 +24,7 @@ public class HostController extends BaseController implements IGenericController
         this.hostService = hostService;
     }
 
-    @Override
+
     @GetMapping("/hosts")
     public ResponseEntity<List<Host>> getAll() {
         try {
@@ -34,7 +34,6 @@ public class HostController extends BaseController implements IGenericController
         }
     }
 
-    @Override
     @PostMapping("/host")
     public ResponseEntity<Host> save(Host entity) {
         try {

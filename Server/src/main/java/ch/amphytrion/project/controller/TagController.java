@@ -24,7 +24,6 @@ public class TagController extends BaseController implements IGenericController<
         this.tagService = tagService;
     }
 
-    @Override
     @GetMapping("/tags")
     public ResponseEntity<List<Tag>> getAll() {
         try {
@@ -33,7 +32,6 @@ public class TagController extends BaseController implements IGenericController<
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }    }
 
-    @Override
     @PostMapping("/tag")
     public ResponseEntity<Tag> save(Tag entity) {
         try {
