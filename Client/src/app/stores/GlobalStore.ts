@@ -181,6 +181,7 @@ class Store {
       return this.meetingToUpdate;
     } else
       return {
+        id: '0',
         name: '',
         description: '',
         tags: [],
@@ -188,8 +189,8 @@ class Store {
         locationName: '',
         maxPeople: 0,
         nbPeople: 0,
-        start: new Date(),
-        end: addHours(new Date(), 2),
+        startDate: '2021-04-15T15:00:00',
+        endDate: '2021-04-15T16:00:00',
         ownerID: '',
         chatId: '',
         isPrivate: false,

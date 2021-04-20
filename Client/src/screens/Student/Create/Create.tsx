@@ -42,8 +42,8 @@ const Create: React.FC<IProps> = ({ isEditMode, meetingToEdit }) => {
   const [showDate, setShowDate] = React.useState(false);
   const [showStartTime, setShowStartTime] = React.useState(false);
   const [showEndTime, setShowEndTime] = React.useState(false);
-  const [startDate, setStartDate] = React.useState(new Date(meeting.startDate));
-  const [endDate, setEndDate] = React.useState(new Date(meeting.endDate));
+  const [startDate, setStartDate] = React.useState(new Date(Date.parse(meeting.startDate)));
+  const [endDate, setEndDate] = React.useState(new Date(Date.parse(meeting.endDate)));
   const [tags, setTags] = React.useState(meeting.tags);
   const [location, setLocation] = React.useState<Location | null>(null);
 
@@ -205,7 +205,7 @@ const Create: React.FC<IProps> = ({ isEditMode, meetingToEdit }) => {
               <View style={styles.date}>
                 <View style={styles.row}>
                   <Text style={{ color: Globals.COLORS.TEXT }}>
-                    {format(new Date(startDate), 'dd.MM.yyyy')}
+                    {format(startDate, 'dd.MM.yyyy')}
                   </Text>
                   <IconButton
                     icon={Globals.ICONS.CALENDAR}
@@ -215,9 +215,7 @@ const Create: React.FC<IProps> = ({ isEditMode, meetingToEdit }) => {
                   />
                 </View>
                 <View style={styles.row}>
-                  <Text style={{ color: Globals.COLORS.TEXT }}>
-                    {format(new Date(startDate), 'hh:mm')}
-                  </Text>
+                  <Text style={{ color: Globals.COLORS.TEXT }}>{format(startDate, 'hh:mm')}</Text>
                   <IconButton
                     icon={Globals.ICONS.END_TIME}
                     size={Globals.SIZES.ICON_MENU}
@@ -226,9 +224,7 @@ const Create: React.FC<IProps> = ({ isEditMode, meetingToEdit }) => {
                   />
                 </View>
                 <View style={styles.row}>
-                  <Text style={{ color: Globals.COLORS.TEXT }}>
-                    {format(new Date(endDate), 'hh:mm')}
-                  </Text>
+                  <Text style={{ color: Globals.COLORS.TEXT }}>{format(endDate, 'hh:mm')}</Text>
                   <IconButton
                     icon={Globals.ICONS.END_TIME}
                     size={Globals.SIZES.ICON_MENU}
