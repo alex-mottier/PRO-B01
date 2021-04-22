@@ -9,14 +9,13 @@ import * as React from 'react';
 import { Alert, Platform, SafeAreaView, ScrollView, View } from 'react-native';
 import { TextInput, IconButton, Button, Text, Card, Provider, FAB } from 'react-native-paper';
 import styles from './styles';
-import { Location, Meeting, Tag } from '../../../app/models/ApplicationTypes';
+import { Location, Tag } from '../../../app/models/ApplicationTypes';
 import Globals from '../../../app/context/Globals';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import TagsComponent from '../../../components/Tags/TagsComponent';
 import { addHours, format } from 'date-fns';
 import SearchLocation from '../../../components/SearchLocation/SearchLocation';
 import GlobalStore from '../../../app/stores/GlobalStore';
-import { observer } from 'mobx-react-lite';
 import { useNavigation } from '@react-navigation/native';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
 
@@ -56,7 +55,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
     const currentDate = selectedDate || startDate;
     setShowDate(Platform.OS === 'ios');
     setStartDate(currentDate);
-    setEndDate(currentDate);
+    setEndDate(addHours(currentDate, 2));
   };
 
   /**
@@ -67,6 +66,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
     const currentDate = selectedDate || startDate;
     setShowStartTime(Platform.OS === 'ios');
     setStartDate(currentDate);
+    setEndDate(addHours(currentDate, 2));
   };
 
   /**

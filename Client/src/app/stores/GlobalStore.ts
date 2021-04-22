@@ -16,6 +16,7 @@ import { mockMeetings } from '../../mock/Meetings';
 import { mockChat } from '../../mock/Chat';
 import { mockLocations } from '../../mock/Locations';
 import { mockHost } from '../../mock/Host';
+import { addHours } from 'date-fns';
 
 class Store {
   private amphitryonDAO = AmphitryonDAO.getInstance();
@@ -195,8 +196,8 @@ class Store {
         locationName: '',
         maxPeople: 0,
         nbPeople: 0,
-        startDate: '2021-04-15T15:00:00',
-        endDate: '2021-04-15T16:00:00',
+        startDate: new Date().toISOString(),
+        endDate: addHours(new Date(), 2).toISOString(),
         ownerID: '',
         chatId: '',
         isPrivate: false,
