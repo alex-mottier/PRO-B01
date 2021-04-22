@@ -5,9 +5,11 @@ import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.entities.databaseentities.Message;
 import ch.amphytrion.project.entities.databaseentities.Student;
 import ch.amphytrion.project.services.ChatService;
+import ch.amphytrion.project.services.MessageService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.apache.commons.collections4.iterators.ArrayListIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +23,12 @@ public class ChatController extends BaseController implements IGenericController
 
     @Autowired
     private ChatService chatService;
+    private MessageService messageService;
 
     @Autowired
-    public ChatController(ChatService chatService) {
+    public ChatController(ChatService chatService, MessageService messageService) {
         this.chatService = chatService;
+        this.messageService = messageService;
     }
 
     //X
@@ -32,11 +36,16 @@ public class ChatController extends BaseController implements IGenericController
     public ResponseEntity<Chat> createMessage(@PathVariable String chatId, @RequestBody Message message) {
         Student student = null; // TODO Use current user
         Chat chat = chatService.findById(chatId);
-
         try {
             if(student != null){
                 message.setUsername(student.getUsername());
-                chat.getMessages().add(message);
+                if (chat.getMessages() != null) {
+                    chat.getMessages().add(message);
+                } else {
+                    ArrayList<Message> messages = new ArrayList<>();
+                    messages.add(message);
+                    chat.setMessages(messages);
+                }
                 return ResponseEntity.ok(chatService.save(chat));
             }
         } catch (Exception e) {

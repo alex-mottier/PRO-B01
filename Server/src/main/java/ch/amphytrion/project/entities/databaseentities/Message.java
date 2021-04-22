@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 @Data
 @Document
 public class Message {
-    @Id
-    private String id;
     private String message;
     private String username;
     private LocalDateTime date;
