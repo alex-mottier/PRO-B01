@@ -53,8 +53,7 @@ const ChatMeeting: React.FC = () => {
         username: user.username,
         date: new Date().toISOString(),
       };
-      // currentChat['messages'].push(newMessage);
-      // setChat(currentChat);
+      if (chat) void store.sendMessage(chat.id, newMessage);
       setMessage('');
     }
   };
