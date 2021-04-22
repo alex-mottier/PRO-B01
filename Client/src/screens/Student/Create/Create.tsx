@@ -211,7 +211,6 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
    */
   React.useEffect(() => {
     if (isEditMode) {
-      console.log('test');
       setIsLoading(true);
       void store.loadLocation(meeting.locationID).then((location: Location | null) => {
         if (location) setLocation(location);
