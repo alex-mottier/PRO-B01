@@ -86,10 +86,9 @@ public class MeetingController extends BaseController implements IGenericControl
     public ResponseEntity<Meeting> joinMeeting(@PathVariable String meetingID) {
         try {
 
-            Student student = null; // TODO Use current user
+            Student student = new Student(null, null, null); // TODO Use current user
             Meeting meeting = meetingService.findById(meetingID);
             if (student instanceof Student) {
-                studentService.save(student);
                 student.getMeetingsParticipations().add(meeting);
                 studentService.save(student);
                 return ResponseEntity.ok(meeting);
@@ -167,6 +166,7 @@ public class MeetingController extends BaseController implements IGenericControl
     @GetMapping("/meeting/{meetingID}")
     public ResponseEntity<Meeting> getById(@PathVariable String meetingID) {
         try {
+            System.out.println("ID meeting  : "+ meetingID);
             return ResponseEntity.ok(meetingService.findById(meetingID));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
