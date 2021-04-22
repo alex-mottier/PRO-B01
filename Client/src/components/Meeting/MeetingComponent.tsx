@@ -67,9 +67,24 @@ const MeetingComponent: React.FC<IProps> = ({
    * Suppression de la réunion
    */
   const handleDelete = () => {
-    void store.deleteMeeting(meeting.id).then(() => {
-      Alert.alert('Supprimée', 'La réunion a correctement été supprimée');
-    });
+    Alert.alert(
+      'Supprimer ?',
+      'Etes-vous sûr de vouloir supprimer la réunion ' + meeting.name + ' ?',
+      [
+        {
+          text: 'Non',
+          style: 'cancel',
+        },
+        {
+          text: 'Oui',
+          onPress: () => {
+            void store.deleteMeeting(meeting.id).then(() => {
+              Alert.alert('Supprimée', 'La réunion a correctement été supprimée');
+            });
+          },
+        },
+      ],
+    );
   };
 
   /**
