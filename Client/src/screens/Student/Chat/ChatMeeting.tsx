@@ -23,23 +23,22 @@ const ChatMeeting: React.FC = () => {
 
   /* Component states */
   const [isLoading, setIsLoading] = React.useState(true);
-  const [chat, setChat] = React.useState<Chat>();
+  const [chat, setChat] = React.useState<Chat | null>(null);
   const [meeting, setMeeting] = React.useState<Meeting | null>();
   const [authenticedUser, setAuthenticedUser] = React.useState<User | null>();
   const [message, setMessage] = React.useState<string>('');
-
-  /* Local variables */
-  const currentChat = store.loadChat();
 
   /**
    * Action done on component loading
    */
   React.useEffect(() => {
     setIsLoading(true);
-    setChat(currentChat);
-    setMeeting(store.loadUserMeetings()[0]);
-    setAuthenticedUser(store.getAuthenticatedUser());
-    setIsLoading(false);
+    void store.loadChat().then(() => {
+      setChat(store.chat);
+      setMeeting(store.meetingDisplayed);
+      setAuthenticedUser(store.getAuthenticatedUser());
+      setIsLoading(false);
+    });
   }, []);
 
   /**
@@ -54,8 +53,8 @@ const ChatMeeting: React.FC = () => {
         username: user.username,
         date: new Date().toISOString(),
       };
-      currentChat['messages'].push(newMessage);
-      setChat(currentChat);
+      // currentChat['messages'].push(newMessage);
+      // setChat(currentChat);
       setMessage('');
     }
   };
@@ -78,46 +77,47 @@ const ChatMeeting: React.FC = () => {
               </View>
             )}
             <View style={styles.messages}>
-              {currentChat.messages.map((message: Message) => {
-                return (
-                  <SafeAreaView>
-                    <ScrollView>
-                      <View key={message.id}>
-                        {message.username === authenticedUser?.username ? (
-                          <View style={styles.authenticedUserContainer}>
-                            <View style={styles.authenticedUserMessage}>
-                              <Text style={styles.authenticedUserMessageText}>
-                                {message.message}
-                              </Text>
+              <SafeAreaView>
+                <ScrollView>
+                  {chat &&
+                    chat?.messages.map((message: Message) => {
+                      return (
+                        <View key={message.id}>
+                          {message.username === authenticedUser?.username ? (
+                            <View style={styles.authenticedUserContainer}>
+                              <View style={styles.authenticedUserMessage}>
+                                <Text style={styles.authenticedUserMessageText}>
+                                  {message.message}
+                                </Text>
+                              </View>
+                              <View style={styles.authenticedUserDate}>
+                                <Text style={styles.dateText}>
+                                  {formatDistance(new Date(message.date), new Date(), {
+                                    addSuffix: true,
+                                  })}
+                                </Text>
+                              </View>
                             </View>
-                            <View style={styles.authenticedUserDate}>
-                              <Text style={styles.dateText}>
-                                {formatDistance(new Date(message.date), new Date(), {
-                                  addSuffix: true,
-                                })}
-                              </Text>
+                          ) : (
+                            <View style={styles.userContainer}>
+                              <View style={styles.userMessage}>
+                                <Text style={styles.userMessageText}>{message.message}</Text>
+                              </View>
+                              <View style={styles.userDate}>
+                                <Text style={styles.dateText}>
+                                  {formatDistance(new Date(message.date), new Date(), {
+                                    addSuffix: true,
+                                  })}{' '}
+                                  - {message.username}
+                                </Text>
+                              </View>
                             </View>
-                          </View>
-                        ) : (
-                          <View style={styles.userContainer}>
-                            <View style={styles.userMessage}>
-                              <Text style={styles.userMessageText}>{message.message}</Text>
-                            </View>
-                            <View style={styles.userDate}>
-                              <Text style={styles.dateText}>
-                                {formatDistance(new Date(message.date), new Date(), {
-                                  addSuffix: true,
-                                })}{' '}
-                                - {message.username}
-                              </Text>
-                            </View>
-                          </View>
-                        )}
-                      </View>
-                    </ScrollView>
-                  </SafeAreaView>
-                );
-              })}
+                          )}
+                        </View>
+                      );
+                    })}
+                </ScrollView>
+              </SafeAreaView>
             </View>
             <View style={styles.message}>
               <View style={styles.row}>

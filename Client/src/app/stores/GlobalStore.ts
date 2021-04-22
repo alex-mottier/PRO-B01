@@ -39,6 +39,8 @@ class Store {
   @observable.deep searchMeetings: Meeting[] | null = null;
   @observable locationToLoad = '';
   @observable hostToLoad = '';
+  @observable chatToLoad = '';
+  @observable meetingDisplayed: Meeting | null = null;
 
   /**
    * Instantiation of the store
@@ -186,6 +188,14 @@ class Store {
   }
 
   /**
+   * Set meeting to display
+   * @param meeting to display
+   */
+  @action setMeetingToDisplay(meeting: Meeting | null) {
+    this.meetingDisplayed = meeting;
+  }
+
+  /**
    * Set meeting to update
    * @param meeting réunion à mettre à jour
    */
@@ -299,11 +309,19 @@ class Store {
   }
 
   /**
+   * Set the chat to load
+   * @param chatId to load
+   */
+  @action setChatToLoad(chatId: string) {
+    this.chatToLoad = chatId;
+  }
+
+  /**
    * Load chat data
    * @param chatId to load
    */
-  @action async loadChat(chatId: string) {
-    // const response = await this.amphitryonDAO.loadMessages(chatId);
+  @action async loadChat() {
+    // const response = await this.amphitryonDAO.loadMessages(this.chatToLoad);
     // if (response) {
     //   if (response.ok) {
     //     this.chat = { id: chatId, messages: await response.json() };

@@ -93,6 +93,15 @@ const MeetingComponent: React.FC<IProps> = ({
     Alert.alert('Copié', "L'id de la réunion a été copié");
   };
 
+  /**
+   * Action on open chat button pressed
+   */
+  const handleOpenChat = () => {
+    store.setChatToLoad(meeting.chatId);
+    store.setMeetingToDisplay(meeting);
+    navigation.navigate('Chat');
+  };
+
   return (
     <Card style={styles.card} elevation={10}>
       <TouchableOpacity onPress={handleReduceOrDeploy}>
@@ -181,7 +190,7 @@ const MeetingComponent: React.FC<IProps> = ({
                   icon={Globals.ICONS.MESSAGE}
                   size={30}
                   color={Globals.COLORS.ORANGE}
-                  onPress={() => navigation.navigate('Chat')}
+                  onPress={handleOpenChat}
                 />
                 <Text style={[styles.gray, styles.buttonText]}>Discuter</Text>
               </View>
