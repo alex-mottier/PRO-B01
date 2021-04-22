@@ -78,9 +78,7 @@ const MeetingComponent: React.FC<IProps> = ({
         {
           text: 'Oui',
           onPress: () => {
-            void store.deleteMeeting(meeting.id).then(() => {
-              Alert.alert('Supprimée', 'La réunion a correctement été supprimée');
-            });
+            void store.deleteMeeting(meeting.id);
           },
         },
       ],
@@ -170,8 +168,8 @@ const MeetingComponent: React.FC<IProps> = ({
                 color={Globals.COLORS.GRAY}
                 size={Globals.SIZES.ICON_HEADER}
                 onPress={() => {
+                  void store.setLocationToLoad(meeting.locationID);
                   navigation.navigate('LocationDetails');
-                  void store.loadLocationToDisplay(meeting.locationID);
                 }}
               />
             </View>

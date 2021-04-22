@@ -5,7 +5,7 @@
  * @brief   MobX global application state store
  */
 
-import { action, computed, makeAutoObservable, observable } from 'mobx';
+import { action, computed, makeAutoObservable, observable, runInAction } from 'mobx';
 import { createContext } from 'react';
 import { Meeting, User, Location, Host, Chat, Message, Filter } from '../models/ApplicationTypes';
 import GoogleAuth from '../authentication/GoogleAuth';
@@ -16,7 +16,8 @@ import { mockMeetings } from '../../mock/Meetings';
 import { mockChat } from '../../mock/Chat';
 import { mockLocations } from '../../mock/Locations';
 import { mockHost } from '../../mock/Host';
-import { addHours } from 'date-fns';
+import { addDays, addHours, endOfDay, startOfDay } from 'date-fns';
+import { Alert } from 'react-native';
 
 class Store {
   private amphitryonDAO = AmphitryonDAO.getInstance();
@@ -29,13 +30,15 @@ class Store {
   @observable authenticatedUser: User | null = null;
   @observable isLoggedIn = false;
   @observable meetingToUpdate: Meeting | null = null;
-  @observable meetingsCreatedByUser: Meeting[] = [];
-  @observable userMeetings: Meeting[] | null = null;
+  @observable.deep meetingsCreatedByUser: Meeting[] = [];
+  @observable.deep userMeetings: Meeting[] | null = null;
   @observable chat: Chat | null = null;
-  @observable locations: Location[] | null = null;
+  @observable.deep locations: Location[] | null = null;
   @observable locationToDisplay: Location | null = null;
   @observable hostToDisplay: Host | null = null;
-  @observable searchMeetings: Meeting[] | null = null;
+  @observable.deep searchMeetings: Meeting[] | null = null;
+  @observable locationToLoad = '';
+  @observable hostToLoad = '';
 
   /**
    * Instantiation of the store
@@ -107,6 +110,7 @@ class Store {
         this.amphitryonDAO.setSessionToken(sessionToken ? sessionToken : '');
         this.setAuthenticatedUser(await response.json());
         this.setIsLoggedIn(true);
+        void this.loadUserData();
       }
     }
     this.setIsLoading(false);
@@ -150,6 +154,7 @@ class Store {
         this.sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
         this.setAuthenticatedUser(user);
         this.setIsLoggedIn(true);
+        void this.loadUserData();
       }
     }
     this.setIsLoading(false);
@@ -166,16 +171,25 @@ class Store {
       if (response) {
         this.sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
         this.setAuthenticatedUser(await response.json());
+        void this.loadMeetingsCreatedByUser();
       }
     }
     this.setIsLoading(false);
   }
 
   /**
+   * Retrieve user data from API
+   */
+  @action loadUserData() {
+    void this.loadMeetingsCreatedByUser();
+    void this.loadUserMeetings(startOfDay(new Date()), endOfDay(addDays(new Date(), 10)));
+  }
+
+  /**
    * Set meeting to update
    * @param meeting réunion à mettre à jour
    */
-  @action setMeetingToUpdate(meeting: Meeting | null): void {
+  @action setMeetingToUpdate(meeting: Meeting | null) {
     this.meetingToUpdate = meeting;
   }
 
@@ -320,6 +334,14 @@ class Store {
   }
 
   /**
+   * Set location to load
+   * @param locationId to load
+   */
+  @action setLocationToLoad(locationId: string) {
+    this.locationToLoad = locationId;
+  }
+
+  /**
    * Load locations available between dates
    * @param startDate from date
    * @param endDate to date
@@ -338,19 +360,35 @@ class Store {
   }
 
   /**
+   * Load all locations
+   */
+  @action async loadAllLocations() {
+    // const response = await this.amphitryonDAO.getAllLocations();
+    // if (response) {
+    //   if (response.ok) {
+    //     this.locations = await response.json();
+    //   }
+    // }
+
+    // TO DELETE
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    this.locations = mockLocations;
+  }
+
+  /**
    * Load location details
    * @param locationId location id
    */
-  @action async loadLocationToDisplay(locationId: string) {
-    // const location = await this.loadLocation(locationId);
+  @action async loadLocationToDisplay() {
+    // const location = await this.loadLocation(this.locationToLoad);
     // if (location) this.locationToDisplay = location;
 
     // TO DELETE
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.locationToDisplay = await this.loadLocation(locationId);
+    this.locationToDisplay = await this.loadLocation(this.locationToLoad);
   }
 
-  async loadLocation(locationId: string): Promise<Location | null> {
+  @action async loadLocation(locationId: string): Promise<Location | null> {
     // const response = await this.amphitryonDAO.getLocationDetails(locationId);
     // if (response) {
     //   if (response.ok) {
@@ -365,11 +403,19 @@ class Store {
   }
 
   /**
+   * Set host to load
+   * @param hostId to load
+   */
+  @action setHostToLoad(hostId: string) {
+    this.hostToLoad = hostId;
+  }
+
+  /**
    * Load host details
    * @param hostId host id
    */
-  @action async loadHost(hostId: string) {
-    // const response = await this.amphitryonDAO.getHostDetails(hostId);
+  @action async loadHost() {
+    // const response = await this.amphitryonDAO.getHostDetails(this.hostToLoad);
     // if (response) {
     //   if (response.ok) {
     //     this.locationToDisplay = await response.json();
@@ -389,15 +435,19 @@ class Store {
     // const response = await this.amphitryonDAO.createMeeting(meeting);
     // if (response) {
     //   if (response.ok) {
+    // runInAction(() => {
     //     this.userMeetings?.push(meeting);
     //     this.meetingsCreatedByUser?.push(meeting);
+    // });
     //   }
     // }
 
     // TO DELETE
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.userMeetings?.push(meeting);
-    this.meetingsCreatedByUser?.push(meeting);
+    runInAction(() => {
+      this.userMeetings?.push(meeting);
+      this.meetingsCreatedByUser?.push(meeting);
+    });
   }
 
   /**
@@ -447,6 +497,7 @@ class Store {
     // const response = await this.amphitryonDAO.deleteMeeting(meetingId);
     // if (response) {
     //   if (response.ok) {
+    // runInAction(() => {
     //     if (this.userMeetings)
     //       this.userMeetings = this.userMeetings.filter((current: Meeting) => {
     //         return current.id !== meetingId;
@@ -455,18 +506,23 @@ class Store {
     //       this.meetingsCreatedByUser = this.meetingsCreatedByUser.filter((current: Meeting) => {
     //         return current.id !== meetingId;
     //       });
+    //      Alert.alert('Supprimée', 'La réunion a correctement été supprimée');
+    // });
     //   }
     // }
     // TO DELETE
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    if (this.userMeetings)
-      this.userMeetings = this.userMeetings.filter((current: Meeting) => {
-        return current.id !== meetingId;
-      });
-    if (this.meetingsCreatedByUser)
-      this.meetingsCreatedByUser = this.meetingsCreatedByUser.filter((current: Meeting) => {
-        return current.id !== meetingId;
-      });
+    runInAction(() => {
+      if (this.userMeetings)
+        this.userMeetings = this.userMeetings.filter((current: Meeting) => {
+          return current.id !== meetingId;
+        });
+      if (this.meetingsCreatedByUser)
+        this.meetingsCreatedByUser = this.meetingsCreatedByUser.filter((current: Meeting) => {
+          return current.id !== meetingId;
+        });
+      Alert.alert('Supprimée', 'La réunion a correctement été supprimée');
+    });
   }
 
   /**

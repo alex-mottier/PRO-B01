@@ -38,8 +38,10 @@ const LocationDetails: React.FC = () => {
    */
   React.useEffect(() => {
     setIsLoading(true);
-    setLocation(store.locationToDisplay);
-    setIsLoading(false);
+    void store.loadLocationToDisplay().then(() => {
+      setLocation(store.locationToDisplay);
+      setIsLoading(false);
+    });
   }, []);
 
   return (
@@ -56,8 +58,8 @@ const LocationDetails: React.FC = () => {
                 size={Globals.SIZES.ICON_HEADER}
                 color={Globals.COLORS.GRAY}
                 onPress={() => {
+                  if (location?.hostId) void store.setHostToLoad(location.hostId);
                   if (location) navigation.navigate('HostDetails');
-                  if (location?.hostId) void store.loadHost(location?.hostId);
                 }}
               />
             </View>

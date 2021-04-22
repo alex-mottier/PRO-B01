@@ -22,7 +22,7 @@ import {
 import Globals from '../../../app/context/Globals';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import styles from './styles';
-import { Location, Meeting, Tag } from '../../../app/models/ApplicationTypes';
+import { Filter, Location, Meeting, Tag } from '../../../app/models/ApplicationTypes';
 import { mockMeetings } from '../../../mock/Meetings';
 import TagsComponent from '../../../components/Tags/TagsComponent';
 import SearchLocation from '../../../components/SearchLocation/SearchLocation';
@@ -32,6 +32,7 @@ import { addDays } from 'date-fns/esm';
 import NoMeeting from '../../../components/NoMeeting/NoMeeting';
 import { observer } from 'mobx-react-lite';
 import GlobalStore from '../../../app/stores/GlobalStore';
+import LoadingComponent from '../../../components/Loading/LoadingComponent';
 
 const Search: React.FC = () => {
   // Usage of react native paper theme library
@@ -43,16 +44,15 @@ const Search: React.FC = () => {
   /* Component states */
   const [search, setSearch] = React.useState('');
   const [visible, setModalVisible] = React.useState(false);
-  const [tags, setTags] = React.useState([{ name: 'Android' }, { name: 'IOS' }]);
+  const [tags, setTags] = React.useState<Tag[]>([]);
   const [location, setLocation] = React.useState<Location | null>(null);
-  const [uniqueID, setUniqueID] = React.useState('');
+  const [name, setName] = React.useState('');
   const [showStartDate, setShowStartDate] = React.useState(false);
   const [showEndDate, setShowEndDate] = React.useState(false);
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(addDays(new Date(), 7));
-
-  /* Local variables */
-  const meetings: Meeting[] = mockMeetings;
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [meetings, setMeetings] = React.useState<Meeting[] | null>(null);
 
   /**
    * Action when start date is changed
@@ -75,11 +75,37 @@ const Search: React.FC = () => {
   };
 
   /**
+   * Search a meeting by id
+   * @param id to search
+   */
+  const handleSearchWithId = (id: string) => {
+    setIsLoading(true);
+    setMeetings(null);
+    setSearch(id);
+    void store.searchWithId(id).then(() => {
+      setMeetings(store.searchMeetings);
+      setIsLoading(false);
+    });
+  };
+
+  /**
    * Action when filter button is pressed
    */
   const handleSubmit = () => {
     setModalVisible(false);
-    console.log('Filter');
+    setIsLoading(true);
+    setMeetings(null);
+    const filter: Filter = {
+      name: name === '' ? name : null,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      tags: tags.length === 0 ? [] : tags,
+      location: location ? location : null,
+    };
+    void store.searchWithFilter(filter).then(() => {
+      setMeetings(store.searchMeetings);
+      setIsLoading(false);
+    });
   };
 
   /**
@@ -114,9 +140,9 @@ const Search: React.FC = () => {
           <View style={[styles.container, { backgroundColor: paperTheme.colors.surface }]}>
             <View style={styles.search}>
               <TextInput
-                label="Rechercher..."
+                label="Id unique de la réunion"
                 value={search}
-                onChangeText={(username) => setSearch(username)}
+                onChangeText={(id) => handleSearchWithId(id)}
                 style={styles.fields}
               />
               <FAB
@@ -126,10 +152,15 @@ const Search: React.FC = () => {
                 onPress={() => setModalVisible(true)}
               />
             </View>
-            {meetings.length === 0 ? (
+            {isLoading && (
+              <View style={styles.container}>
+                <LoadingComponent />
+              </View>
+            )}
+            {!isLoading && meetings && meetings.length === 0 ? (
               <NoMeeting />
             ) : (
-              meetings.map((meeting: Meeting) => (
+              meetings?.map((meeting: Meeting) => (
                 <MeetingComponent
                   key={meeting.id}
                   meeting={meeting}
@@ -159,9 +190,9 @@ const Search: React.FC = () => {
                   <Title style={styles.title}>Filtres</Title>
                   <View style={styles.content}>
                     <TextInput
-                      label="Id unique de la réunion"
-                      value={uniqueID}
-                      onChangeText={(id) => setUniqueID(id)}
+                      label="Nom de la réunion"
+                      value={name}
+                      onChangeText={(id) => setName(id)}
                       style={styles.fields}
                     />
                     <View style={styles.dateHeure}>

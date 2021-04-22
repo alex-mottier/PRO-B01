@@ -22,17 +22,15 @@ const Profile: React.FC = () => {
 
   /* Component states */
   const [isLoading, setIsLoading] = React.useState(false);
-  const [meetings, setMeetings] = React.useState<Meeting[] | null>(null);
 
   /**
    * Action when component is loaded
    */
   React.useEffect(() => {
-    setIsLoading(true);
-    void store.loadMeetingsCreatedByUser().then(() => {
-      setMeetings(store.meetingsCreatedByUser);
-      setIsLoading(false);
-    });
+    // setIsLoading(true);
+    // void store.loadMeetingsCreatedByUser().then(() => {
+    //   setIsLoading(false);
+    // });
   }, []);
 
   return (
@@ -48,7 +46,7 @@ const Profile: React.FC = () => {
           {!isLoading && store.meetingsCreatedByUser && store.meetingsCreatedByUser.length === 0 ? (
             <NoMeeting />
           ) : (
-            meetings?.map((meeting: Meeting) => (
+            store.meetingsCreatedByUser.map((meeting: Meeting) => (
               <MeetingComponent
                 key={meeting.id}
                 meeting={meeting}

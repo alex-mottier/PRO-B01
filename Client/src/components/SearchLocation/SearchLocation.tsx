@@ -10,7 +10,9 @@ import { ScrollView, View } from 'react-native';
 import { IconButton, TextInput, Text, Portal, Modal, Title } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
 import { Location } from '../../app/models/ApplicationTypes';
+import GlobalStore from '../../app/stores/GlobalStore';
 import { mockLocations } from '../../mock/Locations';
+import LoadingComponent from '../Loading/LoadingComponent';
 import LocationComponent from '../Location/LocationComponent';
 import styles from './styles';
 
@@ -20,13 +22,19 @@ import styles from './styles';
 interface IProps {
   location: Location | null;
   chooseLocation(location: Location | null): void;
+  startDate?: Date | null;
+  endDate?: Date | null;
 }
 
-const SearchLocation: React.FC<IProps> = ({ location, chooseLocation }) => {
+const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate, endDate }) => {
+  /* Usage of MobX global state store */
+  const store = React.useContext(GlobalStore);
+
   /* Component states */
   const [locationName, setLocationName] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [locations, setLocations] = React.useState<Location[]>(mockLocations);
+  const [locations, setLocations] = React.useState<Location[] | null>(store.locations);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   /**
    * Action when a location is choosen
@@ -50,6 +58,23 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation }) => {
     });
     setLocations(newLocations);
   };
+
+  /**
+   * Action when component is loaded
+   */
+  React.useEffect(() => {
+    setIsLoading(true);
+    if (startDate && endDate)
+      void store.loadLocations(startDate, endDate).then(() => {
+        setLocations(store.locations);
+        setIsLoading(false);
+      });
+    else
+      void store.loadAllLocations().then(() => {
+        setLocations(store.locations);
+        setIsLoading(false);
+      });
+  }, []);
 
   return (
     <View>
@@ -96,18 +121,26 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation }) => {
               onChangeText={(name) => handleLocationNameChange(name)}
               style={styles.field}
             />
-            <ScrollView style={styles.scrollview}>
-              <View style={styles.locations}>
-                {locations.map((location: Location) => (
-                  <LocationComponent
-                    key={location.name}
-                    location={location}
-                    onChoose={(location: Location) => handleChooseLocation(location)}
-                    isAddView={true}
-                  />
-                ))}
+            {isLoading && (
+              <View style={styles.scrollview}>
+                <LoadingComponent />
               </View>
-            </ScrollView>
+            )}
+            {!isLoading && (
+              <ScrollView style={styles.scrollview}>
+                <View style={styles.locations}>
+                  {locations &&
+                    locations?.map((location: Location) => (
+                      <LocationComponent
+                        key={location.name}
+                        location={location}
+                        onChoose={(location: Location) => handleChooseLocation(location)}
+                        isAddView={true}
+                      />
+                    ))}
+                </View>
+              </ScrollView>
+            )}
           </View>
         </Modal>
       </Portal>

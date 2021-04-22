@@ -31,8 +31,10 @@ const HostDetails: React.FC = () => {
    */
   React.useEffect(() => {
     setIsLoading(true);
-    setHost(store.hostToDisplay);
-    setIsLoading(false);
+    void store.loadHost().then(() => {
+      setHost(store.hostToDisplay);
+      setIsLoading(false);
+    });
   }, []);
 
   return (
@@ -52,7 +54,8 @@ const HostDetails: React.FC = () => {
               <Text style={styles.gray}>{host?.description}</Text>
               <View>
                 <Text>
-                  {host?.address.streetName}, {host?.address.npa} {host?.address.city}
+                  {host?.address.street} {host?.address.streetNb}, {host?.address.npa}{' '}
+                  {host?.address.cityName}
                 </Text>
               </View>
               <View style={styles.chips}>

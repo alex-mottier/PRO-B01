@@ -70,6 +70,7 @@ const Welcome: React.FC = () => {
               onPress={() => {
                 store.setIsLoggedIn(true);
                 store.setAuthenticatedUser({ username: 'Développeur' });
+                void store.loadUserData();
               }}
               text={'Développement'}
             />

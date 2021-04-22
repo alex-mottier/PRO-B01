@@ -320,11 +320,29 @@ export default class AmphitryonDAO {
    * @param end date of the meeting (at 23h59)
    * @returns the location
    */
-  async getAllLocations(start: Date, end: Date): Promise<Response | null> {
+  async getAllLocationsAvailable(start: Date, end: Date): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/locations/withDate', {
       method: 'GET',
       headers: this.header,
       body: JSON.stringify({ startDate: start.toISOString(), endDate: end.toISOString() }),
+    })
+      .then((response: Response) => {
+        return response;
+      })
+      .catch(() => {
+        Alert.alert("Une erreur s'est produite", 'Erreur lors du chargement des lieux');
+        return null;
+      });
+  }
+
+  /**
+   * Get all locations
+   * @returns All locations
+   */
+  async getAllLocations(): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/locations', {
+      method: 'GET',
+      headers: this.header,
     })
       .then((response: Response) => {
         return response;

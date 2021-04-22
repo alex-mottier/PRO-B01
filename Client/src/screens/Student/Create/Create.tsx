@@ -306,6 +306,8 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
                   <SearchLocation
                     location={location}
                     chooseLocation={(location: Location | null) => setLocation(location)}
+                    startDate={startDate}
+                    endDate={endDate}
                   />
                 </View>
               </Card>
