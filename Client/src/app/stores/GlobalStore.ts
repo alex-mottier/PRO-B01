@@ -40,7 +40,6 @@ class Store {
   @observable locationToLoad = '';
   @observable hostToLoad = '';
   @observable chatToLoad = '';
-  @observable meetingDisplayed: Meeting | null = null;
 
   /**
    * Instantiation of the store
@@ -188,44 +187,11 @@ class Store {
   }
 
   /**
-   * Set meeting to display
-   * @param meeting to display
-   */
-  @action setMeetingToDisplay(meeting: Meeting | null) {
-    this.meetingDisplayed = meeting;
-  }
-
-  /**
    * Set meeting to update
    * @param meeting réunion à mettre à jour
    */
   @action setMeetingToUpdate(meeting: Meeting | null) {
     this.meetingToUpdate = meeting;
-  }
-
-  /**
-   * Get the meeting to create or edit default values
-   * @returns the meeting to create or edit default values
-   */
-  @computed getMeetingDefaultValues(): Meeting {
-    if (this.meetingToUpdate !== null) {
-      return this.meetingToUpdate;
-    } else
-      return {
-        id: '0',
-        name: '',
-        description: '',
-        tags: [],
-        locationID: '',
-        locationName: '',
-        maxPeople: 0,
-        nbPeople: 0,
-        startDate: new Date().toISOString(),
-        endDate: addHours(new Date(), 2).toISOString(),
-        ownerID: '',
-        chatId: '',
-        isPrivate: false,
-      };
   }
 
   /**

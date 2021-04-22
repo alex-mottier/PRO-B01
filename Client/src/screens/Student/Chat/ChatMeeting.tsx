@@ -35,7 +35,7 @@ const ChatMeeting: React.FC = () => {
     setIsLoading(true);
     void store.loadChat().then(() => {
       setChat(store.chat);
-      setMeeting(store.meetingDisplayed);
+      setMeeting(store.meetingToUpdate);
       setAuthenticedUser(store.getAuthenticatedUser());
       setIsLoading(false);
     });

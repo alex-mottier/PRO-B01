@@ -9,7 +9,7 @@ import * as React from 'react';
 import { Alert, Platform, SafeAreaView, ScrollView, View } from 'react-native';
 import { TextInput, IconButton, Button, Text, Card, Provider, FAB } from 'react-native-paper';
 import styles from './styles';
-import { Location, Tag } from '../../../app/models/ApplicationTypes';
+import { Location, Meeting, Tag } from '../../../app/models/ApplicationTypes';
 import Globals from '../../../app/context/Globals';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import TagsComponent from '../../../components/Tags/TagsComponent';
@@ -34,16 +34,22 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
   const store = React.useContext(GlobalStore);
 
   /* Component states */
-  const meeting = store.getMeetingDefaultValues();
-  const [meetingName, setMeetingName] = React.useState(meeting.name);
-  const [meetingDescription, setMeetingDescription] = React.useState(meeting.description);
-  const [isPrivateOn, setIsPrivateOn] = React.useState(meeting.isPrivate);
+  const [meeting, setMeeting] = React.useState<Meeting | null>(null);
+  const [meetingName, setMeetingName] = React.useState(meeting ? meeting.name : '');
+  const [meetingDescription, setMeetingDescription] = React.useState(
+    meeting ? meeting.description : '',
+  );
+  const [isPrivateOn, setIsPrivateOn] = React.useState(meeting ? meeting.isPrivate : false);
   const [showDate, setShowDate] = React.useState(false);
   const [showStartTime, setShowStartTime] = React.useState(false);
   const [showEndTime, setShowEndTime] = React.useState(false);
-  const [startDate, setStartDate] = React.useState(new Date(Date.parse(meeting.startDate)));
-  const [endDate, setEndDate] = React.useState(new Date(Date.parse(meeting.endDate)));
-  const [tags, setTags] = React.useState(meeting.tags);
+  const [startDate, setStartDate] = React.useState(
+    meeting ? new Date(meeting.startDate) : new Date(),
+  );
+  const [endDate, setEndDate] = React.useState(
+    new Date(meeting ? new Date(meeting.endDate) : addHours(new Date(), 2)),
+  );
+  const [tags, setTags] = React.useState<Tag[]>(meeting ? meeting.tags : []);
   const [location, setLocation] = React.useState<Location | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -113,18 +119,18 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
     // Everything is well filled => meeting can be udpated
     void store
       .updateMeeting({
-        id: meeting.id,
+        id: meeting ? meeting.id : '',
         name: meetingName,
         description: meetingDescription,
         tags: tags,
         locationID: location?.id,
         locationName: location?.name,
-        nbPeople: meeting.nbPeople,
+        nbPeople: meeting ? meeting.nbPeople : 1,
         maxPeople: location.nbPeople,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
-        ownerID: meeting.ownerID,
-        chatId: meeting.chatId,
+        ownerID: meeting ? meeting.ownerID : '',
+        chatId: meeting ? meeting.chatId : '',
         isPrivate: isPrivateOn,
       })
       .then(() => {
@@ -212,12 +218,23 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
   React.useEffect(() => {
     if (isEditMode) {
       setIsLoading(true);
-      void store.loadLocation(meeting.locationID).then((location: Location | null) => {
-        if (location) setLocation(location);
+      void store.loadLocationToDisplay().then(() => {
+        const meeting = store.meetingToUpdate;
+        setMeeting(meeting);
+        if (meeting) {
+          setMeetingName(meeting.name);
+          setIsPrivateOn(meeting.isPrivate);
+          setMeetingDescription(meeting.description);
+          setStartDate(new Date(meeting.startDate));
+          setEndDate(new Date(meeting.endDate));
+          setTags(meeting.tags);
+        }
+
+        setLocation(store.locationToDisplay);
         setIsLoading(false);
       });
     }
-  }, [location]);
+  }, []);
 
   return (
     <Provider>

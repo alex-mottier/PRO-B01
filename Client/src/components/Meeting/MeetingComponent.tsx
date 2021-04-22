@@ -60,6 +60,7 @@ const MeetingComponent: React.FC<IProps> = ({
    */
   const handleEdit = () => {
     store.setMeetingToUpdate(meeting);
+    store.setLocationToLoad(meeting.locationID);
     navigation.navigate('Edit');
   };
 
@@ -98,7 +99,7 @@ const MeetingComponent: React.FC<IProps> = ({
    */
   const handleOpenChat = () => {
     store.setChatToLoad(meeting.chatId);
-    store.setMeetingToDisplay(meeting);
+    store.setMeetingToUpdate(meeting);
     navigation.navigate('Chat');
   };
 
