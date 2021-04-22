@@ -141,7 +141,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 }
             }
         } catch (Exception e) {
-
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
