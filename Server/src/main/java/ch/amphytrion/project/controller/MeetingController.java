@@ -85,9 +85,8 @@ public class MeetingController extends BaseController implements IGenericControl
     @PostMapping("/meeting/join/{meetingID}")
     public ResponseEntity<Meeting> joinMeeting(@PathVariable String meetingID) {
         try {
-            User user = new User();
-            userService.save(user);
-            Student student = (Student) user; // TODO Use current user
+
+            Student student = null; // TODO Use current user
             Meeting meeting = meetingService.findById(meetingID);
             if (student instanceof Student) {
                 studentService.save(student);
