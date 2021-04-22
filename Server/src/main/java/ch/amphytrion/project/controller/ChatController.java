@@ -27,7 +27,6 @@ public class ChatController extends BaseController implements IGenericController
         this.chatService = chatService;
     }
 
-    @Override
     @GetMapping("/chats")
     public ResponseEntity<List<Chat>> getAll() {
         try {
@@ -37,7 +36,6 @@ public class ChatController extends BaseController implements IGenericController
         }
     }
 
-    @Override
     @PostMapping("/chat")
     public ResponseEntity<Chat> save(Chat entity) {
         try {

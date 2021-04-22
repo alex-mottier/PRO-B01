@@ -14,6 +14,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
+    private static final String[] AUTH_WHITELIST = {
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**",
+            "/item/signUpStudent"
+    };
 
 
     private UserAuthService userAuthService;
@@ -27,14 +34,17 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.cors().and().authorizeRequests()
                 // Warning : use springFrameWork HttpMethod, not swagger's one!
                 .antMatchers(org.springframework.http.HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // Filter for authentication
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), userAuthService.getUserService()))
-                // Fitler for authorization
+//                // Fitler for authorization
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 // this disables session creation on Spring Security
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .csrf().disable();
     }
 
     @Override

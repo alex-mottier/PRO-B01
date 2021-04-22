@@ -24,7 +24,6 @@ public class CityController extends BaseController implements IGenericController
         this.cityService = cityService;
     }
 
-    @Override
     @GetMapping("/cities")
     public ResponseEntity<List<City>> getAll() {
         try {
@@ -34,7 +33,6 @@ public class CityController extends BaseController implements IGenericController
         }
     }
 
-    @Override
     @PostMapping("/city")
     public ResponseEntity<City> save(City entity) {
         try {

@@ -7,14 +7,6 @@ services:
             - 27017:27017
         container_name: amphitryon_db
         
-    amphitryon_graphdb:
-        image: neo4j:3.5
-        environment:
-          NEO4J_AUTH: 'neo4j/secret'
-        ports:
-          - 7474:7474
-          - 7687:7687
-          
     #amphitryon_backend:
   
     #    build:

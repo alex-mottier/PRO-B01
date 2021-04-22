@@ -22,7 +22,6 @@ public class OpeningHourController extends BaseController implements IGenericCon
         this.openingHourService = openingHourService;
     }
 
-    @Override
     @GetMapping("/openinghours")
     public ResponseEntity<List<OpeningHour>> getAll() {
         try {
@@ -32,7 +31,6 @@ public class OpeningHourController extends BaseController implements IGenericCon
         }
     }
 
-    @Override
     @PostMapping("/openinghour")
     public ResponseEntity<OpeningHour> save(OpeningHour entity) {
         try {

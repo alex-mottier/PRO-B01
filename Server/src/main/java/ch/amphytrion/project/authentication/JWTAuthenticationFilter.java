@@ -1,5 +1,6 @@
 package ch.amphytrion.project.authentication;
 
+import ch.amphytrion.project.dto.AuthenticationDto;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.entities.notdatabaseentities.AuthenticateRequest;
 import ch.amphytrion.project.services.UserService;
@@ -9,11 +10,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.Json;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
+import com.google.gson.JsonObject;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,6 +33,8 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 // verify user credential and asssign token
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -36,6 +43,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 
     private final UserService userService;
+    private static final String TEST_TOKEN = "tokenTest";
 
     @Autowired
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService) {
@@ -43,16 +51,18 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.userService = userService;
 
         // Process only on given URL ?
-        setFilterProcessesUrl("/api/services/controller/user/connect");
+        setFilterProcessesUrl("/item/login");
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse res) throws AuthenticationException {
         try {
-            String givenInput = new ObjectMapper()
-                    .readValue(req.getInputStream(), String.class);
-            GoogleIdToken tokenID =  GoogleTokenValider.validateToken(givenInput);
+            // Make DTO class to map request to
+            String requestData = req.getReader().lines().collect(Collectors.joining());
+            AuthenticationDto auth = new ObjectMapper().readValue(requestData, AuthenticationDto.class);
+//            String givenInput = obj; //.getAsJsonObject("tokenID").getAsString();
+            GoogleIdToken tokenID =  GoogleTokenValider.validateToken(auth.getTokenId());
 
             if (tokenID != null) {
                 GoogleIdToken.Payload payload = tokenID.getPayload();
@@ -63,21 +73,23 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                 tokenID,
                                 new ArrayList<>())
                 );
-
-            } else if (givenInput.equals("testToken")) {
-                String token = "testToken";
-                User user = userService.findByGoogleId("mock-google-id");
-                return authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                user,
-                                token,
-                                new ArrayList<>())
-                );
             } else {
-                throw new RuntimeException();
+                String tokenSeparated[] = auth.getTokenId().split("-");
+                if(tokenSeparated.length == 2 && tokenSeparated[0].equals(TEST_TOKEN)){
+                    String username = tokenSeparated[1];
+                    User user = userService.findByUsername(username);
+                    return authenticationManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(
+                                    user,
+                                    TEST_TOKEN,
+                                    new ArrayList<>())
+                    );
+                } else {
+                    throw new RuntimeException();
+                }
             }
         }catch (IOException | GeneralSecurityException e ) {
-            throw new RuntimeException();
+            throw new AuthenticationCredentialsNotFoundException("Credentials not found");
         }
     }
 

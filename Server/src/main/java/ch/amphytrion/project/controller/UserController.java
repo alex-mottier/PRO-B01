@@ -53,21 +53,22 @@ public class UserController extends BaseController implements IGenericController
     public ResponseEntity<User> signUpStudent(@RequestBody Map<String, String> json) {
         String userName = json.get("username");
         String tokenInput = json.get("tokenID");
-        try {
-            GoogleIdToken tokenID = GoogleTokenValider.validateToken(tokenInput);
-            if (tokenID != null) {
-                GoogleIdToken.Payload payload = tokenID.getPayload();
-                String userId = payload.get("sub").toString();
-                User newUser = new User(null, userId, userName);
-                userService.save(newUser);
-                String token = JWT.create()
-                        .withSubject(newUser.getUsername())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                        .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
-                HttpHeaders responseHeaders = new HttpHeaders();
-                responseHeaders.set(SecurityConstants.HEADER_STRING, token);
-                return ResponseEntity.ok().headers(responseHeaders).body(newUser);
-            } else if (tokenInput.equals("testToken")) {
+//        try {
+//            GoogleIdToken tokenID = GoogleTokenValider.validateToken(tokenInput);
+//            if (tokenID != null) {
+//                GoogleIdToken.Payload payload = tokenID.getPayload();
+//                String userId = payload.get("sub").toString();
+//                User newUser = new User(null, userId, userName);
+//                userService.save(newUser);
+//                String token = JWT.create()
+//                        .withSubject(newUser.getUsername())
+//                        .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+//                        .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
+//                HttpHeaders responseHeaders = new HttpHeaders();
+//                responseHeaders.set(SecurityConstants.HEADER_STRING, token);
+//                return ResponseEntity.ok().headers(responseHeaders).body(newUser);
+//            } else
+                if (tokenInput.equals("testToken")) {
                 User newUser = new User(null, "mock-google-id", userName);
                 userService.save(newUser);
                 String token = JWT.create()
@@ -80,9 +81,9 @@ public class UserController extends BaseController implements IGenericController
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
-        } catch (IOException | GeneralSecurityException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+//        } catch (IOException | GeneralSecurityException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
     }
 
     // X

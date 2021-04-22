@@ -5,5 +5,5 @@ public class SecurityConstants {
     public static String SECRET = "AmPhYtRiOnIsWhAtThEwOrLdNeEdS";
     public static String HEADER_STRING = "SESSION_TOKEN_AMPHITRYON";
     public static String TOKEN_PREFIX = "Session:";
-    public static String SIGN_UP_URL = "signUpStudent";
+    public static String SIGN_UP_URL = "/item/signUpStudent";
 }

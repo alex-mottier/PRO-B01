@@ -22,7 +22,6 @@ public class LocationController extends BaseController implements IGenericContro
         this.locationService = locationService;
     }
 
-    @Override
     @GetMapping("/locations")
     public ResponseEntity<List<Location>> getAll() {
         try {
@@ -32,7 +31,6 @@ public class LocationController extends BaseController implements IGenericContro
         }
     }
 
-    @Override
     @PostMapping("/locations")
     public ResponseEntity save(Location entity) {
         try {

@@ -24,7 +24,6 @@ public class AddressController extends BaseController implements IGenericControl
         this.addressService = addressService;
     }
 
-    @Override
     @GetMapping("/addresses")
     public ResponseEntity<List<Address>> getAll() {
         try {
@@ -34,7 +33,6 @@ public class AddressController extends BaseController implements IGenericControl
         }
     }
 
-    @Override
     @PostMapping("/address")
     public ResponseEntity<Address> save(Address entity) {
         try {
