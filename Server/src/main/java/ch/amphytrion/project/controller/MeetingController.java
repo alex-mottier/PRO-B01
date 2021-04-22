@@ -115,17 +115,14 @@ public class MeetingController extends BaseController implements IGenericControl
     public ResponseEntity<Meeting> create(@RequestBody Meeting entity) {
         try {
             entity.setId(null);
-            if(entity.getId() == null){
                 //TODO : AJOUTER USER
                 Chat chat = new Chat();
                 chatService.save(chat);
                 entity.setChatID(chat.getId());
                 return ResponseEntity.ok(meetingService.save(entity));
-            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     //X
