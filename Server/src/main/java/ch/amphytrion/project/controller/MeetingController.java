@@ -114,6 +114,7 @@ public class MeetingController extends BaseController implements IGenericControl
     @PostMapping("/meeting")
     public ResponseEntity<Meeting> create(@RequestBody Meeting entity) {
         try {
+            entity.setId(null);
             if(entity.getId() == null){
                 //TODO : AJOUTER USER
                 Chat chat = new Chat();
