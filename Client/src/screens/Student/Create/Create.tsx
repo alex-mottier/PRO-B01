@@ -147,6 +147,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
    * Action when submit button is pressed
    */
   const handleSubmit = () => {
+    setIsLoading(true);
     // Validation of form entries
     if (!isValid() || !location) return;
 
@@ -168,7 +169,8 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
         isPrivate: isPrivateOn,
       })
       .then(() => {
-        Alert.alert('Réunion crée', 'La réunion que vous avez soumise a bien été enregistrée');
+        store.generateItems(new Date());
+        setIsLoading(false);
       });
 
     handleReset();

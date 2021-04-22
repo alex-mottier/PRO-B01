@@ -16,8 +16,9 @@ import { mockMeetings } from '../../mock/Meetings';
 import { mockChat } from '../../mock/Chat';
 import { mockLocations } from '../../mock/Locations';
 import { mockHost } from '../../mock/Host';
-import { addDays, addHours, endOfDay, startOfDay } from 'date-fns';
+import { addDays, addHours, endOfDay, format, startOfDay } from 'date-fns';
 import { Alert } from 'react-native';
+import { AgendaItemsMap } from 'react-native-calendars';
 
 class Store {
   private amphitryonDAO = AmphitryonDAO.getInstance();
@@ -40,6 +41,7 @@ class Store {
   @observable locationToLoad = '';
   @observable hostToLoad = '';
   @observable chatToLoad = '';
+  @observable items: AgendaItemsMap<Meeting> | null = null;
 
   /**
    * Instantiation of the store
@@ -183,7 +185,11 @@ class Store {
    */
   @action loadUserData() {
     void this.loadMeetingsCreatedByUser();
-    void this.loadUserMeetings(startOfDay(new Date()), endOfDay(addDays(new Date(), 10)));
+    void this.loadUserMeetings(startOfDay(new Date()), endOfDay(addDays(new Date(), 10))).then(
+      () => {
+        void this.generateItems(new Date());
+      },
+    );
   }
 
   /**
@@ -416,22 +422,25 @@ class Store {
    * @param meeting to create
    */
   @action async createMeeting(meeting: Meeting) {
-    // const response = await this.amphitryonDAO.createMeeting(meeting);
-    // if (response) {
-    //   if (response.ok) {
-    // runInAction(() => {
-    //     this.userMeetings?.push(meeting);
-    //     this.meetingsCreatedByUser?.push(meeting);
-    // });
-    //   }
-    // }
+    const response = await this.amphitryonDAO.createMeeting(meeting);
+    if (response) {
+      if (response.ok) {
+        void runInAction(async () => {
+          const meetingWithId = JSON.parse(await response.text());
+          console.log('test');
+          console.log(meetingWithId);
+          this.userMeetings?.push(meetingWithId);
+          this.meetingsCreatedByUser?.push(meetingWithId);
+        });
+      }
+    }
 
     // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    runInAction(() => {
-      this.userMeetings?.push(meeting);
-      this.meetingsCreatedByUser?.push(meeting);
-    });
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // runInAction(() => {
+    //   this.userMeetings?.push(meeting);
+    //   this.meetingsCreatedByUser?.push(meeting);
+    // });
   }
 
   /**
@@ -541,6 +550,43 @@ class Store {
     // TO DELETE
     await new Promise((resolve) => setTimeout(resolve, 1000));
     this.searchMeetings = mockMeetings;
+  }
+
+  /**
+   * Set items in the calendar
+   * @param items in the calendard
+   */
+  @action setItems(items: AgendaItemsMap<Meeting>) {
+    this.items = items;
+  }
+
+  /**
+   * Generate next 10 days agenda items from a given date
+   * @param from date from to generate items
+   */
+  @action generateItems(from: Date) {
+    const nbDays = 10;
+    const items = ['{ '];
+    for (let i = 0; i <= nbDays; ++i) {
+      items.push('"' + format(addDays(from, i), 'yyyy-MM-dd') + '" : [');
+      const dayMeetings = this.userMeetings?.filter((current: Meeting) => {
+        return (
+          format(new Date(current.startDate), 'yyyy-MM-dd') ===
+          format(addDays(from, i), 'yyyy-MM-dd')
+        );
+      });
+
+      let cpt = 0;
+      dayMeetings?.map((current: Meeting) => {
+        items.push(JSON.stringify(current));
+        cpt++;
+        if (cpt !== dayMeetings?.length) items.push(',');
+      });
+      items.push(']');
+      if (i != nbDays) items.push(',');
+    }
+    items.push(' }');
+    this.items = JSON.parse(items.join(''));
   }
 }
 

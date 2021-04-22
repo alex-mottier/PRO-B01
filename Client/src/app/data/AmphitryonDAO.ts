@@ -95,6 +95,7 @@ export default class AmphitryonDAO {
       body: JSON.stringify(meeting),
     })
       .then((response: Response) => {
+        Alert.alert('Réunion crée', 'La réunion que vous avez soumise a bien été enregistrée');
         return response;
       })
       .catch(() => {
