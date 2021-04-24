@@ -39,40 +39,37 @@ public class UserController extends BaseController implements IGenericController
     public ResponseEntity<User> signUpStudent(@RequestBody Map<String, String> json) {
         String userName = json.get("username");
         String tokenInput = json.get("tokenID");
+
+        User newUser = null;
         if (tokenInput.equals("testToken")) {
-            User newUser = new User(null, "mock-google-id", userName);
-            userService.save(newUser);
-            String token = JWT.create()
-                    .withSubject(newUser.getUsername())
-                    .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                    .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
-            HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.set(SecurityConstants.HEADER_STRING, token);
-            return ResponseEntity.ok().headers(responseHeaders).body(newUser);
+            newUser = new User(null, "mock-google-id", userName);
         } else {
             GoogleIdToken tokenID = GoogleTokenValider.validateToken(tokenInput);
             if (tokenID != null) {
                 GoogleIdToken.Payload payload = tokenID.getPayload();
                 String userId = payload.get("sub").toString();
+                newUser = new User(null, userId, userName);
+            }
+        }
+        if (newUser != null){
                 userService.save(newUser);
                 String token = JWT.create()
                         .withSubject(newUser.getUsername())
                         .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                         .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
-                User newUser = new User(null, userId, userName);
+
                 HttpHeaders responseHeaders = new HttpHeaders();
                 responseHeaders.set(SecurityConstants.HEADER_STRING, token);
                 return ResponseEntity.ok().headers(responseHeaders).body(newUser);
-            }else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            }
+        }else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
     // X
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody Map<String, String> json) {
-            User current = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User current = getCurrentUser();
             if (current != null) {
                 return ResponseEntity.ok().body(current);
             } else {
