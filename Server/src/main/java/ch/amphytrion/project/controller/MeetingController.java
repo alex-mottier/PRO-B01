@@ -47,7 +47,7 @@ public class MeetingController extends BaseController implements IGenericControl
     @GetMapping("/getCreatedMeetings")
     public ResponseEntity<List<Meeting>> getMeetingsCreatedByUser() {
         try {
-            user = getCurrentUser();
+            user =  new User("string", "ballec", "TESTICULE");//getCurrentUser();
             if (user instanceof Student)
                 return ResponseEntity.ok(meetingService.findByOwnerID(user.getId()));
         } catch (Exception e) {
@@ -60,7 +60,7 @@ public class MeetingController extends BaseController implements IGenericControl
     @PostMapping("/leaveMeeting/{meetingID}")
     public ResponseEntity<Meeting> leaveMeeting(@PathVariable String meetingID){
         try {
-            user = getCurrentUser();
+            user = user =  new User("string", "ballec", "TESTICULE"); //getCurrentUser();
             Meeting meeting = meetingService.findById(meetingID);
             if (user instanceof Student) {
                 Student student = (Student) user;
