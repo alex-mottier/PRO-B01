@@ -1,5 +1,6 @@
-package ch.amphytrion.project.authentication;
+package ch.amphytrion.project.authentication.jwt_authentication;
 
+import ch.amphytrion.project.authentication.SecurityConstants;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.security.authentication.AuthenticationManager;
