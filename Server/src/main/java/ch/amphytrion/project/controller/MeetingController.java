@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 public class MeetingController extends BaseController implements IGenericController<Meeting> {
@@ -27,23 +28,28 @@ public class MeetingController extends BaseController implements IGenericControl
     private MeetingService meetingService;
     private StudentService studentService;
     private ChatService chatService;
-    private UserService userService;
-
+    private User user;
+    private Student student;
     @Autowired
-    public MeetingController(MeetingService meetingService, StudentService studentService, ChatService chatService, UserService userService) {
+    public MeetingController(MeetingService meetingService, StudentService studentService, ChatService chatService) {
         this.meetingService = meetingService;
         this.studentService = studentService;
         this.chatService = chatService;
-        this.userService = userService;
+    }
+
+    private void initialize() {
+         if (user instanceof Student){
+             student = (Student) user;
+         }
     }
 
     //X
     @GetMapping("/getCreatedMeetings")
     public ResponseEntity<List<Meeting>> getMeetingsCreatedByUser() {
         try {
-            User owner = null; // TODO Use current user
-            if (owner instanceof Student)
-                return ResponseEntity.ok(meetingService.findByOwnerID(owner.getId()));
+            user = getCurrentUser();
+            if (user instanceof Student)
+                return ResponseEntity.ok(meetingService.findByOwnerID(user.getId()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -54,9 +60,10 @@ public class MeetingController extends BaseController implements IGenericControl
     @PostMapping("/leaveMeeting/{meetingID}")
     public ResponseEntity<Meeting> leaveMeeting(@PathVariable String meetingID){
         try {
-            Student student = null; // TODO Use current user
+            user = getCurrentUser();
             Meeting meeting = meetingService.findById(meetingID);
-            if (student instanceof Student) {
+            if (user instanceof Student) {
+                Student student = (Student) user;
                  student.getMeetingsParticipations().removeIf(m -> m.getId() == meeting.getId());
                  studentService.save(student);
                 return ResponseEntity.ok(meeting);
@@ -71,14 +78,12 @@ public class MeetingController extends BaseController implements IGenericControl
     @GetMapping("/getMyMeetings")
     public ResponseEntity<List<Meeting>> getMeetingsWhereUserParticipate(DatesFilterDTO datesFilter) {
         try {
-            Student student = null; // TODO Use current user
-            if (student instanceof Student) {
-                return ResponseEntity.ok(student.getMeetingsParticipations());
-            }
+            user = getCurrentUser();
+            initialize();
+            return ResponseEntity.ok(student.getMeetingsParticipations());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     //X
@@ -107,7 +112,6 @@ public class MeetingController extends BaseController implements IGenericControl
     public ResponseEntity<Meeting> create(@RequestBody Meeting entity) {
         try {
             entity.setId(null);
-                //TODO : AJOUTER USER
                 Chat chat = new Chat();
                 chatService.save(chat);
                 entity.setChatID(chat.getId());
@@ -122,7 +126,6 @@ public class MeetingController extends BaseController implements IGenericControl
     public ResponseEntity<Meeting> update(@RequestBody Meeting entity) {
         try {
             if(entity.getId() != null){
-                //TODO : AJOUTER USER
                 try {
                     Meeting existantMeeting = meetingService.findById(entity.getId());
                     existantMeeting = entity;
@@ -139,17 +142,15 @@ public class MeetingController extends BaseController implements IGenericControl
 
     //X
     @DeleteMapping("/meeting/{meetingID}")
-    public ResponseEntity<Meeting> delete(@PathVariable String meetingID) {
+    public void delete(@PathVariable String meetingID) throws Exception {
         try {
             Meeting meeting = meetingService.findById(meetingID);
             if(meeting != null){
                 meetingService.delete(meeting);
-                return ResponseEntity.ok().build();
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+         throw new Exception(e);
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     //X

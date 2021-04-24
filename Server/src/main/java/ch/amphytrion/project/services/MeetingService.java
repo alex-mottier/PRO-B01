@@ -161,7 +161,7 @@ public class MeetingService implements IGenericService<Meeting> {
         String string1 = "2001-07-04T12:08:56.235-0700";
         Date result1 = null;
         try {
-             result1= df1.parse(string1);
+            result1= df1.parse(string1);
         } catch (ParseException e) {
             e.printStackTrace();
         }

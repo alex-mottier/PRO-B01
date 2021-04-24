@@ -17,12 +17,13 @@ public class MeetingResponse implements InterfaceDTO {
     public String chatID;
     public ArrayList<Tag> tags;
     public Integer nbPeople;
+    public ArrayList<String> membersId;
     public Integer maxPeople;
     // Format ISO 8601
     public String startDate;
     public String endDate;
     public Boolean isPrivate;
-    public ArrayList<String> membersId;
+
 
     public MeetingResponse(Meeting meeting) {
         this.id = meeting.getId();

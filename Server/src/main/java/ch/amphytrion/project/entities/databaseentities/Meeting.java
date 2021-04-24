@@ -25,12 +25,13 @@ public class Meeting {
     private String chatID;
     private ArrayList<Tag> tags;
     private Integer nbPeople;
+    private ArrayList<String> membersID;
     private String start;
     private String end;
     private Boolean isPrivate;
 
     @Autowired
-    public Meeting(String name, String description, String locationID, String ownerID, String chatID, ArrayList<Tag> tags, Integer nbPeople, String start, String end) {
+    public Meeting(String name, String description, String locationID, String ownerID, String chatID, ArrayList<Tag> tags, Integer nbPeople, String start, String end, boolean isPrivate) {
         this.name = name;
         this.description = description;
         this.locationID = locationID;
