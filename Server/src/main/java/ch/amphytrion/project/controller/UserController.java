@@ -29,7 +29,7 @@ public class UserController extends BaseController implements IGenericController
 
     // X
     @PostMapping("/signUpStudent")
-    public ResponseEntity<UserResponse> signUpStudent(@RequestBody Map<String, String> json) {
+    public ResponseEntity<UserResponse> signUpStudent(@RequestBody Map<String, String> json) throws CustomException {
         UserResponse newUser = userService.checkAndSignUp(json);
         if(newUser != null) {
             String token = JwtUtils.makeHeaderToken(newUser.username);
@@ -39,7 +39,7 @@ public class UserController extends BaseController implements IGenericController
         }
         else {
             //user already exists
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new CustomException("The user account already exists in the app", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
@@ -68,7 +68,8 @@ public class UserController extends BaseController implements IGenericController
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully reached userController"),
             @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
-            @ApiResponse(code = 403, message = "Access to this resource is forbidden")
+            @ApiResponse(code = 403, message = "Access to this resource is forbidden"),
+            @ApiResponse(code = 500, message = "The user account already exists in the app")
     })
     @GetMapping("/userController")
     private String testController() {

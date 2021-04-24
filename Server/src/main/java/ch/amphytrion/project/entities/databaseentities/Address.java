@@ -17,13 +17,11 @@ public class Address {
     private String streetNb;
     private City city;
     private Host host;
-    private Location location;
 
-    public Address(String street, String streetNb, City city, Host host, Location location) {
+    public Address(String street, String streetNb, City city, Host host) {
         this.street = street;
         this.streetNb = streetNb;
         this.city = city;
         this.host = host;
-        this.location = location;
     }
 }
