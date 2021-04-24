@@ -15,12 +15,10 @@ import java.util.ArrayList;
 public class City {
     @Id
     private String id;
-    private ArrayList<Address> adresses;
     private String name;
     private Integer zip;
 
-    public City(ArrayList<Address> adresses, String name, Integer zip) {
-        this.adresses = adresses;
+    public City(String name, Integer zip) {
         this.name = name;
         this.zip = zip;
     }

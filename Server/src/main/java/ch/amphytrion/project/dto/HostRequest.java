@@ -14,9 +14,11 @@ public class HostRequest implements InterfaceDTO {
     public ArrayList<Tag> tags;
 
     public HostRequest(Host host) {
+        this.id = host.getId();
         this.name = host.getUsername();
         this.address = host.getAddress();
         this.description = host.getDescription();
         this.tags = host.getTags();
+
     }
 }

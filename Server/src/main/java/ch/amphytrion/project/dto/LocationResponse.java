@@ -1,5 +1,6 @@
 package ch.amphytrion.project.dto;
 
+import ch.amphytrion.project.entities.databaseentities.Location;
 import ch.amphytrion.project.entities.databaseentities.OpeningHour;
 import ch.amphytrion.project.entities.databaseentities.Tag;
 import lombok.AllArgsConstructor;
@@ -20,4 +21,15 @@ public class LocationResponse implements InterfaceDTO {
     public String hostName;
     public ArrayList<Tag> tags;
     public ArrayList<OpeningHour> openingHours;
+
+    public LocationResponse(Location location) {
+        this.id = location.getId();
+        this.name = location.getName();
+        this.description = location.getDescription();
+        this.nbPeople = location.getNbPeople();
+        this.hostId = location.getHostId();
+        this.hostName = location.getHostName();
+        this.tags = location.getTags();
+        this.openingHours = location.getOpeningHours();
+    }
 }
