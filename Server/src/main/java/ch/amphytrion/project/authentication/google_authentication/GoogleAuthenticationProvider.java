@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 @Component

@@ -43,7 +43,6 @@ public class HostController extends BaseController implements IGenericController
         }
     }
 
-    @Override
     @GetMapping("/host/{id}")
     public ResponseEntity getById(String id) {
         try {

@@ -41,7 +41,6 @@ public class TagController extends BaseController implements IGenericController<
         }
     }
 
-    @Override
     @GetMapping("/tag/{id}")
     public ResponseEntity<Tag> getById(String id) {
         try {

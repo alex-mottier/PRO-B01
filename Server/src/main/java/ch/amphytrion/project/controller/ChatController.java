@@ -1,7 +1,6 @@
 package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.entities.databaseentities.Chat;
-import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.entities.databaseentities.Message;
 import ch.amphytrion.project.entities.databaseentities.Student;
 import ch.amphytrion.project.services.ChatService;
@@ -9,14 +8,12 @@ import ch.amphytrion.project.services.MessageService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.apache.commons.collections4.iterators.ArrayListIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class ChatController extends BaseController implements IGenericController<Chat> {
@@ -55,7 +52,6 @@ public class ChatController extends BaseController implements IGenericController
     }
 
     //X
-    @Override
     @GetMapping("/chat/{chatId}")
     public ResponseEntity<Chat> getById(@PathVariable String chatId) {
         try {

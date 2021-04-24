@@ -1,28 +1,20 @@
 package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.authentication.SecurityConstants;
-import ch.amphytrion.project.authentication.google_authentication.GoogleTokenValider;
 import ch.amphytrion.project.authentication.utils.JwtUtils;
+import ch.amphytrion.project.dto.UserResponse;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.UserService;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -37,47 +29,36 @@ public class UserController extends BaseController implements IGenericController
 
     // X
     @PostMapping("/signUpStudent")
-    public ResponseEntity<User> signUpStudent(@RequestBody Map<String, String> json) {
-        String userName = json.get("username");
-        String tokenInput = json.get("tokenID");
-
-        User newUser = null;
-        if (tokenInput.equals("testToken")) {
-            newUser = new User(null, "mock-google-id", userName);
-        } else {
-            GoogleIdToken tokenID = GoogleTokenValider.validateToken(tokenInput);
-            if (tokenID != null) {
-                GoogleIdToken.Payload payload = tokenID.getPayload();
-                String userId = payload.get("sub").toString();
-                newUser = new User(null, userId, userName);
-            }
+    public ResponseEntity<UserResponse> signUpStudent(@RequestBody Map<String, String> json) {
+        UserResponse newUser = userService.checkAndSignUp(json);
+        if(newUser != null) {
+            String token = JwtUtils.makeHeaderToken(newUser.username);
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+            return ResponseEntity.ok().headers(responseHeaders).body(newUser);
         }
-        if (newUser != null){
-                userService.save(newUser);
-                String token = JwtUtils.makeHeaderToken(newUser.getUsername());
-                HttpHeaders responseHeaders = new HttpHeaders();
-                responseHeaders.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
-                return ResponseEntity.ok().headers(responseHeaders).body(newUser);
-        }else {
+        else {
+            //user already exists
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
     // X
+    @SneakyThrows
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody Map<String, String> json) {
+    public ResponseEntity<UserResponse> login(@RequestBody Map<String, String> json) {
             User current = getCurrentUser();
             if (current != null) {
-                return ResponseEntity.ok().body(current);
+                return ResponseEntity.ok().body(new UserResponse(current));
             } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                throw new CustomException("Login failed", HttpStatus.UNAUTHORIZED, null);
             }
     }
 
     @GetMapping("/user/{username}")
-    public ResponseEntity<User> getById(@PathVariable String username) {
+    public ResponseEntity<UserResponse> getById(@PathVariable String username) {
         try {
-            return ResponseEntity.ok(userService.findByUsername(username));
+            return ResponseEntity.ok(new UserResponse(userService.findByUsername(username)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

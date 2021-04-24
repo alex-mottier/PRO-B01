@@ -1,9 +1,12 @@
 package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.dto.DatesFilterDTO;
-import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.dto.FilterRequest;
-import ch.amphytrion.project.repositories.ChatRepository;
+import ch.amphytrion.project.dto.MeetingResponse;
+import ch.amphytrion.project.entities.databaseentities.Chat;
+import ch.amphytrion.project.entities.databaseentities.Meeting;
+import ch.amphytrion.project.entities.databaseentities.Student;
+import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.ChatService;
 import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.StudentService;
@@ -16,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -81,21 +83,11 @@ public class MeetingController extends BaseController implements IGenericControl
 
     //X
     @PostMapping("/meeting/join/{meetingID}")
-    public ResponseEntity<Meeting> joinMeeting(@PathVariable String meetingID) {
+    public ResponseEntity<MeetingResponse> joinMeeting(@PathVariable String meetingID) {
         try {
-
-            Student student = new Student(null, null, null); // TODO Use current user
-            Meeting meeting = meetingService.findById(meetingID);
-            if (student.getMeetingsParticipations() != null) {
-                student.getMeetingsParticipations().add(meeting);
-            } else {
-                ArrayList<Meeting> meetings = new ArrayList<>();
-                meetings.add(meeting);
-                student.setMeetingsParticipations(meetings);
-            }
-                return ResponseEntity.ok(meeting);
-
-        } catch (Exception e) {
+            return ResponseEntity.ok(meetingService.addMemberToMeeting(meetingID));
+        }
+        catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -161,7 +153,6 @@ public class MeetingController extends BaseController implements IGenericControl
     }
 
     //X
-    @Override
     @GetMapping("/meeting/{meetingID}")
     public ResponseEntity<Meeting> getById(@PathVariable String meetingID) {
         try {

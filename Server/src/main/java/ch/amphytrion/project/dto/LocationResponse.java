@@ -1,26 +1,23 @@
 package ch.amphytrion.project.dto;
 
-import ch.amphytrion.project.entities.databaseentities.Host;
 import ch.amphytrion.project.entities.databaseentities.OpeningHour;
 import ch.amphytrion.project.entities.databaseentities.Tag;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 
 @AllArgsConstructor
-@Data
 @Document
-public class LocationResponse {
+public class LocationResponse implements InterfaceDTO {
     @Id
-    private String id;
-    private String name;
-    private String description;
-    private Integer nbPeople;
-    private String hostId;
-    private String hostName;
-    private ArrayList<Tag> tags;
-    private ArrayList<OpeningHour> openingHours;
+    public String id;
+    public String name;
+    public String description;
+    public Integer nbPeople;
+    public String hostId;
+    public String hostName;
+    public ArrayList<Tag> tags;
+    public ArrayList<OpeningHour> openingHours;
 }

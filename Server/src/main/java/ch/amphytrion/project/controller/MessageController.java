@@ -40,7 +40,6 @@ public class MessageController extends BaseController implements IGenericControl
         }
     }
 
-    @Override
     @GetMapping("/message/{id}")
     public ResponseEntity<Message> getById(String id) {
         try {

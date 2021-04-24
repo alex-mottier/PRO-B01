@@ -42,7 +42,6 @@ public class CityController extends BaseController implements IGenericController
         }
     }
 
-    @Override
     @GetMapping("/city/{id}")
     public ResponseEntity getById(String id) {
         try {

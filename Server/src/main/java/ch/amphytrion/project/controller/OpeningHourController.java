@@ -40,7 +40,6 @@ public class OpeningHourController extends BaseController implements IGenericCon
         }
     }
 
-    @Override
     @GetMapping("/openinghour/{id}")
     public ResponseEntity<OpeningHour> getById(String id) {
         try {

@@ -69,7 +69,6 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
     //X
-    @Override
     @GetMapping("/location/{id}")
     public ResponseEntity<Location> getById(String id) {
         try {

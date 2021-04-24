@@ -16,7 +16,7 @@ public class GoogleTokenValider {
     @Value("${google.clientID}")
     private static String ClIENT_ID;
 
-    public static GoogleIdToken  validateToken(String tokenID){
+    public static GoogleIdToken validateToken(String tokenID){
         try {
             JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
             GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), JSON_FACTORY)

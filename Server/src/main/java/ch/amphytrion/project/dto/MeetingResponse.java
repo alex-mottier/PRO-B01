@@ -2,27 +2,39 @@ package ch.amphytrion.project.dto;
 
 import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.entities.databaseentities.Tag;
-import lombok.Data;
 import org.springframework.data.annotation.Id;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-@Data
-public class MeetingResponse{
+public class MeetingResponse implements InterfaceDTO {
     @Id
-    private String id;
-    private String name;
-    private String description;
-    private String locationID;
-    private String locationName;
-    private String ownerID;
-    private String chatID;
-    private ArrayList<Tag> tags;
-    private Integer nbPeople;
-    private Integer maxPeople;
+    public String id;
+    public String name;
+    public String description;
+    public String locationID;
+    public String locationName;
+    public String ownerID;
+    public String chatID;
+    public ArrayList<Tag> tags;
+    public Integer nbPeople;
+    public Integer maxPeople;
     // Format ISO 8601
-    private String startDate;
-    private String endDate;
-    private Boolean isPrivate;
+    public String startDate;
+    public String endDate;
+    public Boolean isPrivate;
+    public ArrayList<String> membersId;
+
+    public MeetingResponse(Meeting meeting) {
+        this.id = meeting.getId();
+        this.name = meeting.getName();
+        this.description = meeting.getDescription();
+        this.locationID = meeting.getLocationID();
+        this.ownerID = meeting.getOwnerID();
+        this.chatID = meeting.getChatID();
+        this.tags = meeting.getTags();
+        this.nbPeople = meeting.getNbPeople();
+        this.startDate = meeting.getStart();
+        this.endDate = meeting.getEnd();
+        this.isPrivate = meeting.getIsPrivate();
+    }
 }

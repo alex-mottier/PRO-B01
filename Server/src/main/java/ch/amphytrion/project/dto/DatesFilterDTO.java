@@ -1,6 +1,6 @@
 package ch.amphytrion.project.dto;
 
-public class DatesFilterDTO {
-    private String startDate;
-    private String endDate;
+public class DatesFilterDTO implements InterfaceDTO {
+    public String startDate;
+    public String endDate;
 }
