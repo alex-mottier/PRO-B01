@@ -82,6 +82,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+		<dependency>
+			<groupId>me.jvt.multireadservlet</groupId>
+			<artifactId>multiple-read-servlet</artifactId>
+			<version>4.0.1</version>
+        </dependency>
 
 
     </dependencies>
