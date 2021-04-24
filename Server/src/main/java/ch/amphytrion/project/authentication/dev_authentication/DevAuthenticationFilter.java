@@ -1,29 +1,24 @@
 package ch.amphytrion.project.authentication.dev_authentication;
 
-import ch.amphytrion.project.authentication.google_authentication.GoogleAuthenticationToken;
 import ch.amphytrion.project.authentication.SecurityConstants;
 import ch.amphytrion.project.authentication.utils.AbstractMultiReadAuthenticationProcessingFilter;
+import ch.amphytrion.project.authentication.utils.JwtUtils;
 import ch.amphytrion.project.dto.AuthenticationDto;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.UserService;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.stream.Collectors;
 
 // verify user credential and asssign token
@@ -43,6 +38,9 @@ public class DevAuthenticationFilter extends AbstractMultiReadAuthenticationProc
 
     @Override
     protected boolean requiresAuthentication(HttpServletRequest req, HttpServletResponse res){
+        if (res.getHeader(SecurityConstants.HEADER_STRING) != null) {
+            return false;
+        }
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(req.getInputStream()));
             String requestData = reader.lines().collect(Collectors.joining());
@@ -83,16 +81,9 @@ public class DevAuthenticationFilter extends AbstractMultiReadAuthenticationProc
     protected void successfulAuthentication(HttpServletRequest req,
                                             HttpServletResponse res,
                                             FilterChain chain,
-                                            Authentication auth) throws IOException {
-        String token = JWT.create()
-                .withSubject(((User) auth.getPrincipal()).getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
-
-        res.addHeader(SecurityConstants.HEADER_STRING, token);
-        User user = (User) auth.getPrincipal();
-        Writer writer = res.getWriter();
-        writer.write(new Gson().toJson(user));
-        writer.flush();
+                                            Authentication auth) throws IOException, ServletException {
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        JwtUtils.AddTokenWithSuccessfullAuthentication(req, res, chain, auth);
+        chain.doFilter(req, res);
     }
 }

@@ -2,6 +2,7 @@ package ch.amphytrion.project.authentication.google_authentication;
 
 import ch.amphytrion.project.authentication.SecurityConstants;
 import ch.amphytrion.project.authentication.utils.AbstractMultiReadAuthenticationProcessingFilter;
+import ch.amphytrion.project.authentication.utils.JwtUtils;
 import ch.amphytrion.project.dto.AuthenticationDto;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.UserService;
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 import javax.servlet.FilterChain;
@@ -47,6 +49,9 @@ public class GoogleAuthenticationFilter extends AbstractMultiReadAuthenticationP
 
     @Override
     protected boolean requiresAuthentication(HttpServletRequest req, HttpServletResponse res){
+        if (res.getHeader(SecurityConstants.HEADER_STRING) != null) {
+            return false;
+        }
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(req.getInputStream()));
             String requestData = reader.lines().collect(Collectors.joining());
@@ -74,5 +79,14 @@ public class GoogleAuthenticationFilter extends AbstractMultiReadAuthenticationP
         }catch (IOException  e ) {
             throw new AuthenticationCredentialsNotFoundException("Credentials not found");
         }
+    }
+
+    @Override
+    protected void successfulAuthentication(HttpServletRequest req,
+                                            HttpServletResponse res,
+                                            FilterChain chain,
+                                            Authentication auth) throws IOException {
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        JwtUtils.AddTokenWithSuccessfullAuthentication(req, res, chain, auth);
     }
 }
