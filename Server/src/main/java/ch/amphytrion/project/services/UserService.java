@@ -17,6 +17,9 @@ public class UserService implements IGenericService<User>{
     private UserRepository userRepository;
 
     @Autowired
+    private GoogleTokenValider valider;
+
+    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -83,7 +86,8 @@ public class UserService implements IGenericService<User>{
             if (tokenInput.equals(DEV_TOKEN)) {
                 newUser = new User(null, "mock-google-id" + userName, userName);
             } else {
-                GoogleIdToken tokenID = GoogleTokenValider.validateToken(tokenInput);
+
+                GoogleIdToken tokenID = valider.validateToken(tokenInput);
                 if (tokenID != null) {
                     GoogleIdToken.Payload payload = tokenID.getPayload();
                     String userId = payload.get("sub").toString();
