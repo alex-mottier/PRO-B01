@@ -1,10 +1,12 @@
 package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.authentication.SecurityConstants;
+import ch.amphytrion.project.authentication.google_authentication.GoogleTokenValider;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.UserService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -16,6 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -35,23 +39,22 @@ public class UserController extends BaseController implements IGenericController
     public ResponseEntity<User> signUpStudent(@RequestBody Map<String, String> json) {
         String userName = json.get("username");
         String tokenInput = json.get("tokenID");
-//        try {
-//            GoogleIdToken tokenID = GoogleTokenValider.validateToken(tokenInput);
-//            if (tokenID != null) {
-//                GoogleIdToken.Payload payload = tokenID.getPayload();
-//                String userId = payload.get("sub").toString();
-//                User newUser = new User(null, userId, userName);
-//                userService.save(newUser);
-//                String token = JWT.create()
-//                        .withSubject(newUser.getUsername())
-//                        .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-//                        .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
-//                HttpHeaders responseHeaders = new HttpHeaders();
-//                responseHeaders.set(SecurityConstants.HEADER_STRING, token);
-//                return ResponseEntity.ok().headers(responseHeaders).body(newUser);
-//            } else
-                if (tokenInput.equals("testToken")) {
-                User newUser = new User(null, "mock-google-id", userName);
+        if (tokenInput.equals("testToken")) {
+            User newUser = new User(null, "mock-google-id", userName);
+            userService.save(newUser);
+            String token = JWT.create()
+                    .withSubject(newUser.getUsername())
+                    .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+                    .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.set(SecurityConstants.HEADER_STRING, token);
+            return ResponseEntity.ok().headers(responseHeaders).body(newUser);
+        } else {
+            GoogleIdToken tokenID = GoogleTokenValider.validateToken(tokenInput);
+            if (tokenID != null) {
+                GoogleIdToken.Payload payload = tokenID.getPayload();
+                String userId = payload.get("sub").toString();
+                User newUser = new User(null, userId, userName);
                 userService.save(newUser);
                 String token = JWT.create()
                         .withSubject(newUser.getUsername())
@@ -60,12 +63,10 @@ public class UserController extends BaseController implements IGenericController
                 HttpHeaders responseHeaders = new HttpHeaders();
                 responseHeaders.set(SecurityConstants.HEADER_STRING, token);
                 return ResponseEntity.ok().headers(responseHeaders).body(newUser);
-            } else {
+            }else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
-//        } catch (IOException | GeneralSecurityException e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
+        }
     }
 
     // X
