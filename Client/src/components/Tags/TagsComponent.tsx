@@ -16,6 +16,7 @@ import {
   Modal,
   Button,
   Title,
+  useTheme,
 } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
 import { colors } from '../../app/context/Theme';
@@ -79,7 +80,10 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
         <Modal
           visible={modalVisible}
           onDismiss={() => setModalVisible(false)}
-          contentContainerStyle={styles.container}>
+          contentContainerStyle={[
+            styles.container,
+            { backgroundColor: useTheme().colors.surface },
+          ]}>
           <View style={styles.modal}>
             <View style={styles.close}>
               <IconButton

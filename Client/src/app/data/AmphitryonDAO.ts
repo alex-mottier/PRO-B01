@@ -55,6 +55,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
+        // Alert.alert("Une erreur s'est produit", error.message);
         Alert.alert("Une erreur s'est produite", "Erreur lors de la création de l 'utilisateur");
         return null;
       });
@@ -75,6 +76,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
+        // Alert.alert("Une erreur s'est produit", error.message);
         Alert.alert(
           "Une erreur s'est produite",
           'Erreur lors de la récupération des informations de votre compte',
@@ -99,6 +101,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
+        // Alert.alert("Une erreur s'est produit", error.message);
         Alert.alert("Une erreur s'est produite", 'Erreur lors de la création de la réunion');
         return null;
       });
@@ -119,6 +122,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
+        // Alert.alert("Une erreur s'est produit", error.message);
         Alert.alert("Une erreur s'est produite", 'Erreur lors de la mise à jour de la réunion');
         return null;
       });
@@ -138,6 +142,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
+        // Alert.alert("Une erreur s'est produit", error.message);
         Alert.alert("Une erreur s'est produite", 'Erreur lors de la suppression la réunion');
         return null;
       });
@@ -156,7 +161,10 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors du chargement de vos réunions');
+        Alert.alert(
+          "Une erreur s'est produite",
+          "Erreur lors du chargement des meetings de l'utilisateur",
+        );
         return null;
       });
   }

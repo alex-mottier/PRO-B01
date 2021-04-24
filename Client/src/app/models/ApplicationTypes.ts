@@ -63,6 +63,7 @@ export type Meeting = {
   chatId: string;
   tags: Tag[];
   nbPeople: number;
+  membersId: string[];
   maxPeople: number;
   startDate: string;
   endDate: string;
@@ -81,5 +82,6 @@ export type Tag = {
 };
 
 export type User = {
+  id: string;
   username: string;
 };

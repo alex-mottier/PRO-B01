@@ -30,6 +30,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: '100%',
   },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 15,
+  },
   chip: {
     width: 'auto',
     margin: 5,

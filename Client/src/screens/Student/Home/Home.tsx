@@ -7,7 +7,7 @@
 
 import * as React from 'react';
 import { View } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import { IconButton, useTheme } from 'react-native-paper';
 import styles from './styles';
 import { Agenda } from 'react-native-calendars';
 import Globals from '../../../app/context/Globals';
@@ -26,6 +26,7 @@ LocaleConfig.defaultLocale = 'fr';
 const Home: React.FC = () => {
   /* Usage of MobX global state store */
   const store = React.useContext(GlobalStore);
+  const paperTheme = useTheme();
 
   return (
     <Agenda
@@ -45,7 +46,7 @@ const Home: React.FC = () => {
             <View style={styles.meeting}>
               <MeetingComponent
                 meeting={item}
-                isOwner={false}
+                isSearchView={false}
                 isChatable={true}
                 isInCalendar={true}
               />
@@ -68,13 +69,17 @@ const Home: React.FC = () => {
         );
       }}
       rowHasChanged={(r1: Meeting, r2: Meeting) => {
-        return r1.id !== r2.id;
+        return r1 !== r2;
       }}
       theme={{
+        calendarBackground: paperTheme.colors.surface,
+        backgroundColor: paperTheme.colors.surface,
         agendaDayTextColor: Globals.COLORS.TEXT,
         agendaDayNumColor: Globals.COLORS.TEXT,
         agendaTodayColor: Globals.COLORS.PRIMARY,
         agendaKnobColor: Globals.COLORS.PRIMARY,
+        dotColor: Globals.COLORS.BLUE,
+        selectedDayBackgroundColor: Globals.COLORS.BLUE,
       }}
     />
   );

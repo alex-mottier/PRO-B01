@@ -7,7 +7,16 @@
 
 import * as React from 'react';
 import { Alert, Platform, SafeAreaView, ScrollView, View } from 'react-native';
-import { TextInput, IconButton, Button, Text, Card, Provider, FAB } from 'react-native-paper';
+import {
+  TextInput,
+  IconButton,
+  Button,
+  Text,
+  Card,
+  Provider,
+  FAB,
+  useTheme,
+} from 'react-native-paper';
 import styles from './styles';
 import { Location, Meeting, Tag } from '../../../app/models/ApplicationTypes';
 import Globals from '../../../app/context/Globals';
@@ -117,6 +126,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
     if (!isValid() || !location) return;
 
     // Everything is well filled => meeting can be udpated
+    setIsLoading(true);
     void store
       .updateMeeting({
         id: meeting ? meeting.id : '',
@@ -126,6 +136,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
         locationID: location?.id,
         locationName: location?.name,
         nbPeople: meeting ? meeting.nbPeople : 1,
+        membersId: [],
         maxPeople: location.nbPeople,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
@@ -134,24 +145,25 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
         isPrivate: isPrivateOn,
       })
       .then(() => {
+        store.regenerateItems();
         Alert.alert(
           'Réunion mise à jour',
           'La réunion que vous avez soumise a bien été mise à jour',
         );
+        navigation.goBack();
+        setIsLoading(false);
       });
-
-    navigation.goBack();
   };
 
   /**
    * Action when submit button is pressed
    */
   const handleSubmit = () => {
-    setIsLoading(true);
     // Validation of form entries
     if (!isValid() || !location) return;
 
     // Everything is well filled => meeting can be created
+    setIsLoading(true);
     void store
       .createMeeting({
         id: '',
@@ -164,12 +176,12 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
         maxPeople: location.nbPeople,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
+        membersId: [],
         ownerID: '',
         chatId: '',
         isPrivate: isPrivateOn,
       })
       .then(() => {
-        store.generateItems(new Date());
         setIsLoading(false);
       });
 
@@ -239,7 +251,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
   }, []);
 
   return (
-    <Provider>
+    <Provider theme={useTheme()}>
       <SafeAreaView>
         <ScrollView>
           {isLoading && (

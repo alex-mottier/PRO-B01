@@ -7,7 +7,7 @@
 
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
-import { IconButton, TextInput, Text, Portal, Modal, Title } from 'react-native-paper';
+import { IconButton, TextInput, Text, Portal, Modal, Title, useTheme } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
 import { Location } from '../../app/models/ApplicationTypes';
 import GlobalStore from '../../app/stores/GlobalStore';
@@ -104,7 +104,10 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
         <Modal
           visible={modalVisible}
           onDismiss={() => setModalVisible(false)}
-          contentContainerStyle={styles.container}>
+          contentContainerStyle={[
+            styles.container,
+            { backgroundColor: useTheme().colors.surface },
+          ]}>
           <View style={styles.modal}>
             <View style={styles.close}>
               <IconButton

@@ -69,7 +69,7 @@ const Welcome: React.FC = () => {
               color={Globals.COLORS.GRAY}
               onPress={() => {
                 store.setIsLoggedIn(true);
-                store.setAuthenticatedUser({ username: 'Développeur' });
+                store.setAuthenticatedUser({ id: '1', username: 'Développeur' });
                 void store.loadUserData();
               }}
               text={'Développement'}

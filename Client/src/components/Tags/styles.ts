@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     margin: 20,
-    backgroundColor: 'white',
   },
   field: {
     width: '80%',

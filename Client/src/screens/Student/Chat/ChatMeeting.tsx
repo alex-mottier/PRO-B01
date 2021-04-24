@@ -69,7 +69,7 @@ const ChatMeeting: React.FC = () => {
               <View style={styles.meeting}>
                 <MeetingComponent
                   meeting={meeting}
-                  isOwner={false}
+                  isSearchView={false}
                   isChatable={false}
                   isInCalendar={false}
                 />

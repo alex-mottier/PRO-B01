@@ -50,7 +50,7 @@ const Profile: React.FC = () => {
               <MeetingComponent
                 key={meeting.id}
                 meeting={meeting}
-                isOwner={true}
+                isSearchView={false}
                 isChatable={true}
                 isInCalendar={false}
               />

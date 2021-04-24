@@ -1,3 +1,0 @@
-Passer les id du chat, du lieu et du host lors de la navigation
-Bug des date / time picker
-Couleur du dark theme

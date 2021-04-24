@@ -164,7 +164,7 @@ const Search: React.FC = () => {
                 <MeetingComponent
                   key={meeting.id}
                   meeting={meeting}
-                  isOwner={false}
+                  isSearchView={true}
                   isChatable={true}
                   isInCalendar={false}
                 />

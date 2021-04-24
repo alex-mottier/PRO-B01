@@ -19,20 +19,20 @@ import { useNavigation } from '@react-navigation/core';
 import GlobalStore from '../../app/stores/GlobalStore';
 import { colors } from '../../app/context/Theme';
 import Clipboard from 'expo-clipboard';
+import LoadingComponent from '../Loading/LoadingComponent';
 
 /**
  * Component props
  */
 interface IProps {
   meeting: Meeting;
-  isOwner: boolean;
   isChatable: boolean;
   isInCalendar: boolean;
+  isSearchView: boolean;
 }
 
 const MeetingComponent: React.FC<IProps> = ({
   meeting,
-  isOwner,
   isChatable = true,
   isInCalendar = false,
 }) => {
@@ -44,9 +44,15 @@ const MeetingComponent: React.FC<IProps> = ({
 
   /* Component states */
   const [isReduced, setIsReduced] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   /* Local variables */
   let nbColors = 0;
+  const isOwner = meeting.ownerID === store.getAuthenticatedUser()?.id;
+  const isMemberOfMeeting =
+    meeting.membersId.findIndex((current: string) => {
+      return store.getAuthenticatedUser()?.id === current;
+    }) !== -1;
 
   /**
    * Deploy or reduce meeting informations
@@ -62,6 +68,26 @@ const MeetingComponent: React.FC<IProps> = ({
     store.setMeetingToUpdate(meeting);
     store.setLocationToLoad(meeting.locationID);
     navigation.navigate('Edit');
+  };
+
+  /**
+   * Join meeting action
+   */
+  const handleJoinMeeting = () => {
+    setIsLoading(true);
+    void store.joinMeeting(meeting).then(() => {
+      setIsLoading(false);
+    });
+  };
+
+  /**
+   * Leave meeting action
+   */
+  const handleLeaveMeeting = () => {
+    setIsLoading(true);
+    void store.leaveMeeting(meeting).then(() => {
+      setIsLoading(false);
+    });
   };
 
   /**
@@ -105,30 +131,37 @@ const MeetingComponent: React.FC<IProps> = ({
 
   return (
     <Card style={styles.card} elevation={10}>
-      <TouchableOpacity onPress={handleReduceOrDeploy}>
-        <Card.Title
-          title={meeting.name}
-          subtitle={isReduced ? meeting.description : ''}
-          left={() => <Avatar.Image size={40} source={require('../../../assets/HEIG-VD.png')} />}
-          right={() =>
-            !isInCalendar && (
-              <View>
-                <View style={styles.nbPeople}>
-                  <Text style={styles.gray}>
-                    {meeting.nbPeople}/{meeting.maxPeople}
-                  </Text>
-                  <MaterialCommunityIcons
-                    name={Globals.ICONS.PROFILE}
-                    color={Globals.COLORS.GRAY}
-                    size={Globals.SIZES.ICON_BUTTON}
-                  />
+      {isLoading && (
+        <View style={styles.container}>
+          <LoadingComponent />
+        </View>
+      )}
+      {!isLoading && (
+        <TouchableOpacity onPress={handleReduceOrDeploy}>
+          <Card.Title
+            title={meeting.name}
+            subtitle={isReduced ? meeting.description : ''}
+            left={() => <Avatar.Image size={40} source={require('../../../assets/HEIG-VD.png')} />}
+            right={() =>
+              !isInCalendar && (
+                <View>
+                  <View style={styles.nbPeople}>
+                    <Text style={styles.gray}>
+                      {meeting.nbPeople}/{meeting.maxPeople}
+                    </Text>
+                    <MaterialCommunityIcons
+                      name={Globals.ICONS.PROFILE}
+                      color={Globals.COLORS.GRAY}
+                      size={Globals.SIZES.ICON_BUTTON}
+                    />
+                  </View>
                 </View>
-              </View>
-            )
-          }
-        />
-      </TouchableOpacity>
-      {!isReduced && (
+              )
+            }
+          />
+        </TouchableOpacity>
+      )}
+      {!isLoading && !isReduced && (
         <Card.Content>
           <View style={styles.chips}>
             {meeting.tags.map((tag: Tag) => {
@@ -196,7 +229,7 @@ const MeetingComponent: React.FC<IProps> = ({
                 <Text style={[styles.gray, styles.buttonText]}>Discuter</Text>
               </View>
             )}
-            {isOwner && !isInCalendar && (
+            {isOwner && (
               <View>
                 <IconButton
                   icon={Globals.ICONS.COPY}
@@ -207,12 +240,12 @@ const MeetingComponent: React.FC<IProps> = ({
                 <Text style={[styles.gray, styles.buttonText]}>Copier ID</Text>
               </View>
             )}
-            {!isOwner && !isInCalendar && (
+            {!isMemberOfMeeting && !isOwner && !isInCalendar && (
               <View>
                 <IconButton
                   icon={Globals.ICONS.JOIN}
                   size={30}
-                  onPress={() => console.log('Pressed')}
+                  onPress={handleJoinMeeting}
                   color={Globals.COLORS.GREEN}
                 />
                 <Text style={[styles.gray, styles.buttonText]}>Rejoindre</Text>
@@ -240,12 +273,12 @@ const MeetingComponent: React.FC<IProps> = ({
                 <Text style={[styles.gray, styles.buttonText]}>Supprimer</Text>
               </View>
             )}
-            {!isOwner && (
+            {isMemberOfMeeting && !isOwner && (
               <View>
                 <IconButton
                   icon={Globals.ICONS.LEAVE}
                   size={30}
-                  onPress={() => console.log('Pressed')}
+                  onPress={handleLeaveMeeting}
                   color={Globals.COLORS.PINK}
                 />
                 <Text style={[styles.gray, styles.buttonText]}>Quitter</Text>
