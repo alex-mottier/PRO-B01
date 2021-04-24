@@ -4,6 +4,7 @@ import ch.amphytrion.project.authentication.dev_authentication.DevAuthentication
 import ch.amphytrion.project.authentication.dev_authentication.DevAuthenticationProvider;
 import ch.amphytrion.project.authentication.google_authentication.GoogleAuthenticationFilter;
 import ch.amphytrion.project.authentication.google_authentication.GoogleAuthenticationProvider;
+import ch.amphytrion.project.authentication.jwt_authentication.JWTAuthorizationFilter;
 import ch.amphytrion.project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -52,13 +53,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 )
                 // Filter for authentication by GoogleOpenID
                 .addFilterBefore(
-                        new GoogleAuthenticationFilter(authenticationManager(), userAuthService.getUserService()),
+                        new GoogleAuthenticationFilter(authenticationManager()),
                         BasicAuthenticationFilter.class
                 )
                 // Filter for authentication by JWT
 //                .addFilter(new JWTAuthenticationFilter(authenticationManager(), userAuthService.getUserService()))
 //                // Fitler for authorization by JWT
-//                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

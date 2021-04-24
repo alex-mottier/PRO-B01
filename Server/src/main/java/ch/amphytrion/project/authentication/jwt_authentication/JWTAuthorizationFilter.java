@@ -34,14 +34,14 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+        JWTAuthorizationToken authentication = getAuthentication(req);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(req, res);
     }
 
     // Reads the JWT from the Authorization header, and then uses JWT to validate the token
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
+    private JWTAuthorizationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(SecurityConstants.HEADER_STRING);
 
         if (token != null) {
@@ -53,7 +53,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
             if (username != null) {
                 // new arraylist means authorities
-                return new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
+                return new JWTAuthorizationToken(username, null, new ArrayList<>());
             }
 
             return null;

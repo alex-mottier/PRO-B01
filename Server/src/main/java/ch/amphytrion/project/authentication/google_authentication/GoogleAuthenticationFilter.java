@@ -37,14 +37,12 @@ import java.util.stream.Collectors;
 public class GoogleAuthenticationFilter extends AbstractMultiReadAuthenticationProcessingFilter {
 
     private AuthenticationManager authenticationManager;
-    private final UserService userService;
     private static final String TEST_TOKEN = "tokenTest";
 
     @Autowired
-    public GoogleAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService) {
+    public GoogleAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(SecurityConstants.LOGIN_URL, authenticationManager);
         this.authenticationManager = authenticationManager;
-        this.userService = userService;
     }
 
     @Override
