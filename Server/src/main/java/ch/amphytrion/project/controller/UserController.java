@@ -2,6 +2,7 @@ package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.authentication.SecurityConstants;
 import ch.amphytrion.project.authentication.google_authentication.GoogleTokenValider;
+import ch.amphytrion.project.authentication.utils.JwtUtils;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.UserService;
 import com.auth0.jwt.JWT;
@@ -53,13 +54,9 @@ public class UserController extends BaseController implements IGenericController
         }
         if (newUser != null){
                 userService.save(newUser);
-                String token = JWT.create()
-                        .withSubject(newUser.getUsername())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                        .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
-
+                String token = JwtUtils.makeHeaderToken(newUser.getUsername());
                 HttpHeaders responseHeaders = new HttpHeaders();
-                responseHeaders.set(SecurityConstants.HEADER_STRING, token);
+                responseHeaders.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
                 return ResponseEntity.ok().headers(responseHeaders).body(newUser);
         }else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

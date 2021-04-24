@@ -28,12 +28,16 @@ public class JwtUtils {
     public static void AddTokenWithSuccessfullAuthentication(HttpServletRequest req,
                                                              HttpServletResponse response,
                                                              FilterChain chain,
-                                                             Authentication auth) throws IOException {
-        String token = JWT.create()
-                .withSubject(((User) auth.getPrincipal()).getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
+                                                             Authentication auth){
+        String token = makeHeaderToken(((User) auth.getPrincipal()).getUsername());
 
         response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+    }
+
+    public static String makeHeaderToken(String username){
+        return JWT.create()
+                .withSubject(username)
+                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+                .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
     }
 }
