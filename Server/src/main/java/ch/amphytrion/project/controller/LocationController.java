@@ -6,6 +6,7 @@ import ch.amphytrion.project.services.LocationService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,27 +23,30 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
     //X
+    @SneakyThrows
     @GetMapping("/locations")
     public ResponseEntity<List<Location>> getAll() {
         try {
             return ResponseEntity.ok(locationService.findAll());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("Are you lost?", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
     //X
+    @SneakyThrows
     @GetMapping("/locations/withDate")
     public ResponseEntity<List<Location>> getAllWithDate(@RequestBody DatesFilterDTO filters) {
         //TODO logique & model dto with startDate & endDate
         try {
             return ResponseEntity.ok(locationService.findAll());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("The question is not where but when", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
     //X
+    @SneakyThrows
     @PostMapping("/location")
     public ResponseEntity create(@RequestBody Location entity) {
         try {
@@ -52,10 +56,11 @@ public class LocationController extends BaseController implements IGenericContro
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        throw new CustomException("Romae non in die", HttpStatus.INTERNAL_SERVER_ERROR, null);
     }
 
     //X
+    @SneakyThrows
     @PatchMapping("/location")
     public ResponseEntity update(@RequestBody Location entity) {
         try {
@@ -65,16 +70,18 @@ public class LocationController extends BaseController implements IGenericContro
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        throw new CustomException("Yo dawg I heard you like updates so I made an update that needs an update so you can update while you update", HttpStatus.INTERNAL_SERVER_ERROR, null);
     }
 
     //X
+    @SneakyThrows
     @GetMapping("/location/{id}")
     public ResponseEntity<Location> getById(String id) {
         try {
             return ResponseEntity.ok(locationService.findById(id));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("We don't have magical places", HttpStatus.INTERNAL_SERVER_ERROR, null);
+
         }
     }
 

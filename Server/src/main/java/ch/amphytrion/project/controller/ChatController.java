@@ -8,6 +8,7 @@ import ch.amphytrion.project.services.MessageService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ public class ChatController extends BaseController implements IGenericController
     }
 
     //X
+    @SneakyThrows
     @PostMapping("/chat/createMessage/{chatId}")
     public ResponseEntity<Chat> createMessage(@PathVariable String chatId, @RequestBody Message message) {
         Student student = null; // TODO Use current user
@@ -46,18 +48,19 @@ public class ChatController extends BaseController implements IGenericController
                 return ResponseEntity.ok(chatService.save(chat));
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("Could not add message", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        throw new CustomException("Could not add message", HttpStatus.INTERNAL_SERVER_ERROR, null);
     }
 
     //X
+    @SneakyThrows
     @GetMapping("/chat/{chatId}")
     public ResponseEntity<Chat> getById(@PathVariable String chatId) {
         try {
             return ResponseEntity.ok(chatService.findById(chatId));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("Chat not found", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
