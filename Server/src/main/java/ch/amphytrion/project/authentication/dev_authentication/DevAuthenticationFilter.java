@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 public class DevAuthenticationFilter extends AbstractMultiReadAuthenticationProcessingFilter {
 
     private AuthenticationManager authenticationManager;
-    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login", "POST");
 
     private final UserService userService;
     private static final String TEST_TOKEN = "tokenTest";
@@ -73,11 +72,7 @@ public class DevAuthenticationFilter extends AbstractMultiReadAuthenticationProc
                                 TEST_TOKEN)
                 );
             }else {
-                return authenticationManager.authenticate(
-                        new DevAuthenticationToken(
-                                "",
-                                "")
-                );
+                throw new AuthenticationCredentialsNotFoundException("Credentials not found");
             }
         }catch (IOException e ) {
             throw new AuthenticationCredentialsNotFoundException("Credentials not found");
