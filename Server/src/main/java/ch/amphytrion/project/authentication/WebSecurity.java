@@ -46,7 +46,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                // Filter for authentication by GoogleOpenID
+//                // Filter for authentication with DevToken
                 .addFilterBefore(
                         new DevAuthenticationFilter(authenticationManager(), userAuthService.getUserService()),
                         BasicAuthenticationFilter.class

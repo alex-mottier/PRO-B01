@@ -20,8 +20,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -48,6 +50,9 @@ public class GoogleAuthenticationFilter extends AbstractMultiReadAuthenticationP
     @Override
     protected boolean requiresAuthentication(HttpServletRequest req, HttpServletResponse res){
         if (res.getHeader(SecurityConstants.HEADER_STRING) != null) {
+            return false;
+        }
+        if(new AntPathRequestMatcher(SecurityConstants.SIGN_UP_URL).matches(req)){
             return false;
         }
         try {
@@ -83,8 +88,9 @@ public class GoogleAuthenticationFilter extends AbstractMultiReadAuthenticationP
     protected void successfulAuthentication(HttpServletRequest req,
                                             HttpServletResponse res,
                                             FilterChain chain,
-                                            Authentication auth) throws IOException {
+                                            Authentication auth) throws IOException, ServletException {
         SecurityContextHolder.getContext().setAuthentication(auth);
         JwtUtils.AddTokenWithSuccessfullAuthentication(req, res, chain, auth);
+        chain.doFilter(req, res);
     }
 }
