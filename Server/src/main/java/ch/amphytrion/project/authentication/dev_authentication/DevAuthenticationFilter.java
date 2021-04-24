@@ -27,7 +27,7 @@ public class DevAuthenticationFilter extends AbstractMultiReadAuthenticationProc
     private AuthenticationManager authenticationManager;
 
     private final UserService userService;
-    private static final String TEST_TOKEN = "tokenTest";
+    private static final String TEST_TOKEN = "testToken";
 
     @Autowired
     public DevAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService) {
