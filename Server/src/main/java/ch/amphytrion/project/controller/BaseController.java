@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = BaseController.ROOT_PATH)
 @Api(tags = {"Amphytrion API"})
 public class BaseController {
-    public static final String ROOT_PATH = "/item";
+    public static final String ROOT_PATH = "/";
 
     public BaseController() {}
 

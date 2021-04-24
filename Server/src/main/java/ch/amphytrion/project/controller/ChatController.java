@@ -1,17 +1,19 @@
 package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.entities.databaseentities.Chat;
+import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.entities.databaseentities.Message;
+import ch.amphytrion.project.entities.databaseentities.Student;
 import ch.amphytrion.project.services.ChatService;
+import ch.amphytrion.project.services.MessageService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.apache.commons.collections4.iterators.ArrayListIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,35 +23,43 @@ public class ChatController extends BaseController implements IGenericController
 
     @Autowired
     private ChatService chatService;
+    private MessageService messageService;
 
     @Autowired
-    public ChatController(ChatService chatService) {
+    public ChatController(ChatService chatService, MessageService messageService) {
         this.chatService = chatService;
+        this.messageService = messageService;
     }
 
-    @GetMapping("/chats")
-    public ResponseEntity<List<Chat>> getAll() {
+    //X
+    @PostMapping("/chat/createMessage/{chatId}")
+    public ResponseEntity<Chat> createMessage(@PathVariable String chatId, @RequestBody Message message) {
+        Student student = null; // TODO Use current user
+        Chat chat = chatService.findById(chatId);
         try {
-            return ResponseEntity.ok(chatService.findAll());
+            if(student != null){
+                message.setUsername(student.getUsername());
+                if (chat.getMessages() != null) {
+                    chat.getMessages().add(message);
+                } else {
+                    ArrayList<Message> messages = new ArrayList<>();
+                    messages.add(message);
+                    chat.setMessages(messages);
+                }
+                return ResponseEntity.ok(chatService.save(chat));
+            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @PostMapping("/chat")
-    public ResponseEntity<Chat> save(Chat entity) {
-        try {
-            return ResponseEntity.ok(chatService.save(entity));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
+    //X
     @Override
-    @GetMapping("/chat/{id}")
-    public ResponseEntity getById(String id) {
+    @GetMapping("/chat/{chatId}")
+    public ResponseEntity<Chat> getById(@PathVariable String chatId) {
         try {
-            return ResponseEntity.ok(chatService.findById(id));
+            return ResponseEntity.ok(chatService.findById(chatId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -65,10 +75,5 @@ public class ChatController extends BaseController implements IGenericController
     private String testController() {
         return this.getClass().getSimpleName();
     }
-
-    @GetMapping("/chat/{id}/allMessages")
-    private ResponseEntity<ArrayList<Message>> getAllMessagesFromChatID(String id) {
-         return ResponseEntity.ok((chatService.findById(id)).getMessages());
-    }
-
+    
 }

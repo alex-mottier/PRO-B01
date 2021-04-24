@@ -24,6 +24,7 @@ public class HostController extends BaseController implements IGenericController
         this.hostService = hostService;
     }
 
+
     @GetMapping("/hosts")
     public ResponseEntity<List<Host>> getAll() {
         try {

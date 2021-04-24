@@ -16,5 +16,6 @@ class AddressControllerTest {
     void name() {
         assertEquals(AddressController.class.getCanonicalName(),
                 addressController.controllerName());
+
     }
 }

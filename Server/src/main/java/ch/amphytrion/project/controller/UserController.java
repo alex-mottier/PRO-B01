@@ -54,12 +54,12 @@ public class UserController extends BaseController implements IGenericController
             if (tokenID != null) {
                 GoogleIdToken.Payload payload = tokenID.getPayload();
                 String userId = payload.get("sub").toString();
-                User newUser = new User(null, userId, userName);
                 userService.save(newUser);
                 String token = JWT.create()
                         .withSubject(newUser.getUsername())
                         .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                         .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
+                User newUser = new User(null, userId, userName);
                 HttpHeaders responseHeaders = new HttpHeaders();
                 responseHeaders.set(SecurityConstants.HEADER_STRING, token);
                 return ResponseEntity.ok().headers(responseHeaders).body(newUser);
@@ -80,28 +80,10 @@ public class UserController extends BaseController implements IGenericController
             }
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> getAll() {
+    @GetMapping("/user/{username}")
+    public ResponseEntity<User> getById(@PathVariable String username) {
         try {
-            return ResponseEntity.ok(userService.findAll());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @PostMapping("/user")
-    public ResponseEntity<User> save(@RequestBody User entity){
-        try {
-            return ResponseEntity.ok(userService.save(entity));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @GetMapping("/user/{id}")
-    public ResponseEntity<User> getById(@PathVariable String id) {
-        try {
-            return ResponseEntity.ok(userService.findById(id));
+            return ResponseEntity.ok(userService.findByUsername(username));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
