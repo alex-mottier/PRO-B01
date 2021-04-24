@@ -3,6 +3,7 @@ package ch.amphytrion.project.authentication;
 import ch.amphytrion.project.authentication.dev_authentication.DevAuthenticationFilter;
 import ch.amphytrion.project.authentication.dev_authentication.DevAuthenticationProvider;
 import ch.amphytrion.project.authentication.google_authentication.GoogleAuthenticationFilter;
+import ch.amphytrion.project.authentication.google_authentication.GoogleAuthenticationProvider;
 import ch.amphytrion.project.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +31,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private DevAuthenticationProvider devAuthenticationProvider;
+    @Autowired
+    private GoogleAuthenticationProvider googleAuthenticationProvider;
     private UserAuthService userAuthService;
 
     public WebSecurity(UserService userService) {
@@ -48,10 +51,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                         BasicAuthenticationFilter.class
                 )
                 // Filter for authentication by GoogleOpenID
-//                .addFilterBefore(
-//                        new GoogleAuthenticationFilter(authenticationManager(), userAuthService.getUserService()),
-//                        BasicAuthenticationFilter.class
-//                )
+                .addFilterBefore(
+                        new GoogleAuthenticationFilter(authenticationManager(), userAuthService.getUserService()),
+                        BasicAuthenticationFilter.class
+                )
                 // Filter for authentication by JWT
 //                .addFilter(new JWTAuthenticationFilter(authenticationManager(), userAuthService.getUserService()))
 //                // Fitler for authorization by JWT
@@ -64,7 +67,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(devAuthenticationProvider).userDetailsService(userAuthService);
+        auth.authenticationProvider(devAuthenticationProvider).authenticationProvider(googleAuthenticationProvider).userDetailsService(userAuthService);
     }
 
     @Bean

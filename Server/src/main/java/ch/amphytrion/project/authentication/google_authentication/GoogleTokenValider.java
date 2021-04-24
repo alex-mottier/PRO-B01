@@ -1,6 +1,5 @@
-package ch.amphytrion.project.authentication;
+package ch.amphytrion.project.authentication.google_authentication;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -17,11 +16,15 @@ public class GoogleTokenValider {
     @Value("${google.clientID}")
     private static String ClIENT_ID;
 
-    public static GoogleIdToken  validateToken(String tokenID) throws GeneralSecurityException, IOException {
-        JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), JSON_FACTORY)
-                .setAudience(Collections.singletonList(ClIENT_ID))
-                .build();
-        return verifier.verify(tokenID);
+    public static GoogleIdToken  validateToken(String tokenID){
+        try {
+            JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), JSON_FACTORY)
+                    .setAudience(Collections.singletonList(ClIENT_ID))
+                    .build();
+            return verifier.verify(tokenID);
+        } catch (GeneralSecurityException | IOException e){
+            return null;
+        }
     }
 }
