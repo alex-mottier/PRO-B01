@@ -27,6 +27,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
             "/v2/api-docs",
             "/webjars/**",
             SecurityConstants.SIGN_UP_URL,
+            "/**",
     };
 
 

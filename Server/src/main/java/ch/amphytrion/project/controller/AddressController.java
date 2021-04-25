@@ -5,12 +5,12 @@ import ch.amphytrion.project.services.AddressService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,31 +24,32 @@ public class AddressController extends BaseController implements IGenericControl
         this.addressService = addressService;
     }
 
+    @SneakyThrows
     @GetMapping("/addresses")
     public ResponseEntity<List<Address>> getAll() {
         try {
             return ResponseEntity.ok(addressService.findAll());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("No address found", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
-
+    @SneakyThrows
     @PostMapping("/address")
     public ResponseEntity<Address> save(Address entity) {
         try {
             return ResponseEntity.ok(addressService.save(entity));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("Address not saved", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
-
-    @Override
+    @SneakyThrows
     @GetMapping("/address/{id}")
     public ResponseEntity<Address> getById(String id) {
         try {
             return ResponseEntity.ok(addressService.findById(id));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("No address found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+
         }
     }
 

@@ -3,6 +3,7 @@ package ch.amphytrion.project.authentication.google_authentication;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.UserService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,13 +13,15 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 @Component
 public class GoogleAuthenticationProvider implements AuthenticationProvider {
 
     private UserService userService;
+    @Autowired
+    private GoogleTokenValider valider;
+
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -31,7 +34,8 @@ public class GoogleAuthenticationProvider implements AuthenticationProvider {
         }
         String openIdToken = (String) authentication.getCredentials();
         try {
-            GoogleIdToken verifiedToken = GoogleTokenValider.validateToken(openIdToken);
+
+            GoogleIdToken verifiedToken = valider.validateToken(openIdToken);
             if(verifiedToken == null){
                 throw new BadCredentialsException("Authentication failed");
             }

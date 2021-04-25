@@ -5,6 +5,7 @@ import ch.amphytrion.project.services.MessageService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,31 +23,31 @@ public class MessageController extends BaseController implements IGenericControl
        this.messageService = messageService;
     }
 
+    @SneakyThrows
     @GetMapping("/messages")
     public ResponseEntity<List<Message>> getAll() {
         try {
             return ResponseEntity.ok(messageService.findAll());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("No message found", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
-
+    @SneakyThrows
     @PostMapping("/message")
     public ResponseEntity<Message> save(Message entity) {
         try {
             return ResponseEntity.ok(messageService.save(entity));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("Message not saved", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
-
-    @Override
+    @SneakyThrows
     @GetMapping("/message/{id}")
     public ResponseEntity<Message> getById(String id) {
         try {
             return ResponseEntity.ok(messageService.findById(id));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("Message not found", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 

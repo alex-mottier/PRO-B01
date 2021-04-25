@@ -1,10 +1,11 @@
 package ch.amphytrion.project.services;
 
-import ch.amphytrion.project.entities.databaseentities.Chat;
+import ch.amphytrion.project.dto.FilterRequest;
+import ch.amphytrion.project.dto.MeetingResponse;
 import ch.amphytrion.project.entities.databaseentities.Location;
 import ch.amphytrion.project.entities.databaseentities.Meeting;
+import ch.amphytrion.project.entities.databaseentities.Student;
 import ch.amphytrion.project.entities.databaseentities.Tag;
-import ch.amphytrion.project.dto.FilterRequest;
 import ch.amphytrion.project.repositories.ChatRepository;
 import ch.amphytrion.project.repositories.LocationRepository;
 import ch.amphytrion.project.repositories.MeetingRepository;
@@ -16,15 +17,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class MeetingService implements IGenericService<Meeting> {
@@ -81,6 +78,26 @@ public class MeetingService implements IGenericService<Meeting> {
         return meetingRepository.count();
     }
 
+    public MeetingResponse addMemberToMeeting(String meetingID) {
+        try {
+
+            Student student = new Student(null, null, null); // TODO Use current user
+            Meeting meeting = findById(meetingID);
+            MeetingResponse meetingResponse = new MeetingResponse(meeting);
+            meetingResponse.membersId.add(student.getId());
+            if (student.getMeetingsParticipations() != null) {
+                student.getMeetingsParticipations().add(meeting);
+            } else {
+                ArrayList<Meeting> meetings = new ArrayList<>();
+                meetings.add(meeting);
+                student.setMeetingsParticipations(meetings);
+            }
+            return meetingResponse;
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
 
     public ArrayList<Meeting> findByNameLike(String name) {
         return meetingRepository.findByNameLike(name);
@@ -100,26 +117,32 @@ public class MeetingService implements IGenericService<Meeting> {
 
     public ArrayList<Meeting> searchFilter(FilterRequest filter) {
         ArrayList<Meeting> meetings = new ArrayList<>();
-        TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(filter.getStartDate());
+        TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(filter.startDate);
         Instant i = Instant.from(ta);
         Date startDate = Date.from(i);
         meetings = findByStartAfter(startDate);
 
-        if (filter.getName() != null && !filter.getName().isEmpty()) {
-            meetings = searchFilterName(meetings, filter.getName());
+        if (filter.name != null && !filter.name.isEmpty()) {
+            meetings = searchFilterName(meetings, filter.name);
         }
-        if (filter.getEndDate() != null) {
-            TemporalAccessor taend = DateTimeFormatter.ISO_INSTANT.parse(filter.getStartDate());
+        if (filter.startDate == null) {
+            filter.startDate = "";
+        }
+        else {
+            TemporalAccessor taend = DateTimeFormatter.ISO_INSTANT.parse(filter.startDate);
             Instant iend = Instant.from(taend);
             Date endDate = Date.from(iend);
             meetings = findByStartAfter(endDate);
             meetings = searchFilterDateEnd(meetings, endDate);
         }
-        if (filter.getTags() != null && filter.getTags().size() > 0) {
-            meetings = searchFilterTags(meetings, filter.getTags());
+        if (filter.endDate == null) {
+            filter.endDate = "";
         }
-        if (filter.getLocation()!= null) {
-            meetings = searchFilterLocations(meetings, filter.getLocation());
+        if (filter.tags != null && filter.tags.size() > 0) {
+            meetings = searchFilterTags(meetings, filter.tags);
+        }
+        if (filter.location != null) {
+            meetings = searchFilterLocations(meetings, filter.location);
         }
 
         return meetings;
@@ -138,7 +161,7 @@ public class MeetingService implements IGenericService<Meeting> {
         String string1 = "2001-07-04T12:08:56.235-0700";
         Date result1 = null;
         try {
-             result1= df1.parse(string1);
+            result1= df1.parse(string1);
         } catch (ParseException e) {
             e.printStackTrace();
         }

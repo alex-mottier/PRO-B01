@@ -5,6 +5,7 @@ import ch.amphytrion.project.services.OpeningHourService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,32 +22,34 @@ public class OpeningHourController extends BaseController implements IGenericCon
     public OpeningHourController(OpeningHourService openingHourService) {
         this.openingHourService = openingHourService;
     }
-
+    @SneakyThrows
     @GetMapping("/openinghours")
     public ResponseEntity<List<OpeningHour>> getAll() {
         try {
             return ResponseEntity.ok(openingHourService.findAll());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("No Opening Hour found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+
         }
     }
-
+    @SneakyThrows
     @PostMapping("/openinghour")
     public ResponseEntity<OpeningHour> save(OpeningHour entity) {
         try {
             return ResponseEntity.ok(openingHourService.save(entity));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("No Opening Hour found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+
         }
     }
-
-    @Override
+    @SneakyThrows
     @GetMapping("/openinghour/{id}")
     public ResponseEntity<OpeningHour> getById(String id) {
         try {
             return ResponseEntity.ok(openingHourService.findById(id));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("No Opening Hour found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+
         }
     }
 

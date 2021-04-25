@@ -5,6 +5,7 @@ import ch.amphytrion.project.services.HostService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,32 +25,31 @@ public class HostController extends BaseController implements IGenericController
         this.hostService = hostService;
     }
 
-
+    @SneakyThrows
     @GetMapping("/hosts")
     public ResponseEntity<List<Host>> getAll() {
         try {
             return ResponseEntity.ok(hostService.findAll());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("No host has been found", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
-
+    @SneakyThrows
     @PostMapping("/host")
     public ResponseEntity<Host> save(Host entity) {
         try {
             return ResponseEntity.ok(hostService.save(entity));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("Host not saved", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
-
-    @Override
+    @SneakyThrows
     @GetMapping("/host/{id}")
     public ResponseEntity getById(String id) {
         try {
             return ResponseEntity.ok(hostService.findById(id));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("Host not found", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 

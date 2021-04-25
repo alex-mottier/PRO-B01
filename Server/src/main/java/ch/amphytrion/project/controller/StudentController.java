@@ -5,6 +5,7 @@ import ch.amphytrion.project.services.StudentService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,29 +23,33 @@ public class StudentController extends BaseController implements IGenericControl
         this.studentService = studentService;
     }
 
+    @SneakyThrows
     @GetMapping("/students")
     public ResponseEntity<List<Student>> getAll() {
         try {
             return ResponseEntity.ok(studentService.findAll());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("No student found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+
         }
     }
-
+    @SneakyThrows
     @PostMapping("/students")
     public ResponseEntity<Student> save(@RequestBody Student student) {
         try {
             return ResponseEntity.ok(studentService.save(student));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }    }
+            throw new CustomException("Student not saved", HttpStatus.INTERNAL_SERVER_ERROR, null);
 
+        }    }
+    @SneakyThrows
     @GetMapping("/students/{id}")
     public ResponseEntity<Student> getById(@PathVariable String id) {
         try {
             return ResponseEntity.ok(studentService.findById(id));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("No student found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+
         }
     }
 
