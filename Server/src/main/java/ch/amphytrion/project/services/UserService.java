@@ -2,6 +2,7 @@ package ch.amphytrion.project.services;
 
 import ch.amphytrion.project.authentication.google_authentication.GoogleTokenValider;
 import ch.amphytrion.project.dto.UserResponse;
+import ch.amphytrion.project.entities.databaseentities.Student;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.repositories.UserRepository;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
