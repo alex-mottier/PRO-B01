@@ -47,8 +47,7 @@ public class MeetingController extends BaseController implements IGenericControl
     public ResponseEntity<List<Meeting>> getMeetingsCreatedByUser() {
         try {
             user = getCurrentUser();
-            //initialize();
-            //if (user instanceof Student)
+
                 return ResponseEntity.ok(meetingService.findByOwnerID(user.getId()));
         } catch (Exception e) {
             return ResponseEntity.ok(new ArrayList<Meeting>());
@@ -121,6 +120,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 chatService.save(chat);
                 entity.setChatID(chat.getId());
                 entity.setMembersID(new ArrayList<String>());
+                entity.setOwnerID(getCurrentUser().getId());
                 return ResponseEntity.ok(meetingService.save(entity));
         } catch (Exception e) {
             throw new CustomException("Aucun meeting créé", HttpStatus.NOT_ACCEPTABLE, null);

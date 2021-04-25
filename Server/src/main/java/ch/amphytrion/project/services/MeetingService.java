@@ -92,7 +92,6 @@ public class MeetingService implements IGenericService<Meeting> {
                 meetings.add(meeting);
                 student.setMeetingsParticipations(meetings);
             }
-            meeting.setOwnerID(student.getId());
             return meetingResponse;
         }
         catch (Exception e) {
