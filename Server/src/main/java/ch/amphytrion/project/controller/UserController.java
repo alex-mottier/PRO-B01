@@ -70,7 +70,7 @@ public class UserController extends BaseController implements IGenericController
             @ApiResponse(code = 200, message = "Successfully reached userController"),
             @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
             @ApiResponse(code = 403, message = "Access to this resource is forbidden"),
-            @ApiResponse(code = 500, message = "The user account already exists in the app")
+            @ApiResponse(code = 406, message = "The user account already exists in the app")
     })
     @GetMapping("/userController")
     private String testController() {
