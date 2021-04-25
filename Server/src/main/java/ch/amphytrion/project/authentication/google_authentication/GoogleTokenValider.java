@@ -28,7 +28,7 @@ public class GoogleTokenValider {
                     .setAudience(Collections.singletonList(clientID))
                     .build();
             return verifier.verify(tokenID);
-        } catch (GeneralSecurityException | IOException |IllegalArgumentException e){
+        } catch (GeneralSecurityException | IOException | IllegalArgumentException e){
             return null;
         }
     }

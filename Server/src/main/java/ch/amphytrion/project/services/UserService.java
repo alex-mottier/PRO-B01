@@ -92,13 +92,17 @@ public class UserService implements IGenericService<User>{
                 if (tokenID != null) {
                     GoogleIdToken.Payload payload = tokenID.getPayload();
                     String userId = payload.get("sub").toString();
-                    newUser = new User(null, userId, userName);
+                    if(findByGoogleId(userId) == null){
+                        newUser = new User(null, userId, userName);
+                    }
                 }
             }
+
+        }
+        if(newUser != null) {
             userRepository.save(newUser);
             return new UserResponse(newUser);
-        }
-        else {
+        } else {
             //user already exists
             return null;
         }

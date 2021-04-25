@@ -18,6 +18,7 @@ import java.util.ArrayList;
 @Component
 public class GoogleAuthenticationProvider implements AuthenticationProvider {
 
+    @Autowired
     private UserService userService;
     @Autowired
     private GoogleTokenValider valider;
