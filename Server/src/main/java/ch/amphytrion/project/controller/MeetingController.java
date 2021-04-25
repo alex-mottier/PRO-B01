@@ -3,11 +3,9 @@ package ch.amphytrion.project.controller;
 import ch.amphytrion.project.dto.DatesFilterDTO;
 import ch.amphytrion.project.dto.FilterRequest;
 import ch.amphytrion.project.dto.MeetingResponse;
-import ch.amphytrion.project.entities.databaseentities.Chat;
-import ch.amphytrion.project.entities.databaseentities.Meeting;
-import ch.amphytrion.project.entities.databaseentities.Student;
-import ch.amphytrion.project.entities.databaseentities.User;
+import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.services.ChatService;
+import ch.amphytrion.project.services.LocationService;
 import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.StudentService;
 import io.swagger.annotations.ApiOperation;
@@ -28,13 +26,16 @@ public class MeetingController extends BaseController implements IGenericControl
     private MeetingService meetingService;
     private StudentService studentService;
     private ChatService chatService;
+    private LocationService locationService;
+
     private User user;
     private Student student;
     @Autowired
-    public MeetingController(MeetingService meetingService, StudentService studentService, ChatService chatService) {
+    public MeetingController(MeetingService meetingService, StudentService studentService, ChatService chatService, LocationService locationService) {
         this.meetingService = meetingService;
         this.studentService = studentService;
         this.chatService = chatService;
+        this.locationService = locationService;
     }
 
     private void initialize() {
@@ -49,7 +50,7 @@ public class MeetingController extends BaseController implements IGenericControl
             user = getCurrentUser();
                 ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
                 for(Meeting meeting : meetingService.findByOwnerID(user.getId())) {
-                    MeetingResponse meetingResponse = new MeetingResponse(meeting);
+                    MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
                     meetingResponses.add(meetingResponse);
                 }
                 return ResponseEntity.ok(meetingResponses);
@@ -70,7 +71,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 Student student = (Student) user;
                  student.getMeetingsParticipations().removeIf(m -> m.getId() == meeting.getId());
                  studentService.save(student);
-                return ResponseEntity.ok(new MeetingResponse(meeting));
+                return ResponseEntity.ok(new MeetingResponse(meeting, locationService));
                 }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
@@ -87,7 +88,7 @@ public class MeetingController extends BaseController implements IGenericControl
             initialize();
             ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
             for(Meeting meeting : student.getMeetingsParticipations()) {
-                MeetingResponse meetingResponse = new MeetingResponse(meeting);
+                MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
                 meetingResponses.add(meetingResponse);
             }
             return ResponseEntity.ok(meetingResponses);
@@ -115,7 +116,7 @@ public class MeetingController extends BaseController implements IGenericControl
         try {
             ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
             for(Meeting meeting : meetingService.findByOwnerID(user.getId())) {
-                MeetingResponse meetingResponse = new MeetingResponse(meeting);
+                MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
                 meetingResponses.add(meetingResponse);
             }
                 return ResponseEntity.ok(meetingResponses);
@@ -135,7 +136,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 entity.setChatID(chat.getId());
                 entity.setMembersID(new ArrayList<String>());
                 entity.setOwnerID(getCurrentUser().getId());
-                return ResponseEntity.ok(new MeetingResponse(meetingService.save(entity)));
+                return ResponseEntity.ok(new MeetingResponse(meetingService.save(entity), locationService));
         } catch (Exception e) {
             throw new CustomException("Aucun meeting créé", HttpStatus.NOT_ACCEPTABLE, null);
         }
@@ -150,7 +151,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 try {
                     Meeting existantMeeting = meetingService.findById(entity.getId());
                     existantMeeting = entity;
-                    return ResponseEntity.ok(new MeetingResponse(meetingService.save(existantMeeting)));
+                    return ResponseEntity.ok(new MeetingResponse(meetingService.save(existantMeeting), locationService));
                 } catch (Exception e){
                     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
                 }
@@ -181,7 +182,7 @@ public class MeetingController extends BaseController implements IGenericControl
     @GetMapping("/meeting/{meetingID}")
     public ResponseEntity<MeetingResponse> getById(@PathVariable String meetingID) {
         try {
-            return ResponseEntity.ok(new MeetingResponse(meetingService.findById(meetingID)));
+            return ResponseEntity.ok(new MeetingResponse(meetingService.findById(meetingID), locationService));
         } catch (Exception e) {
             throw new CustomException("Meeting avec id :" + meetingID + " non trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }

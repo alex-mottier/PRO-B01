@@ -4,7 +4,6 @@ import ch.amphytrion.project.entities.databaseentities.Location;
 import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.entities.databaseentities.Tag;
 import ch.amphytrion.project.services.LocationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
@@ -27,10 +26,8 @@ public class MeetingResponse implements InterfaceDTO {
     public String endDate;
     public Boolean isPrivate;
 
-    @Autowired
-    public LocationService locationService;
+    public MeetingResponse(Meeting meeting, LocationService locationService) {
 
-    public MeetingResponse(Meeting meeting) {
         Location location = locationService.findById(meeting.getLocationID());
 
         this.id = meeting.getId();

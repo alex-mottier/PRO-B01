@@ -29,12 +29,14 @@ public class MeetingService implements IGenericService<Meeting> {
     private MeetingRepository meetingRepository;
     private LocationRepository locationRepository;
     private ChatRepository chatRepository;
+    private LocationService locationService;
 
     @Autowired
-    public MeetingService(MeetingRepository meetingRepository, LocationRepository locationRepository, ChatRepository chatRepository) {
+    public MeetingService(MeetingRepository meetingRepository, LocationRepository locationRepository, ChatRepository chatRepository, LocationService locationService) {
         this.meetingRepository = meetingRepository;
         this.chatRepository = chatRepository;
         this.locationRepository = locationRepository;
+        this.locationService = locationService;
     }
 
     @Override
@@ -83,7 +85,7 @@ public class MeetingService implements IGenericService<Meeting> {
 
             Student student = new Student(null, null, null); // TODO Use current user
             Meeting meeting = findById(meetingID);
-            MeetingResponse meetingResponse = new MeetingResponse(meeting);
+            MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
             meetingResponse.membersId.add(student.getId());
             if (student.getMeetingsParticipations() != null) {
                 student.getMeetingsParticipations().add(meeting);
