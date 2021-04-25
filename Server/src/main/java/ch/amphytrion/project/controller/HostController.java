@@ -31,7 +31,7 @@ public class HostController extends BaseController implements IGenericController
         try {
             return ResponseEntity.ok(hostService.findAll());
         } catch (Exception e) {
-            throw new CustomException("No host has been found", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Aucun hôte trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
     @SneakyThrows
@@ -40,7 +40,7 @@ public class HostController extends BaseController implements IGenericController
         try {
             return ResponseEntity.ok(hostService.save(entity));
         } catch (Exception e) {
-            throw new CustomException("Host not saved", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("hôte non modifié/créé", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
     @SneakyThrows
@@ -49,7 +49,7 @@ public class HostController extends BaseController implements IGenericController
         try {
             return ResponseEntity.ok(hostService.findById(id));
         } catch (Exception e) {
-            throw new CustomException("Host not found", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Aucun hôte trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 

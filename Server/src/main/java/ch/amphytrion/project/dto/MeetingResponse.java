@@ -34,8 +34,8 @@ public class MeetingResponse implements InterfaceDTO {
         this.chatID = meeting.getChatID();
         this.tags = meeting.getTags();
         this.nbPeople = meeting.getNbPeople();
-        this.startDate = meeting.getStart();
-        this.endDate = meeting.getEnd();
+        this.startDate = meeting.getStartDate();
+        this.endDate = meeting.getEndDate();
         this.isPrivate = meeting.getIsPrivate();
     }
 }

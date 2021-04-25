@@ -48,9 +48,9 @@ public class ChatController extends BaseController implements IGenericController
                 return ResponseEntity.ok(chatService.save(chat));
             }
         } catch (Exception e) {
-            throw new CustomException("Could not add message", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Le message n'a pas pu être créé", HttpStatus.NOT_ACCEPTABLE, null);
         }
-        throw new CustomException("Could not add message", HttpStatus.NOT_ACCEPTABLE, null);
+        throw new CustomException("Le message n'a pas pu être créé", HttpStatus.NOT_ACCEPTABLE, null);
     }
 
     //X
@@ -60,7 +60,7 @@ public class ChatController extends BaseController implements IGenericController
         try {
             return ResponseEntity.ok(chatService.findById(chatId));
         } catch (Exception e) {
-            throw new CustomException("Chat not found", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Le chat n'existe pas", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 

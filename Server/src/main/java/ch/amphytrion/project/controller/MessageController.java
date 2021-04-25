@@ -29,7 +29,7 @@ public class MessageController extends BaseController implements IGenericControl
         try {
             return ResponseEntity.ok(messageService.findAll());
         } catch (Exception e) {
-            throw new CustomException("No message found", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Aucun message trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
     @SneakyThrows
@@ -38,7 +38,7 @@ public class MessageController extends BaseController implements IGenericControl
         try {
             return ResponseEntity.ok(messageService.save(entity));
         } catch (Exception e) {
-            throw new CustomException("Message not saved", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Message non modifié/créé", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
     @SneakyThrows
@@ -47,7 +47,7 @@ public class MessageController extends BaseController implements IGenericControl
         try {
             return ResponseEntity.ok(messageService.findById(id));
         } catch (Exception e) {
-            throw new CustomException("Message not found", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Aucun message trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 

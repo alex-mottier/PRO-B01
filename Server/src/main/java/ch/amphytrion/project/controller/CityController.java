@@ -31,7 +31,7 @@ public class CityController extends BaseController implements IGenericController
         try {
             return ResponseEntity.ok(cityService.findAll());
         } catch (Exception e) {
-            throw new CustomException("No city found", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Aucune ville trouvée", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
@@ -41,7 +41,7 @@ public class CityController extends BaseController implements IGenericController
         try {
             return ResponseEntity.ok(cityService.save(entity));
         } catch (Exception e) {
-            throw new CustomException("City not saved", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Ville non modifiée/créée", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
@@ -51,7 +51,7 @@ public class CityController extends BaseController implements IGenericController
         try {
             return ResponseEntity.ok(cityService.findById(id));
         } catch (Exception e) {
-            throw new CustomException("No city found", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Aucune ville trouvée", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 

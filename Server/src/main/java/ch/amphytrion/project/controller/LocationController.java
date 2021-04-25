@@ -2,6 +2,7 @@ package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.dto.DatesFilterDTO;
 import ch.amphytrion.project.entities.databaseentities.Location;
+import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.services.LocationService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,13 +37,13 @@ public class LocationController extends BaseController implements IGenericContro
 
     //X
     @SneakyThrows
-    @GetMapping("/locations/withDate")
+    @PostMapping("/locations/withDate")
     public ResponseEntity<List<Location>> getAllWithDate(@RequestBody DatesFilterDTO filters) {
         //TODO logique & model dto with startDate & endDate
         try {
             return ResponseEntity.ok(locationService.findAll());
         } catch (Exception e) {
-            throw new CustomException("The question is not where but when", HttpStatus.NOT_ACCEPTABLE, null);
+            return ResponseEntity.ok(new ArrayList<Location>());
         }
     }
 
@@ -70,7 +72,7 @@ public class LocationController extends BaseController implements IGenericContro
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         }
-        throw new CustomException("Yo dawg I heard you like updates so I made an update that needs an update so you can update while you update", HttpStatus.NOT_ACCEPTABLE, null);
+        throw new CustomException("Lieu non modifié/créé", HttpStatus.NOT_ACCEPTABLE, null);
     }
 
     //X
@@ -80,7 +82,7 @@ public class LocationController extends BaseController implements IGenericContro
         try {
             return ResponseEntity.ok(locationService.findById(id));
         } catch (Exception e) {
-            throw new CustomException("We don't have magical places", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Ce lieu n'existe pas", HttpStatus.NOT_ACCEPTABLE, null);
 
         }
     }
