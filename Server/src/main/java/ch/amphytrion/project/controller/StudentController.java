@@ -29,7 +29,7 @@ public class StudentController extends BaseController implements IGenericControl
         try {
             return ResponseEntity.ok(studentService.findAll());
         } catch (Exception e) {
-            throw new CustomException("No student found", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Aucun étudiant trouvé", HttpStatus.NOT_ACCEPTABLE, null);
 
         }
     }
@@ -39,7 +39,7 @@ public class StudentController extends BaseController implements IGenericControl
         try {
             return ResponseEntity.ok(studentService.save(student));
         } catch (Exception e) {
-            throw new CustomException("Student not saved", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Étudiant non modifié/créé", HttpStatus.NOT_ACCEPTABLE, null);
 
         }    }
     @SneakyThrows
@@ -48,7 +48,7 @@ public class StudentController extends BaseController implements IGenericControl
         try {
             return ResponseEntity.ok(studentService.findById(id));
         } catch (Exception e) {
-            throw new CustomException("No student found", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Aucun étudiant trouvé", HttpStatus.NOT_ACCEPTABLE, null);
 
         }
     }

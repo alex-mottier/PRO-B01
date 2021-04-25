@@ -26,8 +26,8 @@ public class Meeting {
     private ArrayList<Tag> tags;
     private Integer nbPeople;
     private ArrayList<String> membersID;
-    private String start;
-    private String end;
+    private String startDate;
+    private String endDate;
     private Boolean isPrivate;
 
     @Autowired
@@ -39,8 +39,8 @@ public class Meeting {
         this.chatID = chatID;
         this.tags = tags;
         this.nbPeople = nbPeople;
-        this.start = start;
-        this.end = end;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public Meeting(String name){

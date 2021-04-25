@@ -108,11 +108,11 @@ public class MeetingService implements IGenericService<Meeting> {
     }
 
     ArrayList<Meeting> findByStartAfter(Date start) {
-        return meetingRepository.findByStartAfter(start);
+        return meetingRepository.findByStartDateAfter(start);
     }
 
     ArrayList<Meeting> findByEndBefore(Date end) {
-        return meetingRepository.findByEndBefore(end);
+        return meetingRepository.findByEndDateBefore(end);
     }
 
     public ArrayList<Meeting> searchFilter(FilterRequest filter) {
