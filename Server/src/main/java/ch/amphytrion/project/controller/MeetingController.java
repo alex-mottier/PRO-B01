@@ -54,7 +54,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 }
                 return ResponseEntity.ok(meetingResponses);
         } catch (Exception e) {
-            return ResponseEntity.ok(new ArrayList<MeetingResponse>());
+            throw new CustomException("Aucun meeting n'a été trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
 
     }
@@ -92,7 +92,7 @@ public class MeetingController extends BaseController implements IGenericControl
             }
             return ResponseEntity.ok(meetingResponses);
         } catch (Exception e) {
-            return ResponseEntity.ok(new ArrayList<MeetingResponse>());
+            throw new CustomException("Aucun meeting n'a été trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
