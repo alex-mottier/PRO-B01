@@ -1,9 +1,12 @@
 package ch.amphytrion.project.authentication.jwt_authentication;
 
 import ch.amphytrion.project.authentication.SecurityConstants;
+import ch.amphytrion.project.entities.databaseentities.User;
+import ch.amphytrion.project.services.UserService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -21,9 +24,12 @@ import java.util.ArrayList;
 // verify tokens and provide authorizations
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
+    @Autowired
+    protected UserService userService;
 
-    public JWTAuthorizationFilter(AuthenticationManager authManager) {
+    public JWTAuthorizationFilter(AuthenticationManager authManager, UserService userService) {
         super(authManager);
+        this.userService = userService;
     }
 
     @Override
@@ -58,7 +64,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
                 if (username != null) {
                     // new arraylist means authorities
-                    return new JWTAuthorizationToken(username, null, new ArrayList<>());
+                    User user = userService.findByUsername(username);
+                    return new JWTAuthorizationToken(user, null, new ArrayList<>());
                 }
             }
         return null;

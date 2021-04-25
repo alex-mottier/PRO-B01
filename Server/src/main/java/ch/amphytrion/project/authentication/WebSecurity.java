@@ -60,7 +60,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 // Filter for authentication by JWT
 //                .addFilter(new JWTAuthenticationFilter(authenticationManager(), userAuthService.getUserService()))
 //                // Fitler for authorization by JWT
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), userAuthService.getUserService()))
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
