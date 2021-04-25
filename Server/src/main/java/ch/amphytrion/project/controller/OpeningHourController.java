@@ -28,7 +28,7 @@ public class OpeningHourController extends BaseController implements IGenericCon
         try {
             return ResponseEntity.ok(openingHourService.findAll());
         } catch (Exception e) {
-            throw new CustomException("No Opening Hour found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("No Opening Hour found", HttpStatus.NOT_ACCEPTABLE, null);
 
         }
     }
@@ -38,7 +38,7 @@ public class OpeningHourController extends BaseController implements IGenericCon
         try {
             return ResponseEntity.ok(openingHourService.save(entity));
         } catch (Exception e) {
-            throw new CustomException("No Opening Hour found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("No Opening Hour found", HttpStatus.NOT_ACCEPTABLE, null);
 
         }
     }
@@ -48,7 +48,7 @@ public class OpeningHourController extends BaseController implements IGenericCon
         try {
             return ResponseEntity.ok(openingHourService.findById(id));
         } catch (Exception e) {
-            throw new CustomException("No Opening Hour found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("No Opening Hour found", HttpStatus.NOT_ACCEPTABLE, null);
 
         }
     }

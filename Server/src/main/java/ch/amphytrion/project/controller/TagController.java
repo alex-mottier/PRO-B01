@@ -30,7 +30,7 @@ public class TagController extends BaseController implements IGenericController<
         try {
             return ResponseEntity.ok(tagService.findAll());
         } catch (Exception e) {
-            throw new CustomException("No tag found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("No tag found", HttpStatus.NOT_ACCEPTABLE, null);
         }    }
 
     @SneakyThrows
@@ -39,7 +39,7 @@ public class TagController extends BaseController implements IGenericController<
         try {
             return ResponseEntity.ok(tagService.save(entity));
         } catch (Exception e) {
-            throw new CustomException("Tag not saved", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("Tag not saved", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
@@ -49,7 +49,7 @@ public class TagController extends BaseController implements IGenericController<
         try {
             return ResponseEntity.ok(tagService.findById(id));
         } catch (Exception e) {
-            throw new CustomException("No tag found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("No tag found", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 

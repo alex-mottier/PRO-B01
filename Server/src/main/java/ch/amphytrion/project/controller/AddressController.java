@@ -30,7 +30,7 @@ public class AddressController extends BaseController implements IGenericControl
         try {
             return ResponseEntity.ok(addressService.findAll());
         } catch (Exception e) {
-            throw new CustomException("No address found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("No address found", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
     @SneakyThrows
@@ -39,7 +39,7 @@ public class AddressController extends BaseController implements IGenericControl
         try {
             return ResponseEntity.ok(addressService.save(entity));
         } catch (Exception e) {
-            throw new CustomException("Address not saved", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("Address not saved", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
     @SneakyThrows
@@ -48,7 +48,7 @@ public class AddressController extends BaseController implements IGenericControl
         try {
             return ResponseEntity.ok(addressService.findById(id));
         } catch (Exception e) {
-            throw new CustomException("No address found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("No address found", HttpStatus.NOT_ACCEPTABLE, null);
 
         }
     }

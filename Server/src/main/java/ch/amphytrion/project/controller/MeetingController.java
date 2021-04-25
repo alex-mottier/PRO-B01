@@ -10,7 +10,6 @@ import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.ChatService;
 import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.StudentService;
-import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -21,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 public class MeetingController extends BaseController implements IGenericController<Meeting> {
@@ -52,7 +50,7 @@ public class MeetingController extends BaseController implements IGenericControl
             //if (user instanceof Student)
                 return ResponseEntity.ok(meetingService.findByOwnerID(user.getId()));
         } catch (Exception e) {
-            throw new CustomException("I can't get enough of these meetings", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("I can't get enough of these meetings", HttpStatus.NOT_ACCEPTABLE, null);
         }
 
     }
@@ -71,9 +69,9 @@ public class MeetingController extends BaseController implements IGenericControl
                 return ResponseEntity.ok(meeting);
                 }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         }
-        throw new CustomException("Fly you fools", HttpStatus.INTERNAL_SERVER_ERROR, null);
+        throw new CustomException("Fly you fools", HttpStatus.NOT_ACCEPTABLE, null);
     }
 
     //X
@@ -85,7 +83,7 @@ public class MeetingController extends BaseController implements IGenericControl
             initialize();
             return ResponseEntity.ok(student.getMeetingsParticipations());
         } catch (Exception e) {
-            throw new CustomException("Y'all Got Any More Of That Meeting?", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("Y'all Got Any More Of That Meeting?", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
@@ -97,7 +95,7 @@ public class MeetingController extends BaseController implements IGenericControl
             return ResponseEntity.ok(meetingService.addMemberToMeeting(meetingID));
         }
         catch (Exception e) {
-            throw new CustomException("The meeting couldn't be joined", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("The meeting couldn't be joined", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
@@ -108,7 +106,7 @@ public class MeetingController extends BaseController implements IGenericControl
         try {
             return ResponseEntity.ok(meetingService.searchFilter(filter));
         } catch (Exception e) {
-            throw new CustomException("Damn yo filter aint right yo", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("Damn yo filter aint right yo", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
@@ -123,7 +121,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 entity.setChatID(chat.getId());
                 return ResponseEntity.ok(meetingService.save(entity));
         } catch (Exception e) {
-            throw new CustomException("All your meetings belong to us", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("All your meetings belong to us", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
@@ -138,13 +136,13 @@ public class MeetingController extends BaseController implements IGenericControl
                     existantMeeting = entity;
                     return ResponseEntity.ok(meetingService.save(existantMeeting));
                 } catch (Exception e){
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
                 }
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         }
-        throw new CustomException("Meeting with id :" + entity.getId() + " not found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+        throw new CustomException("Meeting with id :" + entity.getId() + " not found", HttpStatus.NOT_ACCEPTABLE, null);
     }
 
     //X
@@ -157,7 +155,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 meetingService.delete(meeting);
             }
         } catch (Exception e) {
-            throw new CustomException("Meeting with id :" + meetingID + " not found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("Meeting with id :" + meetingID + " not found", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
@@ -168,7 +166,7 @@ public class MeetingController extends BaseController implements IGenericControl
         try {
             return ResponseEntity.ok(meetingService.findById(meetingID));
         } catch (Exception e) {
-            throw new CustomException("Meeting with id :" + meetingID + " not found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("Meeting with id :" + meetingID + " not found", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
