@@ -28,8 +28,9 @@ public class UserController extends BaseController implements IGenericController
     }
 
     // X
+    @SneakyThrows
     @PostMapping("/signUpStudent")
-    public ResponseEntity<UserResponse> signUpStudent(@RequestBody Map<String, String> json) throws CustomException {
+    public ResponseEntity<UserResponse> signUpStudent(@RequestBody Map<String, String> json) {
         UserResponse newUser = userService.checkAndSignUp(json);
         if(newUser != null) {
             String token = JwtUtils.makeHeaderToken(newUser.username);
@@ -54,13 +55,13 @@ public class UserController extends BaseController implements IGenericController
                 throw new CustomException("Login failed", HttpStatus.UNAUTHORIZED, null);
             }
     }
-
+    @SneakyThrows
     @GetMapping("/user/{username}")
     public ResponseEntity<UserResponse> getById(@PathVariable String username) {
         try {
             return ResponseEntity.ok(new UserResponse(userService.findByUsername(username)));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("Result not found", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 

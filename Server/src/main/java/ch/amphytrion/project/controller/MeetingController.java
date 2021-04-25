@@ -14,6 +14,7 @@ import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,29 +39,30 @@ public class MeetingController extends BaseController implements IGenericControl
     }
 
     private void initialize() {
-         if (user instanceof Student){
              student = (Student) user;
-         }
     }
 
     //X
+    @SneakyThrows
     @GetMapping("/getCreatedMeetings")
     public ResponseEntity<List<Meeting>> getMeetingsCreatedByUser() {
         try {
-            user =  new User("string", "ballec", "TESTICULE");//getCurrentUser();
-            if (user instanceof Student)
+            user = getCurrentUser();
+            //initialize();
+            //if (user instanceof Student)
                 return ResponseEntity.ok(meetingService.findByOwnerID(user.getId()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("I can't get enough of these meetings", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
     }
 
     //X
+    @SneakyThrows
     @PostMapping("/leaveMeeting/{meetingID}")
     public ResponseEntity<Meeting> leaveMeeting(@PathVariable String meetingID){
         try {
-            user = user =  new User("string", "ballec", "TESTICULE"); //getCurrentUser();
+            user = getCurrentUser();
             Meeting meeting = meetingService.findById(meetingID);
             if (user instanceof Student) {
                 Student student = (Student) user;
@@ -71,10 +73,11 @@ public class MeetingController extends BaseController implements IGenericControl
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        throw new CustomException("Fly you fools", HttpStatus.INTERNAL_SERVER_ERROR, null);
     }
 
     //X
+    @SneakyThrows
     @GetMapping("/getMyMeetings")
     public ResponseEntity<List<Meeting>> getMeetingsWhereUserParticipate(DatesFilterDTO datesFilter) {
         try {
@@ -82,32 +85,35 @@ public class MeetingController extends BaseController implements IGenericControl
             initialize();
             return ResponseEntity.ok(student.getMeetingsParticipations());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("Y'all Got Any More Of That Meeting?", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
     //X
+    @SneakyThrows
     @PostMapping("/meeting/join/{meetingID}")
     public ResponseEntity<MeetingResponse> joinMeeting(@PathVariable String meetingID) {
         try {
             return ResponseEntity.ok(meetingService.addMemberToMeeting(meetingID));
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("The meeting couldn't be joined", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
     //X
+    @SneakyThrows
     @PostMapping("/meetings/filter")
     public ResponseEntity<List<Meeting>> searchWithFilter(@RequestBody FilterRequest filter){
         try {
             return ResponseEntity.ok(meetingService.searchFilter(filter));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("Damn yo filter aint right yo", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
     //X
+    @SneakyThrows
     @PostMapping("/meeting")
     public ResponseEntity<Meeting> create(@RequestBody Meeting entity) {
         try {
@@ -117,11 +123,12 @@ public class MeetingController extends BaseController implements IGenericControl
                 entity.setChatID(chat.getId());
                 return ResponseEntity.ok(meetingService.save(entity));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("All your meetings belong to us", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
     //X
+    @SneakyThrows
     @PatchMapping("/meeting")
     public ResponseEntity<Meeting> update(@RequestBody Meeting entity) {
         try {
@@ -137,29 +144,31 @@ public class MeetingController extends BaseController implements IGenericControl
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        throw new CustomException("Meeting with id :" + entity.getId() + " not found", HttpStatus.INTERNAL_SERVER_ERROR, null);
     }
 
     //X
+    @SneakyThrows
     @DeleteMapping("/meeting/{meetingID}")
-    public void delete(@PathVariable String meetingID) throws Exception {
+    public void delete(@PathVariable String meetingID)  {
         try {
             Meeting meeting = meetingService.findById(meetingID);
             if(meeting != null){
                 meetingService.delete(meeting);
             }
         } catch (Exception e) {
-         throw new Exception(e);
+            throw new CustomException("Meeting with id :" + meetingID + " not found", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
     //X
+    @SneakyThrows
     @GetMapping("/meeting/{meetingID}")
     public ResponseEntity<Meeting> getById(@PathVariable String meetingID) {
         try {
             return ResponseEntity.ok(meetingService.findById(meetingID));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("Meeting with id :" + meetingID + " not found", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 

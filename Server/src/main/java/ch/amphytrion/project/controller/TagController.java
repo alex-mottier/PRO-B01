@@ -5,6 +5,7 @@ import ch.amphytrion.project.services.TagService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,30 +24,32 @@ public class TagController extends BaseController implements IGenericController<
     public TagController(TagService tagService) {
         this.tagService = tagService;
     }
-
+    @SneakyThrows
     @GetMapping("/tags")
     public ResponseEntity<List<Tag>> getAll() {
         try {
             return ResponseEntity.ok(tagService.findAll());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("No tag found", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }    }
 
+    @SneakyThrows
     @PostMapping("/tag")
     public ResponseEntity<Tag> save(Tag entity) {
         try {
             return ResponseEntity.ok(tagService.save(entity));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("Tag not saved", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
+    @SneakyThrows
     @GetMapping("/tag/{id}")
     public ResponseEntity<Tag> getById(String id) {
         try {
             return ResponseEntity.ok(tagService.findById(id));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new CustomException("No tag found", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
