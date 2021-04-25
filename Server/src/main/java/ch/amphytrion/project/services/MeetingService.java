@@ -59,7 +59,7 @@ public class MeetingService implements IGenericService<Meeting> {
         return null;
     }
 
-    public ArrayList<MeetingResponse> findByOwnerID(String ownerID){
+    public ArrayList<Meeting> findByOwnerID(String ownerID){
         return meetingRepository.findByOwnerID(ownerID);
     }
 

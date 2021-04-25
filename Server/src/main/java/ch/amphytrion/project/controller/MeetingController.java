@@ -47,8 +47,12 @@ public class MeetingController extends BaseController implements IGenericControl
     public ResponseEntity<List<MeetingResponse>> getMeetingsCreatedByUser() {
         try {
             user = getCurrentUser();
-
-                return ResponseEntity.ok(meetingService.findByOwnerID(user.getId()));
+                ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
+                for(Meeting meeting : meetingService.findByOwnerID(user.getId())) {
+                    MeetingResponse meetingResponse = new MeetingResponse(meeting);
+                    meetingResponses.add(meetingResponse);
+                }
+                return ResponseEntity.ok(meetingResponses);
         } catch (Exception e) {
             return ResponseEntity.ok(new ArrayList<MeetingResponse>());
         }
@@ -58,7 +62,7 @@ public class MeetingController extends BaseController implements IGenericControl
     //X
     @SneakyThrows
     @PostMapping("/leaveMeeting/{meetingID}")
-    public ResponseEntity<Meeting> leaveMeeting(@PathVariable String meetingID){
+    public ResponseEntity<MeetingResponse> leaveMeeting(@PathVariable String meetingID){
         try {
             user = getCurrentUser();
             Meeting meeting = meetingService.findById(meetingID);
@@ -66,7 +70,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 Student student = (Student) user;
                  student.getMeetingsParticipations().removeIf(m -> m.getId() == meeting.getId());
                  studentService.save(student);
-                return ResponseEntity.ok(meeting);
+                return ResponseEntity.ok(new MeetingResponse(meeting));
                 }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
@@ -77,13 +81,18 @@ public class MeetingController extends BaseController implements IGenericControl
     //X
     @SneakyThrows
     @PostMapping("/getMyMeetings")
-    public ResponseEntity<List<Meeting>> getMeetingsWhereUserParticipate(DatesFilterDTO datesFilter) {
+    public ResponseEntity<List<MeetingResponse>> getMeetingsWhereUserParticipate(DatesFilterDTO datesFilter) {
         try {
             user = getCurrentUser();
             initialize();
-            return ResponseEntity.ok(student.getMeetingsParticipations());
+            ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
+            for(Meeting meeting : student.getMeetingsParticipations()) {
+                MeetingResponse meetingResponse = new MeetingResponse(meeting);
+                meetingResponses.add(meetingResponse);
+            }
+            return ResponseEntity.ok(meetingResponses);
         } catch (Exception e) {
-            return ResponseEntity.ok(new ArrayList<Meeting>());
+            return ResponseEntity.ok(new ArrayList<MeetingResponse>());
         }
     }
 
@@ -102,9 +111,14 @@ public class MeetingController extends BaseController implements IGenericControl
     //X
     @SneakyThrows
     @PostMapping("/meetings/filter")
-    public ResponseEntity<List<Meeting>> searchWithFilter(@RequestBody FilterRequest filter){
+    public ResponseEntity<List<MeetingResponse>> searchWithFilter(@RequestBody FilterRequest filter){
         try {
-            return ResponseEntity.ok(meetingService.searchFilter(filter));
+            ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
+            for(Meeting meeting : meetingService.findByOwnerID(user.getId())) {
+                MeetingResponse meetingResponse = new MeetingResponse(meeting);
+                meetingResponses.add(meetingResponse);
+            }
+                return ResponseEntity.ok(meetingResponses);
         } catch (Exception e) {
             throw new CustomException("Aucun meeting n'a été trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
@@ -113,7 +127,7 @@ public class MeetingController extends BaseController implements IGenericControl
     //X
     @SneakyThrows
     @PostMapping("/meeting")
-    public ResponseEntity<Meeting> create(@RequestBody Meeting entity) {
+    public ResponseEntity<MeetingResponse> create(@RequestBody Meeting entity) {
         try {
             entity.setId(null);
                 Chat chat = new Chat();
@@ -121,7 +135,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 entity.setChatID(chat.getId());
                 entity.setMembersID(new ArrayList<String>());
                 entity.setOwnerID(getCurrentUser().getId());
-                return ResponseEntity.ok(meetingService.save(entity));
+                return ResponseEntity.ok(new MeetingResponse(meetingService.save(entity)));
         } catch (Exception e) {
             throw new CustomException("Aucun meeting créé", HttpStatus.NOT_ACCEPTABLE, null);
         }
@@ -130,13 +144,13 @@ public class MeetingController extends BaseController implements IGenericControl
     //X
     @SneakyThrows
     @PatchMapping("/meeting")
-    public ResponseEntity<Meeting> update(@RequestBody Meeting entity) {
+    public ResponseEntity<MeetingResponse> update(@RequestBody Meeting entity) {
         try {
             if(entity.getId() != null){
                 try {
                     Meeting existantMeeting = meetingService.findById(entity.getId());
                     existantMeeting = entity;
-                    return ResponseEntity.ok(meetingService.save(existantMeeting));
+                    return ResponseEntity.ok(new MeetingResponse(meetingService.save(existantMeeting)));
                 } catch (Exception e){
                     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
                 }
@@ -165,9 +179,9 @@ public class MeetingController extends BaseController implements IGenericControl
     //X
     @SneakyThrows
     @GetMapping("/meeting/{meetingID}")
-    public ResponseEntity<Meeting> getById(@PathVariable String meetingID) {
+    public ResponseEntity<MeetingResponse> getById(@PathVariable String meetingID) {
         try {
-            return ResponseEntity.ok(meetingService.findById(meetingID));
+            return ResponseEntity.ok(new MeetingResponse(meetingService.findById(meetingID)));
         } catch (Exception e) {
             throw new CustomException("Meeting avec id :" + meetingID + " non trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
