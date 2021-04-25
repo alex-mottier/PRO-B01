@@ -76,7 +76,7 @@ public class MeetingController extends BaseController implements IGenericControl
 
     //X
     @SneakyThrows
-    @GetMapping("/getMyMeetings")
+    @PostMapping("/getMyMeetings")
     public ResponseEntity<List<Meeting>> getMeetingsWhereUserParticipate(DatesFilterDTO datesFilter) {
         try {
             user = getCurrentUser();
