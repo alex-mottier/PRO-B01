@@ -29,7 +29,7 @@ public class LocationController extends BaseController implements IGenericContro
         try {
             return ResponseEntity.ok(locationService.findAll());
         } catch (Exception e) {
-            throw new CustomException("Are you lost?", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("Are you lost?", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
@@ -41,7 +41,7 @@ public class LocationController extends BaseController implements IGenericContro
         try {
             return ResponseEntity.ok(locationService.findAll());
         } catch (Exception e) {
-            throw new CustomException("The question is not where but when", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("The question is not where but when", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
@@ -54,9 +54,9 @@ public class LocationController extends BaseController implements IGenericContro
                 return ResponseEntity.ok(locationService.save(entity));
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         }
-        throw new CustomException("Romae non in die", HttpStatus.INTERNAL_SERVER_ERROR, null);
+        throw new CustomException("Romae non in die", HttpStatus.NOT_ACCEPTABLE, null);
     }
 
     //X
@@ -68,9 +68,9 @@ public class LocationController extends BaseController implements IGenericContro
                 return ResponseEntity.ok(locationService.save(entity));
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         }
-        throw new CustomException("Yo dawg I heard you like updates so I made an update that needs an update so you can update while you update", HttpStatus.INTERNAL_SERVER_ERROR, null);
+        throw new CustomException("Yo dawg I heard you like updates so I made an update that needs an update so you can update while you update", HttpStatus.NOT_ACCEPTABLE, null);
     }
 
     //X
@@ -80,7 +80,7 @@ public class LocationController extends BaseController implements IGenericContro
         try {
             return ResponseEntity.ok(locationService.findById(id));
         } catch (Exception e) {
-            throw new CustomException("We don't have magical places", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("We don't have magical places", HttpStatus.NOT_ACCEPTABLE, null);
 
         }
     }

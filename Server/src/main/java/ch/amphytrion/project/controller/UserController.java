@@ -40,7 +40,7 @@ public class UserController extends BaseController implements IGenericController
         }
         else {
             //user already exists
-            throw new CustomException("The user account already exists in the app", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("The user account already exists in the app", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
@@ -52,7 +52,7 @@ public class UserController extends BaseController implements IGenericController
             if (current != null) {
                 return ResponseEntity.ok().body(new UserResponse(current));
             } else {
-                throw new CustomException("Login failed", HttpStatus.UNAUTHORIZED, null);
+                throw new CustomException("Login failed", HttpStatus.NOT_ACCEPTABLE, null);
             }
     }
     @SneakyThrows
@@ -61,7 +61,7 @@ public class UserController extends BaseController implements IGenericController
         try {
             return ResponseEntity.ok(new UserResponse(userService.findByUsername(username)));
         } catch (Exception e) {
-            throw new CustomException("Result not found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            throw new CustomException("Result not found", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
@@ -70,7 +70,7 @@ public class UserController extends BaseController implements IGenericController
             @ApiResponse(code = 200, message = "Successfully reached userController"),
             @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
             @ApiResponse(code = 403, message = "Access to this resource is forbidden"),
-            @ApiResponse(code = 500, message = "The user account already exists in the app")
+            @ApiResponse(code = 406, message = "The user account already exists in the app")
     })
     @GetMapping("/userController")
     private String testController() {
