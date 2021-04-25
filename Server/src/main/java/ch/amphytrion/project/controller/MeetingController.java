@@ -44,13 +44,13 @@ public class MeetingController extends BaseController implements IGenericControl
     //X
     @SneakyThrows
     @GetMapping("/getCreatedMeetings")
-    public ResponseEntity<List<Meeting>> getMeetingsCreatedByUser() {
+    public ResponseEntity<List<MeetingResponse>> getMeetingsCreatedByUser() {
         try {
             user = getCurrentUser();
 
                 return ResponseEntity.ok(meetingService.findByOwnerID(user.getId()));
         } catch (Exception e) {
-            return ResponseEntity.ok(new ArrayList<Meeting>());
+            return ResponseEntity.ok(new ArrayList<MeetingResponse>());
         }
 
     }
