@@ -46,7 +46,7 @@ const SignIn: React.FC = () => {
           <Title>Se connecter avec</Title>
           <Text style={styles.text}>Veuillez choisir une option de connexion</Text>
           <View style={styles.buttons}>
-            <FacebookButton onPress={() => console.log('todo')} />
+            <FacebookButton onPress={() => {}} />
             <GoogleButton onPress={handleLogin} />
             <CustomButton
               icon={Globals.ICONS.PROFILE}

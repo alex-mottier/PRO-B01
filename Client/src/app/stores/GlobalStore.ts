@@ -7,15 +7,20 @@
 
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import { createContext } from 'react';
-import { Meeting, User, Location, Host, Chat, Message, Filter } from '../models/ApplicationTypes';
+import {
+  Meeting,
+  User,
+  Location,
+  Host,
+  Chat,
+  Message,
+  Filter,
+  Error,
+} from '../models/ApplicationTypes';
 import GoogleAuth from '../authentication/GoogleAuth';
 import { TokenResponse } from 'expo-app-auth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 import Globals from '../context/Globals';
-import { mockMeetings } from '../../mock/Meetings';
-import { mockChat } from '../../mock/Chat';
-import { mockLocations } from '../../mock/Locations';
-import { mockHost } from '../../mock/Host';
 import { addDays, endOfDay, format, startOfDay } from 'date-fns';
 import { Alert } from 'react-native';
 import { AgendaItemsMap } from 'react-native-calendars';
@@ -103,7 +108,7 @@ class Store {
    * Gestion des erreurs
    * @param response contenant l'erreur
    */
-  manageErrorInResponse(response: Response) {
+  async manageErrorInResponse(response: Response) {
     switch (response.status) {
       case 401:
         Alert.alert('Non autorisé', "Vous n'êtes pas autorisé à effectuer cette manipulation");
@@ -115,12 +120,17 @@ class Store {
         Alert.alert('Non trouvé', "La ressource demandée n'a pas été trouvée");
         break;
       case 500:
-        Alert.alert('Erreur', "Erreur 500 s'est produite"); // TODO : récupérer messsage
+        Alert.alert('Erreur', "Une erreur s'est produite sur le serveur");
+        break;
+      case 406:
+        // eslint-disable-next-line no-case-declarations
+        const error: Error = await response.json();
+        Alert.alert("Une erreur s'est produite", error.message);
         break;
       default:
         Alert.alert(
-          'Erreur innatendue',
-          "Une erreur innatendue s'est produite" + response.status.toString(),
+          'Erreur inattendue',
+          "Une erreur inattendue s'est produite : " + response.status.toString(),
         );
     }
   }
@@ -135,12 +145,13 @@ class Store {
     if (token && token.idToken) {
       const response = await this.amphitryonDAO.connectUser(token.idToken);
       if (response) {
-        const sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
-        this.sessionToken = sessionToken;
-        this.amphitryonDAO.setSessionToken(sessionToken ? sessionToken : '');
-        // this.setAuthenticatedUser(await response.json());
-        this.setIsLoggedIn(true);
-        void this.loadUserData();
+        if (response.ok) {
+          const sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
+          this.sessionToken = sessionToken;
+          this.setAuthenticatedUser(await response.json());
+          this.setIsLoggedIn(true);
+          void this.loadUserData();
+        }
       }
     }
     this.setIsLoading(false);
@@ -184,10 +195,14 @@ class Store {
     if (this.userToken?.idToken) {
       const response = await this.amphitryonDAO.createUser(this.userToken.idToken, user);
       if (response) {
-        this.sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
-        this.setAuthenticatedUser(user);
-        this.setIsLoggedIn(true);
-        void this.loadUserData();
+        if (response.ok) {
+          this.sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
+          this.setAuthenticatedUser(await response.json());
+          this.setIsLoggedIn(true);
+          void this.loadUserData();
+        } else {
+          void this.manageErrorInResponse(response);
+        }
       }
     }
     this.setIsLoading(false);
@@ -204,7 +219,8 @@ class Store {
       if (response && response.ok) {
         this.sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
         this.setAuthenticatedUser(await response.json());
-        void this.loadMeetingsCreatedByUser();
+        this.setIsLoggedIn(true);
+        void this.loadUserData();
       } else {
         if (response) void this.manageErrorInResponse(response);
       }
@@ -239,15 +255,17 @@ class Store {
     const response = await this.amphitryonDAO.loadMeetingCreatedByUser();
     if (response) {
       if (response.ok) {
-        this.meetingsCreatedByUser = await response.json();
+        const meetings = await response.json();
+        console.log(meetings);
+        this.meetingsCreatedByUser = meetings;
       } else {
         void this.manageErrorInResponse(response);
       }
     }
 
     // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.meetingsCreatedByUser = mockMeetings;
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // this.meetingsCreatedByUser = mockMeetings;
   }
 
   /**
@@ -256,18 +274,18 @@ class Store {
    * @param endDate to date
    */
   @action async loadUserMeetings(startDate: Date, endDate: Date) {
-    // const response = await this.amphitryonDAO.loadUserMeetings(startDate, endDate);
-    // if (response) {
-    //   if (response.ok) {
-    //     this.meetingsCreatedByUser = await response.json();
-    //   } else {
-    //     void this.manageErrorInResponse(response);
-    //   }
-    // }
+    const response = await this.amphitryonDAO.loadUserMeetings(startDate, endDate);
+    if (response) {
+      if (response.ok) {
+        this.meetingsCreatedByUser = await response.json();
+      } else {
+        void this.manageErrorInResponse(response);
+      }
+    }
 
-    // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.userMeetings = mockMeetings;
+    // // TO DELETE
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // this.userMeetings = mockMeetings;
   }
 
   /**
@@ -275,27 +293,26 @@ class Store {
    * @param meeting to join
    */
   @action async joinMeeting(meeting: Meeting) {
-    // const response = await this.amphitryonDAO.joinMeeting(meeting.id);
-    // if (response) {
-    //   if (response.ok) {
-    // if (this.userMeetings) {
-    //   this.userMeetings.push(meeting);
-    //   Alert.alert('Meeting rejoint', 'Vous avez rejiont la réunion ' + meeting.name);
-    //   this.regenerateItems();
-    // }
-    //   } else {
-    //     void this.manageErrorInResponse(response);
-    //   }
-    //   }
-    // }
+    const response = await this.amphitryonDAO.joinMeeting(meeting.id);
+    if (response) {
+      if (response.ok) {
+        if (this.userMeetings) {
+          this.userMeetings.push(meeting);
+          Alert.alert('Meeting rejoint', 'Vous avez rejiont la réunion ' + meeting.name);
+          this.regenerateItems();
+        }
+      } else {
+        void this.manageErrorInResponse(response);
+      }
+    }
 
     // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    if (this.userMeetings) {
-      this.userMeetings.push(meeting);
-      Alert.alert('Réunion rejointe', 'Vous avez rejoint la réunion ' + meeting.name);
-      this.regenerateItems();
-    }
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // if (this.userMeetings) {
+    //   this.userMeetings.push(meeting);
+    //   Alert.alert('Réunion rejointe', 'Vous avez rejoint la réunion ' + meeting.name);
+    //   this.regenerateItems();
+    // }
   }
 
   /**
@@ -303,30 +320,30 @@ class Store {
    * @param meeting to leave
    */
   @action async leaveMeeting(meeting: Meeting) {
-    // const response = await this.amphitryonDAO.leaveMeeting(meeting.id);
-    // if (response) {
-    //   if (response.ok) {
-    //     if (this.userMeetings) {
-    //       this.userMeetings = this.userMeetings?.filter((current: Meeting) => {
-    //         return current.id !== current.id;
-    //       });
-    // Alert.alert('Meeting quitté', 'Vous avez quitté la réunion ' + meeting.name);
-    // this.regenerateItems();
-    //     }
-    //   } else {
-    //     void this.manageErrorInResponse(response);
-    //   }
-    // }
+    const response = await this.amphitryonDAO.leaveMeeting(meeting.id);
+    if (response) {
+      if (response.ok) {
+        if (this.userMeetings) {
+          this.userMeetings = this.userMeetings?.filter((current: Meeting) => {
+            return current.id !== current.id;
+          });
+          Alert.alert('Meeting quitté', 'Vous avez quitté la réunion ' + meeting.name);
+          this.regenerateItems();
+        }
+      } else {
+        void this.manageErrorInResponse(response);
+      }
+    }
 
     // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    if (this.userMeetings) {
-      this.userMeetings = this.userMeetings?.filter((current: Meeting) => {
-        return meeting.id !== current.id;
-      });
-      Alert.alert('Réunion quittée', 'Vous avez quitté la réunion ' + meeting.name);
-      this.regenerateItems();
-    }
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // if (this.userMeetings) {
+    //   this.userMeetings = this.userMeetings?.filter((current: Meeting) => {
+    //     return meeting.id !== current.id;
+    //   });
+    //   Alert.alert('Réunion quittée', 'Vous avez quitté la réunion ' + meeting.name);
+    //   this.regenerateItems();
+    // }
   }
 
   /**
@@ -341,19 +358,19 @@ class Store {
    * Load chat data
    * @param chatId to load
    */
-  @action async loadChat() {
-    // const response = await this.amphitryonDAO.loadMessages(this.chatToLoad);
-    // if (response) {
-    //   if (response.ok) {
-    //     this.chat = { id: chatId, messages: await response.json() };
-    //   } else {
-    //     void this.manageErrorInResponse(response);
-    //   }
-    // }
+  @action async loadChat(chatId: string) {
+    const response = await this.amphitryonDAO.loadMessages(this.chatToLoad);
+    if (response) {
+      if (response.ok) {
+        this.chat = { id: chatId, messages: await response.json() };
+      } else {
+        void this.manageErrorInResponse(response);
+      }
+    }
 
     // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.chat = mockChat;
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // this.chat = mockChat;
   }
 
   /**
@@ -362,20 +379,20 @@ class Store {
    * @param message to send
    */
   @action async sendMessage(chatId: string, message: Message) {
-    // const response = await this.amphitryonDAO.sendMessage(chatId, message);
-    // if (response) {
-    //   if (response.ok) {
-    //     this.chat?.messages.push(message);
-    //   } else {
-    //     void this.manageErrorInResponse(response);
-    //   }
-    // }
+    const response = await this.amphitryonDAO.sendMessage(chatId, message);
+    if (response) {
+      if (response.ok) {
+        this.chat?.messages.push(message);
+      } else {
+        void this.manageErrorInResponse(response);
+      }
+    }
 
     // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    runInAction(() => {
-      this.chat?.messages.push(message);
-    });
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // runInAction(() => {
+    //   this.chat?.messages.push(message);
+    // });
   }
 
   /**
@@ -392,36 +409,36 @@ class Store {
    * @param endDate to date
    */
   @action async loadLocations(startDate: Date, endDate: Date) {
-    // const response = await this.amphitryonDAO.getAllLocations(startDate, endDate);
-    // if (response) {
-    //   if (response.ok) {
-    //     this.locations = await response.json();
-    //   } else {
-    //     void this.manageErrorInResponse(response);
-    //   }
-    // }
+    const response = await this.amphitryonDAO.getAllLocationsAvailable(startDate, endDate);
+    if (response) {
+      if (response.ok) {
+        this.locations = await response.json();
+      } else {
+        void this.manageErrorInResponse(response);
+      }
+    }
 
     // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.locations = mockLocations;
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // this.locations = mockLocations;
   }
 
   /**
    * Load all locations
    */
   @action async loadAllLocations() {
-    // const response = await this.amphitryonDAO.getAllLocations();
-    // if (response) {
-    //   if (response.ok) {
-    //     this.locations = await response.json();
-    //   } else {
-    //     void this.manageErrorInResponse(response);
-    //   }
-    // }
+    const response = await this.amphitryonDAO.getAllLocations();
+    if (response) {
+      if (response.ok) {
+        this.locations = await response.json();
+      } else {
+        void this.manageErrorInResponse(response);
+      }
+    }
 
     // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.locations = mockLocations;
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // this.locations = mockLocations;
   }
 
   /**
@@ -429,28 +446,28 @@ class Store {
    * @param locationId location id
    */
   @action async loadLocationToDisplay() {
-    // const location = await this.loadLocation(this.locationToLoad);
-    // if (location) this.locationToDisplay = location;
+    const location = await this.loadLocation(this.locationToLoad);
+    if (location) this.locationToDisplay = location;
 
-    // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.locationToDisplay = await this.loadLocation(this.locationToLoad);
+    // // TO DELETE
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // this.locationToDisplay = await this.loadLocation(this.locationToLoad);
   }
 
   @action async loadLocation(locationId: string): Promise<Location | null> {
-    // const response = await this.amphitryonDAO.getLocationDetails(locationId);
-    // if (response) {
-    //   if (response.ok) {
-    //     return await response.json();
-    //   } else {
-    //     void this.manageErrorInResponse(response);
-    //   }
-    // }
-    // return null;
+    const response = await this.amphitryonDAO.getLocationDetails(locationId);
+    if (response) {
+      if (response.ok) {
+        return await response.json();
+      } else {
+        void this.manageErrorInResponse(response);
+      }
+    }
+    return null;
 
-    // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return mockLocations[0];
+    // // TO DELETE
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // return mockLocations[0];
   }
 
   /**
@@ -466,18 +483,18 @@ class Store {
    * @param hostId host id
    */
   @action async loadHost() {
-    // const response = await this.amphitryonDAO.getHostDetails(this.hostToLoad);
-    // if (response) {
-    //   if (response.ok) {
-    //     this.locationToDisplay = await response.json();
-    //   } else {
-    //     void this.manageErrorInResponse(response);
-    //   }
-    // }
+    const response = await this.amphitryonDAO.getHostDetails(this.hostToLoad);
+    if (response) {
+      if (response.ok) {
+        this.locationToDisplay = await response.json();
+      } else {
+        void this.manageErrorInResponse(response);
+      }
+    }
 
     // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.hostToDisplay = mockHost;
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // this.hostToDisplay = mockHost;
   }
 
   /**
@@ -485,27 +502,28 @@ class Store {
    * @param meeting to create
    */
   @action async createMeeting(meeting: Meeting) {
-    // const response = await this.amphitryonDAO.createMeeting(meeting);
-    // if (response) {
-    //   if (response.ok) {
-    //     void runInAction(async () => {
-    //       const meetingWithId = JSON.parse(await response.text());
-    //       this.userMeetings?.push(meetingWithId);
-    //       this.meetingsCreatedByUser?.push(meetingWithId);
-    //       this.regenerateItems();
-    //     });
-    //   } else {
-    //     void this.manageErrorInResponse(response);
-    //   }
-    // }
+    const response = await this.amphitryonDAO.createMeeting(meeting);
+    if (response) {
+      if (response.ok) {
+        void runInAction(async () => {
+          const meetingWithId = JSON.parse(await response.text());
+          this.userMeetings?.push(meetingWithId);
+          this.meetingsCreatedByUser?.push(meetingWithId);
+          this.regenerateItems();
+          Alert.alert('Réunion crée', 'La réunion que vous avez soumise a bien été enregistrée');
+        });
+      } else {
+        void this.manageErrorInResponse(response);
+      }
+    }
 
     // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    runInAction(() => {
-      this.userMeetings?.push(meeting);
-      this.meetingsCreatedByUser?.push(meeting);
-      this.regenerateItems();
-    });
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // runInAction(() => {
+    //   this.userMeetings?.push(meeting);
+    //   this.meetingsCreatedByUser?.push(meeting);
+    //   this.regenerateItems();
+    // });
   }
 
   /**
@@ -513,44 +531,47 @@ class Store {
    * @param meeting to update
    */
   @action async updateMeeting(meeting: Meeting) {
-    // const response = await this.amphitryonDAO.updateMeeting(meeting);
-    // if (response) {
-    //   if (response.ok) {
-    // if (this.userMeetings) {
-    //   const index = this.userMeetings.findIndex((current: Meeting) => {
-    //     return current.id == meeting.id;
-    //   });
-    //   if (index) this.userMeetings[index] = meeting;
-    // }
-    // if (this.meetingsCreatedByUser) {
-    //   const index = this.meetingsCreatedByUser.findIndex((current: Meeting) => {
-    //     return current.id == meeting.id;
-    //   });
-    //   if (index) this.meetingsCreatedByUser[index] = meeting;
-    // }
-    // this.regenerateItems();
-
-    //   } else {
-    //     void this.manageErrorInResponse(response);
-    //   }
-    // }
+    const response = await this.amphitryonDAO.updateMeeting(meeting);
+    if (response) {
+      if (response.ok) {
+        if (this.userMeetings) {
+          const index = this.userMeetings.findIndex((current: Meeting) => {
+            return current.id == meeting.id;
+          });
+          if (index) this.userMeetings[index] = meeting;
+        }
+        if (this.meetingsCreatedByUser) {
+          const index = this.meetingsCreatedByUser.findIndex((current: Meeting) => {
+            return current.id == meeting.id;
+          });
+          if (index) this.meetingsCreatedByUser[index] = meeting;
+        }
+        this.regenerateItems();
+        Alert.alert(
+          'Réunion mise à jour',
+          'La réunion que vous avez soumise a bien été mise à jour',
+        );
+      } else {
+        void this.manageErrorInResponse(response);
+      }
+    }
 
     // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    runInAction(() => {
-      if (this.userMeetings && this.meetingsCreatedByUser) {
-        this.userMeetings = this.userMeetings.map((current: Meeting) => {
-          if (current.id === meeting.id) return meeting;
-          return current;
-        });
-      }
-      if (this.meetingsCreatedByUser) {
-        this.meetingsCreatedByUser = this.meetingsCreatedByUser.map((current: Meeting) => {
-          if (current.id === meeting.id) return meeting;
-          return current;
-        });
-      }
-    });
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // runInAction(() => {
+    //   if (this.userMeetings && this.meetingsCreatedByUser) {
+    //     this.userMeetings = this.userMeetings.map((current: Meeting) => {
+    //       if (current.id === meeting.id) return meeting;
+    //       return current;
+    //     });
+    //   }
+    //   if (this.meetingsCreatedByUser) {
+    //     this.meetingsCreatedByUser = this.meetingsCreatedByUser.map((current: Meeting) => {
+    //       if (current.id === meeting.id) return meeting;
+    //       return current;
+    //     });
+    //   }
+    // });
   }
 
   /**
@@ -558,39 +579,40 @@ class Store {
    * @param meetingId to delete
    */
   @action async deleteMeeting(meetingId: string) {
-    // const response = await this.amphitryonDAO.deleteMeeting(meetingId);
-    // if (response) {
-    //   if (response.ok) {
-    // runInAction(() => {
-    //     if (this.userMeetings)
-    //       this.userMeetings = this.userMeetings.filter((current: Meeting) => {
-    //         return current.id !== meetingId;
-    //       });
-    //     if (this.meetingsCreatedByUser)
-    //       this.meetingsCreatedByUser = this.meetingsCreatedByUser.filter((current: Meeting) => {
-    //         return current.id !== meetingId;
-    //       });
-    //      Alert.alert('Supprimée', 'La réunion a correctement été supprimée');
-    // this.regenerateItems();
-    // });
-    //   } else {
-    //     void this.manageErrorInResponse(response);
-    //   }
-    // }
+    const response = await this.amphitryonDAO.deleteMeeting(meetingId);
+    if (response) {
+      if (response.ok) {
+        runInAction(() => {
+          if (this.userMeetings)
+            this.userMeetings = this.userMeetings.filter((current: Meeting) => {
+              return current.id !== meetingId;
+            });
+          if (this.meetingsCreatedByUser)
+            this.meetingsCreatedByUser = this.meetingsCreatedByUser.filter((current: Meeting) => {
+              return current.id !== meetingId;
+            });
+          Alert.alert('Supprimée', 'La réunion a correctement été supprimée');
+          this.regenerateItems();
+        });
+      } else {
+        void this.manageErrorInResponse(response);
+      }
+    }
+
     // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    runInAction(() => {
-      if (this.userMeetings)
-        this.userMeetings = this.userMeetings.filter((current: Meeting) => {
-          return current.id !== meetingId;
-        });
-      if (this.meetingsCreatedByUser)
-        this.meetingsCreatedByUser = this.meetingsCreatedByUser.filter((current: Meeting) => {
-          return current.id !== meetingId;
-        });
-      Alert.alert('Supprimée', 'La réunion a correctement été supprimée');
-      this.regenerateItems();
-    });
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // runInAction(() => {
+    //   if (this.userMeetings)
+    //     this.userMeetings = this.userMeetings.filter((current: Meeting) => {
+    //       return current.id !== meetingId;
+    //     });
+    //   if (this.meetingsCreatedByUser)
+    //     this.meetingsCreatedByUser = this.meetingsCreatedByUser.filter((current: Meeting) => {
+    //       return current.id !== meetingId;
+    //     });
+    //   Alert.alert('Supprimée', 'La réunion a correctement été supprimée');
+    //   this.regenerateItems();
+    // });
   }
 
   /**
@@ -598,18 +620,18 @@ class Store {
    * @param id to search
    */
   @action async searchWithId(id: string) {
-    // const response = await this.amphitryonDAO.searchMeetingWithID(id);
-    // if (response) {
-    //   if (response.ok) {
-    //     this.searchMeetings = await response.json();
-    //   } else {
-    //     void this.manageErrorInResponse(response);
-    //   }
-    // }
+    const response = await this.amphitryonDAO.searchMeetingWithID(id);
+    if (response) {
+      if (response.ok) {
+        this.searchMeetings = await response.json();
+      } else {
+        void this.manageErrorInResponse(response);
+      }
+    }
 
-    // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.searchMeetings = [mockMeetings[0]];
+    // // TO DELETE
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // this.searchMeetings = [mockMeetings[0]];
   }
 
   /**
@@ -617,18 +639,18 @@ class Store {
    * @param filter to apply
    */
   @action async searchWithFilter(filter: Filter) {
-    // const response = await this.amphitryonDAO.searchMeeting(filter);
-    // if (response) {
-    //   if (response.ok) {
-    //     this.searchMeetings = await response.json();
-    //   } else {
-    //     void this.manageErrorInResponse(response);
-    //   }
-    // }
+    const response = await this.amphitryonDAO.searchMeeting(filter);
+    if (response) {
+      if (response.ok) {
+        this.searchMeetings = await response.json();
+      } else {
+        void this.manageErrorInResponse(response);
+      }
+    }
 
     // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.searchMeetings = mockMeetings;
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // this.searchMeetings = mockMeetings;
   }
 
   /**

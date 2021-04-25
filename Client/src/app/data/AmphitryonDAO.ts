@@ -12,11 +12,6 @@ import { Filter, Meeting, Message, User } from '../models/ApplicationTypes';
 export default class AmphitryonDAO {
   private static instance: AmphitryonDAO = new AmphitryonDAO();
   private sessionToken = '';
-  private header = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    session_token_amphitryon: this.sessionToken,
-  };
 
   /**
    * Private instantiation to apply singleton pattern
@@ -35,8 +30,9 @@ export default class AmphitryonDAO {
    * Set the user session token
    * @param token of the user session
    */
-  public setSessionToken(token: string): void {
-    this.sessionToken = token;
+  public setSessionToken(response: Response): void {
+    const sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
+    if (sessionToken) this.sessionToken = sessionToken;
   }
 
   /**
@@ -48,10 +44,14 @@ export default class AmphitryonDAO {
   async createUser(tokenId: string, user: User): Promise<Response | null> {
     return fetch(Globals.URLS.API_URL + '/signUpStudent', {
       method: 'POST',
-      headers: this.header,
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ tokenID: tokenId, username: user.username }),
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
@@ -69,14 +69,17 @@ export default class AmphitryonDAO {
   async connectUser(tokenId: string): Promise<Response | null> {
     return fetch(Globals.URLS.API_URL + '/login', {
       method: 'POST',
-      headers: this.header,
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ tokenID: tokenId }),
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
-        // Alert.alert("Une erreur s'est produit", error.message);
         Alert.alert(
           "Une erreur s'est produite",
           'Erreur lors de la récupération des informations de votre compte',
@@ -93,15 +96,18 @@ export default class AmphitryonDAO {
   async createMeeting(meeting: Meeting): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/meeting', {
       method: 'POST',
-      headers: this.header,
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        session_token_amphitryon: this.sessionToken,
+      },
       body: JSON.stringify(meeting),
     })
       .then((response: Response) => {
-        Alert.alert('Réunion crée', 'La réunion que vous avez soumise a bien été enregistrée');
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
-        // Alert.alert("Une erreur s'est produit", error.message);
         Alert.alert("Une erreur s'est produite", 'Erreur lors de la création de la réunion');
         return null;
       });
@@ -115,10 +121,15 @@ export default class AmphitryonDAO {
   async updateMeeting(meeting: Meeting): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/meeting', {
       method: 'PATCH',
-      headers: this.header,
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        session_token_amphitryon: this.sessionToken,
+      },
       body: JSON.stringify(meeting),
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
@@ -136,9 +147,14 @@ export default class AmphitryonDAO {
   async deleteMeeting(meetingID: string): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/meeting/' + meetingID, {
       method: 'DELETE',
-      headers: this.header,
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        session_token_amphitryon: this.sessionToken,
+      },
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
@@ -155,9 +171,14 @@ export default class AmphitryonDAO {
   async loadMeetingCreatedByUser(): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/getCreatedMeetings', {
       method: 'GET',
-      headers: this.header,
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        session_token_amphitryon: this.sessionToken,
+      },
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
@@ -175,11 +196,16 @@ export default class AmphitryonDAO {
    */
   async loadUserMeetings(startDate: Date, endDate: Date): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/getMyMeetings ', {
-      method: 'GET',
-      headers: this.header,
-      body: JSON.stringify({ startDate: startDate.toISOString(), endDate: endDate.toISOString() }),
+      method: 'POST',
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        session_token_amphitryon: this.sessionToken,
+      },
+      body: JSON.stringify({ endDate: endDate.toISOString(), startDate: startDate.toISOString() }),
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
@@ -196,9 +222,14 @@ export default class AmphitryonDAO {
   async searchMeetingWithID(meetingID: string): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/meeting/' + meetingID, {
       method: 'GET',
-      headers: this.header,
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        session_token_amphitryon: this.sessionToken,
+      },
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
@@ -215,10 +246,15 @@ export default class AmphitryonDAO {
   async searchMeeting(filter: Filter): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/meetings/filter', {
       method: 'POST',
-      headers: this.header,
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        session_token_amphitryon: this.sessionToken,
+      },
       body: JSON.stringify(filter),
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
@@ -235,9 +271,14 @@ export default class AmphitryonDAO {
   async joinMeeting(meetingID: string): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/meeting/join/' + meetingID, {
       method: 'POST',
-      headers: this.header,
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        session_token_amphitryon: this.sessionToken,
+      },
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
@@ -254,9 +295,14 @@ export default class AmphitryonDAO {
   async leaveMeeting(meetingID: string): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/meeting/leave/' + meetingID, {
       method: 'POST',
-      headers: this.header,
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        session_token_amphitryon: this.sessionToken,
+      },
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
@@ -273,9 +319,14 @@ export default class AmphitryonDAO {
   async loadMessages(chatID: string): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/chat/' + chatID, {
       method: 'GET',
-      headers: this.header,
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        session_token_amphitryon: this.sessionToken,
+      },
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
@@ -292,10 +343,15 @@ export default class AmphitryonDAO {
   async sendMessage(chatId: string, message: Message): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/chat/createMessage/' + chatId, {
       method: 'POST',
-      headers: this.header,
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        session_token_amphitryon: this.sessionToken,
+      },
       body: JSON.stringify(message),
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
@@ -312,9 +368,14 @@ export default class AmphitryonDAO {
   async getLocationDetails(locationID: string): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/location/' + locationID, {
       method: 'GET',
-      headers: this.header,
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        session_token_amphitryon: this.sessionToken,
+      },
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
@@ -331,11 +392,16 @@ export default class AmphitryonDAO {
    */
   async getAllLocationsAvailable(start: Date, end: Date): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/locations/withDate', {
-      method: 'GET',
-      headers: this.header,
+      method: 'POST',
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        session_token_amphitryon: this.sessionToken,
+      },
       body: JSON.stringify({ startDate: start.toISOString(), endDate: end.toISOString() }),
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
@@ -351,9 +417,14 @@ export default class AmphitryonDAO {
   async getAllLocations(): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/locations', {
       method: 'GET',
-      headers: this.header,
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        session_token_amphitryon: this.sessionToken,
+      },
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {
@@ -370,9 +441,14 @@ export default class AmphitryonDAO {
   async getHostDetails(hostId: string): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/host/' + hostId, {
       method: 'GET',
-      headers: this.header,
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+        session_token_amphitryon: this.sessionToken,
+      },
     })
       .then((response: Response) => {
+        this.setSessionToken(response);
         return response;
       })
       .catch(() => {

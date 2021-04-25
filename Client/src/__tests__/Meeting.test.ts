@@ -9,6 +9,7 @@ import { Meeting } from '../app/models/ApplicationTypes';
 
 describe('Meeting', () => {
   const meeting: Meeting = {
+    id: '#123',
     name: 'PRO - Coordination',
     description: "Réunion pour coordiner l'avancement du projet",
     tags: [{ name: 'PRO' }, { name: 'Coordination' }],
@@ -16,16 +17,21 @@ describe('Meeting', () => {
     locationName: 'Salle G01',
     nbPeople: 2,
     maxPeople: 5,
-    start: new Date(),
-    end: new Date(),
+    startDate: new Date().toISOString(),
+    endDate: new Date().toISOString(),
     ownerID: '#9876',
-    chatId: '#6789',
+    chatID: '#6789',
     isPrivate: true,
+    membersID: ['#123', '#456'],
   };
 
   it('should create a new meeting instance', () => {
     expect(meeting).not.toBe(null);
     expect(meeting).not.toBe(undefined);
+  });
+
+  it('should return its id', () => {
+    expect(meeting.id).toBe('#123');
   });
 
   it('should return its name', () => {
@@ -57,13 +63,13 @@ describe('Meeting', () => {
   });
 
   it('should have a start', () => {
-    expect(meeting.start).not.toBeNull();
-    expect(meeting.start).not.toBeUndefined();
+    expect(meeting.startDate).not.toBeNull();
+    expect(meeting.startDate).not.toBeUndefined();
   });
 
   it('should have an end date', () => {
-    expect(meeting.end).not.toBeNull();
-    expect(meeting.end).not.toBeUndefined();
+    expect(meeting.endDate).not.toBeNull();
+    expect(meeting.endDate).not.toBeUndefined();
   });
 
   it('should return its owner id', () => {
@@ -71,10 +77,15 @@ describe('Meeting', () => {
   });
 
   it('should return its chat id', () => {
-    expect(meeting.chatId).toBe('#6789');
+    expect(meeting.chatID).toBe('#6789');
   });
 
   it('should return if it is private', () => {
     expect(meeting.isPrivate).toBe(true);
+  });
+
+  it('should return it members id', () => {
+    expect(meeting.membersID).not.toBe(true);
+    expect(meeting.membersID.length).toBe(2);
   });
 });

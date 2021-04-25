@@ -12,15 +12,10 @@ import { Button, Text, Title } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/core';
-import CustomButton from '../../../components/Buttons/CustomButton';
-import GlobalStore from '../../../app/stores/GlobalStore';
 
 const Welcome: React.FC = () => {
   /* Usage of React Navigation */
   const navigation = useNavigation();
-
-  // To be deleted (just to simplify the connection during development)
-  const store = React.useContext(GlobalStore);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -64,16 +59,6 @@ const Welcome: React.FC = () => {
               onPress={() => navigation.navigate('SignUp')}>
               S&apos;inscrire
             </Button>
-            <CustomButton
-              icon={Globals.ICONS.SEND}
-              color={Globals.COLORS.GRAY}
-              onPress={() => {
-                store.setIsLoggedIn(true);
-                store.setAuthenticatedUser({ id: '1', username: 'Développeur' });
-                void store.loadUserData();
-              }}
-              text={'Développement'}
-            />
           </View>
         </View>
       </ScrollView>

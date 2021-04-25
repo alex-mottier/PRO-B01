@@ -33,7 +33,7 @@ const ChatMeeting: React.FC = () => {
    */
   React.useEffect(() => {
     setIsLoading(true);
-    void store.loadChat().then(() => {
+    void store.loadChat(chat ? chat.id : '').then(() => {
       setChat(store.chat);
       setMeeting(store.meetingToUpdate);
       setAuthenticedUser(store.getAuthenticatedUser());

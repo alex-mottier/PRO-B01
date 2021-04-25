@@ -69,6 +69,6 @@ export default {
     SESSION_TOKEN_NAME: 'SESSION_TOKEN_AMPHITRYON',
   },
   URLS: {
-    API_URL: 'http://amphitryon.herokuapp.com/',
+    API_URL: 'https://amphitryon.herokuapp.com',
   },
 };

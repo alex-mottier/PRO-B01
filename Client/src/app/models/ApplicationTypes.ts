@@ -18,6 +18,10 @@ export type Chat = {
   messages: Message[];
 };
 
+export type Error = {
+  message: string;
+};
+
 export type Filter = {
   name: string | null;
   startDate: string | null;
@@ -60,10 +64,10 @@ export type Meeting = {
   locationID: string;
   locationName: string;
   ownerID: string;
-  chatId: string;
+  chatID: string;
   tags: Tag[];
   nbPeople: number;
-  membersId: string[];
+  membersID: string[];
   maxPeople: number;
   startDate: string;
   endDate: string;

@@ -50,7 +50,7 @@ const MeetingComponent: React.FC<IProps> = ({
   let nbColors = 0;
   const isOwner = meeting.ownerID === store.getAuthenticatedUser()?.id;
   const isMemberOfMeeting =
-    meeting.membersId.findIndex((current: string) => {
+    meeting.membersID.findIndex((current: string) => {
       return store.getAuthenticatedUser()?.id === current;
     }) !== -1;
 
@@ -124,7 +124,7 @@ const MeetingComponent: React.FC<IProps> = ({
    * Action on open chat button pressed
    */
   const handleOpenChat = () => {
-    store.setChatToLoad(meeting.chatId);
+    store.setChatToLoad(meeting.chatID);
     store.setMeetingToUpdate(meeting);
     navigation.navigate('Chat');
   };

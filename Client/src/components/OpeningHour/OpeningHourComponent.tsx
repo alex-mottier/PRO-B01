@@ -10,10 +10,8 @@ import { View } from 'react-native';
 import { IconButton, Card, Text } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
 import { OpeningHour } from '../../app/models/ApplicationTypes';
-import frenchLocale from 'date-fns/locale/fr';
 import styles from './styles';
 import { format } from 'date-fns';
-import { LocaleConfig } from 'react-native-calendars';
 import { dateLocale } from '../../app/context/DateFormat';
 
 /**

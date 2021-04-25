@@ -136,21 +136,16 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
         locationID: location?.id,
         locationName: location?.name,
         nbPeople: meeting ? meeting.nbPeople : 1,
-        membersId: [],
+        membersID: [],
         maxPeople: location.nbPeople,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
         ownerID: meeting ? meeting.ownerID : '',
-        chatId: meeting ? meeting.chatId : '',
+        chatID: meeting ? meeting.chatID : '',
         isPrivate: isPrivateOn,
       })
       .then(() => {
         store.regenerateItems();
-        Alert.alert(
-          'Réunion mise à jour',
-          'La réunion que vous avez soumise a bien été mise à jour',
-        );
-        navigation.goBack();
         setIsLoading(false);
       });
   };
@@ -176,12 +171,13 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
         maxPeople: location.nbPeople,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
-        membersId: [],
+        membersID: [],
         ownerID: '',
-        chatId: '',
+        chatID: '',
         isPrivate: isPrivateOn,
       })
       .then(() => {
+        navigation.goBack();
         setIsLoading(false);
       });
 

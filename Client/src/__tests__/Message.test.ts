@@ -12,7 +12,7 @@ describe('Message', () => {
     id: '#1234',
     message: 'Hey :)',
     username: 'developpeur',
-    date: new Date(),
+    date: new Date().toISOString(),
   };
   it('should create a new chat instance', () => {
     expect(message).not.toBe(null);

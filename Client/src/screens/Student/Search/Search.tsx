@@ -23,7 +23,6 @@ import Globals from '../../../app/context/Globals';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import styles from './styles';
 import { Filter, Location, Meeting, Tag } from '../../../app/models/ApplicationTypes';
-import { mockMeetings } from '../../../mock/Meetings';
 import TagsComponent from '../../../components/Tags/TagsComponent';
 import SearchLocation from '../../../components/SearchLocation/SearchLocation';
 import DateTimePicker from '@react-native-community/datetimepicker';
