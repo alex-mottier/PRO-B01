@@ -27,7 +27,6 @@ const Home: React.FC = () => {
   /* Usage of MobX global state store */
   const store = React.useContext(GlobalStore);
   const paperTheme = useTheme();
-
   return (
     <Agenda
       items={store.items ? store.items : {}}
