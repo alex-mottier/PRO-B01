@@ -51,7 +51,7 @@ public class MeetingController extends BaseController implements IGenericControl
             //if (user instanceof Student)
                 return ResponseEntity.ok(meetingService.findByOwnerID(user.getId()));
         } catch (Exception e) {
-            return  ResponseEntity.ok(new ArrayList<Meeting>());
+            return ResponseEntity.ok(new ArrayList<Meeting>());
         }
 
     }
@@ -84,7 +84,7 @@ public class MeetingController extends BaseController implements IGenericControl
             initialize();
             return ResponseEntity.ok(student.getMeetingsParticipations());
         } catch (Exception e) {
-            throw new CustomException("On est à cours de meeting. Revenez plus tard!", HttpStatus.NOT_ACCEPTABLE, null);
+            return ResponseEntity.ok(new ArrayList<Meeting>());
         }
     }
 
@@ -120,6 +120,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 Chat chat = new Chat();
                 chatService.save(chat);
                 entity.setChatID(chat.getId());
+                entity.setMembersID(new ArrayList<String>());
                 return ResponseEntity.ok(meetingService.save(entity));
         } catch (Exception e) {
             throw new CustomException("Aucun meeting créé", HttpStatus.NOT_ACCEPTABLE, null);
