@@ -2,6 +2,7 @@ package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.dto.DatesFilterDTO;
 import ch.amphytrion.project.entities.databaseentities.Location;
+import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.services.LocationService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,13 +37,13 @@ public class LocationController extends BaseController implements IGenericContro
 
     //X
     @SneakyThrows
-    @GetMapping("/locations/withDate")
+    @PostMapping("/locations/withDate")
     public ResponseEntity<List<Location>> getAllWithDate(@RequestBody DatesFilterDTO filters) {
         //TODO logique & model dto with startDate & endDate
         try {
             return ResponseEntity.ok(locationService.findAll());
         } catch (Exception e) {
-            throw new CustomException("La question n'est pas où mais quand", HttpStatus.NOT_ACCEPTABLE, null);
+            return ResponseEntity.ok(new ArrayList<Location>());
         }
     }
 
