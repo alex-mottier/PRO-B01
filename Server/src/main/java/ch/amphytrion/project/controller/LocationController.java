@@ -83,10 +83,9 @@ public class LocationController extends BaseController implements IGenericContro
     @GetMapping("/location/{id}")
     public ResponseEntity<LocationResponse> getById(String id) {
         try {
-            return ResponseEntity.ok(new LocationResponse(locationService.findById(id), userService));
+            return ResponseEntity.ok(new LocationResponse(locationService.findById(id), getCurrentUser(),  userService));
         } catch (Exception e) {
             throw new CustomException("Ce lieu n'existe pas", HttpStatus.NOT_ACCEPTABLE, null);
-
         }
     }
 

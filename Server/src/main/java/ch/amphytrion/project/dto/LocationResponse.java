@@ -1,7 +1,6 @@
 package ch.amphytrion.project.dto;
 
 import ch.amphytrion.project.entities.databaseentities.Location;
-import ch.amphytrion.project.entities.databaseentities.OpeningHour;
 import ch.amphytrion.project.entities.databaseentities.Tag;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.UserService;
@@ -9,7 +8,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +24,7 @@ public class LocationResponse implements InterfaceDTO {
     public List<Tag> tags;
     public List<OpeningHourResponse> openingHours;
 
-    public LocationResponse(Location location, UserService userService) {
+    public LocationResponse(Location location, User user,  UserService userService) {
         User host = userService.findById(location.getHostId());
         List<OpeningHourResponse> openingHours = location.getOpeningHours()
                 .stream()
