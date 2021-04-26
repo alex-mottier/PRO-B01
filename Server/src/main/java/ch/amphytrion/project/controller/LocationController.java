@@ -1,9 +1,10 @@
 package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.dto.DatesFilterDTO;
+import ch.amphytrion.project.dto.LocationResponse;
 import ch.amphytrion.project.entities.databaseentities.Location;
-import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.services.LocationService;
+import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -19,9 +20,11 @@ import java.util.List;
 public class LocationController extends BaseController implements IGenericController<Location> {
 
     private final LocationService locationService;
+    private final UserService userService;
 
-    public LocationController(LocationService locationService) {
+    public LocationController(LocationService locationService, UserService userService) {
         this.locationService = locationService;
+        this.userService = userService;
     }
 
     //X
@@ -78,9 +81,9 @@ public class LocationController extends BaseController implements IGenericContro
     //X
     @SneakyThrows
     @GetMapping("/location/{id}")
-    public ResponseEntity<Location> getById(String id) {
+    public ResponseEntity<LocationResponse> getById(String id) {
         try {
-            return ResponseEntity.ok(locationService.findById(id));
+            return ResponseEntity.ok(new LocationResponse(locationService.findById(id), userService));
         } catch (Exception e) {
             throw new CustomException("Ce lieu n'existe pas", HttpStatus.NOT_ACCEPTABLE, null);
 

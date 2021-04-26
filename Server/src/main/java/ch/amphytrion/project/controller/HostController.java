@@ -1,5 +1,6 @@
 package ch.amphytrion.project.controller;
 
+import ch.amphytrion.project.dto.HostResponse;
 import ch.amphytrion.project.dto.UserResponse;
 import ch.amphytrion.project.entities.databaseentities.HostProfil;
 import ch.amphytrion.project.entities.databaseentities.User;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -53,9 +53,9 @@ public class HostController extends BaseController implements IGenericController
 //    }
     @SneakyThrows
     @GetMapping("/host/{id}")
-    public ResponseEntity getById(String id) {
+    public ResponseEntity<HostResponse> getById(String id) {
         try {
-            return ResponseEntity.ok(hostService.findById(id));
+            return ResponseEntity.ok(new HostResponse(hostService.findById(id)));
         } catch (Exception e) {
             throw new CustomException("Aucun hôte trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
