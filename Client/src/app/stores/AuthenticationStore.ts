@@ -11,7 +11,6 @@ import GoogleAuth from '../authentication/GoogleAuth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 import { User } from '../models/ApplicationTypes';
 import RootStore from './RootStore';
-import StudentStore from './StudentStore';
 
 class AuthenticationStore {
   private static instance: AuthenticationStore;
@@ -104,7 +103,7 @@ class AuthenticationStore {
    * Create a new user
    * @param user to create
    */
-  @action async signUp(user: User): Promise<void> {
+  @action async signUp(user: User): Promise<boolean> {
     RootStore.getInstance().setIsLoading(true);
     if (this.userToken?.idToken) {
       const response = await this.amphitryonDAO.createUser(this.userToken.idToken, user);
@@ -112,19 +111,20 @@ class AuthenticationStore {
         if (response.ok) {
           this.setAuthenticatedUser(await response.json());
           this.setIsLoggedIn(true);
-          void StudentStore.getInstance().loadUserData();
+          return true;
         } else {
           void RootStore.getInstance().manageErrorInResponse(response);
         }
       }
       RootStore.getInstance().setIsLoading(false);
     }
+    return false;
   }
 
   /**
    * Sign in method
    */
-  @action async signIn(): Promise<void> {
+  @action async signIn(): Promise<boolean> {
     RootStore.getInstance().setIsLoading(true);
     const loggedIn = await this.signInWithGoogle();
     if (loggedIn && this.userToken && this.userToken.idToken) {
@@ -133,13 +133,14 @@ class AuthenticationStore {
         if (response.ok) {
           this.setAuthenticatedUser(await response.json());
           this.setIsLoggedIn(true);
-          void StudentStore.getInstance().loadUserData();
+          return true;
         } else {
           void RootStore.getInstance().manageErrorInResponse(response);
         }
       }
     }
     RootStore.getInstance().setIsLoading(false);
+    return false;
   }
 
   @action async tryToConnect(tokenId: string): Promise<Response | null> {

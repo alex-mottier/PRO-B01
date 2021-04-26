@@ -7,16 +7,10 @@
 
 import { action, makeAutoObservable, observable } from 'mobx';
 import { Error } from '../models/ApplicationTypes';
-import GoogleAuth from '../authentication/GoogleAuth';
-import AmphitryonDAO from '../data/AmphitryonDAO';
 import { Alert } from 'react-native';
-import AuthenticationStore from './AuthenticationStore';
-import StudentStore from './StudentStore';
 
 class RootStore {
   private static instance: RootStore;
-  private amphitryonDAO = AmphitryonDAO.getInstance();
-  private googleAuth = GoogleAuth.getInstance();
 
   @observable isLoading = true;
 
@@ -24,7 +18,6 @@ class RootStore {
    * Instantiation of the store
    */
   private constructor() {
-    void this.loadTokens();
     makeAutoObservable(this);
   }
 
@@ -73,25 +66,6 @@ class RootStore {
           'Erreur inattendue',
           "Une erreur inattendue s'est produite : " + response.status.toString(),
         );
-    }
-  }
-
-  /**
-   * Loading the user's tokens
-   */
-  @action async loadTokens(): Promise<void> {
-    const token = await this.googleAuth.getCachedAuthAsync();
-    AuthenticationStore.getInstance().userToken = token;
-    if (token && token.idToken) {
-      const response = await this.amphitryonDAO.connectUser(token.idToken);
-      if (response) {
-        if (response.ok) {
-          AuthenticationStore.getInstance().setAuthenticatedUser(await response.json());
-          AuthenticationStore.getInstance().setIsLoggedIn(true);
-          void StudentStore.getInstance().loadUserData();
-        }
-      }
-      // this.setIsLoading(false);
     }
   }
 }

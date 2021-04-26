@@ -21,10 +21,11 @@ const SignIn: React.FC = () => {
   const navigation = useNavigation();
 
   /* Usage of MobX global state store */
-  const { authenticationStore } = useStores();
+  const { authenticationStore, studentStore } = useStores();
 
-  const handleLogin = () => {
-    void authenticationStore.signIn();
+  const handleLogin = async () => {
+    const succeed = await authenticationStore.signIn();
+    if (succeed) void studentStore.loadUserData();
   };
 
   return (

@@ -11,4 +11,9 @@ const storesContext = React.createContext({
   authenticationStore: AuthenticationStore.getInstance(),
 });
 
-export const useStores = () => React.useContext(storesContext);
+export const useStores = (): {
+  rootStore: RootStore;
+  studentStore: StudentStore;
+  themeStore: ThemeStore;
+  authenticationStore: AuthenticationStore;
+} => React.useContext(storesContext);

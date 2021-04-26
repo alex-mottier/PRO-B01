@@ -100,10 +100,6 @@ class StudentStore {
         void RootStore.getInstance().manageErrorInResponse;
       }
     }
-
-    // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // this.meetingsCreatedByUser = mockMeetings;
   }
 
   /**
@@ -120,10 +116,6 @@ class StudentStore {
         void RootStore.getInstance().manageErrorInResponse;
       }
     }
-
-    // // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // this.userMeetings = mockMeetings;
   }
 
   /**
@@ -143,14 +135,6 @@ class StudentStore {
         void RootStore.getInstance().manageErrorInResponse;
       }
     }
-
-    // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // if (this.userMeetings) {
-    //   this.userMeetings.push(meeting);
-    //   Alert.alert('Réunion rejointe', 'Vous avez rejoint la réunion ' + meeting.name);
-    //   this.regenerateItems();
-    // }
   }
 
   /**
@@ -172,16 +156,6 @@ class StudentStore {
         void RootStore.getInstance().manageErrorInResponse;
       }
     }
-
-    // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // if (this.userMeetings) {
-    //   this.userMeetings = this.userMeetings?.filter((current: Meeting) => {
-    //     return meeting.id !== current.id;
-    //   });
-    //   Alert.alert('Réunion quittée', 'Vous avez quitté la réunion ' + meeting.name);
-    //   this.regenerateItems();
-    // }
   }
 
   /**
@@ -205,10 +179,6 @@ class StudentStore {
         void RootStore.getInstance().manageErrorInResponse;
       }
     }
-
-    // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // this.chat = mockChat;
   }
 
   /**
@@ -225,12 +195,6 @@ class StudentStore {
         void RootStore.getInstance().manageErrorInResponse;
       }
     }
-
-    // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // runInAction(() => {
-    //   this.chat?.messages.push(message);
-    // });
   }
 
   /**
@@ -255,10 +219,6 @@ class StudentStore {
         void RootStore.getInstance().manageErrorInResponse;
       }
     }
-
-    // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // this.locations = mockLocations;
   }
 
   /**
@@ -273,10 +233,6 @@ class StudentStore {
         void RootStore.getInstance().manageErrorInResponse;
       }
     }
-
-    // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // this.locations = mockLocations;
   }
 
   /**
@@ -286,10 +242,6 @@ class StudentStore {
   @action async loadLocationToDisplay(): Promise<void> {
     const location = await this.loadLocation(this.locationToLoad);
     if (location) this.locationToDisplay = location;
-
-    // // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // this.locationToDisplay = await this.loadLocation(this.locationToLoad);
   }
 
   @action async loadLocation(locationId: string): Promise<Location | null> {
@@ -302,10 +254,6 @@ class StudentStore {
       }
     }
     return null;
-
-    // // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // return mockLocations[0];
   }
 
   /**
@@ -329,10 +277,6 @@ class StudentStore {
         void RootStore.getInstance().manageErrorInResponse;
       }
     }
-
-    // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // this.hostToDisplay = mockHost;
   }
 
   /**
@@ -354,14 +298,6 @@ class StudentStore {
         void RootStore.getInstance().manageErrorInResponse;
       }
     }
-
-    // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // runInAction(() => {
-    //   this.userMeetings?.push(meeting);
-    //   this.meetingsCreatedByUser?.push(meeting);
-    //   this.regenerateItems();
-    // });
   }
 
   /**
@@ -393,23 +329,6 @@ class StudentStore {
         void RootStore.getInstance().manageErrorInResponse;
       }
     }
-
-    // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // runInAction(() => {
-    //   if (this.userMeetings && this.meetingsCreatedByUser) {
-    //     this.userMeetings = this.userMeetings.map((current: Meeting) => {
-    //       if (current.id === meeting.id) return meeting;
-    //       return current;
-    //     });
-    //   }
-    //   if (this.meetingsCreatedByUser) {
-    //     this.meetingsCreatedByUser = this.meetingsCreatedByUser.map((current: Meeting) => {
-    //       if (current.id === meeting.id) return meeting;
-    //       return current;
-    //     });
-    //   }
-    // });
   }
 
   /**
@@ -436,21 +355,6 @@ class StudentStore {
         void RootStore.getInstance().manageErrorInResponse;
       }
     }
-
-    // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // runInAction(() => {
-    //   if (this.userMeetings)
-    //     this.userMeetings = this.userMeetings.filter((current: Meeting) => {
-    //       return current.id !== meetingId;
-    //     });
-    //   if (this.meetingsCreatedByUser)
-    //     this.meetingsCreatedByUser = this.meetingsCreatedByUser.filter((current: Meeting) => {
-    //       return current.id !== meetingId;
-    //     });
-    //   Alert.alert('Supprimée', 'La réunion a correctement été supprimée');
-    //   this.regenerateItems();
-    // });
   }
 
   /**
@@ -466,10 +370,6 @@ class StudentStore {
         void RootStore.getInstance().manageErrorInResponse;
       }
     }
-
-    // // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // this.searchMeetings = [mockMeetings[0]];
   }
 
   /**
@@ -485,10 +385,6 @@ class StudentStore {
         void RootStore.getInstance().manageErrorInResponse;
       }
     }
-
-    // TO DELETE
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    // this.searchMeetings = mockMeetings;
   }
 
   /**
