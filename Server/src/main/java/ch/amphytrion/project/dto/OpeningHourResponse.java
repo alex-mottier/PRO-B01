@@ -15,8 +15,8 @@ public class OpeningHourResponse implements InterfaceDTO {
 
     public OpeningHourResponse(OpeningHour openingHour){
         this.day = openingHour.getDay();
-        this.startTime = openingHour.getHourBegin().toString();
-        this.endTime = openingHour.getHourEnd().toString();
+        this.startTime = openingHour.getStartTime().toString();
+        this.endTime = openingHour.getEndTime().toString();
     }
 
 }

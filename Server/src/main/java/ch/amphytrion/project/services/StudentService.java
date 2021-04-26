@@ -4,6 +4,8 @@ import ch.amphytrion.project.entities.databaseentities.StudentProfil;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,16 +23,26 @@ public class StudentService {
     }
 
     public List<User> findAll() {
-        return studentRepository.findAll().stream().filter(user -> {return user.getStudentProfil() != null;}).collect(Collectors.toList());
+        return studentRepository.findAll()
+                .stream()
+                .filter(user -> user.getStudentProfil() != null)
+                .collect(Collectors.toList());
     }
 
     public User save(User student) {
-        return studentRepository.save(student);
+        if(student.getStudentProfil() != null){
+            return studentRepository.save(student);
+        } else {
+            return null;
+        }
     }
 
     public User findById(String id) {
         try {
-            return studentRepository.findById(id).orElseThrow(Exception::new);
+            Query query = new Query();
+            query.addCriteria(Criteria.where("id").is(id));
+            query.addCriteria(Criteria.where(StudentProfil.class.getName()).exists(true));
+            return studentRepository.findByIdAndStudentProfilIsNotNull(id);
         } catch (Exception e) {
             e.printStackTrace();
         }

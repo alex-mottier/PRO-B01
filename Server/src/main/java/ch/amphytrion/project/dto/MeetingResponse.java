@@ -7,6 +7,7 @@ import ch.amphytrion.project.services.LocationService;
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MeetingResponse implements InterfaceDTO {
     @Id
@@ -17,9 +18,9 @@ public class MeetingResponse implements InterfaceDTO {
     public String locationName;
     public String ownerID;
     public String chatID;
-    public ArrayList<Tag> tags;
+    public List<Tag> tags;
     public Integer nbPeople;
-    public ArrayList<String> membersId;
+    public List<String> membersId;
     public Integer maxPeople;
     // Format ISO 8601
     public String startDate;

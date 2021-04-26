@@ -19,6 +19,6 @@ public class OpeningHour {
         SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY
     }
     private Integer day;
-    private LocalDateTime hourBegin;
-    private LocalDateTime hourEnd;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 }

@@ -78,6 +78,7 @@ public class UserService implements IGenericService<User>{
     }
 
     public User checkAndSignUp(Map<String, String> json) {
+        //TODO Separate User creation & unicity check
         String userName = json.get("username");
         String tokenInput = json.get("tokenID");
 
@@ -86,7 +87,6 @@ public class UserService implements IGenericService<User>{
             if (tokenInput.equals(DEV_TOKEN)) {
                 newUser = new User("mock-google-id" + userName, userName);
             } else {
-
                 GoogleIdToken tokenID = valider.validateToken(tokenInput);
                 if (tokenID != null) {
                     GoogleIdToken.Payload payload = tokenID.getPayload();
@@ -96,14 +96,7 @@ public class UserService implements IGenericService<User>{
                     }
                 }
             }
-
         }
-        if(newUser != null) {
-            userRepository.save(newUser);
-            return newUser;
-        } else {
-            //user already exists
-            return null;
-        }
+        return newUser;
     }
 }

@@ -36,6 +36,7 @@ public class UserController extends BaseController implements IGenericController
         StudentProfil studentProfil = new StudentProfil();
         if(newUser != null) {
             newUser.setStudentProfil(studentProfil);
+            userService.save(newUser);
             String token = JwtUtils.makeHeaderToken(newUser.getUsername());
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);

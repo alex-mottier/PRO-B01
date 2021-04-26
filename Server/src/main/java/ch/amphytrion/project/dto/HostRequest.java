@@ -6,13 +6,14 @@ import ch.amphytrion.project.entities.databaseentities.Tag;
 import ch.amphytrion.project.entities.databaseentities.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HostRequest implements InterfaceDTO {
     public String id;
     public String name;
     public Address address;
     public String description;
-    public ArrayList<Tag> tags;
+    public List<Tag> tags;
 
     public HostRequest(User user) {
         this.id = user.getId();

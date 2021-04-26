@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,11 +20,13 @@ public class Location {
     private String description;
     private Integer nbPeople;
     private String hostId;
+    // Use addressID to facilitate address search
     private Address address;
-    private ArrayList<Tag> tags;
-    private ArrayList<OpeningHour> openingHours;
+    // List de String ?
+    private List<Tag> tags;
+    private List<OpeningHour> openingHours;
 
-    public Location(String name, String description, Integer nbPeople,Address address, String hostId, ArrayList<Tag> tags,ArrayList<OpeningHour> openingHours) {
+    public Location(String name, String description, Integer nbPeople,Address address, String hostId, List<Tag> tags, List<OpeningHour> openingHours) {
         this.name = name;
         this.description = description;
         this.nbPeople = nbPeople;
