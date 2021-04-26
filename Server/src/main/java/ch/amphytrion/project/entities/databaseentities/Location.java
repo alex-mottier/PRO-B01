@@ -18,17 +18,17 @@ public class Location {
     private String name;
     private String description;
     private Integer nbPeople;
-    public String hostId;
-    public String hostName;
+    private String hostId;
+    private Address address;
     private ArrayList<Tag> tags;
     private ArrayList<OpeningHour> openingHours;
 
-    public Location(String name, String description, Integer nbPeople, String hostId, String hostName, ArrayList<Tag> tags,ArrayList<OpeningHour> openingHours) {
+    public Location(String name, String description, Integer nbPeople,Address address, String hostId, ArrayList<Tag> tags,ArrayList<OpeningHour> openingHours) {
         this.name = name;
         this.description = description;
         this.nbPeople = nbPeople;
+        this.address = address;
         this.hostId = hostId;
-        this.hostName = hostName;
         this.tags = tags;
         this.openingHours = openingHours;
     }
