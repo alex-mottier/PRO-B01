@@ -14,18 +14,17 @@ import { useNavigation } from '@react-navigation/native';
 import FacebookButton from '../../../components/Buttons/FacebookButton';
 import GoogleButton from '../../../components/Buttons/GoogleButton';
 import CustomButton from '../../../components/Buttons/CustomButton';
-import GlobalStore from '../../../app/stores/GlobalStore';
+import { useStores } from '../../../app/context/storesContext';
 
 const SignIn: React.FC = () => {
   /* Usage of React Navigation */
   const navigation = useNavigation();
 
   /* Usage of MobX global state store */
-  const store = React.useContext(GlobalStore);
+  const { authenticationStore } = useStores();
 
   const handleLogin = () => {
-    store.setIsLoading(true);
-    void store.signIn();
+    void authenticationStore.signIn();
   };
 
   return (

@@ -14,25 +14,27 @@ import Globals from '../../../app/context/Globals';
 import GoogleButton from '../../../components/Buttons/GoogleButton';
 import CustomButton from '../../../components/Buttons/CustomButton';
 import FacebookButton from '../../../components/Buttons/FacebookButton';
-import GlobalStore from '../../../app/stores/GlobalStore';
 import { observer } from 'mobx-react-lite';
+import { useStores } from '../../../app/context/storesContext';
 
 const SignUp: React.FC = () => {
   /* Usage of React Navigation */
   const navigation = useNavigation();
 
   /* Usage of MobX global state store */
-  const store = React.useContext(GlobalStore);
+  const { rootStore, authenticationStore } = useStores();
 
   /**
    * Sign up button pressed
    */
   const handleSignUp = () => {
-    store.setIsLoading(true);
+    rootStore.setIsLoading(true);
     // Try to see if an account already match the selected account
-    void store.signInWithGoogle().then(async (isLoggedIn: boolean) => {
-      if (store.userToken && store.userToken.idToken) {
-        const response = await store.tryToConnect(store.userToken.idToken);
+    void authenticationStore.signInWithGoogle().then(async (isLoggedIn: boolean) => {
+      if (authenticationStore.userToken && authenticationStore.userToken.idToken) {
+        const response = await authenticationStore.tryToConnect(
+          authenticationStore.userToken.idToken,
+        );
 
         // If selected email is not assigned to an account
         if (!response || !response.ok) {
@@ -45,7 +47,7 @@ const SignUp: React.FC = () => {
         }
       }
     });
-    store.setIsLoading(false);
+    rootStore.setIsLoading(false);
   };
 
   return (

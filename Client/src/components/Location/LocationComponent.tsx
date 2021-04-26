@@ -14,7 +14,8 @@ import { Location, Tag } from '../../app/models/ApplicationTypes';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../app/context/Theme';
 import { useNavigation } from '@react-navigation/core';
-import GlobalStore from '../../app/stores/GlobalStore';
+import StudentStore from '../../app/stores/StudentStore';
+import { useStores } from '../../app/context/storesContext';
 
 /**
  * Component props
@@ -30,7 +31,7 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
   const navigation = useNavigation();
 
   /* Usage of MobX global state store */
-  const store = React.useContext(GlobalStore);
+  const { studentStore } = useStores();
 
   /* Component states */
   const [isReduced, setIsReduced] = React.useState(true);
@@ -61,7 +62,7 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
                   size={Globals.SIZES.ICON_BUTTON}
                   onPress={() => {
                     navigation.navigate('LocationDetails');
-                    void store.loadLocation(location.id);
+                    void studentStore.loadLocation(location.id);
                   }}
                 />
               </View>

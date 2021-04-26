@@ -10,14 +10,14 @@ import { SafeAreaView, ScrollView, View } from 'react-native';
 import { Avatar, Text, Title } from 'react-native-paper';
 import styles from './styles';
 import { observer } from 'mobx-react-lite';
-import GlobalStore from '../../../app/stores/GlobalStore';
 import { Meeting } from '../../../app/models/ApplicationTypes';
 import NoMeeting from '../../../components/NoMeeting/NoMeeting';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
+import { useStores } from '../../../app/context/storesContext';
 
 const Profile: React.FC = () => {
   /* Usage of MobX global state store */
-  const store = React.useContext(GlobalStore);
+  const { studentStore, authenticationStore } = useStores();
 
   return (
     <SafeAreaView>
@@ -25,13 +25,13 @@ const Profile: React.FC = () => {
         <View style={styles.container}>
           <View style={styles.row}>
             <Avatar.Image size={80} source={require('../../../../assets/Logo.png')} />
-            <Title style={styles.title}>{store.authenticatedUser?.username}</Title>
+            <Title style={styles.title}>{authenticationStore.authenticatedUser?.username}</Title>
           </View>
           <Text style={styles.text}>Réunions que j&apos;ai crées :</Text>
-          {store.meetingsCreatedByUser && store.meetingsCreatedByUser.length === 0 ? (
+          {studentStore.meetingsCreatedByUser && studentStore.meetingsCreatedByUser.length === 0 ? (
             <NoMeeting />
           ) : (
-            store.meetingsCreatedByUser.map((meeting: Meeting) => (
+            studentStore.meetingsCreatedByUser.map((meeting: Meeting) => (
               <MeetingComponent
                 key={meeting.id}
                 meeting={meeting}

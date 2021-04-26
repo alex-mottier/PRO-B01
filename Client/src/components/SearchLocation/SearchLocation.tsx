@@ -9,8 +9,9 @@ import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import { IconButton, TextInput, Text, Portal, Modal, Title, useTheme } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
+import { useStores } from '../../app/context/storesContext';
 import { Location } from '../../app/models/ApplicationTypes';
-import GlobalStore from '../../app/stores/GlobalStore';
+import StudentStore from '../../app/stores/StudentStore';
 import { mockLocations } from '../../mock/Locations';
 import LoadingComponent from '../Loading/LoadingComponent';
 import LocationComponent from '../Location/LocationComponent';
@@ -28,12 +29,12 @@ interface IProps {
 
 const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate, endDate }) => {
   /* Usage of MobX global state store */
-  const store = React.useContext(GlobalStore);
+  const { studentStore } = useStores();
 
   /* Component states */
   const [locationName, setLocationName] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [locations, setLocations] = React.useState<Location[] | null>(store.locations);
+  const [locations, setLocations] = React.useState<Location[] | null>(studentStore.locations);
   const [isLoading, setIsLoading] = React.useState(false);
 
   /**
@@ -65,13 +66,13 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
   React.useEffect(() => {
     setIsLoading(true);
     if (startDate && endDate)
-      void store.loadLocations(startDate, endDate).then(() => {
-        setLocations(store.locations);
+      void studentStore.loadLocations(startDate, endDate).then(() => {
+        setLocations(studentStore.locations);
         setIsLoading(false);
       });
     else
-      void store.loadAllLocations().then(() => {
-        setLocations(store.locations);
+      void studentStore.loadAllLocations().then(() => {
+        setLocations(studentStore.locations);
         setIsLoading(false);
       });
   }, []);

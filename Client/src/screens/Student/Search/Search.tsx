@@ -30,15 +30,15 @@ import { format } from 'date-fns';
 import { addDays } from 'date-fns/esm';
 import NoMeeting from '../../../components/NoMeeting/NoMeeting';
 import { observer } from 'mobx-react-lite';
-import GlobalStore from '../../../app/stores/GlobalStore';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
+import { useStores } from '../../../app/context/storesContext';
 
 const Search: React.FC = () => {
   // Usage of react native paper theme library
   const paperTheme = useTheme();
 
   /* Usage of MobX global state store */
-  const store = React.useContext(GlobalStore);
+  const { studentStore } = useStores();
 
   /* Component states */
   const [search, setSearch] = React.useState('');
@@ -81,8 +81,8 @@ const Search: React.FC = () => {
     setIsLoading(true);
     setMeetings(null);
     setSearch(id);
-    void store.searchWithId(id).then(() => {
-      setMeetings(store.searchMeetings);
+    void studentStore.searchWithId(id).then(() => {
+      setMeetings(studentStore.searchMeetings);
       setIsLoading(false);
     });
   };
@@ -101,8 +101,8 @@ const Search: React.FC = () => {
       tags: tags.length === 0 ? [] : tags,
       location: location ? location : null,
     };
-    void store.searchWithFilter(filter).then(() => {
-      setMeetings(store.searchMeetings);
+    void studentStore.searchWithFilter(filter).then(() => {
+      setMeetings(studentStore.searchMeetings);
       setIsLoading(false);
     });
   };

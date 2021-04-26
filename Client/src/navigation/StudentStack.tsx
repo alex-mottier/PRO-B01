@@ -12,12 +12,12 @@ import { Appbar, IconButton, Switch, useTheme } from 'react-native-paper';
 import { BottomTabs } from './BottomTabs';
 import Globals from '../app/context/Globals';
 import { View } from 'react-native';
-import GlobalStore from '../app/stores/GlobalStore';
 import { observer } from 'mobx-react-lite';
 import LocationDetails from '../screens/Student/Location/LocationDetails';
 import HostDetails from '../screens/Student/Host/HostDetails';
 import ChatMeeting from '../screens/Student/Chat/ChatMeeting';
 import Edit from '../screens/Student/Edit/Edit';
+import { useStores } from '../app/context/storesContext';
 
 // Parameters of the screens
 type StackNavigatorParamlist = {
@@ -37,7 +37,7 @@ const StudentStack: React.FC = () => {
   const paperTheme = useTheme();
 
   /* Usage of MobX global state store */
-  const store = React.useContext(GlobalStore);
+  const { themeStore, authenticationStore } = useStores();
 
   return (
     <Stack.Navigator
@@ -79,16 +79,16 @@ const StudentStack: React.FC = () => {
               {options.headerTitle == Globals.STRINGS.PROFILE && (
                 <View style={{ flexDirection: 'row' }}>
                   <Switch
-                    value={store.theme === 'dark'}
+                    value={themeStore.theme === 'dark'}
                     color={Globals.COLORS.PRIMARY}
                     style={{ alignItems: 'center', justifyContent: 'center' }}
-                    onValueChange={() => store.invertTheme()}
+                    onValueChange={() => themeStore.invertTheme()}
                   />
                   <IconButton
                     icon={Globals.ICONS.LOGOUT}
                     color={Globals.COLORS.PRIMARY}
                     size={Globals.SIZES.ICON_BUTTON}
-                    onPress={() => store.signOutWithGoogle()}
+                    onPress={() => authenticationStore.signOutWithGoogle()}
                   />
                 </View>
               )}

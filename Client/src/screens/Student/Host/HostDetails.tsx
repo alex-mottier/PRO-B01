@@ -10,14 +10,14 @@ import { SafeAreaView, ScrollView, View } from 'react-native';
 import { Avatar, Text, Title, Chip } from 'react-native-paper';
 import styles from './styles';
 import { observer } from 'mobx-react-lite';
-import GlobalStore from '../../../app/stores/GlobalStore';
 import { Host, Tag } from '../../../app/models/ApplicationTypes';
 import { colors } from '../../../app/context/Theme';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
+import { useStores } from '../../../app/context/storesContext';
 
 const HostDetails: React.FC = () => {
   /* Usage of MobX global state store */
-  const store = React.useContext(GlobalStore);
+  const { studentStore } = useStores();
 
   /* Component states */
   const [isLoading, setIsLoading] = React.useState(true);
@@ -31,8 +31,8 @@ const HostDetails: React.FC = () => {
    */
   React.useEffect(() => {
     setIsLoading(true);
-    void store.loadHost().then(() => {
-      setHost(store.hostToDisplay);
+    void studentStore.loadHost().then(() => {
+      setHost(studentStore.hostToDisplay);
       setIsLoading(false);
     });
   }, []);

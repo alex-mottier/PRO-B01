@@ -11,20 +11,21 @@ import { Avatar, Text, Title, IconButton, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from './styles';
 import { observer } from 'mobx-react-lite';
-import GlobalStore from '../../../app/stores/GlobalStore';
+import StudentStore from '../../../app/stores/StudentStore';
 import { Location, OpeningHour, Tag } from '../../../app/models/ApplicationTypes';
 import Globals from '../../../app/context/Globals';
 import { colors } from '../../../app/context/Theme';
 import OpeninHourComponent from '../../../components/OpeningHour/OpeningHourComponent';
 import { useNavigation } from '@react-navigation/core';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
+import { useStores } from '../../../app/context/storesContext';
 
 const LocationDetails: React.FC = () => {
   /* Usage of React Navigation */
   const navigation = useNavigation();
 
   /* Usage of MobX global state store */
-  const store = React.useContext(GlobalStore);
+  const { studentStore } = useStores();
 
   /* Component states */
   const [isLoading, setIsLoading] = React.useState(true);
@@ -38,8 +39,8 @@ const LocationDetails: React.FC = () => {
    */
   React.useEffect(() => {
     setIsLoading(true);
-    void store.loadLocationToDisplay().then(() => {
-      setLocation(store.locationToDisplay);
+    void studentStore.loadLocationToDisplay().then(() => {
+      setLocation(studentStore.locationToDisplay);
       setIsLoading(false);
     });
   }, []);
@@ -58,7 +59,7 @@ const LocationDetails: React.FC = () => {
                 size={Globals.SIZES.ICON_HEADER}
                 color={Globals.COLORS.GRAY}
                 onPress={() => {
-                  if (location?.hostId) void store.setHostToLoad(location.hostId);
+                  if (location?.hostId) void studentStore.setHostToLoad(location.hostId);
                   if (location) navigation.navigate('HostDetails');
                 }}
               />

@@ -1,47 +1,34 @@
 /**
- * @file    GlobalStore.ts
+ * @file    StudentStore.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    22.03.2021
- * @brief   MobX global application state store
+ * @brief   Student store
  */
 
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
-import { createContext } from 'react';
-import {
-  Meeting,
-  User,
-  Location,
-  Host,
-  Chat,
-  Message,
-  Filter,
-  Error,
-} from '../models/ApplicationTypes';
+import { Meeting, Location, Host, Chat, Message, Filter } from '../models/ApplicationTypes';
 import GoogleAuth from '../authentication/GoogleAuth';
-import { TokenResponse } from 'expo-app-auth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 import { addDays, endOfDay, format, startOfDay } from 'date-fns';
 import { Alert } from 'react-native';
 import { AgendaItemsMap } from 'react-native-calendars';
+import AuthenticationStore from './AuthenticationStore';
+import RootStore from './RootStore';
 
-class Store {
+class StudentStore {
+  private static instance: StudentStore;
   private amphitryonDAO = AmphitryonDAO.getInstance();
   private googleAuth = GoogleAuth.getInstance();
   private dateInCalendar = new Date();
 
-  @observable theme: 'light' | 'dark' = 'light';
-  @observable isLoading = true;
-  @observable userToken: TokenResponse | null = null;
-  @observable authenticatedUser: User | null = null;
-  @observable isLoggedIn = false;
   @observable meetingToUpdate: Meeting | null = null;
-  @observable.deep meetingsCreatedByUser: Meeting[] = [];
-  @observable.deep userMeetings: Meeting[] | null = null;
+  @observable meetingsCreatedByUser: Meeting[] = [];
+  @observable userMeetings: Meeting[] | null = null;
   @observable chat: Chat | null = null;
-  @observable.deep locations: Location[] | null = null;
+  @observable locations: Location[] | null = null;
   @observable locationToDisplay: Location | null = null;
   @observable hostToDisplay: Host | null = null;
-  @observable.deep searchMeetings: Meeting[] | null = null;
+  @observable searchMeetings: Meeting[] | null = null;
   @observable locationToLoad = '';
   @observable hostToLoad = '';
   @observable chatToLoad = '';
@@ -50,87 +37,18 @@ class Store {
   /**
    * Instantiation of the store
    */
-  constructor() {
+  private constructor() {
     void this.loadTokens();
     makeAutoObservable(this);
   }
 
   /**
-   * Inverting the theme colour
+   * Get store instance
+   * @returns the store instance
    */
-  @action invertTheme() {
-    this.theme = this.theme === 'light' ? 'dark' : 'light';
-  }
-
-  /**
-   * Set if the application is loading
-   * @param isLoading if the application is loading
-   */
-  @action setIsLoading(isLoading: boolean) {
-    this.isLoading = isLoading;
-  }
-
-  /**
-   * Set the user's token
-   * @param token user's token
-   */
-  @action setUserToken(token: TokenResponse | null) {
-    this.userToken = token;
-  }
-
-  /**
-   * Set the authenticated user
-   * @param userAuthenticated the authenticated user or null
-   */
-  @action getAuthenticatedUser(): User | null {
-    return this.authenticatedUser;
-  }
-
-  /**
-   * Set the authenticated user
-   * @param userAuthenticated the authenticated user or null
-   */
-  @action setAuthenticatedUser(userAuthenticated: User | null) {
-    this.authenticatedUser = userAuthenticated;
-  }
-
-  /**
-   * Set if the user is logged in
-   * @param isLoggedIn if the user is logged in
-   */
-  @action setIsLoggedIn(isLoggedIn: boolean) {
-    this.isLoggedIn = isLoggedIn;
-  }
-
-  /**
-   * Gestion des erreurs
-   * @param response contenant l'erreur
-   */
-  async manageErrorInResponse(response: Response) {
-    switch (response.status) {
-      case 401:
-        Alert.alert('Non autorisé', "Vous n'êtes pas autorisé à effectuer cette manipulation");
-        break;
-      case 403:
-        Alert.alert('Interdit', "L'action effectuée est interdite pour l'utilisateur");
-        break;
-      case 404:
-        Alert.alert('Non trouvé', "La ressource demandée n'a pas été trouvée");
-        break;
-      case 500:
-        Alert.alert('Erreur', "Une erreur s'est produite sur le serveur");
-        break;
-      case 406:
-        // eslint-disable-next-line no-case-declarations
-        const error: Error = await response.json();
-        Alert.alert("Une erreur s'est produite", error.message);
-        break;
-      default:
-        Alert.alert(
-          'Erreur inattendue',
-          "Une erreur inattendue s'est produite : " + response.status.toString(),
-        );
-    }
+  public static getInstance(): StudentStore {
+    if (!StudentStore.instance) this.instance = new StudentStore();
+    return this.instance;
   }
 
   /**
@@ -138,13 +56,13 @@ class Store {
    */
   @action async loadTokens(): Promise<void> {
     const token = await this.googleAuth.getCachedAuthAsync();
-    this.userToken = token;
+    AuthenticationStore.getInstance().userToken = token;
     if (token && token.idToken) {
       const response = await this.amphitryonDAO.connectUser(token.idToken);
       if (response) {
         if (response.ok) {
-          this.setAuthenticatedUser(await response.json());
-          this.setIsLoggedIn(true);
+          AuthenticationStore.getInstance().setAuthenticatedUser(await response.json());
+          AuthenticationStore.getInstance().setIsLoggedIn(true);
           void this.loadUserData();
         }
       }
@@ -153,84 +71,9 @@ class Store {
   }
 
   /**
-   * Sign in with Google
-   * @returns promise if user is sucessfully signed in
-   */
-  @action async signInWithGoogle(): Promise<boolean> {
-    this.setIsLoading(true);
-    const token = await this.googleAuth.handleSignInAsync();
-    if (token) {
-      this.setUserToken(token);
-      this.setIsLoading(false);
-      return true;
-    }
-    this.setIsLoading(false);
-    return false;
-  }
-
-  /**
-   * Action done when the user logs out
-   * @param user to sign out
-   * @returns promise when sign out is completed
-   */
-  @action async signOutWithGoogle(): Promise<void> {
-    this.setIsLoading(true);
-    await this.googleAuth.handleSignOutAsync(this.userToken);
-    this.setAuthenticatedUser(null);
-    this.setIsLoggedIn(false);
-    this.setIsLoading(false);
-  }
-
-  /**
-   * Create a new user
-   * @param user to create
-   */
-  @action async signUp(user: User): Promise<void> {
-    this.setIsLoading(true);
-    if (this.userToken?.idToken) {
-      const response = await this.amphitryonDAO.createUser(this.userToken.idToken, user);
-      if (response) {
-        if (response.ok) {
-          this.setAuthenticatedUser(await response.json());
-          this.setIsLoggedIn(true);
-          void this.loadUserData();
-        } else {
-          void this.manageErrorInResponse(response);
-        }
-      }
-      this.setIsLoading(false);
-    }
-  }
-
-  /**
-   * Sign in method
-   */
-  @action async signIn(): Promise<void> {
-    this.setIsLoading(true);
-    const loggedIn = await this.signInWithGoogle();
-    if (loggedIn && this.userToken && this.userToken.idToken) {
-      const response = await this.tryToConnect(this.userToken?.idToken);
-      if (response) {
-        if (response.ok) {
-          this.setAuthenticatedUser(await response.json());
-          this.setIsLoggedIn(true);
-          void this.loadUserData();
-        } else {
-          void this.manageErrorInResponse(response);
-        }
-      }
-    }
-    this.setIsLoading(false);
-  }
-
-  @action async tryToConnect(tokenId: string): Promise<Response | null> {
-    return await this.amphitryonDAO.connectUser(tokenId);
-  }
-
-  /**
    * Retrieve user data from API
    */
-  @action async loadUserData() {
+  @action async loadUserData(): Promise<void> {
     await this.loadMeetingsCreatedByUser();
     await this.loadUserMeetings(startOfDay(new Date()), endOfDay(addDays(new Date(), 10)));
     void this.generateItems(new Date());
@@ -240,21 +83,21 @@ class Store {
    * Set meeting to update
    * @param meeting réunion à mettre à jour
    */
-  @action setMeetingToUpdate(meeting: Meeting | null) {
+  @action setMeetingToUpdate(meeting: Meeting | null): void {
     this.meetingToUpdate = meeting;
   }
 
   /**
    * Retrieve meetings created by user
    */
-  @action async loadMeetingsCreatedByUser() {
+  @action async loadMeetingsCreatedByUser(): Promise<void> {
     const response = await this.amphitryonDAO.loadMeetingCreatedByUser();
     if (response) {
       if (response.ok) {
         const meetings = await response.json();
         this.meetingsCreatedByUser = meetings;
       } else {
-        void this.manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
 
@@ -268,13 +111,13 @@ class Store {
    * @param startDate from date
    * @param endDate to date
    */
-  @action async loadUserMeetings(startDate: Date, endDate: Date) {
+  @action async loadUserMeetings(startDate: Date, endDate: Date): Promise<void> {
     const response = await this.amphitryonDAO.loadUserMeetings(startDate, endDate);
     if (response) {
       if (response.ok) {
         this.meetingsCreatedByUser = await response.json();
       } else {
-        void this.manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
 
@@ -287,7 +130,7 @@ class Store {
    * Join a meeting
    * @param meeting to join
    */
-  @action async joinMeeting(meeting: Meeting) {
+  @action async joinMeeting(meeting: Meeting): Promise<void> {
     const response = await this.amphitryonDAO.joinMeeting(meeting.id);
     if (response) {
       if (response.ok) {
@@ -297,7 +140,7 @@ class Store {
           this.regenerateItems();
         }
       } else {
-        void this.manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
 
@@ -314,7 +157,7 @@ class Store {
    * User leaves a meeting
    * @param meeting to leave
    */
-  @action async leaveMeeting(meeting: Meeting) {
+  @action async leaveMeeting(meeting: Meeting): Promise<void> {
     const response = await this.amphitryonDAO.leaveMeeting(meeting.id);
     if (response) {
       if (response.ok) {
@@ -326,7 +169,7 @@ class Store {
           this.regenerateItems();
         }
       } else {
-        void this.manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
 
@@ -345,7 +188,7 @@ class Store {
    * Set the chat to load
    * @param chatId to load
    */
-  @action setChatToLoad(chatId: string) {
+  @action setChatToLoad(chatId: string): void {
     this.chatToLoad = chatId;
   }
 
@@ -353,13 +196,13 @@ class Store {
    * Load chat data
    * @param chatId to load
    */
-  @action async loadChat(chatId: string) {
+  @action async loadChat(chatId: string): Promise<void> {
     const response = await this.amphitryonDAO.loadMessages(this.chatToLoad);
     if (response) {
       if (response.ok) {
         this.chat = { id: chatId, messages: await response.json() };
       } else {
-        void this.manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
 
@@ -373,13 +216,13 @@ class Store {
    * @param chatId where to send the message
    * @param message to send
    */
-  @action async sendMessage(chatId: string, message: Message) {
+  @action async sendMessage(chatId: string, message: Message): Promise<void> {
     const response = await this.amphitryonDAO.sendMessage(chatId, message);
     if (response) {
       if (response.ok) {
         this.chat?.messages.push(message);
       } else {
-        void this.manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
 
@@ -394,7 +237,7 @@ class Store {
    * Set location to load
    * @param locationId to load
    */
-  @action setLocationToLoad(locationId: string) {
+  @action setLocationToLoad(locationId: string): void {
     this.locationToLoad = locationId;
   }
 
@@ -403,13 +246,13 @@ class Store {
    * @param startDate from date
    * @param endDate to date
    */
-  @action async loadLocations(startDate: Date, endDate: Date) {
+  @action async loadLocations(startDate: Date, endDate: Date): Promise<void> {
     const response = await this.amphitryonDAO.getAllLocationsAvailable(startDate, endDate);
     if (response) {
       if (response.ok) {
         this.locations = await response.json();
       } else {
-        void this.manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
 
@@ -421,13 +264,13 @@ class Store {
   /**
    * Load all locations
    */
-  @action async loadAllLocations() {
+  @action async loadAllLocations(): Promise<void> {
     const response = await this.amphitryonDAO.getAllLocations();
     if (response) {
       if (response.ok) {
         this.locations = await response.json();
       } else {
-        void this.manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
 
@@ -440,7 +283,7 @@ class Store {
    * Load location details
    * @param locationId location id
    */
-  @action async loadLocationToDisplay() {
+  @action async loadLocationToDisplay(): Promise<void> {
     const location = await this.loadLocation(this.locationToLoad);
     if (location) this.locationToDisplay = location;
 
@@ -455,7 +298,7 @@ class Store {
       if (response.ok) {
         return await response.json();
       } else {
-        void this.manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
     return null;
@@ -469,7 +312,7 @@ class Store {
    * Set host to load
    * @param hostId to load
    */
-  @action setHostToLoad(hostId: string) {
+  @action setHostToLoad(hostId: string): void {
     this.hostToLoad = hostId;
   }
 
@@ -477,13 +320,13 @@ class Store {
    * Load host details
    * @param hostId host id
    */
-  @action async loadHost() {
+  @action async loadHost(): Promise<void> {
     const response = await this.amphitryonDAO.getHostDetails(this.hostToLoad);
     if (response) {
       if (response.ok) {
         this.locationToDisplay = await response.json();
       } else {
-        void this.manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
 
@@ -496,7 +339,7 @@ class Store {
    * Action when a meeting is created
    * @param meeting to create
    */
-  @action async createMeeting(meeting: Meeting) {
+  @action async createMeeting(meeting: Meeting): Promise<void> {
     const response = await this.amphitryonDAO.createMeeting(meeting);
     if (response) {
       if (response.ok) {
@@ -508,7 +351,7 @@ class Store {
           Alert.alert('Réunion crée', 'La réunion que vous avez soumise a bien été enregistrée');
         });
       } else {
-        void this.manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
 
@@ -525,7 +368,7 @@ class Store {
    * Action when a meeting is updated
    * @param meeting to update
    */
-  @action async updateMeeting(meeting: Meeting) {
+  @action async updateMeeting(meeting: Meeting): Promise<void> {
     const response = await this.amphitryonDAO.updateMeeting(meeting);
     if (response) {
       if (response.ok) {
@@ -547,7 +390,7 @@ class Store {
           'La réunion que vous avez soumise a bien été mise à jour',
         );
       } else {
-        void this.manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
 
@@ -573,7 +416,7 @@ class Store {
    * Action when a meeting is deleted
    * @param meetingId to delete
    */
-  @action async deleteMeeting(meetingId: string) {
+  @action async deleteMeeting(meetingId: string): Promise<void> {
     const response = await this.amphitryonDAO.deleteMeeting(meetingId);
     if (response) {
       if (response.ok) {
@@ -590,7 +433,7 @@ class Store {
           this.regenerateItems();
         });
       } else {
-        void this.manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
 
@@ -614,13 +457,13 @@ class Store {
    * Action when a search is computed with an id
    * @param id to search
    */
-  @action async searchWithId(id: string) {
+  @action async searchWithId(id: string): Promise<void> {
     const response = await this.amphitryonDAO.searchMeetingWithID(id);
     if (response) {
       if (response.ok) {
         this.searchMeetings = await response.json();
       } else {
-        void this.manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
 
@@ -633,13 +476,13 @@ class Store {
    * Action when a search is computed with a filter
    * @param filter to apply
    */
-  @action async searchWithFilter(filter: Filter) {
+  @action async searchWithFilter(filter: Filter): Promise<void> {
     const response = await this.amphitryonDAO.searchMeeting(filter);
     if (response) {
       if (response.ok) {
         this.searchMeetings = await response.json();
       } else {
-        void this.manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
 
@@ -652,7 +495,7 @@ class Store {
    * Set items in the calendar
    * @param items in the calendard
    */
-  @action setItems(items: AgendaItemsMap<Meeting>) {
+  @action setItems(items: AgendaItemsMap<Meeting>): void {
     this.items = items;
   }
 
@@ -660,7 +503,7 @@ class Store {
    * Generate next 10 days agenda items from a given date
    * @param from date from to generate items
    */
-  @action generateItems(from: Date) {
+  @action generateItems(from: Date): void {
     this.dateInCalendar = from;
     const nbDays = 10;
     const items = ['{ '];
@@ -689,9 +532,9 @@ class Store {
   /**
    * Regeneration of calendar items
    */
-  @action regenerateItems() {
+  @action regenerateItems(): void {
     this.generateItems(this.dateInCalendar);
   }
 }
 
-export default createContext(new Store());
+export default StudentStore;

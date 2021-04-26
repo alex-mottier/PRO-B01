@@ -16,10 +16,11 @@ import frenchLocale from 'date-fns/locale/fr';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Meeting, Tag } from '../../app/models/ApplicationTypes';
 import { useNavigation } from '@react-navigation/core';
-import GlobalStore from '../../app/stores/GlobalStore';
+import StudentStore from '../../app/stores/StudentStore';
 import { colors } from '../../app/context/Theme';
 import Clipboard from 'expo-clipboard';
 import LoadingComponent from '../Loading/LoadingComponent';
+import { useStores } from '../../app/context/storesContext';
 
 /**
  * Component props
@@ -40,7 +41,7 @@ const MeetingComponent: React.FC<IProps> = ({
   const navigation = useNavigation();
 
   /* Usage of MobX global state store */
-  const store = React.useContext(GlobalStore);
+  const { studentStore, authenticationStore } = useStores();
 
   /* Component states */
   const [isReduced, setIsReduced] = React.useState(true);
@@ -48,7 +49,7 @@ const MeetingComponent: React.FC<IProps> = ({
 
   /* Local variables */
   let nbColors = 0;
-  const isOwner = meeting.ownerID === store.getAuthenticatedUser()?.id;
+  const isOwner = meeting.ownerID === authenticationStore.getAuthenticatedUser()?.id;
   const isMemberOfMeeting = true;
   // meeting.membersID.findIndex((current: string) => {
   //   return store.getAuthenticatedUser()?.id === current;
@@ -65,8 +66,8 @@ const MeetingComponent: React.FC<IProps> = ({
    * Action when the edit button is pressed
    */
   const handleEdit = () => {
-    store.setMeetingToUpdate(meeting);
-    store.setLocationToLoad(meeting.locationID);
+    studentStore.setMeetingToUpdate(meeting);
+    studentStore.setLocationToLoad(meeting.locationID);
     navigation.navigate('Edit');
   };
 
@@ -75,7 +76,7 @@ const MeetingComponent: React.FC<IProps> = ({
    */
   const handleJoinMeeting = () => {
     setIsLoading(true);
-    void store.joinMeeting(meeting).then(() => {
+    void studentStore.joinMeeting(meeting).then(() => {
       setIsLoading(false);
     });
   };
@@ -85,7 +86,7 @@ const MeetingComponent: React.FC<IProps> = ({
    */
   const handleLeaveMeeting = () => {
     setIsLoading(true);
-    void store.leaveMeeting(meeting).then(() => {
+    void studentStore.leaveMeeting(meeting).then(() => {
       setIsLoading(false);
     });
   };
@@ -105,7 +106,7 @@ const MeetingComponent: React.FC<IProps> = ({
         {
           text: 'Oui',
           onPress: () => {
-            void store.deleteMeeting(meeting.id);
+            void studentStore.deleteMeeting(meeting.id);
           },
         },
       ],
@@ -124,8 +125,8 @@ const MeetingComponent: React.FC<IProps> = ({
    * Action on open chat button pressed
    */
   const handleOpenChat = () => {
-    store.setChatToLoad(meeting.chatID);
-    store.setMeetingToUpdate(meeting);
+    studentStore.setChatToLoad(meeting.chatID);
+    studentStore.setMeetingToUpdate(meeting);
     navigation.navigate('Chat');
   };
 
@@ -211,7 +212,7 @@ const MeetingComponent: React.FC<IProps> = ({
                 color={Globals.COLORS.GRAY}
                 size={Globals.SIZES.ICON_HEADER}
                 onPress={() => {
-                  void store.setLocationToLoad(meeting.locationID);
+                  void studentStore.setLocationToLoad(meeting.locationID);
                   navigation.navigate('LocationDetails');
                 }}
               />

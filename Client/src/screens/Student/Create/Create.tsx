@@ -24,9 +24,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import TagsComponent from '../../../components/Tags/TagsComponent';
 import { addHours, format } from 'date-fns';
 import SearchLocation from '../../../components/SearchLocation/SearchLocation';
-import GlobalStore from '../../../app/stores/GlobalStore';
 import { useNavigation } from '@react-navigation/native';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
+import { useStores } from '../../../app/context/storesContext';
 
 /**
  * Component props
@@ -40,7 +40,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
   const navigation = useNavigation();
 
   /* Usage of MobX global state store */
-  const store = React.useContext(GlobalStore);
+  const { studentStore } = useStores();
 
   /* Component states */
   const [meeting, setMeeting] = React.useState<Meeting | null>(null);
@@ -127,7 +127,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
 
     // Everything is well filled => meeting can be udpated
     setIsLoading(true);
-    void store
+    void studentStore
       .updateMeeting({
         id: meeting ? meeting.id : '',
         name: meetingName,
@@ -145,7 +145,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
         isPrivate: isPrivateOn,
       })
       .then(() => {
-        store.regenerateItems();
+        studentStore.regenerateItems();
         setIsLoading(false);
       });
   };
@@ -159,7 +159,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
 
     // Everything is well filled => meeting can be created
     setIsLoading(true);
-    void store
+    void studentStore
       .createMeeting({
         id: '',
         name: meetingName,
@@ -188,7 +188,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
    * Reset form field states
    */
   const handleReset = () => {
-    store.setMeetingToUpdate(null);
+    studentStore.setMeetingToUpdate(null);
     setMeetingName('');
     setMeetingDescription('');
     setStartDate(new Date());
@@ -228,8 +228,8 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
   React.useEffect(() => {
     if (isEditMode) {
       setIsLoading(true);
-      void store.loadLocationToDisplay().then(() => {
-        const meeting = store.meetingToUpdate;
+      void studentStore.loadLocationToDisplay().then(() => {
+        const meeting = studentStore.meetingToUpdate;
         setMeeting(meeting);
         if (meeting) {
           setMeetingName(meeting.name);
@@ -240,7 +240,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
           setTags(meeting.tags);
         }
 
-        setLocation(store.locationToDisplay);
+        setLocation(studentStore.locationToDisplay);
         setIsLoading(false);
       });
     }

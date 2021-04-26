@@ -8,15 +8,15 @@
 import * as React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { observer } from 'mobx-react-lite';
-import GlobalStore from './src/app/stores/GlobalStore';
 import { lightTheme, darkTheme } from './src/app/context/Theme';
 import Routes from './src/navigation/Routes';
 import * as Font from 'expo-font';
 import LoadingComponent from './src/components/Loading/LoadingComponent';
+import { useStores } from './src/app/context/storesContext';
 
 const App: React.FC = () => {
   /* Usage of MobX global state store */
-  const store = React.useContext(GlobalStore);
+  const { rootStore, themeStore } = useStores();
 
   /* Component states */
   const [isLoading, setIsLoading] = React.useState(true);
@@ -25,13 +25,13 @@ const App: React.FC = () => {
    * Action when component is loaded
    */
   React.useEffect(() => {
-    store.setIsLoading(true);
+    rootStore.setIsLoading(true);
 
     // Loading icons font
     void Font.loadAsync({
       MaterialCommunityIcons: require('./assets/MaterialCommunityIcons.ttf'),
     }).then(() => {
-      store.setIsLoading(false);
+      rootStore.setIsLoading(false);
       setIsLoading(false);
     });
   }, []);
@@ -39,14 +39,14 @@ const App: React.FC = () => {
   // Don't load the application until the font is loaded
   if (isLoading)
     return (
-      <PaperProvider theme={store.theme === 'light' ? lightTheme : darkTheme}>
+      <PaperProvider theme={themeStore.theme === 'light' ? lightTheme : darkTheme}>
         <LoadingComponent />
       </PaperProvider>
     );
 
   return (
-    <PaperProvider theme={store.theme === 'light' ? lightTheme : darkTheme}>
-      {store.isLoading ? <LoadingComponent /> : <Routes />}
+    <PaperProvider theme={themeStore.theme === 'light' ? lightTheme : darkTheme}>
+      {rootStore.isLoading ? <LoadingComponent /> : <Routes />}
     </PaperProvider>
   );
 };

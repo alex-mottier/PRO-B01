@@ -10,16 +10,16 @@ import { SafeAreaView, ScrollView, View } from 'react-native';
 import { IconButton, Text, TextInput } from 'react-native-paper';
 import styles from './styles';
 import { observer } from 'mobx-react-lite';
-import GlobalStore from '../../../app/stores/GlobalStore';
 import { Chat, Meeting, Message, User } from '../../../app/models/ApplicationTypes';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
 import { formatDistance } from 'date-fns';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import Globals from '../../../app/context/Globals';
+import { useStores } from '../../../app/context/storesContext';
 
 const ChatMeeting: React.FC = () => {
   /* Usage of MobX global state store */
-  const store = React.useContext(GlobalStore);
+  const { studentStore, authenticationStore } = useStores();
 
   /* Component states */
   const [isLoading, setIsLoading] = React.useState(true);
@@ -33,10 +33,10 @@ const ChatMeeting: React.FC = () => {
    */
   React.useEffect(() => {
     setIsLoading(true);
-    void store.loadChat(chat ? chat.id : '').then(() => {
-      setChat(store.chat);
-      setMeeting(store.meetingToUpdate);
-      setAuthenticedUser(store.getAuthenticatedUser());
+    void studentStore.loadChat(chat ? chat.id : '').then(() => {
+      setChat(studentStore.chat);
+      setMeeting(studentStore.meetingToUpdate);
+      setAuthenticedUser(authenticationStore.getAuthenticatedUser());
       setIsLoading(false);
     });
   }, []);
@@ -45,7 +45,7 @@ const ChatMeeting: React.FC = () => {
    * Action done when submit button is pressed
    */
   const handleSubmit = () => {
-    const user = store.getAuthenticatedUser();
+    const user = authenticationStore.getAuthenticatedUser();
     if (user) {
       const newMessage: Message = {
         id: '',
@@ -53,7 +53,7 @@ const ChatMeeting: React.FC = () => {
         username: user.username,
         date: new Date().toISOString(),
       };
-      if (chat) void store.sendMessage(chat.id, newMessage);
+      if (chat) void studentStore.sendMessage(chat.id, newMessage);
       setMessage('');
     }
   };

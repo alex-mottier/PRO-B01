@@ -17,7 +17,8 @@ import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import { Meeting } from '../../../app/models/ApplicationTypes';
 import { addYears, format } from 'date-fns';
 import { dateLocale } from '../../../app/context/DateFormat';
-import GlobalStore from '../../../app/stores/GlobalStore';
+import StudentStore from '../../../app/stores/StudentStore';
+import { useStores } from '../../../app/context/storesContext';
 
 // Format date definition
 LocaleConfig.locales['fr'] = dateLocale;
@@ -25,11 +26,11 @@ LocaleConfig.defaultLocale = 'fr';
 
 const Home: React.FC = () => {
   /* Usage of MobX global state store */
-  const store = React.useContext(GlobalStore);
+  const { studentStore } = useStores();
   const paperTheme = useTheme();
   return (
     <Agenda
-      items={store.items ? store.items : {}}
+      items={studentStore.items ? studentStore.items : {}}
       pastScrollRange={1}
       futureScrollRange={12}
       selected={format(new Date(), 'yyyy-MM-dd')}
@@ -37,7 +38,7 @@ const Home: React.FC = () => {
       maxDate={format(addYears(new Date(), 1), 'yyyy-MM-dd')}
       onDayPress={(day) => {
         const newDate = new Date(day.dateString);
-        store.generateItems(newDate);
+        studentStore.generateItems(newDate);
       }}
       renderItem={(item) => {
         return (
