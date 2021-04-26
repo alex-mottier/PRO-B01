@@ -1,34 +1,35 @@
 package ch.amphytrion.project.services;
 
-import ch.amphytrion.project.entities.databaseentities.HostProfil;
-import ch.amphytrion.project.repositories.HostRepository;
+import ch.amphytrion.project.entities.databaseentities.User;
+import ch.amphytrion.project.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class HostService implements IGenericService<HostProfil> {
+public class HostService {
 
-    private HostRepository hostRepository;
+    private UserRepository hostRepository;
 
     @Autowired
-    public HostService(HostRepository hostRepository) {
+    public HostService(UserRepository hostRepository) {
         this.hostRepository = hostRepository;
     }
 
-    @Override
-    public List<HostProfil> findAll() {
-        return hostRepository.findAll();
+    public List<User> findAll() {
+        return hostRepository.findAll()
+                .stream()
+                .filter(user -> user.getHostProfil() != null)
+                .collect(Collectors.toList());
     }
 
-    @Override
-    public HostProfil save(HostProfil hostProfil) {
-        return hostRepository.save(hostProfil);
+    public User save(User host) {
+        return hostRepository.save(host);
     }
 
-    @Override
-    public HostProfil findById(String id) {
+    public User findById(String id) {
         try {
             return hostRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -37,17 +38,14 @@ public class HostService implements IGenericService<HostProfil> {
         return null;
     }
 
-    @Override
-    public void delete(HostProfil hostProfil) {
-        hostRepository.delete(hostProfil);
+    public void delete(User host) {
+        hostRepository.delete(host);
     }
 
-    @Override
     public void deleteById(String id) {
         hostRepository.deleteById(id);
     }
 
-    @Override
     public long count() {
         return hostRepository.count();
     }

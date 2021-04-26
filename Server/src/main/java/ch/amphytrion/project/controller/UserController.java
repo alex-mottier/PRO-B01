@@ -34,8 +34,8 @@ public class UserController extends BaseController implements IGenericController
     public ResponseEntity<UserResponse> signUpStudent(@RequestBody Map<String, String> json) {
         User newUser = userService.checkAndSignUp(json);
         StudentProfil studentProfil = new StudentProfil();
-        newUser.setStudentProfil(studentProfil);
         if(newUser != null) {
+            newUser.setStudentProfil(studentProfil);
             String token = JwtUtils.makeHeaderToken(newUser.getUsername());
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);

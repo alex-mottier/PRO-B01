@@ -1,35 +1,34 @@
 package ch.amphytrion.project.services;
 
 import ch.amphytrion.project.entities.databaseentities.StudentProfil;
-import ch.amphytrion.project.repositories.StudentRepository;
+import ch.amphytrion.project.entities.databaseentities.User;
+import ch.amphytrion.project.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class StudentService implements IGenericService<StudentProfil> {
+public class StudentService {
 
     @Autowired
-    private StudentRepository studentRepository;
+    private UserRepository studentRepository;
 
     @Autowired
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(UserRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 
-    @Override
-    public List<StudentProfil> findAll() {
-        return studentRepository.findAll();
+    public List<User> findAll() {
+        return studentRepository.findAll().stream().filter(user -> {return user.getStudentProfil() != null;}).collect(Collectors.toList());
     }
 
-    @Override
-    public StudentProfil save(StudentProfil studentProfil) {
-        return studentRepository.save(studentProfil);
+    public User save(User student) {
+        return studentRepository.save(student);
     }
 
-    @Override
-    public StudentProfil findById(String id) {
+    public User findById(String id) {
         try {
             return studentRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -38,22 +37,19 @@ public class StudentService implements IGenericService<StudentProfil> {
         return null;
     }
 
-    @Override
-    public void delete(StudentProfil studentProfil) {
-        studentRepository.delete(studentProfil);
+    public void delete(User student) {
+        studentRepository.delete(student);
     }
 
-    @Override
     public void deleteById(String id) {
         studentRepository.deleteById(id);
     }
 
-    @Override
     public long count() {
         return studentRepository.count();
     }
 
-    public StudentProfil findByUsername(String username) {
+    public User findByUsername(String username) {
         try{
             return studentRepository.findByUsername(username);
         } catch (Exception e) {

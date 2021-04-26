@@ -7,6 +7,7 @@ import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.services.ChatService;
 import ch.amphytrion.project.services.LocationService;
 import ch.amphytrion.project.services.MeetingService;
+import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -23,13 +24,13 @@ import java.util.List;
 public class MeetingController extends BaseController implements IGenericController<Meeting> {
 
     private MeetingService meetingService;
-    private StudentService studentService;
+    private UserService studentService;
     private ChatService chatService;
     private LocationService locationService;
 
     private User user;
     @Autowired
-    public MeetingController(MeetingService meetingService, StudentService studentService, ChatService chatService, LocationService locationService) {
+    public MeetingController(MeetingService meetingService, UserService studentService, ChatService chatService, LocationService locationService) {
         this.meetingService = meetingService;
         this.studentService = studentService;
         this.chatService = chatService;
@@ -64,7 +65,7 @@ public class MeetingController extends BaseController implements IGenericControl
             StudentProfil studentProfil = user.getStudentProfil();
             if (studentProfil != null) {
                  studentProfil.getMeetingsParticipations().removeIf(m -> m.getId() == meeting.getId());
-                 studentService.save(studentProfil);
+                 studentService.save(user);
                 return ResponseEntity.ok(new MeetingResponse(meeting, locationService));
                 }
         } catch (Exception e) {
