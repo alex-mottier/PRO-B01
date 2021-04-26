@@ -49,10 +49,10 @@ const MeetingComponent: React.FC<IProps> = ({
   /* Local variables */
   let nbColors = 0;
   const isOwner = meeting.ownerID === store.getAuthenticatedUser()?.id;
-  const isMemberOfMeeting =
-    meeting.membersID.findIndex((current: string) => {
-      return store.getAuthenticatedUser()?.id === current;
-    }) !== -1;
+  const isMemberOfMeeting = true;
+  // meeting.membersID.findIndex((current: string) => {
+  //   return store.getAuthenticatedUser()?.id === current;
+  // }) !== -1;
 
   /**
    * Deploy or reduce meeting informations

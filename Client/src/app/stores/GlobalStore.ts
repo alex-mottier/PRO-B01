@@ -20,7 +20,6 @@ import {
 import GoogleAuth from '../authentication/GoogleAuth';
 import { TokenResponse } from 'expo-app-auth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
-import Globals from '../context/Globals';
 import { addDays, endOfDay, format, startOfDay } from 'date-fns';
 import { Alert } from 'react-native';
 import { AgendaItemsMap } from 'react-native-calendars';
@@ -31,9 +30,8 @@ class Store {
   private dateInCalendar = new Date();
 
   @observable theme: 'light' | 'dark' = 'light';
-  @observable isLoading = false;
+  @observable isLoading = true;
   @observable userToken: TokenResponse | null = null;
-  @observable sessionToken: string | null = null;
   @observable authenticatedUser: User | null = null;
   @observable isLoggedIn = false;
   @observable meetingToUpdate: Meeting | null = null;
@@ -139,22 +137,19 @@ class Store {
    * Loading the user's tokens
    */
   @action async loadTokens(): Promise<void> {
-    this.setIsLoading(true);
     const token = await this.googleAuth.getCachedAuthAsync();
     this.userToken = token;
     if (token && token.idToken) {
       const response = await this.amphitryonDAO.connectUser(token.idToken);
       if (response) {
         if (response.ok) {
-          const sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
-          this.sessionToken = sessionToken;
           this.setAuthenticatedUser(await response.json());
           this.setIsLoggedIn(true);
           void this.loadUserData();
         }
       }
+      // this.setIsLoading(false);
     }
-    this.setIsLoading(false);
   }
 
   /**
@@ -196,7 +191,27 @@ class Store {
       const response = await this.amphitryonDAO.createUser(this.userToken.idToken, user);
       if (response) {
         if (response.ok) {
-          this.sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
+          this.setAuthenticatedUser(await response.json());
+          this.setIsLoggedIn(true);
+          void this.loadUserData();
+        } else {
+          void this.manageErrorInResponse(response);
+        }
+      }
+      this.setIsLoading(false);
+    }
+  }
+
+  /**
+   * Sign in method
+   */
+  @action async signIn(): Promise<void> {
+    this.setIsLoading(true);
+    const loggedIn = await this.signInWithGoogle();
+    if (loggedIn && this.userToken && this.userToken.idToken) {
+      const response = await this.tryToConnect(this.userToken?.idToken);
+      if (response) {
+        if (response.ok) {
           this.setAuthenticatedUser(await response.json());
           this.setIsLoggedIn(true);
           void this.loadUserData();
@@ -208,36 +223,17 @@ class Store {
     this.setIsLoading(false);
   }
 
-  /**
-   * Sign in method
-   */
-  @action async signIn(): Promise<void> {
-    this.setIsLoading(true);
-    const loggedIn = await this.signInWithGoogle();
-    if (loggedIn && this.userToken && this.userToken.idToken) {
-      const response = await this.amphitryonDAO.connectUser(this.userToken?.idToken);
-      if (response && response.ok) {
-        this.sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
-        this.setAuthenticatedUser(await response.json());
-        this.setIsLoggedIn(true);
-        void this.loadUserData();
-      } else {
-        if (response) void this.manageErrorInResponse(response);
-      }
-    }
-    this.setIsLoading(false);
+  @action async tryToConnect(tokenId: string): Promise<Response | null> {
+    return await this.amphitryonDAO.connectUser(tokenId);
   }
 
   /**
    * Retrieve user data from API
    */
-  @action loadUserData() {
-    void this.loadMeetingsCreatedByUser();
-    void this.loadUserMeetings(startOfDay(new Date()), endOfDay(addDays(new Date(), 10))).then(
-      () => {
-        void this.generateItems(new Date());
-      },
-    );
+  @action async loadUserData() {
+    await this.loadMeetingsCreatedByUser();
+    await this.loadUserMeetings(startOfDay(new Date()), endOfDay(addDays(new Date(), 10)));
+    void this.generateItems(new Date());
   }
 
   /**
@@ -256,7 +252,6 @@ class Store {
     if (response) {
       if (response.ok) {
         const meetings = await response.json();
-        console.log(meetings);
         this.meetingsCreatedByUser = meetings;
       } else {
         void this.manageErrorInResponse(response);

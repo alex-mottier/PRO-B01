@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { Image, SafeAreaView, ScrollView, View } from 'react-native';
+import { Alert, Image, SafeAreaView, ScrollView, View } from 'react-native';
 import { Text, Title } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/core';
 import styles from './styles';
@@ -29,8 +29,21 @@ const SignUp: React.FC = () => {
    */
   const handleSignUp = () => {
     store.setIsLoading(true);
-    void store.signInWithGoogle().then((isLoggedIn: boolean) => {
-      if (isLoggedIn) navigation.navigate('ProfileConfiguration');
+    // Try to see if an account already match the selected account
+    void store.signInWithGoogle().then(async (isLoggedIn: boolean) => {
+      if (store.userToken && store.userToken.idToken) {
+        const response = await store.tryToConnect(store.userToken.idToken);
+
+        // If selected email is not assigned to an account
+        if (!response || !response.ok) {
+          if (isLoggedIn) navigation.navigate('ProfileConfiguration');
+        } else {
+          Alert.alert(
+            'Compte déjà utilisé',
+            'Ce compte Google est déjà rattaché à un compte Amphitryon, veuillez vous connecter',
+          );
+        }
+      }
     });
     store.setIsLoading(false);
   };
