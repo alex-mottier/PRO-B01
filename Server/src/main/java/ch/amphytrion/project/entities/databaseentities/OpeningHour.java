@@ -18,7 +18,7 @@ public class OpeningHour {
     private enum Day {
         SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY
     }
-    private Day day;
+    private Integer day;
     private LocalDateTime hourBegin;
     private LocalDateTime hourEnd;
 }
