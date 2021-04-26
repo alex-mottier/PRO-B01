@@ -95,7 +95,9 @@ class StudentStore {
     if (response) {
       if (response.ok) {
         const meetings = await response.json();
-        this.meetingsCreatedByUser = meetings;
+        runInAction(() => {
+          this.meetingsCreatedByUser = meetings;
+        });
       } else {
         void RootStore.getInstance().manageErrorInResponse;
       }
@@ -111,7 +113,9 @@ class StudentStore {
     const response = await this.amphitryonDAO.loadUserMeetings(startDate, endDate);
     if (response) {
       if (response.ok) {
-        this.meetingsCreatedByUser = await response.json();
+        void runInAction(async () => {
+          this.meetingsCreatedByUser = await response.json();
+        });
       } else {
         void RootStore.getInstance().manageErrorInResponse;
       }
@@ -248,7 +252,9 @@ class StudentStore {
     const response = await this.amphitryonDAO.getLocationDetails(locationId);
     if (response) {
       if (response.ok) {
-        return await response.json();
+        const temp = await response.json();
+        console.log(temp);
+        return temp;
       } else {
         void RootStore.getInstance().manageErrorInResponse;
       }
@@ -308,23 +314,25 @@ class StudentStore {
     const response = await this.amphitryonDAO.updateMeeting(meeting);
     if (response) {
       if (response.ok) {
-        if (this.userMeetings) {
-          const index = this.userMeetings.findIndex((current: Meeting) => {
-            return current.id == meeting.id;
-          });
-          if (index) this.userMeetings[index] = meeting;
-        }
-        if (this.meetingsCreatedByUser) {
-          const index = this.meetingsCreatedByUser.findIndex((current: Meeting) => {
-            return current.id == meeting.id;
-          });
-          if (index) this.meetingsCreatedByUser[index] = meeting;
-        }
-        this.regenerateItems();
-        Alert.alert(
-          'Réunion mise à jour',
-          'La réunion que vous avez soumise a bien été mise à jour',
-        );
+        runInAction(() => {
+          if (this.userMeetings) {
+            const index = this.userMeetings.findIndex((current: Meeting) => {
+              return current.id == meeting.id;
+            });
+            if (index) this.userMeetings[index] = meeting;
+          }
+          if (this.meetingsCreatedByUser) {
+            const index = this.meetingsCreatedByUser.findIndex((current: Meeting) => {
+              return current.id == meeting.id;
+            });
+            if (index) this.meetingsCreatedByUser[index] = meeting;
+          }
+          this.regenerateItems();
+          Alert.alert(
+            'Réunion mise à jour',
+            'La réunion que vous avez soumise a bien été mise à jour',
+          );
+        });
       } else {
         void RootStore.getInstance().manageErrorInResponse;
       }

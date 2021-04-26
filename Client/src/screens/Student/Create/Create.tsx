@@ -145,6 +145,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
         isPrivate: isPrivateOn,
       })
       .then(() => {
+        navigation.goBack();
         studentStore.regenerateItems();
         setIsLoading(false);
       });
