@@ -1,7 +1,6 @@
 package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.entities.databaseentities.HostProfil;
-import ch.amphytrion.project.services.HostService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

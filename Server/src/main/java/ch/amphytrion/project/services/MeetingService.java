@@ -2,10 +2,7 @@ package ch.amphytrion.project.services;
 
 import ch.amphytrion.project.dto.FilterRequest;
 import ch.amphytrion.project.dto.MeetingResponse;
-import ch.amphytrion.project.entities.databaseentities.Location;
-import ch.amphytrion.project.entities.databaseentities.Meeting;
-import ch.amphytrion.project.entities.databaseentities.StudentProfil;
-import ch.amphytrion.project.entities.databaseentities.Tag;
+import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.repositories.ChatRepository;
 import ch.amphytrion.project.repositories.LocationRepository;
 import ch.amphytrion.project.repositories.MeetingRepository;
@@ -80,23 +77,20 @@ public class MeetingService implements IGenericService<Meeting> {
         return meetingRepository.count();
     }
 
-    public MeetingResponse addMemberToMeeting(String meetingID) {
+    public Meeting addMemberToMeeting(User member, String meetingID) {
         try {
-
-            StudentProfil studentProfil = new StudentProfil(null, null, null); // TODO Use current user
+            StudentProfil studentProfil = member.getStudentProfil();
             Meeting meeting = findById(meetingID);
-            MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
-            meetingResponse.membersId.add(studentProfil.getId());
-            if (student.getMeetingsParticipations() != null) {
-                student.getMeetingsParticipations().add(meeting);
+            if (studentProfil != null) {
+                meeting.getMembersID().add(member.getId());
+                studentProfil.getMeetingsParticipations().add(meeting);
+                save(meeting);
+//                userService.save(member);
+                return meeting;
             } else {
-                ArrayList<Meeting> meetings = new ArrayList<>();
-                meetings.add(meeting);
-                studentProfil.setMeetingsParticipations(meetings);
+                return null;
             }
-            return meetingResponse;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }

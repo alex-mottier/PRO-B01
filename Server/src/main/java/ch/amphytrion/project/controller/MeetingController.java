@@ -7,7 +7,6 @@ import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.services.ChatService;
 import ch.amphytrion.project.services.LocationService;
 import ch.amphytrion.project.services.MeetingService;
-import ch.amphytrion.project.services.StudentService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -29,7 +28,6 @@ public class MeetingController extends BaseController implements IGenericControl
     private LocationService locationService;
 
     private User user;
-    private StudentProfil studentProfil;
     @Autowired
     public MeetingController(MeetingService meetingService, StudentService studentService, ChatService chatService, LocationService locationService) {
         this.meetingService = meetingService;
@@ -97,7 +95,9 @@ public class MeetingController extends BaseController implements IGenericControl
     @PostMapping("/meeting/join/{meetingID}")
     public ResponseEntity<MeetingResponse> joinMeeting(@PathVariable String meetingID) {
         try {
-            return ResponseEntity.ok(meetingService.addMemberToMeeting(meetingID));
+            checkHostIsStudent();
+            Meeting meeting = meetingService.addMemberToMeeting(getCurrentUser(), meetingID);
+            return ResponseEntity.ok(new MeetingResponse(meeting, locationService));
         }
         catch (Exception e) {
             throw new CustomException("Le meeting n'a pas pu être joint", HttpStatus.NOT_ACCEPTABLE, null);

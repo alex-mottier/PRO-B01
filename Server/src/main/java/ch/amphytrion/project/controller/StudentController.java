@@ -1,7 +1,7 @@
 package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.entities.databaseentities.StudentProfil;
-import ch.amphytrion.project.services.StudentService;
+import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -16,10 +16,10 @@ import java.util.List;
 @RestController
 public class StudentController extends BaseController implements IGenericController<StudentProfil>{
 
-    private final StudentService studentService;
+    private final UserService studentService;
 
     @Autowired
-    public StudentController(StudentService studentService) {
+    public StudentController(UserService studentService) {
         this.studentService = studentService;
     }
 

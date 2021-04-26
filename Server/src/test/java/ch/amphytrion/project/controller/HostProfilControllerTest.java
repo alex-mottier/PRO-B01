@@ -1,7 +1,5 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.repositories.HostRepository;
-import ch.amphytrion.project.services.HostService;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
