@@ -68,7 +68,11 @@ const SignUp: React.FC = () => {
           <Title>S&apos;inscrire avec</Title>
           <Text style={styles.text}>Veuillez choisir une option d&apos;inscription</Text>
           <View style={styles.buttons}>
-            <FacebookButton onPress={() => navigation.navigate('ProfileConfiguration')} />
+            <FacebookButton
+              onPress={() => {
+                Alert.alert('En développement', 'Fonctionnalité en développement');
+              }}
+            />
             <GoogleButton onPress={handleSignUp} />
             <CustomButton
               icon={Globals.ICONS.PROFILE}

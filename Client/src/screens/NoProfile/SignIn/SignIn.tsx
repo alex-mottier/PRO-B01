@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { Image, SafeAreaView, ScrollView, View } from 'react-native';
+import { Alert, Image, SafeAreaView, ScrollView, View } from 'react-native';
 import { Text, Title } from 'react-native-paper';
 import styles from './styles';
 import Globals from '../../../app/context/Globals';
@@ -46,7 +46,11 @@ const SignIn: React.FC = () => {
           <Title>Se connecter avec</Title>
           <Text style={styles.text}>Veuillez choisir une option de connexion</Text>
           <View style={styles.buttons}>
-            <FacebookButton onPress={() => {}} />
+            <FacebookButton
+              onPress={() => {
+                Alert.alert('En développement', 'Fonctionnalité en développement');
+              }}
+            />
             <GoogleButton onPress={handleLogin} />
             <CustomButton
               icon={Globals.ICONS.PROFILE}
