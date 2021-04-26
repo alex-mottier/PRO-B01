@@ -99,7 +99,7 @@ class StudentStore {
           this.meetingsCreatedByUser = meetings;
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
   }
@@ -117,7 +117,7 @@ class StudentStore {
           this.meetingsCreatedByUser = await response.json();
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
   }
@@ -136,7 +136,7 @@ class StudentStore {
           this.regenerateItems();
         }
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
   }
@@ -157,7 +157,7 @@ class StudentStore {
           this.regenerateItems();
         }
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
   }
@@ -180,7 +180,7 @@ class StudentStore {
       if (response.ok) {
         this.chat = { id: chatId, messages: await response.json() };
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
   }
@@ -196,7 +196,7 @@ class StudentStore {
       if (response.ok) {
         this.chat?.messages.push(message);
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
   }
@@ -220,7 +220,7 @@ class StudentStore {
       if (response.ok) {
         this.locations = await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
   }
@@ -234,7 +234,7 @@ class StudentStore {
       if (response.ok) {
         this.locations = await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
   }
@@ -250,13 +250,16 @@ class StudentStore {
 
   @action async loadLocation(locationId: string): Promise<Location | null> {
     const response = await this.amphitryonDAO.getLocationDetails(locationId);
+    console.log('test1');
     if (response) {
       if (response.ok) {
         const temp = await response.json();
+        console.log('test');
         console.log(temp);
         return temp;
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        console.log('test');
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
     return null;
@@ -278,9 +281,11 @@ class StudentStore {
     const response = await this.amphitryonDAO.getHostDetails(this.hostToLoad);
     if (response) {
       if (response.ok) {
-        this.locationToDisplay = await response.json();
+        const temp = await response.json();
+        console.log(temp);
+        this.locationToDisplay = temp;
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
   }
@@ -301,7 +306,7 @@ class StudentStore {
           Alert.alert('Réunion crée', 'La réunion que vous avez soumise a bien été enregistrée');
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
   }
@@ -334,7 +339,7 @@ class StudentStore {
           );
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
   }
@@ -360,7 +365,7 @@ class StudentStore {
           this.regenerateItems();
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
   }
@@ -375,7 +380,7 @@ class StudentStore {
       if (response.ok) {
         this.searchMeetings = await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
   }
@@ -390,7 +395,7 @@ class StudentStore {
       if (response.ok) {
         this.searchMeetings = await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
   }

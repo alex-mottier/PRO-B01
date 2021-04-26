@@ -327,6 +327,7 @@ export default class AmphitryonDAO {
    */
   async getLocationDetails(locationID: string): Promise<Response | null> {
     console.log(locationID);
+    console.log(this.headerWithSessionToken);
     return await fetch(Globals.URLS.API_URL + '/location/{id}?id=' + locationID, {
       method: 'GET',
       headers: this.headerWithSessionToken,
@@ -388,7 +389,7 @@ export default class AmphitryonDAO {
    * @returns the host
    */
   async getHostDetails(hostId: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/host/' + hostId, {
+    return await fetch(Globals.URLS.API_URL + '/host/{id}?id=' + hostId, {
       method: 'GET',
       headers: this.headerWithSessionToken,
     })
