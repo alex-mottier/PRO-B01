@@ -11,7 +11,6 @@ import { IconButton, TextInput, Text, Portal, Modal, Title, useTheme } from 'rea
 import Globals from '../../app/context/Globals';
 import { useStores } from '../../app/context/storesContext';
 import { Location } from '../../app/models/ApplicationTypes';
-import StudentStore from '../../app/stores/StudentStore';
 import { mockLocations } from '../../mock/Locations';
 import LoadingComponent from '../Loading/LoadingComponent';
 import LocationComponent from '../Location/LocationComponent';

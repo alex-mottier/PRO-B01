@@ -17,7 +17,6 @@ import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import { Meeting } from '../../../app/models/ApplicationTypes';
 import { addYears, format } from 'date-fns';
 import { dateLocale } from '../../../app/context/DateFormat';
-import StudentStore from '../../../app/stores/StudentStore';
 import { useStores } from '../../../app/context/storesContext';
 
 // Format date definition

@@ -14,7 +14,6 @@ import { Location, Tag } from '../../app/models/ApplicationTypes';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../app/context/Theme';
 import { useNavigation } from '@react-navigation/core';
-import StudentStore from '../../app/stores/StudentStore';
 import { useStores } from '../../app/context/storesContext';
 
 /**

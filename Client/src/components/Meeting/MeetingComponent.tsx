@@ -16,7 +16,6 @@ import frenchLocale from 'date-fns/locale/fr';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Meeting, Tag } from '../../app/models/ApplicationTypes';
 import { useNavigation } from '@react-navigation/core';
-import StudentStore from '../../app/stores/StudentStore';
 import { colors } from '../../app/context/Theme';
 import Clipboard from 'expo-clipboard';
 import LoadingComponent from '../Loading/LoadingComponent';

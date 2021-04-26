@@ -11,7 +11,6 @@ import { Avatar, Text, Title, IconButton, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from './styles';
 import { observer } from 'mobx-react-lite';
-import StudentStore from '../../../app/stores/StudentStore';
 import { Location, OpeningHour, Tag } from '../../../app/models/ApplicationTypes';
 import Globals from '../../../app/context/Globals';
 import { colors } from '../../../app/context/Theme';
