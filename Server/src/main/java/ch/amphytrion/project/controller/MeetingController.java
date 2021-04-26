@@ -52,7 +52,6 @@ public class MeetingController extends BaseController implements IGenericControl
         } catch (Exception e) {
             throw new CustomException("Une erreur interne s'est produite", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
-
     }
 
     //X
@@ -111,7 +110,7 @@ public class MeetingController extends BaseController implements IGenericControl
     public ResponseEntity<List<MeetingResponse>> searchWithFilter(@RequestBody FilterRequest filter){
         try {
             ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
-            for(Meeting meeting : meetingService.findByOwnerID(user.getId())) {
+            for(Meeting meeting : meetingService.searchFilter(filter)) {
                 MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
                 meetingResponses.add(meetingResponse);
             }
