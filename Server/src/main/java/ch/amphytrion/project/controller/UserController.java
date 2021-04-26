@@ -4,6 +4,7 @@ import ch.amphytrion.project.authentication.SecurityConstants;
 import ch.amphytrion.project.authentication.utils.JwtUtils;
 import ch.amphytrion.project.dto.UserResponse;
 import ch.amphytrion.project.entities.databaseentities.*;
+import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -23,9 +24,7 @@ public class UserController extends BaseController implements IGenericController
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    public UserController(UserService userService) {this.userService = userService;}
 
     // X
     @SneakyThrows

@@ -50,7 +50,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 }
                 return ResponseEntity.ok(meetingResponses);
         } catch (Exception e) {
-            throw new CustomException("Aucun meeting n'a été trouvé", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Une erreur interne s'est produite", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
 
     }

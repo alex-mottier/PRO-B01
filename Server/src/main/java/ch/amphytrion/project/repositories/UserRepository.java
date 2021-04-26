@@ -14,4 +14,6 @@ public interface UserRepository extends MongoRepository<User, String> {
     User findByGoogleId(String googleId);
 
     User findByIdAndStudentProfilIsNotNull(String id);
+
+    User findByIdAndHostProfilIsNotNull(String id);
 }

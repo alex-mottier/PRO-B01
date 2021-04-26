@@ -19,6 +19,5 @@ public class HostResponse implements InterfaceDTO {
         this.address = user.getHostProfil().getAddress();
         this.description = user.getHostProfil().getDescription();
         this.tags = user.getHostProfil().getTags();
-
     }
 }
