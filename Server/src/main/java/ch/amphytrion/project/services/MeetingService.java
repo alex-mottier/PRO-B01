@@ -4,7 +4,7 @@ import ch.amphytrion.project.dto.FilterRequest;
 import ch.amphytrion.project.dto.MeetingResponse;
 import ch.amphytrion.project.entities.databaseentities.Location;
 import ch.amphytrion.project.entities.databaseentities.Meeting;
-import ch.amphytrion.project.entities.databaseentities.Student;
+import ch.amphytrion.project.entities.databaseentities.StudentProfil;
 import ch.amphytrion.project.entities.databaseentities.Tag;
 import ch.amphytrion.project.repositories.ChatRepository;
 import ch.amphytrion.project.repositories.LocationRepository;
@@ -83,16 +83,16 @@ public class MeetingService implements IGenericService<Meeting> {
     public MeetingResponse addMemberToMeeting(String meetingID) {
         try {
 
-            Student student = new Student(null, null, null); // TODO Use current user
+            StudentProfil studentProfil = new StudentProfil(null, null, null); // TODO Use current user
             Meeting meeting = findById(meetingID);
             MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
-            meetingResponse.membersId.add(student.getId());
+            meetingResponse.membersId.add(studentProfil.getId());
             if (student.getMeetingsParticipations() != null) {
                 student.getMeetingsParticipations().add(meeting);
             } else {
                 ArrayList<Meeting> meetings = new ArrayList<>();
                 meetings.add(meeting);
-                student.setMeetingsParticipations(meetings);
+                studentProfil.setMeetingsParticipations(meetings);
             }
             return meetingResponse;
         }

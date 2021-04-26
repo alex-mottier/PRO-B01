@@ -3,6 +3,7 @@ package ch.amphytrion.project.controller;
 import ch.amphytrion.project.authentication.SecurityConstants;
 import ch.amphytrion.project.authentication.utils.JwtUtils;
 import ch.amphytrion.project.dto.UserResponse;
+import ch.amphytrion.project.entities.databaseentities.StudentProfil;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -31,12 +32,14 @@ public class UserController extends BaseController implements IGenericController
     @SneakyThrows
     @PostMapping("/signUpStudent")
     public ResponseEntity<UserResponse> signUpStudent(@RequestBody Map<String, String> json) {
-        UserResponse newUser = userService.checkAndSignUp(json);
+        User newUser = userService.checkAndSignUp(json);
+        StudentProfil studentProfil = new StudentProfil();
+        newUser.setStudentProfil(studentProfil);
         if(newUser != null) {
-            String token = JwtUtils.makeHeaderToken(newUser.username);
+            String token = JwtUtils.makeHeaderToken(newUser.getUsername());
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
-            return ResponseEntity.ok().headers(responseHeaders).body(newUser);
+            return ResponseEntity.ok().headers(responseHeaders).body(new UserResponse(newUser));
         }
         else {
             //user already exists

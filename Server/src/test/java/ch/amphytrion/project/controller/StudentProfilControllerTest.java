@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class StudentControllerTest {
+class StudentProfilControllerTest {
 
     StudentRepository studentRepository;
     StudentService studentService = new StudentService(studentRepository);

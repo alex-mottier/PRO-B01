@@ -1,8 +1,6 @@
 package ch.amphytrion.project.services;
 
 import ch.amphytrion.project.authentication.google_authentication.GoogleTokenValider;
-import ch.amphytrion.project.dto.UserResponse;
-import ch.amphytrion.project.entities.databaseentities.Student;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.repositories.UserRepository;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -79,14 +77,14 @@ public class UserService implements IGenericService<User>{
         return userRepository.count();
     }
 
-    public UserResponse checkAndSignUp(Map<String, String> json) {
+    public User checkAndSignUp(Map<String, String> json) {
         String userName = json.get("username");
         String tokenInput = json.get("tokenID");
 
         User newUser = null;
         if(findByUsername(userName) == null) {
             if (tokenInput.equals(DEV_TOKEN)) {
-                newUser = new User(null, "mock-google-id" + userName, userName);
+                newUser = new User("mock-google-id" + userName, userName);
             } else {
 
                 GoogleIdToken tokenID = valider.validateToken(tokenInput);
@@ -94,7 +92,7 @@ public class UserService implements IGenericService<User>{
                     GoogleIdToken.Payload payload = tokenID.getPayload();
                     String userId = payload.get("sub").toString();
                     if(findByGoogleId(userId) == null){
-                        newUser = new User(null, userId, userName);
+                        newUser = new User(userId, userName);
                     }
                 }
             }
@@ -102,7 +100,7 @@ public class UserService implements IGenericService<User>{
         }
         if(newUser != null) {
             userRepository.save(newUser);
-            return new UserResponse(newUser);
+            return newUser;
         } else {
             //user already exists
             return null;

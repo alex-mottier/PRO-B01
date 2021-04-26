@@ -2,7 +2,7 @@ package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.entities.databaseentities.Chat;
 import ch.amphytrion.project.entities.databaseentities.Message;
-import ch.amphytrion.project.entities.databaseentities.Student;
+import ch.amphytrion.project.entities.databaseentities.StudentProfil;
 import ch.amphytrion.project.services.ChatService;
 import ch.amphytrion.project.services.MessageService;
 import io.swagger.annotations.ApiOperation;
@@ -33,11 +33,11 @@ public class ChatController extends BaseController implements IGenericController
     @SneakyThrows
     @PostMapping("/chat/createMessage/{chatId}")
     public ResponseEntity<Chat> createMessage(@PathVariable String chatId, @RequestBody Message message) {
-        Student student = null; // TODO Use current user
+        StudentProfil studentProfil = null; // TODO Use current user
         Chat chat = chatService.findById(chatId);
         try {
-            if(student != null){
-                message.setUsername(student.getUsername());
+            if(studentProfil != null){
+                message.setUsername(studentProfil.getUsername());
                 if (chat.getMessages() != null) {
                     chat.getMessages().add(message);
                 } else {

@@ -1,6 +1,6 @@
 package ch.amphytrion.project.services;
 
-import ch.amphytrion.project.entities.databaseentities.Student;
+import ch.amphytrion.project.entities.databaseentities.StudentProfil;
 import ch.amphytrion.project.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class StudentService implements IGenericService<Student> {
+public class StudentService implements IGenericService<StudentProfil> {
 
     @Autowired
     private StudentRepository studentRepository;
@@ -19,17 +19,17 @@ public class StudentService implements IGenericService<Student> {
     }
 
     @Override
-    public List<Student> findAll() {
+    public List<StudentProfil> findAll() {
         return studentRepository.findAll();
     }
 
     @Override
-    public Student save(Student student) {
-        return studentRepository.save(student);
+    public StudentProfil save(StudentProfil studentProfil) {
+        return studentRepository.save(studentProfil);
     }
 
     @Override
-    public Student findById(String id) {
+    public StudentProfil findById(String id) {
         try {
             return studentRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
@@ -39,8 +39,8 @@ public class StudentService implements IGenericService<Student> {
     }
 
     @Override
-    public void delete(Student student) {
-        studentRepository.delete(student);
+    public void delete(StudentProfil studentProfil) {
+        studentRepository.delete(studentProfil);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class StudentService implements IGenericService<Student> {
         return studentRepository.count();
     }
 
-    public Student findByUsername(String username) {
+    public StudentProfil findByUsername(String username) {
         try{
             return studentRepository.findByUsername(username);
         } catch (Exception e) {

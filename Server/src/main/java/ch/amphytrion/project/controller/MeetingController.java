@@ -29,17 +29,13 @@ public class MeetingController extends BaseController implements IGenericControl
     private LocationService locationService;
 
     private User user;
-    private Student student;
+    private StudentProfil studentProfil;
     @Autowired
     public MeetingController(MeetingService meetingService, StudentService studentService, ChatService chatService, LocationService locationService) {
         this.meetingService = meetingService;
         this.studentService = studentService;
         this.chatService = chatService;
         this.locationService = locationService;
-    }
-
-    private void initialize() {
-             student = (Student) user;
     }
 
     //X
@@ -67,10 +63,10 @@ public class MeetingController extends BaseController implements IGenericControl
         try {
             user = getCurrentUser();
             Meeting meeting = meetingService.findById(meetingID);
-            if (user instanceof Student) {
-                Student student = (Student) user;
-                 student.getMeetingsParticipations().removeIf(m -> m.getId() == meeting.getId());
-                 studentService.save(student);
+            StudentProfil studentProfil = user.getStudentProfil();
+            if (studentProfil != null) {
+                 studentProfil.getMeetingsParticipations().removeIf(m -> m.getId() == meeting.getId());
+                 studentService.save(studentProfil);
                 return ResponseEntity.ok(new MeetingResponse(meeting, locationService));
                 }
         } catch (Exception e) {
@@ -84,10 +80,9 @@ public class MeetingController extends BaseController implements IGenericControl
     @PostMapping("/getMyMeetings")
     public ResponseEntity<List<MeetingResponse>> getMeetingsWhereUserParticipate(DatesFilterDTO datesFilter) {
         try {
-            user = getCurrentUser();
-            initialize();
+            StudentProfil studentProfil = getCurrentUser().getStudentProfil();
             ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
-            for(Meeting meeting : student.getMeetingsParticipations()) {
+            for(Meeting meeting : studentProfil.getMeetingsParticipations()) {
                 MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
                 meetingResponses.add(meetingResponse);
             }

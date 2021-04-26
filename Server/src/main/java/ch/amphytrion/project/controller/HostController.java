@@ -1,6 +1,6 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.entities.databaseentities.Host;
+import ch.amphytrion.project.entities.databaseentities.HostProfil;
 import ch.amphytrion.project.services.HostService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class HostController extends BaseController implements IGenericController<Host> {
+public class HostController extends BaseController implements IGenericController<HostProfil> {
 
     private HostService hostService;
 
@@ -27,7 +27,7 @@ public class HostController extends BaseController implements IGenericController
 
     @SneakyThrows
     @GetMapping("/hosts")
-    public ResponseEntity<List<Host>> getAll() {
+    public ResponseEntity<List<HostProfil>> getAll() {
         try {
             return ResponseEntity.ok(hostService.findAll());
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class HostController extends BaseController implements IGenericController
     }
     @SneakyThrows
     @PostMapping("/host")
-    public ResponseEntity<Host> save(Host entity) {
+    public ResponseEntity<HostProfil> save(HostProfil entity) {
         try {
             return ResponseEntity.ok(hostService.save(entity));
         } catch (Exception e) {

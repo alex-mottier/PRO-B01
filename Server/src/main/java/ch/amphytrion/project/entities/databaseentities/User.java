@@ -15,4 +15,11 @@ public class User {
     private String id;
     private String googleId;
     private String username;
+    private StudentProfil studentProfil;
+    private HostProfil hostProfil;
+
+    public User(String googleId, String username){
+        this.googleId = googleId;
+        this.username = username;
+    }
 }

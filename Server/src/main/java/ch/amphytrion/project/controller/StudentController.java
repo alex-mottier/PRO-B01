@@ -1,6 +1,6 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.entities.databaseentities.Student;
+import ch.amphytrion.project.entities.databaseentities.StudentProfil;
 import ch.amphytrion.project.services.StudentService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class StudentController extends BaseController implements IGenericController<Student>{
+public class StudentController extends BaseController implements IGenericController<StudentProfil>{
 
     private final StudentService studentService;
 
@@ -25,7 +25,7 @@ public class StudentController extends BaseController implements IGenericControl
 
     @SneakyThrows
     @GetMapping("/students")
-    public ResponseEntity<List<Student>> getAll() {
+    public ResponseEntity<List<StudentProfil>> getAll() {
         try {
             return ResponseEntity.ok(studentService.findAll());
         } catch (Exception e) {
@@ -35,16 +35,16 @@ public class StudentController extends BaseController implements IGenericControl
     }
     @SneakyThrows
     @PostMapping("/students")
-    public ResponseEntity<Student> save(@RequestBody Student student) {
+    public ResponseEntity<StudentProfil> save(@RequestBody StudentProfil studentProfil) {
         try {
-            return ResponseEntity.ok(studentService.save(student));
+            return ResponseEntity.ok(studentService.save(studentProfil));
         } catch (Exception e) {
             throw new CustomException("Étudiant non modifié/créé", HttpStatus.NOT_ACCEPTABLE, null);
 
         }    }
     @SneakyThrows
     @GetMapping("/students/{id}")
-    public ResponseEntity<Student> getById(@PathVariable String id) {
+    public ResponseEntity<StudentProfil> getById(@PathVariable String id) {
         try {
             return ResponseEntity.ok(studentService.findById(id));
         } catch (Exception e) {
