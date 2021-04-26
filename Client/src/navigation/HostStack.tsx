@@ -9,15 +9,11 @@ import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Appbar, IconButton, Switch, useTheme } from 'react-native-paper';
-import { BottomStudentTabs } from './BottomStudentTabs';
+import { BottomHostTabs } from './BottomHostTabs';
 import Globals from '../app/context/Globals';
 import { View } from 'react-native';
+import GlobalStore from '../app/stores/GlobalStore';
 import { observer } from 'mobx-react-lite';
-import LocationDetails from '../screens/Student/Location/LocationDetails';
-import HostDetails from '../screens/Student/Host/HostDetails';
-import ChatMeeting from '../screens/Student/Chat/ChatMeeting';
-import Edit from '../screens/Student/Edit/Edit';
-import { useStores } from '../app/context/storesContext';
 
 // Parameters of the screens
 type StackNavigatorParamlist = {
@@ -32,12 +28,12 @@ type StackNavigatorParamlist = {
 // Creating the application stack
 const Stack = createStackNavigator<StackNavigatorParamlist>();
 
-const StudentStack: React.FC = () => {
+const HostStack: React.FC = () => {
   // Usage of react native paper theme library
   const paperTheme = useTheme();
 
   /* Usage of MobX global state store */
-  const { themeStore, authenticationStore } = useStores();
+  const store = React.useContext(GlobalStore);
 
   return (
     <Stack.Navigator
@@ -79,16 +75,16 @@ const StudentStack: React.FC = () => {
               {options.headerTitle == Globals.STRINGS.PROFILE && (
                 <View style={{ flexDirection: 'row' }}>
                   <Switch
-                    value={themeStore.theme === 'dark'}
+                    value={store.theme === 'dark'}
                     color={Globals.COLORS.PRIMARY}
                     style={{ alignItems: 'center', justifyContent: 'center' }}
-                    onValueChange={() => themeStore.invertTheme()}
+                    onValueChange={() => store.invertTheme()}
                   />
                   <IconButton
                     icon={Globals.ICONS.LOGOUT}
                     color={Globals.COLORS.PRIMARY}
                     size={Globals.SIZES.ICON_BUTTON}
-                    onPress={() => authenticationStore.signOutWithGoogle()}
+                    onPress={() => store.signOutWithGoogle()}
                   />
                 </View>
               )}
@@ -98,7 +94,7 @@ const StudentStack: React.FC = () => {
       }}>
       <Stack.Screen
         name="Main"
-        component={BottomStudentTabs}
+        component={BottomHostTabs}
         options={({ route }) => {
           const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
           return {
@@ -106,48 +102,48 @@ const StudentStack: React.FC = () => {
           };
         }}
       />
-      <Stack.Screen
-        name="LocationDetails"
-        component={LocationDetails}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
-          return {
-            headerTitle: routeName,
-          };
-        }}
-      />
-      <Stack.Screen
-        name="HostDetails"
-        component={HostDetails}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
-          return {
-            headerTitle: routeName,
-          };
-        }}
-      />
-      <Stack.Screen
-        name="Chat"
-        component={ChatMeeting}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
-          return {
-            headerTitle: routeName,
-          };
-        }}
-      />
-      <Stack.Screen
-        name="Edit"
-        component={Edit}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
-          return {
-            headerTitle: routeName,
-          };
-        }}
-      />
+      {/*<Stack.Screen*/}
+      {/*  name="LocationDetails"*/}
+      {/*  component={LocationDetails}*/}
+      {/*  options={({ route }) => {*/}
+      {/*    const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;*/}
+      {/*    return {*/}
+      {/*      headerTitle: routeName,*/}
+      {/*    };*/}
+      {/*  }}*/}
+      {/*/>*/}
+      {/*<Stack.Screen*/}
+      {/*  name="HostDetails"*/}
+      {/*  component={HostDetails}*/}
+      {/*  options={({ route }) => {*/}
+      {/*    const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;*/}
+      {/*    return {*/}
+      {/*      headerTitle: routeName,*/}
+      {/*    };*/}
+      {/*  }}*/}
+      {/*/>*/}
+      {/*<Stack.Screen*/}
+      {/*  name="Chat"*/}
+      {/*  component={ChatMeeting}*/}
+      {/*  options={({ route }) => {*/}
+      {/*    const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;*/}
+      {/*    return {*/}
+      {/*      headerTitle: routeName,*/}
+      {/*    };*/}
+      {/*  }}*/}
+      {/*/>*/}
+      {/*<Stack.Screen*/}
+      {/*  name="Edit"*/}
+      {/*  component={Edit}*/}
+      {/*  options={({ route }) => {*/}
+      {/*    const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;*/}
+      {/*    return {*/}
+      {/*      headerTitle: routeName,*/}
+      {/*    };*/}
+      {/*  }}*/}
+      {/*/>*/}
     </Stack.Navigator>
   );
 };
 
-export default observer(StudentStack);
+export default observer(HostStack);
