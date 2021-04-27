@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OpeningHourResponse implements InterfaceDTO {
-    public String id;
     public Integer day;
     // hh:mm
     public String startTime;
