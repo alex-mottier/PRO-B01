@@ -9,14 +9,14 @@ import java.util.List;
 public class HostResponse implements InterfaceDTO {
     public String id;
     public String name;
-    public Address address;
+    public AddressResponse address;
     public String description;
     public List<Tag> tags;
 
     public HostResponse(User user) {
         this.id = user.getId();
         this.name = user.getUsername();
-        this.address = user.getHostProfil().getAddress();
+        this.address = new AddressResponse(user.getHostProfil().getAddress());
         this.description = user.getHostProfil().getDescription();
         this.tags = user.getHostProfil().getTags();
     }

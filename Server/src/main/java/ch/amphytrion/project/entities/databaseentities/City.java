@@ -16,9 +16,9 @@ public class City {
     @Id
     private String id;
     private String name;
-    private Integer zip;
+    private String zip;
 
-    public City(String name, Integer zip) {
+    public City(String name, String zip) {
         this.name = name;
         this.zip = zip;
     }
