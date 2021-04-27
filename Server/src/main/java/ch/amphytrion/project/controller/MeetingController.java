@@ -78,6 +78,7 @@ public class MeetingController extends BaseController implements IGenericControl
     @PostMapping("/getMyMeetings")
     public ResponseEntity<List<MeetingResponse>> getMeetingsWhereUserParticipate(DatesFilterDTO datesFilter) {
         try {
+            checkUserIsStudent();
             StudentProfil studentProfil = getCurrentUser().getStudentProfil();
             ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
             for(Meeting meeting : studentProfil.getMeetingsParticipations()) {
@@ -86,7 +87,7 @@ public class MeetingController extends BaseController implements IGenericControl
             }
             return ResponseEntity.ok(meetingResponses);
         } catch (Exception e) {
-            throw new CustomException("Aucun meeting n'a été trouvé", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Une erreur du serveur s'est produite", HttpStatus.INTERNAL_SERVER_ERROR, null);
         }
     }
 
@@ -95,7 +96,7 @@ public class MeetingController extends BaseController implements IGenericControl
     @PostMapping("/meeting/join/{meetingID}")
     public ResponseEntity<MeetingResponse> joinMeeting(@PathVariable String meetingID) {
         try {
-            checkHostIsStudent();
+            checkUserIsHost();
             Meeting meeting = meetingService.addMemberToMeeting(getCurrentUser(), meetingID);
             return ResponseEntity.ok(new MeetingResponse(meeting, locationService));
         }

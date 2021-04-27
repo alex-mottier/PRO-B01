@@ -18,7 +18,7 @@ public interface IGenericController<T> {
         }
     }
 
-    default void checkHostIsStudent() throws CustomException {
+    default void checkUserIsHost() throws CustomException {
         User currentUser = getCurrentUser();
         if(currentUser.getHostProfil() == null){
             throw new CustomException("Ce n'est pas un compte hébergeur", HttpStatus.UNAUTHORIZED, null);
