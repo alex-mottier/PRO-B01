@@ -27,7 +27,7 @@ public class Meeting {
     // List de String ?
     private List<Tag> tags;
     private Integer nbPeople;
-    private List<String> membersID;
+    private List<String> membersID = new ArrayList<>();
     private String startDate;
     private String endDate;
     private Boolean isPrivate;
@@ -45,8 +45,6 @@ public class Meeting {
         this.endDate = endDate;
     }
 
-    public Meeting(String name){
-        this.name = name;
-    }
+    public Meeting(String name){ this.name = name; }
 }
 

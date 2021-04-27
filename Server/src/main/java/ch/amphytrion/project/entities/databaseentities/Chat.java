@@ -7,15 +7,15 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Document
 public class Chat {
     @Id
     private String id;
-    private ArrayList<Message> messages;
+    private List<Message> messages = new ArrayList<>();
 
     public Chat(){
-        this.messages = new ArrayList<>();
     }
 }

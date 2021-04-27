@@ -13,9 +13,7 @@ import java.util.List;
 public class HostProfil {
     private Address address;
     private String description;
-    private List<Tag> tags;
+    private List<Tag> tags= new ArrayList<>();
 
-    public HostProfil(){
-        tags = new ArrayList<>();
-    }
+    public HostProfil(){ }
 }

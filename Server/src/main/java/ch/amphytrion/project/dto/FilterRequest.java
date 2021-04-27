@@ -13,6 +13,6 @@ public class FilterRequest implements InterfaceDTO {
     public String name;
     public String startDate;
     public String endDate;
-    public ArrayList<Tag> tags;
+    public ArrayList<Tag> tags = new ArrayList<>();
     public Location location;
 }
