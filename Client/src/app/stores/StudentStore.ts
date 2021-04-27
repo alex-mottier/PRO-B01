@@ -28,7 +28,7 @@ class StudentStore {
   @observable locations: Location[] | null = null;
   @observable locationToDisplay: Location | null = null;
   @observable hostToDisplay: Host | null = null;
-  @observable searchMeetings: Meeting[] | null = null;
+  @observable searchMeetings: Meeting[] = [];
   @observable locationToLoad = '';
   @observable hostToLoad = '';
   @observable chatToLoad = '';
@@ -250,15 +250,10 @@ class StudentStore {
 
   @action async loadLocation(locationId: string): Promise<Location | null> {
     const response = await this.amphitryonDAO.getLocationDetails(locationId);
-    console.log('test1');
     if (response) {
       if (response.ok) {
-        const temp = await response.json();
-        console.log('test');
-        console.log(temp);
-        return temp;
+        return await response.json();
       } else {
-        console.log('test');
         void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
@@ -281,9 +276,7 @@ class StudentStore {
     const response = await this.amphitryonDAO.getHostDetails(this.hostToLoad);
     if (response) {
       if (response.ok) {
-        const temp = await response.json();
-        console.log(temp);
-        this.locationToDisplay = temp;
+        this.hostToDisplay = await response.json();
       } else {
         void RootStore.getInstance().manageErrorInResponse(response);
       }
@@ -298,13 +291,13 @@ class StudentStore {
     const response = await this.amphitryonDAO.createMeeting(meeting);
     if (response) {
       if (response.ok) {
-        void runInAction(async () => {
-          const meetingWithId = JSON.parse(await response.text());
+        const meetingWithId = JSON.parse(await response.text());
+        void runInAction(() => {
           this.userMeetings?.push(meetingWithId);
           this.meetingsCreatedByUser?.push(meetingWithId);
-          this.regenerateItems();
-          Alert.alert('Réunion crée', 'La réunion que vous avez soumise a bien été enregistrée');
         });
+        this.regenerateItems();
+        Alert.alert('Réunion crée', 'La réunion que vous avez soumise a bien été enregistrée');
       } else {
         void RootStore.getInstance().manageErrorInResponse(response);
       }
@@ -324,20 +317,20 @@ class StudentStore {
             const index = this.userMeetings.findIndex((current: Meeting) => {
               return current.id == meeting.id;
             });
-            if (index) this.userMeetings[index] = meeting;
+            if (index !== -1) this.userMeetings[index] = meeting;
           }
           if (this.meetingsCreatedByUser) {
             const index = this.meetingsCreatedByUser.findIndex((current: Meeting) => {
               return current.id == meeting.id;
             });
-            if (index) this.meetingsCreatedByUser[index] = meeting;
+            if (index !== -1) this.meetingsCreatedByUser[index] = meeting;
           }
-          this.regenerateItems();
-          Alert.alert(
-            'Réunion mise à jour',
-            'La réunion que vous avez soumise a bien été mise à jour',
-          );
         });
+        this.regenerateItems();
+        Alert.alert(
+          'Réunion mise à jour',
+          'La réunion que vous avez soumise a bien été mise à jour',
+        );
       } else {
         void RootStore.getInstance().manageErrorInResponse(response);
       }
@@ -378,9 +371,13 @@ class StudentStore {
     const response = await this.amphitryonDAO.searchMeetingWithID(id);
     if (response) {
       if (response.ok) {
-        this.searchMeetings = await response.json();
+        return await runInAction(async () => {
+          this.searchMeetings = [await response.json()];
+        });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        return runInAction(() => {
+          this.searchMeetings = [];
+        });
       }
     }
   }
@@ -393,9 +390,13 @@ class StudentStore {
     const response = await this.amphitryonDAO.searchMeeting(filter);
     if (response) {
       if (response.ok) {
-        this.searchMeetings = await response.json();
+        void runInAction(async () => {
+          this.searchMeetings = await response.json();
+        });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        return runInAction(() => {
+          this.searchMeetings = [];
+        });
       }
     }
   }

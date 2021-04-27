@@ -18,7 +18,7 @@ import { useStores } from '../../../app/context/storesContext';
 const Profile: React.FC = () => {
   /* Usage of MobX global state store */
   const { studentStore, authenticationStore } = useStores();
-
+  const meetings = studentStore.meetingsCreatedByUser;
   return (
     <SafeAreaView>
       <ScrollView>
@@ -28,10 +28,10 @@ const Profile: React.FC = () => {
             <Title style={styles.title}>{authenticationStore.authenticatedUser?.username}</Title>
           </View>
           <Text style={styles.text}>Réunions que j&apos;ai crées :</Text>
-          {studentStore.meetingsCreatedByUser && studentStore.meetingsCreatedByUser.length === 0 ? (
+          {meetings && meetings.length === 0 ? (
             <NoMeeting />
           ) : (
-            studentStore.meetingsCreatedByUser.map((meeting: Meeting) => (
+            meetings.map((meeting: Meeting) => (
               <MeetingComponent
                 key={meeting.id}
                 meeting={meeting}

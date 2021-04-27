@@ -326,8 +326,6 @@ export default class AmphitryonDAO {
    * @returns the location
    */
   async getLocationDetails(locationID: string): Promise<Response | null> {
-    console.log(locationID);
-    console.log(this.headerWithSessionToken);
     return await fetch(Globals.URLS.API_URL + '/location/{id}?id=' + locationID, {
       method: 'GET',
       headers: this.headerWithSessionToken,

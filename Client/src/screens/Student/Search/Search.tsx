@@ -51,7 +51,7 @@ const Search: React.FC = () => {
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(addDays(new Date(), 7));
   const [isLoading, setIsLoading] = React.useState(false);
-  const [meetings, setMeetings] = React.useState<Meeting[] | null>(null);
+  const [meetings, setMeetings] = React.useState<Meeting[]>([]);
 
   /**
    * Action when start date is changed
@@ -79,7 +79,7 @@ const Search: React.FC = () => {
    */
   const handleSearchWithId = (id: string) => {
     setIsLoading(true);
-    setMeetings(null);
+    setMeetings([]);
     setSearch(id);
     void studentStore.searchWithId(id).then(() => {
       setMeetings(studentStore.searchMeetings);
@@ -93,7 +93,7 @@ const Search: React.FC = () => {
   const handleSubmit = () => {
     setModalVisible(false);
     setIsLoading(true);
-    setMeetings(null);
+    setMeetings([]);
     const filter: Filter = {
       name: name === '' ? name : null,
       startDate: startDate.toISOString(),
@@ -156,10 +156,11 @@ const Search: React.FC = () => {
                 <LoadingComponent />
               </View>
             )}
-            {!isLoading && meetings && meetings.length === 0 ? (
-              <NoMeeting />
-            ) : (
-              meetings?.map((meeting: Meeting) => (
+            {!isLoading && meetings && meetings.length === 0 && <NoMeeting />}
+            {!isLoading &&
+              meetings &&
+              meetings.length !== 0 &&
+              meetings.map((meeting: Meeting) => (
                 <MeetingComponent
                   key={meeting.id}
                   meeting={meeting}
@@ -167,8 +168,7 @@ const Search: React.FC = () => {
                   isChatable={true}
                   isInCalendar={false}
                 />
-              ))
-            )}
+              ))}
             <Portal>
               <Modal
                 visible={visible}

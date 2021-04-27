@@ -146,7 +146,6 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
       })
       .then(() => {
         navigation.goBack();
-        studentStore.regenerateItems();
         setIsLoading(false);
       });
   };
@@ -245,7 +244,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
         setIsLoading(false);
       });
     }
-  }, []);
+  }, [isEditMode, meeting]);
 
   return (
     <Provider theme={useTheme()}>

@@ -24,8 +24,8 @@ const ChatMeeting: React.FC = () => {
   /* Component states */
   const [isLoading, setIsLoading] = React.useState(true);
   const [chat, setChat] = React.useState<Chat | null>(null);
-  const [meeting, setMeeting] = React.useState<Meeting | null>();
-  const [authenticedUser, setAuthenticedUser] = React.useState<User | null>();
+  const meeting = studentStore.meetingToUpdate;
+  const authenticatedUser = authenticationStore.getAuthenticatedUser();
   const [message, setMessage] = React.useState<string>('');
 
   /**
@@ -35,8 +35,6 @@ const ChatMeeting: React.FC = () => {
     setIsLoading(true);
     void studentStore.loadChat(chat ? chat.id : '').then(() => {
       setChat(studentStore.chat);
-      setMeeting(studentStore.meetingToUpdate);
-      setAuthenticedUser(authenticationStore.getAuthenticatedUser());
       setIsLoading(false);
     });
   }, []);
@@ -61,9 +59,8 @@ const ChatMeeting: React.FC = () => {
   return (
     <SafeAreaView>
       <ScrollView>
-        {isLoading ? (
-          <LoadingComponent />
-        ) : (
+        {isLoading && <LoadingComponent />}
+        {!isLoading && (
           <View style={styles.container}>
             {meeting && (
               <View style={styles.meeting}>
@@ -79,10 +76,10 @@ const ChatMeeting: React.FC = () => {
               <SafeAreaView>
                 <ScrollView>
                   {chat &&
-                    chat?.messages.map((message: Message) => {
+                    chat.messages.map((message: Message) => {
                       return (
                         <View key={message.id}>
-                          {message.username === authenticedUser?.username ? (
+                          {message.username === authenticatedUser?.username ? (
                             <View style={styles.authenticedUserContainer}>
                               <View style={styles.authenticedUserMessage}>
                                 <Text style={styles.authenticedUserMessageText}>
