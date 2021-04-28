@@ -95,7 +95,7 @@ const Search: React.FC = () => {
     setIsLoading(true);
     setMeetings([]);
     const filter: Filter = {
-      name: name === '' ? name : null,
+      name: name !== '' ? name : null,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
       tags: tags.length === 0 ? [] : tags,
