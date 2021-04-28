@@ -11,8 +11,7 @@ import { useTheme } from 'react-native-paper';
 import { AuthenticationStack } from './AuthenticationStack';
 import { observer } from 'mobx-react-lite';
 import StudentStack from './StudentStack';
-import GlobalStore from '../app/stores/GlobalStore';
-import HostStack from './HostStack';
+//import HostStack from './HostStack';
 
 import { lightThemeNavigation } from '../app/context/Theme';
 import { useStores } from '../app/context/storesContext';
