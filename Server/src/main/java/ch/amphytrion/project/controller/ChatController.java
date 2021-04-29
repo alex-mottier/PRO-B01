@@ -34,11 +34,10 @@ public class ChatController extends BaseController implements IGenericController
     @SneakyThrows
     @PostMapping("/chat/createMessage/{chatId}")
     public ResponseEntity<Chat> createMessage(@PathVariable String chatId, @RequestBody Message message) {
+        checkUserIsStudent();
         User currentUser = getCurrentUser();
-        StudentProfil studentProfil = currentUser.getStudentProfil();
         Chat chat = chatService.findById(chatId);
         try {
-            if(studentProfil != null){
                 message.setUsername(currentUser.getUsername());
                 if (chat.getMessages() != null) {
                     chat.getMessages().add(message);
@@ -48,11 +47,10 @@ public class ChatController extends BaseController implements IGenericController
                     chat.setMessages(messages);
                 }
                 return ResponseEntity.ok(chatService.save(chat));
-            }
+
         } catch (Exception e) {
             throw new CustomException("Le message n'a pas pu être créé", HttpStatus.NOT_ACCEPTABLE, null);
         }
-        throw new CustomException("Le message n'a pas pu être créé", HttpStatus.NOT_ACCEPTABLE, null);
     }
 
     //X
