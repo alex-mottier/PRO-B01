@@ -1,6 +1,7 @@
 package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.dto.DatesFilterDTO;
+import ch.amphytrion.project.dto.LocationFilterDTO;
 import ch.amphytrion.project.dto.LocationResponse;
 import ch.amphytrion.project.entities.databaseentities.Location;
 import ch.amphytrion.project.services.LocationService;
@@ -41,7 +42,7 @@ public class LocationController extends BaseController implements IGenericContro
     //X
     @SneakyThrows
     @PostMapping("/locations/withDate")
-    public ResponseEntity<List<Location>> getAllWithDate(@RequestBody DatesFilterDTO filters) {
+    public ResponseEntity<List<Location>> getAllWithDate(@RequestBody LocationFilterDTO filters) {
         //TODO logique & model dto with startDate & endDate
         try {
             return ResponseEntity.ok(locationService.findAll());
