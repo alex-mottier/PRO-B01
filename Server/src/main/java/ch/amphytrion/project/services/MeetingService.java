@@ -28,7 +28,6 @@ public class MeetingService implements IGenericService<Meeting> {
     private LocationRepository locationRepository;
     private ChatRepository chatRepository;
     private LocationService locationService;
-    private UserRepository userRepository;
 
     @Autowired
     public MeetingService(MeetingRepository meetingRepository, LocationRepository locationRepository, ChatRepository chatRepository, LocationService locationService, UserRepository userRepository) {
