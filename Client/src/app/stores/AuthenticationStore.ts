@@ -9,7 +9,7 @@ import { TokenResponse } from 'expo-app-auth';
 import { action, makeAutoObservable, observable } from 'mobx';
 import GoogleAuth from '../authentication/GoogleAuth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
-import { User } from '../models/ApplicationTypes';
+import { Host, User } from '../models/ApplicationTypes';
 import RootStore from './RootStore';
 
 class AuthenticationStore {
@@ -19,6 +19,7 @@ class AuthenticationStore {
 
   @observable userToken: TokenResponse | null = null;
   @observable authenticatedUser: User | null = null;
+  @observable authenticatedHost: Host | null = null;
   @observable isLoggedIn = false;
 
   /**
@@ -60,6 +61,22 @@ class AuthenticationStore {
    */
   @action setAuthenticatedUser(userAuthenticated: User | null): void {
     this.authenticatedUser = userAuthenticated;
+  }
+
+  /**
+   * Set the authenticated host
+   * @param userAuthenticated the authenticated host or null
+   */
+  @action getAuthenticatedHost(): Host | null {
+    return this.authenticatedHost;
+  }
+
+  /**
+   * Set the authenticated host
+   * @param hostAuthenticated the authenticated host or null
+   */
+  @action setAuthenticatedHost(hostAuthenticated: Host | null): void {
+    this.authenticatedHost = hostAuthenticated;
   }
 
   /**

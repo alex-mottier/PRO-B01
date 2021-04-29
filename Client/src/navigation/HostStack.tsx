@@ -1,8 +1,8 @@
 /**
- * @file    StudentStack.tsx
+ * @file    HostStack.tsx
  * @author  Alexis Allemann & Alexandre Mottier
- * @date    22.03.2021
- * @brief   Stack navigation when student is logged in
+ * @date    29.04.2021
+ * @brief   Stack navigation when host is logged in
  */
 
 import * as React from 'react';
@@ -18,10 +18,6 @@ import { useStores } from '../app/context/storesContext';
 // Parameters of the screens
 type StackNavigatorParamlist = {
   Main: undefined;
-  Settings: undefined;
-  LocationDetails: undefined;
-  HostDetails: undefined;
-  Chat: undefined;
   Edit: undefined;
 };
 
@@ -29,11 +25,11 @@ type StackNavigatorParamlist = {
 const Stack = createStackNavigator<StackNavigatorParamlist>();
 
 const HostStack: React.FC = () => {
-    // Usage of react native paper theme library
-    const paperTheme = useTheme();
+  // Usage of react native paper theme library
+  const paperTheme = useTheme();
 
-    /* Usage of MobX global state store */
-    const { themeStore, authenticationStore } = useStores();
+  /* Usage of MobX global state store */
+  const { themeStore, authenticationStore } = useStores();
 
   return (
     <Stack.Navigator
