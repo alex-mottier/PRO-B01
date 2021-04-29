@@ -253,7 +253,6 @@ class StudentStore {
     if (response) {
       if (response.ok) {
         const temp = await response.json();
-        console.log(temp);
         return temp;
       } else {
         void RootStore.getInstance().manageErrorInResponse;
