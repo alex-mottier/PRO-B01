@@ -23,12 +23,12 @@ class StudentStore {
 
   @observable meetingToUpdate: Meeting | null = null;
   @observable meetingsCreatedByUser: Meeting[] = [];
-  @observable userMeetings: Meeting[] = [];
+  @observable userMeetings: Meeting[] | null = null;
   @observable chat: Chat | null = null;
   @observable locations: Location[] | null = null;
   @observable locationToDisplay: Location | null = null;
   @observable hostToDisplay: Host | null = null;
-  @observable searchMeetings: Meeting[] = [];
+  @observable searchMeetings: Meeting[] | null = null;
   @observable locationToLoad = '';
   @observable hostToLoad = '';
   @observable chatToLoad = '';
@@ -99,7 +99,7 @@ class StudentStore {
           this.meetingsCreatedByUser = meetings;
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
   }
@@ -114,10 +114,10 @@ class StudentStore {
     if (response) {
       if (response.ok) {
         void runInAction(async () => {
-          this.userMeetings = await response.json();
+          this.meetingsCreatedByUser = await response.json();
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
   }
@@ -130,17 +130,13 @@ class StudentStore {
     const response = await this.amphitryonDAO.joinMeeting(meeting.id);
     if (response) {
       if (response.ok) {
-        void runInAction(async () => {
-          if (this.userMeetings) {
-            const newMeeting = await response.json();
-            this.setMeetingToUpdate(newMeeting);
-            this.userMeetings.push(newMeeting);
-            Alert.alert('Meeting rejoint', 'Vous avez rejoint la réunion ' + meeting.name);
-            this.regenerateItems();
-          }
-        });
+        if (this.userMeetings) {
+          this.userMeetings.push(meeting);
+          Alert.alert('Meeting rejoint', 'Vous avez rejiont la réunion ' + meeting.name);
+          this.regenerateItems();
+        }
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
   }
@@ -153,18 +149,15 @@ class StudentStore {
     const response = await this.amphitryonDAO.leaveMeeting(meeting.id);
     if (response) {
       if (response.ok) {
-        void runInAction(async () => {
-          if (this.userMeetings) {
-            this.setMeetingToUpdate(await response.json());
-            this.userMeetings = this.userMeetings?.filter((current: Meeting) => {
-              return current.id !== current.id;
-            });
-            Alert.alert('Meeting quitté', 'Vous avez quitté la réunion ' + meeting.name);
-            this.regenerateItems();
-          }
-        });
+        if (this.userMeetings) {
+          this.userMeetings = this.userMeetings?.filter((current: Meeting) => {
+            return current.id !== current.id;
+          });
+          Alert.alert('Meeting quitté', 'Vous avez quitté la réunion ' + meeting.name);
+          this.regenerateItems();
+        }
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
   }
@@ -181,13 +174,13 @@ class StudentStore {
    * Load chat data
    * @param chatId to load
    */
-  @action async loadChat(): Promise<void> {
-    const response = await this.amphitryonDAO.loadChat(this.chatToLoad);
+  @action async loadChat(chatId: string): Promise<void> {
+    const response = await this.amphitryonDAO.loadMessages(this.chatToLoad);
     if (response) {
       if (response.ok) {
-        this.chat = await response.json();
+        this.chat = { id: chatId, messages: await response.json() };
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
   }
@@ -201,11 +194,9 @@ class StudentStore {
     const response = await this.amphitryonDAO.sendMessage(chatId, message);
     if (response) {
       if (response.ok) {
-        runInAction(() => {
-          this.chat?.messages.push(message);
-        });
+        this.chat?.messages.push(message);
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
   }
@@ -222,23 +213,14 @@ class StudentStore {
    * Load locations available between dates
    * @param startDate from date
    * @param endDate to date
-   * @param meetingId meeting id
    */
-  @action async loadLocations(
-    startDate: Date,
-    endDate: Date,
-    meetingId: string | null,
-  ): Promise<void> {
-    const response = await this.amphitryonDAO.getAllLocationsAvailable(
-      startDate,
-      endDate,
-      meetingId,
-    );
+  @action async loadLocations(startDate: Date, endDate: Date): Promise<void> {
+    const response = await this.amphitryonDAO.getAllLocationsAvailable(startDate, endDate);
     if (response) {
       if (response.ok) {
         this.locations = await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
   }
@@ -252,7 +234,7 @@ class StudentStore {
       if (response.ok) {
         this.locations = await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
   }
@@ -270,9 +252,11 @@ class StudentStore {
     const response = await this.amphitryonDAO.getLocationDetails(locationId);
     if (response) {
       if (response.ok) {
-        return await response.json();
+        const temp = await response.json();
+        console.log(temp);
+        return temp;
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
     return null;
@@ -294,9 +278,9 @@ class StudentStore {
     const response = await this.amphitryonDAO.getHostDetails(this.hostToLoad);
     if (response) {
       if (response.ok) {
-        this.hostToDisplay = await response.json();
+        this.locationToDisplay = await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
   }
@@ -309,16 +293,15 @@ class StudentStore {
     const response = await this.amphitryonDAO.createMeeting(meeting);
     if (response) {
       if (response.ok) {
-        const meetingWithId = JSON.parse(await response.text());
-        void runInAction(() => {
+        void runInAction(async () => {
+          const meetingWithId = await response.json();
           this.userMeetings?.push(meetingWithId);
           this.meetingsCreatedByUser?.push(meetingWithId);
-          this.meetingsCreatedByUser.sort((a, b) => a.startDate.localeCompare(b.startDate));
+          this.regenerateItems();
+          Alert.alert('Réunion créée', 'La réunion que vous avez soumise a bien été enregistrée');
         });
-        this.regenerateItems();
-        Alert.alert('Réunion crée', 'La réunion que vous avez soumise a bien été enregistrée');
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
   }
@@ -336,22 +319,22 @@ class StudentStore {
             const index = this.userMeetings.findIndex((current: Meeting) => {
               return current.id == meeting.id;
             });
-            if (index !== -1) this.userMeetings[index] = meeting;
+            if (index) this.userMeetings[index] = meeting;
           }
           if (this.meetingsCreatedByUser) {
             const index = this.meetingsCreatedByUser.findIndex((current: Meeting) => {
               return current.id == meeting.id;
             });
-            if (index !== -1) this.meetingsCreatedByUser[index] = meeting;
+            if (index) this.meetingsCreatedByUser[index] = meeting;
           }
+          this.regenerateItems();
+          Alert.alert(
+            'Réunion mise à jour',
+            'La réunion que vous avez soumise a bien été mise à jour',
+          );
         });
-        this.regenerateItems();
-        Alert.alert(
-          'Réunion mise à jour',
-          'La réunion que vous avez soumise a bien été mise à jour',
-        );
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
   }
@@ -377,7 +360,7 @@ class StudentStore {
           this.regenerateItems();
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
   }
@@ -390,13 +373,9 @@ class StudentStore {
     const response = await this.amphitryonDAO.searchMeetingWithID(id);
     if (response) {
       if (response.ok) {
-        return await runInAction(async () => {
-          this.searchMeetings = [await response.json()];
-        });
+        this.searchMeetings = await response.json();
       } else {
-        return runInAction(() => {
-          this.searchMeetings = [];
-        });
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
   }
@@ -409,13 +388,9 @@ class StudentStore {
     const response = await this.amphitryonDAO.searchMeeting(filter);
     if (response) {
       if (response.ok) {
-        await runInAction(async () => {
-          this.searchMeetings = await response.json();
-        });
+        this.searchMeetings = await response.json();
       } else {
-        return runInAction(() => {
-          this.searchMeetings = [];
-        });
+        void RootStore.getInstance().manageErrorInResponse;
       }
     }
   }
@@ -432,40 +407,37 @@ class StudentStore {
    * Generate next 10 days agenda items from a given date
    * @param from date from to generate items
    */
-  @action async generateItems(from: Date): Promise<void> {
-    await this.loadUserMeetings(startOfDay(from), endOfDay(addDays(from, 10)));
-    runInAction(() => {
-      this.dateInCalendar = from;
-      const nbDays = 10;
-      const items = ['{ '];
-      for (let i = 0; i <= nbDays; ++i) {
-        items.push('"' + format(addDays(from, i), 'yyyy-MM-dd') + '" : [');
-        const dayMeetings = this.userMeetings?.filter((current: Meeting) => {
-          return (
-            format(new Date(current.startDate), 'yyyy-MM-dd') ===
-            format(addDays(from, i), 'yyyy-MM-dd')
-          );
-        });
+  @action generateItems(from: Date): void {
+    this.dateInCalendar = from;
+    const nbDays = 10;
+    const items = ['{ '];
+    for (let i = 0; i <= nbDays; ++i) {
+      items.push('"' + format(addDays(from, i), 'yyyy-MM-dd') + '" : [');
+      const dayMeetings = this.userMeetings?.filter((current: Meeting) => {
+        return (
+          format(new Date(current.startDate), 'yyyy-MM-dd') ===
+          format(addDays(from, i), 'yyyy-MM-dd')
+        );
+      });
 
-        let cpt = 0;
-        dayMeetings?.map((current: Meeting) => {
-          items.push(JSON.stringify(current));
-          cpt++;
-          if (cpt !== dayMeetings?.length) items.push(',');
-        });
-        items.push(']');
-        if (i != nbDays) items.push(',');
-      }
-      items.push(' }');
-      this.items = JSON.parse(items.join(''));
-    });
+      let cpt = 0;
+      dayMeetings?.map((current: Meeting) => {
+        items.push(JSON.stringify(current));
+        cpt++;
+        if (cpt !== dayMeetings?.length) items.push(',');
+      });
+      items.push(']');
+      if (i != nbDays) items.push(',');
+    }
+    items.push(' }');
+    this.items = JSON.parse(items.join(''));
   }
 
   /**
    * Regeneration of calendar items
    */
   @action regenerateItems(): void {
-    void this.generateItems(this.dateInCalendar);
+    this.generateItems(this.dateInCalendar);
   }
 }
 
