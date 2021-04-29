@@ -1,85 +1,75 @@
 /**
  * @file    styles.ts
  * @author  Alexis Allemann & Alexandre Mottier
- * @date    04.03.2021
- * @brief   Search meeting page styles
+ * @date    29.04.2021
+ * @brief   Host profile page styles
  */
 
 import { StyleSheet } from 'react-native';
 import Globals from '../../../app/context/Globals';
 
 const styles = StyleSheet.create({
-  button: {
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  close: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-  },
-  content: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  modalcontainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 20,
-  },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 20,
-  },
-  fab: {
-    marginTop: 10,
-    marginLeft: 10,
-  },
-  fields: {
-    width: '80%',
-  },
-  date: {
-    paddingLeft: 10,
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
+    margin: 15,
   },
   row: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  dateHeure: {
     width: '100%',
+    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginLeft: 10,
-    marginTop: 10,
-  },
-  modal: {
     padding: 10,
-    width: '100%',
-    alignItems: 'center',
-  },
-  search: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    marginBottom: 20,
-    alignItems: 'center',
   },
   title: {
-    justifyContent: 'center',
-    textAlign: 'center',
-    marginBottom: 20,
-    color: Globals.COLORS.BLUE,
+    color: Globals.COLORS.TEXT,
+    marginLeft: 20,
+    fontSize: 25,
   },
-  main: {
+  text: {
     width: '100%',
-    padding: 10,
+    color: Globals.COLORS.PRIMARY,
+    alignItems: 'flex-start',
+    paddingTop: 15,
+  },
+  infoWithIcon: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  icon: {
+    marginRight: 10,
+  },
+  paragraph: {
+    maxWidth: '80%',
+  },
+  gray: {
+    color: Globals.COLORS.TEXT,
+  },
+  card: {
+    marginTop: 10,
+    width: '100%',
+  },
+  chips: {
+    marginLeft: 40,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    width: 'auto',
+    margin: 5,
+  },
+  cardTitle: {
+    color: Globals.COLORS.TEXT,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: -10,
   },
 });
 

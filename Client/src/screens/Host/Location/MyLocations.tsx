@@ -21,26 +21,24 @@ const MyLocations: React.FC = () => {
   const { hostStore } = useStores();
 
   return (
-    <Provider>
-      <SafeAreaView>
-        <ScrollView>
-          <View style={styles.container}>
-            {hostStore.hostLocations && hostStore.hostLocations.length === 0 ? (
-              <NoLocation />
-            ) : (
-              hostStore.hostLocations?.map((location: Location) => (
-                <LocationComponent
-                  key={location.id}
-                  location={location}
-                  onChoose={() => {}}
-                  isAddView={false}
-                />
-              ))
-            )}
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </Provider>
+    <SafeAreaView>
+      <ScrollView>
+        <View style={styles.container}>
+          {hostStore.hostLocations && hostStore.hostLocations.length === 0 ? (
+            <NoLocation />
+          ) : (
+            hostStore.hostLocations?.map((location: Location) => (
+              <LocationComponent
+                key={location.id}
+                location={location}
+                onChoose={() => {}}
+                isAddView={false}
+              />
+            ))
+          )}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

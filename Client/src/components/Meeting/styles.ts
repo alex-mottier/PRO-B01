@@ -36,6 +36,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 15,
   },
+  tags: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
   chip: {
     width: 'auto',
     margin: 5,

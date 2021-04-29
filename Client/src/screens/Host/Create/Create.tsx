@@ -34,7 +34,9 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
   const { hostStore, authenticationStore } = useStores();
 
   /* Component states */
-  const [location, setLocation] = React.useState<Location | null>(hostStore.locationToUpdate);
+  const [location, setLocation] = React.useState<Location | null>(
+    isEditMode ? hostStore.locationToUpdate : null,
+  );
   const [name, setName] = React.useState<string>(location ? location.name : '');
   const [description, setDescription] = React.useState<string>(
     location ? location.description : '',
