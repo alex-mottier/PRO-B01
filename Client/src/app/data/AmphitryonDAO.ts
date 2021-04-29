@@ -185,10 +185,6 @@ export default class AmphitryonDAO {
    * @returns list of meetings
    */
   async loadUserMeetings(startDate: Date, endDate: Date): Promise<Response | null> {
-    console.log(
-      JSON.stringify({ endDate: endDate.toISOString(), startDate: startDate.toISOString() }),
-    );
-    console.log(this.headerWithSessionToken);
     return await fetch(Globals.URLS.API_URL + '/getMyMeetings ', {
       method: 'POST',
       headers: this.headerWithSessionToken,

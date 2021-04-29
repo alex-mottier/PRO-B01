@@ -194,7 +194,9 @@ class StudentStore {
     const response = await this.amphitryonDAO.sendMessage(chatId, message);
     if (response) {
       if (response.ok) {
-        this.chat?.messages.push(message);
+        runInAction(() => {
+          this.chat?.messages.push(message);
+        });
       } else {
         void RootStore.getInstance().manageErrorInResponse(response);
       }

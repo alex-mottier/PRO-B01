@@ -136,7 +136,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
         locationID: location?.id,
         locationName: location?.name,
         nbPeople: meeting ? meeting.nbPeople : 1,
-        membersID: [],
+        membersId: [],
         maxPeople: location.nbPeople,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
@@ -171,13 +171,12 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
         maxPeople: location.nbPeople,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
-        membersID: [],
+        membersId: [],
         ownerID: '',
         chatID: '',
         isPrivate: isPrivateOn,
       })
       .then(() => {
-        navigation.goBack();
         setIsLoading(false);
       });
 

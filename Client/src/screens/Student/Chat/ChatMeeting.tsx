@@ -28,6 +28,9 @@ const ChatMeeting: React.FC = () => {
   const authenticatedUser = authenticationStore.getAuthenticatedUser();
   const [message, setMessage] = React.useState<string>('');
 
+  /* Local variables */
+  let cpt = 0;
+
   /**
    * Action done on component loading
    */
@@ -46,7 +49,6 @@ const ChatMeeting: React.FC = () => {
     const user = authenticationStore.getAuthenticatedUser();
     if (user) {
       const newMessage: Message = {
-        id: '',
         message: message,
         username: user.username,
         date: new Date().toISOString(),
@@ -77,8 +79,9 @@ const ChatMeeting: React.FC = () => {
                 <ScrollView>
                   {chat &&
                     chat.messages.map((message: Message) => {
+                      cpt++;
                       return (
-                        <View key={message.id}>
+                        <View key={cpt}>
                           {message.username === authenticatedUser?.username ? (
                             <View style={styles.authenticedUserContainer}>
                               <View style={styles.authenticedUserMessage}>

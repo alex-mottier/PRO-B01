@@ -27,7 +27,7 @@ const Profile: React.FC = () => {
             <Avatar.Image size={80} source={require('../../../../assets/Logo.png')} />
             <Title style={styles.title}>{authenticationStore.authenticatedUser?.username}</Title>
           </View>
-          <Text style={styles.text}>Réunions que j&apos;ai crées :</Text>
+          <Text style={styles.text}>Réunions à venir créées :</Text>
           {meetings && meetings.length === 0 ? (
             <NoMeeting />
           ) : (

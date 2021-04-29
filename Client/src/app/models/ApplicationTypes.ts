@@ -74,7 +74,6 @@ export type Meeting = {
 };
 
 export type Message = {
-  id: string;
   message: string;
   username: string;
   date: string;
