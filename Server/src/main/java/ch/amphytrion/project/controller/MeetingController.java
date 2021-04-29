@@ -3,7 +3,10 @@ package ch.amphytrion.project.controller;
 import ch.amphytrion.project.dto.DatesFilterDTO;
 import ch.amphytrion.project.dto.FilterRequest;
 import ch.amphytrion.project.dto.MeetingResponse;
-import ch.amphytrion.project.entities.databaseentities.*;
+import ch.amphytrion.project.entities.databaseentities.Chat;
+import ch.amphytrion.project.entities.databaseentities.Meeting;
+import ch.amphytrion.project.entities.databaseentities.StudentProfil;
+import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.ChatService;
 import ch.amphytrion.project.services.LocationService;
 import ch.amphytrion.project.services.MeetingService;
@@ -44,7 +47,7 @@ public class MeetingController extends BaseController implements IGenericControl
         try {
             user = getCurrentUser();
                 ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
-                for(Meeting meeting : meetingService.findByOwnerID(user.getId())) {
+                for(Meeting meeting : meetingService.findFutureMeetings(user.getId())) {
                     MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
                     meetingResponses.add(meetingResponse);
                 }
@@ -111,11 +114,18 @@ public class MeetingController extends BaseController implements IGenericControl
     public ResponseEntity<List<MeetingResponse>> searchWithFilter(@RequestBody FilterRequest filter){
         try {
             ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
-            for(Meeting meeting : meetingService.findByOwnerID(user.getId())) {
+            /*for(Meeting meeting : meetingService.findByOwnerID(user.getId())) {
+                MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
+                meetingResponses.add(meetingResponse);
+            }*/
+
+            user = getCurrentUser();
+            ArrayList<Meeting> result = meetingService.allFilters(meetingService.findByOwnerID(user.getId()), filter);
+            for(Meeting meeting : result) {
                 MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
                 meetingResponses.add(meetingResponse);
             }
-                return ResponseEntity.ok(meetingResponses);
+            return ResponseEntity.ok(meetingResponses);
         } catch (Exception e) {
             throw new CustomException("Aucun meeting n'a été trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }

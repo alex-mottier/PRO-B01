@@ -1,7 +1,6 @@
 package ch.amphytrion.project.services;
 
 import ch.amphytrion.project.dto.FilterRequest;
-import ch.amphytrion.project.dto.MeetingResponse;
 import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.repositories.ChatRepository;
 import ch.amphytrion.project.repositories.LocationRepository;
@@ -14,6 +13,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
@@ -60,6 +61,22 @@ public class MeetingService implements IGenericService<Meeting> {
 
     public ArrayList<Meeting> findByOwnerID(String ownerID){
         return meetingRepository.findByOwnerID(ownerID);
+    }
+
+    public ArrayList<Meeting> findFutureMeetings(String ownerID) {
+        ArrayList<Meeting> meetings = findByOwnerID(ownerID);
+        ArrayList<Meeting> futureMeetings = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+
+        for(Meeting meeting : meetings) {
+            String start = meeting.getStartDate();
+            Instant instant = Instant.parse(start);
+            LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+            if(dateTime.isAfter(now)) {
+                futureMeetings.add(meeting);
+            }
+        }
+        return futureMeetings;
     }
 
     @Override
@@ -145,6 +162,18 @@ public class MeetingService implements IGenericService<Meeting> {
 
     }
 
+    public ArrayList<Meeting> allFilters(ArrayList<Meeting> meetings, FilterRequest filter) {
+        System.out.println("");
+        return (ArrayList<Meeting>) meetings.stream()
+                .filter(meeting ->
+                        meeting.getName().contains(filter.name))
+                .filter(meeting ->
+                        CollectionUtils.containsAny(meeting.getTags(), filter.tags))
+                .filter(meeting ->
+                        meeting.getLocationID() == filter.location.getId());
+        //stream avec le meeting et son score, on le passe dans la map et on met a jour le score
+        //enlever du stream si besoin
+    }
 
     public ArrayList<Meeting> searchFilterName(ArrayList<Meeting> meetings, String name) {
         return (ArrayList<Meeting>) meetings.stream()
