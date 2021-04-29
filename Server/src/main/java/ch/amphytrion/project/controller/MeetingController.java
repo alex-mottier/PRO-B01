@@ -66,8 +66,10 @@ public class MeetingController extends BaseController implements IGenericControl
             Meeting meeting = meetingService.findById(meetingID);
             StudentProfil studentProfil = user.getStudentProfil();
             if (studentProfil != null) {
-                 studentProfil.getMeetingsParticipationsID().removeIf(id -> id == meeting.getId());
+                 meeting.getMembersID().removeIf(memberId -> memberId.equals(user.getId()));
+                 studentProfil.getMeetingsParticipationsID().removeIf(id -> id.equals(meetingID));
                  studentService.save(user);
+                 meetingService.save(meeting);
                 return ResponseEntity.ok(new MeetingResponse(meeting, locationService));
                 }
         } catch (Exception e) {
@@ -185,10 +187,10 @@ public class MeetingController extends BaseController implements IGenericControl
             if(meeting != null){
                 for(String id : meeting.getMembersID()){
                     User member = studentService.findById(id);
-                    member.getStudentProfil().getMeetingsParticipationsID().remove(meetingID);
+                    member.getStudentProfil().getMeetingsParticipationsID().removeIf(mID -> mID.equals(meetingID));
                 }
                 User owner = studentService.findById(meeting.getOwnerID());
-                owner.getStudentProfil().getMeetingsOwnerID().remove(meetingID);
+                owner.getStudentProfil().getMeetingsOwnerID().removeIf(mID -> mID.equals(meetingID));
                 meetingService.delete(meeting);
             }
         } catch (Exception e) {
