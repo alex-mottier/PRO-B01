@@ -5,7 +5,7 @@
  * @brief   Host store
  */
 
-import { action, makeAutoObservable, observable } from 'mobx';
+import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import { Meeting, Location } from '../models/ApplicationTypes';
 import { mockLocations } from '../../mock/Locations';
 import { mockMeetings } from '../../mock/Meetings';
@@ -15,6 +15,8 @@ import AmphitryonDAO from '../data/AmphitryonDAO';
 import { addDays, format } from 'date-fns';
 import { AgendaItemsMap } from 'react-native-calendars';
 import AuthenticationStore from './AuthenticationStore';
+import { Alert } from 'react-native';
+import RootStore from './RootStore';
 
 class HostStore {
   private static instance: HostStore;
@@ -25,6 +27,7 @@ class HostStore {
   @observable hostLocations: Location[] | null = null;
   @observable meetingsLocatedAtHostLocations: Meeting[] | null = null;
   @observable items: AgendaItemsMap<Meeting> | null = null;
+  @observable locationToUpdate: Location | null = null;
 
   /**
    * Instantiation of the store
@@ -73,7 +76,7 @@ class HostStore {
   }
 
   /**
-   * Retrieve meetings created by user
+   * Retrieve locations created by host
    */
   @action async loadLocationsCreatedByHost(): Promise<void> {
     // const response = await this.amphitryonDAO.loadLocationsCreatedByHost();
@@ -93,12 +96,10 @@ class HostStore {
   }
 
   /**
-   * Retrieve meetings where user is member of between two given dates
+   * Retrieve meetings located at host locations
    * @param startDate from date
    * @param endDate to date
    */
-
-  //@action async loadMeetingsLocatedAtHostLocations(startDate: Date, endDate: Date): Promise<void> {
   @action async loadMeetingsLocatedAtHostLocations(): Promise<void> {
     // const response = await this.amphitryonDAO.loadMeetingsLocatedAtHostLocations(startDate, endDate);
     // if (response) {
@@ -112,6 +113,74 @@ class HostStore {
     // }
     await new Promise((resolve) => setTimeout(resolve, 1000));
     this.meetingsLocatedAtHostLocations = mockMeetings;
+  }
+
+  /**
+   * Action when a location is updated
+   * @param location to update
+   */
+  @action async updateLocation(location: Location): Promise<void> {
+    // const response = await this.amphitryonDAO.updateLocation(location);
+    // if (response) {
+    //   if (response.ok) {
+    //     runInAction(() => {
+    //       if (this.hostLocations) {
+    //         const index = this.hostLocations.findIndex((current: Location) => {
+    //           return current.id == location.id;
+    //         });
+    //         if (index) this.hostLocations[index] = location;
+    //       }
+    //       Alert.alert(
+    //         'Location mise à jour',
+    //         'La location que vous avez soumise a bien été mise à jour',
+    //       );
+    //     });
+    //   } else {
+    //     void RootStore.getInstance().manageErrorInResponse;
+    //   }
+    // }
+
+    // TO DELETE
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    if (this.hostLocations) {
+      const index = this.hostLocations.findIndex((current: Location) => {
+        return current.id == location.id;
+      });
+      if (index) this.hostLocations[index] = location;
+    }
+    Alert.alert('Lieu mise à jour', 'Le lieu que vous avez soumis a bien été mise à jour');
+  }
+
+  /**
+   * Action when a location is created
+   * @param location to create
+   */
+  @action async createLocation(location: Location): Promise<void> {
+    // const response = await this.amphitryonDAO.createLocation(location);
+    // if (response) {
+    //   if (response.ok) {
+    //     void runInAction(async () => {
+    //       const locationWithId = await response.json();
+    //       this.hostLocations?.push(locationWithId);
+    //       Alert.alert('Location créée', 'La location que vous avez soumise a bien été enregistrée');
+    //     });
+    //   } else {
+    //     void RootStore.getInstance().manageErrorInResponse;
+    //   }
+    // }
+
+    // TO DELETE
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    this.hostLocations?.push(location);
+    Alert.alert('Lieu créé', 'Le lieu que vous avez soumis a bien été enregistré');
+  }
+
+  /**
+   * Set location to update
+   * @param location lieu à mettre à jour
+   */
+  @action setLocationToUpdate(location: Location | null): void {
+    this.locationToUpdate = location;
   }
 
   /**

@@ -109,7 +109,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
       Alert.alert('Erreur de date', "L'heure de fin doit être après l'heure de début");
       return false;
     } else if (tags.length === 0) {
-      Alert.alert('Aucun tag', 'Veuillez définir un moins un tag à la réunion');
+      Alert.alert('Aucun tag', 'Veuillez définir au moins un tag à la réunion');
       return false;
     } else if (location === null) {
       Alert.alert('Aucun lieu', 'Veuillez définir le lieu de la réunion');
@@ -178,7 +178,6 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
         isPrivate: isPrivateOn,
       })
       .then(() => {
-        navigation.goBack();
         setIsLoading(false);
       });
 

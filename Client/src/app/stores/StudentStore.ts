@@ -294,11 +294,11 @@ class StudentStore {
     if (response) {
       if (response.ok) {
         void runInAction(async () => {
-          const meetingWithId = JSON.parse(await response.text());
+          const meetingWithId = await response.json();
           this.userMeetings?.push(meetingWithId);
           this.meetingsCreatedByUser?.push(meetingWithId);
           this.regenerateItems();
-          Alert.alert('Réunion crée', 'La réunion que vous avez soumise a bien été enregistrée');
+          Alert.alert('Réunion créée', 'La réunion que vous avez soumise a bien été enregistrée');
         });
       } else {
         void RootStore.getInstance().manageErrorInResponse;
