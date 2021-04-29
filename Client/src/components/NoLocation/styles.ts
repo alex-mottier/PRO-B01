@@ -2,17 +2,23 @@
  * @file    styles.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    04.03.2021
- * @brief   Search meeting page styles
+ * @brief   No meetings styles
  */
 
 import { StyleSheet } from 'react-native';
+import Globals from '../../app/context/Globals';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
+  row: {
+    margin: 20,
+    flexDirection: 'row',
     justifyContent: 'center',
-    margin: 15,
+    alignItems: 'center',
+  },
+  text: {
+    color: Globals.COLORS.TEXT,
+    justifyContent: 'center',
+    fontSize: 20,
   },
 });
 

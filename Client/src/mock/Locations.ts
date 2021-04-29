@@ -9,18 +9,18 @@ export const mockLocations: Location[] = [
     nbPeople: 10,
     openingHours: [
       {
-        startTime: '2021-04-20T15:00:00',
-        endTime: '2021-04-20T16:00:00',
+        startTime: '15:00',
+        endTime: '16:00',
         day: 2,
       },
       {
-        startTime: '2021-04-20T15:00:00',
-        endTime: '2021-04-20T16:00:00',
+        startTime: '15:00',
+        endTime: '16:00',
         day: 2,
       },
       {
-        startTime: '2021-04-20T15:00:00',
-        endTime: '2021-04-20T16:00:00',
+        startTime: '15:00',
+        endTime: '16:00',
         day: 2,
       },
     ],

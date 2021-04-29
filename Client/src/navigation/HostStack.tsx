@@ -14,6 +14,7 @@ import Globals from '../app/context/Globals';
 import { View } from 'react-native';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../app/context/storesContext';
+import Edit from '../screens/Host/Edit/Edit';
 
 // Parameters of the screens
 type StackNavigatorParamlist = {
@@ -91,6 +92,16 @@ const HostStack: React.FC = () => {
       <Stack.Screen
         name="Main"
         component={BottomHostTabs}
+        options={({ route }) => {
+          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+          return {
+            headerTitle: routeName,
+          };
+        }}
+      />
+      <Stack.Screen
+        name="Edit"
+        component={Edit}
         options={({ route }) => {
           const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
           return {

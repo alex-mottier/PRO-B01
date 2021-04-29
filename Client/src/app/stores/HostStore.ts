@@ -58,7 +58,7 @@ class HostStore {
         if (response.ok) {
           AuthenticationStore.getInstance().setAuthenticatedUser(await response.json());
           AuthenticationStore.getInstance().setIsLoggedIn(true);
-          void (await this.loadUserData());
+          await this.loadUserData();
         }
       }
       // this.setIsLoading(false);
@@ -84,7 +84,7 @@ class HostStore {
     //     if (response.ok) {
     //         const meetings = await response.json();
     //         runInAction(() => {
-    //             this.meetingsCreatedByUser = meetings;
+    //             this.hostLocations = meetings;
     //         });
     //     } else {
     //         void RootStore.getInstance().manageErrorInResponse;
@@ -92,7 +92,9 @@ class HostStore {
     // }
     // TO DELETE
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.hostLocations = mockLocations;
+    runInAction(() => {
+      this.hostLocations = mockLocations;
+    });
   }
 
   /**
@@ -173,6 +175,38 @@ class HostStore {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     this.hostLocations?.push(location);
     Alert.alert('Lieu créé', 'Le lieu que vous avez soumis a bien été enregistré');
+  }
+
+  /**
+   * Action when a location is deleted
+   * @param location to delete
+   */
+  @action async deleteLocation(locationId: string): Promise<void> {
+    // const response = await this.amphitryonDAO.deleteLocation(locationId);
+    // if (response) {
+    //   if (response.ok) {
+    //     runInAction(() => {
+    //       if (this.hostLocations)
+    //         this.hostLocations = this.hostLocations.filter((current: Location) => {
+    //           return current.id !== locationId;
+    //         });
+    //       Alert.alert('Supprimée', 'Le lieu a correctement été supprimé');
+    //       this.regenerateItems();
+    //     });
+    //   } else {
+    //     void RootStore.getInstance().manageErrorInResponse;
+    //   }
+    // }
+
+    // TO DELETE
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    runInAction(() => {
+      if (this.hostLocations)
+        this.hostLocations = this.hostLocations.filter((current: Location) => {
+          return current.id !== locationId;
+        });
+    });
+    Alert.alert('Supprimée', 'Le lieu a correctement été supprimé');
   }
 
   /**
