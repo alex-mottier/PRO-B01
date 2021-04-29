@@ -37,7 +37,7 @@ export const BottomHostTabs = (): React.ReactElement => {
           }}
         />
         <Tab.Screen
-          name={Globals.STRINGS.CREATE}
+          name={Globals.STRINGS.CREATE_LOCATION}
           component={Create}
           options={{
             tabBarLabel: 'Créer',
@@ -49,7 +49,7 @@ export const BottomHostTabs = (): React.ReactElement => {
           component={Location}
           options={{
             tabBarLabel: 'Mes lieux',
-            tabBarIcon: Globals.ICONS.SEARCH,
+            tabBarIcon: Globals.ICONS.LOCATION,
           }}
         />
         <Tab.Screen
