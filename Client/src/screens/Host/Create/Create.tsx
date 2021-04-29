@@ -169,7 +169,6 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
    * @param newHours to add
    */
   const handleAddOpeningHour = (newHours: OpeningHour[]) => {
-    console.log(newHours);
     const openingHoursToAdd: OpeningHour[] = [];
     newHours.forEach((openingHour: OpeningHour) => {
       if (
