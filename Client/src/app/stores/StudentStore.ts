@@ -115,6 +115,7 @@ class StudentStore {
       if (response.ok) {
         void runInAction(async () => {
           this.userMeetings = await response.json();
+          console.log(this.userMeetings);
         });
       } else {
         void RootStore.getInstance().manageErrorInResponse(response);
@@ -215,9 +216,18 @@ class StudentStore {
    * Load locations available between dates
    * @param startDate from date
    * @param endDate to date
+   * @param meetingId meeting id
    */
-  @action async loadLocations(startDate: Date, endDate: Date): Promise<void> {
-    const response = await this.amphitryonDAO.getAllLocationsAvailable(startDate, endDate);
+  @action async loadLocations(
+    startDate: Date,
+    endDate: Date,
+    meetingId: string | null,
+  ): Promise<void> {
+    const response = await this.amphitryonDAO.getAllLocationsAvailable(
+      startDate,
+      endDate,
+      meetingId,
+    );
     if (response) {
       if (response.ok) {
         this.locations = await response.json();

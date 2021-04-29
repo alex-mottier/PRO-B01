@@ -65,7 +65,7 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
   React.useEffect(() => {
     setIsLoading(true);
     if (startDate && endDate)
-      void studentStore.loadLocations(startDate, endDate).then(() => {
+      void studentStore.loadLocations(startDate, endDate, null).then(() => {
         setLocations(studentStore.locations);
         setIsLoading(false);
       });

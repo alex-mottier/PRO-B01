@@ -49,7 +49,7 @@ const MeetingComponent: React.FC<IProps> = ({
   /* Local variables */
   let nbColors = 0;
   const isOwner = meeting.ownerID === authenticationStore.getAuthenticatedUser()?.id;
-  const isMemberOfMeeting =
+  let isMemberOfMeeting =
     meeting.membersId.findIndex((current: string) => {
       return authenticationStore.getAuthenticatedUser()?.id === current;
     }) !== -1;
@@ -76,6 +76,7 @@ const MeetingComponent: React.FC<IProps> = ({
   const handleJoinMeeting = () => {
     setIsLoading(true);
     void studentStore.joinMeeting(meeting).then(() => {
+      isMemberOfMeeting = true;
       setIsLoading(false);
     });
   };
@@ -86,6 +87,7 @@ const MeetingComponent: React.FC<IProps> = ({
   const handleLeaveMeeting = () => {
     setIsLoading(true);
     void studentStore.leaveMeeting(meeting).then(() => {
+      isMemberOfMeeting = false;
       setIsLoading(false);
     });
   };

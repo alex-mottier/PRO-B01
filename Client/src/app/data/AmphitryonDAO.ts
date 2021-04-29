@@ -267,7 +267,7 @@ export default class AmphitryonDAO {
    * @returns if the meeting has been leaved by user
    */
   async leaveMeeting(meetingID: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/meeting/leave/' + meetingID, {
+    return await fetch(Globals.URLS.API_URL + '/leaveMeeting/' + meetingID, {
       method: 'POST',
       headers: this.headerWithSessionToken,
     })
@@ -328,7 +328,7 @@ export default class AmphitryonDAO {
    * @returns the location
    */
   async getLocationDetails(locationID: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/location/{id}?id=' + locationID, {
+    return await fetch(Globals.URLS.API_URL + '/location/' + locationID, {
       method: 'GET',
       headers: this.headerWithSessionToken,
     })
@@ -346,13 +346,22 @@ export default class AmphitryonDAO {
    * Get all locations available
    * @param start date of the meeting (at 00h00)
    * @param end date of the meeting (at 23h59)
+   * @param meetingId meeting id
    * @returns the location
    */
-  async getAllLocationsAvailable(start: Date, end: Date): Promise<Response | null> {
+  async getAllLocationsAvailable(
+    start: Date,
+    end: Date,
+    meetingId: string | null,
+  ): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/locations/withDate', {
       method: 'POST',
       headers: this.headerWithSessionToken,
-      body: JSON.stringify({ startDate: start.toISOString(), endDate: end.toISOString() }),
+      body: JSON.stringify({
+        startDate: start.toISOString(),
+        endDate: end.toISOString(),
+        meetingID: meetingId,
+      }),
     })
       .then((response: Response) => {
         this.setSessionToken(response);
@@ -389,7 +398,7 @@ export default class AmphitryonDAO {
    * @returns the host
    */
   async getHostDetails(hostId: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/host/{id}?id=' + hostId, {
+    return await fetch(Globals.URLS.API_URL + '/host/' + hostId, {
       method: 'GET',
       headers: this.headerWithSessionToken,
     })
