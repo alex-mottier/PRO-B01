@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -28,7 +29,7 @@ public class MeetingController extends BaseController implements IGenericControl
     private ChatService chatService;
     private LocationService locationService;
 
-    private User user;
+
     @Autowired
     public MeetingController(MeetingService meetingService, UserService studentService, ChatService chatService, LocationService locationService) {
         this.meetingService = meetingService;
@@ -42,7 +43,8 @@ public class MeetingController extends BaseController implements IGenericControl
     @GetMapping("/getCreatedMeetings")
     public ResponseEntity<List<MeetingResponse>> getMeetingsCreatedByUser() {
         try {
-            user = getCurrentUser();
+            checkUserIsStudent();
+            User user = getCurrentUser();
                 ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
                 for(Meeting meeting : meetingService.findFutureMeetings(user.getId())) {
                     MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
@@ -59,11 +61,12 @@ public class MeetingController extends BaseController implements IGenericControl
     @PostMapping("/leaveMeeting/{meetingID}")
     public ResponseEntity<MeetingResponse> leaveMeeting(@PathVariable String meetingID){
         try {
-            user = getCurrentUser();
+            checkUserIsStudent();
+            User user = getCurrentUser();
             Meeting meeting = meetingService.findById(meetingID);
             StudentProfil studentProfil = user.getStudentProfil();
             if (studentProfil != null) {
-                 studentProfil.getMeetingsParticipations().removeIf(m -> m.getId() == meeting.getId());
+                 studentProfil.getMeetingsParticipationsID().removeIf(id -> id == meeting.getId());
                  studentService.save(user);
                 return ResponseEntity.ok(new MeetingResponse(meeting, locationService));
                 }
@@ -78,9 +81,11 @@ public class MeetingController extends BaseController implements IGenericControl
     @PostMapping("/getMyMeetings")
     public ResponseEntity<List<MeetingResponse>> getMeetingsWhereUserParticipate(DatesFilterDTO datesFilter) {
         try {
+            checkUserIsStudent();
             StudentProfil studentProfil = getCurrentUser().getStudentProfil();
             ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
-            for(Meeting meeting : studentProfil.getMeetingsParticipations()) {
+            for(String meetingId : studentProfil.getMeetingsParticipationsID()) {
+                Meeting meeting = meetingService.findById(meetingId);
                 MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
                 meetingResponses.add(meetingResponse);
             }
@@ -115,7 +120,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 meetingResponses.add(meetingResponse);
             }*/
 
-            user = getCurrentUser();
+            User user = getCurrentUser();
             ArrayList<Meeting> result = meetingService.allFilters(meetingService.findByOwnerID(user.getId()), filter);
             for(Meeting meeting : result) {
                 MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
@@ -132,13 +137,18 @@ public class MeetingController extends BaseController implements IGenericControl
     @PostMapping("/meeting")
     public ResponseEntity<MeetingResponse> create(@RequestBody Meeting entity) {
         try {
+            checkUserIsStudent();
+            User user = getCurrentUser();
             entity.setId(null);
-                Chat chat = new Chat();
-                chatService.save(chat);
-                entity.setChatID(chat.getId());
-                entity.setMembersID(new ArrayList<String>());
-                entity.setOwnerID(getCurrentUser().getId());
-                return ResponseEntity.ok(new MeetingResponse(meetingService.save(entity), locationService));
+            Chat chat = new Chat();
+            chatService.save(chat);
+            entity.setChatID(chat.getId());
+            entity.setMembersID(Collections.singletonList(user.getId()));
+            entity.setOwnerID(user.getId());
+            meetingService.save(entity);
+            user.getStudentProfil().getMeetingsOwnerID().add(entity.getId());
+            user.getStudentProfil().getMeetingsParticipationsID().add(entity.getId());
+                return ResponseEntity.ok(new MeetingResponse(entity, locationService));
         } catch (Exception e) {
             throw new CustomException("Aucun meeting créé", HttpStatus.NOT_ACCEPTABLE, null);
         }
@@ -150,13 +160,14 @@ public class MeetingController extends BaseController implements IGenericControl
     public ResponseEntity<MeetingResponse> update(@RequestBody Meeting entity) {
         try {
             if(entity.getId() != null){
-                try {
-                    Meeting existantMeeting = meetingService.findById(entity.getId());
-                    existantMeeting = entity;
-                    return ResponseEntity.ok(new MeetingResponse(meetingService.save(existantMeeting), locationService));
-                } catch (Exception e){
-                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+
+                Meeting existantMeeting = meetingService.findById(entity.getId());
+                if(existantMeeting == null){
+                    throw new CustomException("Meeting avec id :" + entity.getId() + " non trouvé", HttpStatus.NOT_ACCEPTABLE, null);
                 }
+                existantMeeting = entity;
+                return ResponseEntity.ok(new MeetingResponse(meetingService.save(existantMeeting), locationService));
+
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
@@ -171,6 +182,12 @@ public class MeetingController extends BaseController implements IGenericControl
         try {
             Meeting meeting = meetingService.findById(meetingID);
             if(meeting != null){
+                for(String id : meeting.getMembersID()){
+                    User member = studentService.findById(id);
+                    member.getStudentProfil().getMeetingsParticipationsID().remove(meetingID);
+                }
+                User owner = studentService.findById(meeting.getOwnerID());
+                owner.getStudentProfil().getMeetingsOwnerID().remove(meetingID);
                 meetingService.delete(meeting);
             }
         } catch (Exception e) {

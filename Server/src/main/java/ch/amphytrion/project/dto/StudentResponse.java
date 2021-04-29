@@ -7,15 +7,13 @@ import java.util.List;
 public class StudentResponse implements InterfaceDTO {
     public String id;
     public String name;
-    public List<Message> messages;
-    public List<Meeting> meetingsParticipations;
-    public List<Meeting> meetingsOwner;
+    public List<String> meetingsParticipationsID;
+    public List<String> meetingsOwnerID;
 
     public StudentResponse(User user) {
         this.id = user.getId();
         this.name = user.getUsername();
-        this.messages = user.getStudentProfil().getMessages();
-        this.meetingsParticipations = user.getStudentProfil().getMeetingsParticipations();
-        this.meetingsOwner = user.getStudentProfil().getMeetingsOwner();
+        this.meetingsParticipationsID = user.getStudentProfil().getMeetingsParticipationsID();
+        this.meetingsOwnerID = user.getStudentProfil().getMeetingsOwnerID();
     }
 }

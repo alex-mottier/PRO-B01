@@ -38,16 +38,9 @@ public class ChatController extends BaseController implements IGenericController
         User currentUser = getCurrentUser();
         Chat chat = chatService.findById(chatId);
         try {
-                message.setUsername(currentUser.getUsername());
-                if (chat.getMessages() != null) {
-                    chat.getMessages().add(message);
-                } else {
-                    ArrayList<Message> messages = new ArrayList<>();
-                    messages.add(message);
-                    chat.setMessages(messages);
-                }
-                return ResponseEntity.ok(chatService.save(chat));
-
+            message.setUsername(currentUser.getUsername());
+            chat.getMessages().add(message);
+            return ResponseEntity.ok(chatService.save(chat));
         } catch (Exception e) {
             throw new CustomException("Le message n'a pas pu être créé", HttpStatus.NOT_ACCEPTABLE, null);
         }

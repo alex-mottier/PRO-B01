@@ -5,6 +5,7 @@ import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.repositories.ChatRepository;
 import ch.amphytrion.project.repositories.LocationRepository;
 import ch.amphytrion.project.repositories.MeetingRepository;
+import ch.amphytrion.project.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -15,8 +16,6 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,13 +24,15 @@ import java.util.List;
 public class MeetingService implements IGenericService<Meeting> {
 
     private MeetingRepository meetingRepository;
+    private UserRepository userRepository;
     private LocationRepository locationRepository;
     private ChatRepository chatRepository;
     private LocationService locationService;
 
     @Autowired
-    public MeetingService(MeetingRepository meetingRepository, LocationRepository locationRepository, ChatRepository chatRepository, LocationService locationService) {
+    public MeetingService(MeetingRepository meetingRepository, LocationRepository locationRepository, ChatRepository chatRepository, LocationService locationService, UserRepository userRepository) {
         this.meetingRepository = meetingRepository;
+        this.userRepository = userRepository;
         this.chatRepository = chatRepository;
         this.locationRepository = locationRepository;
         this.locationService = locationService;
@@ -100,9 +101,10 @@ public class MeetingService implements IGenericService<Meeting> {
             Meeting meeting = findById(meetingID);
             if (studentProfil != null) {
                 meeting.getMembersID().add(member.getId());
-                studentProfil.getMeetingsParticipations().add(meeting);
+                meeting.setNbPeople(meeting.getNbPeople() + 1);
+                studentProfil.getMeetingsParticipationsID().add(meeting.getId());
                 save(meeting);
-//                userService.save(member);
+                userRepository.save(member);
                 return meeting;
             } else {
                 return null;
