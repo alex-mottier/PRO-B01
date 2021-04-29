@@ -55,7 +55,7 @@ const CreateOpeningHourComponent: React.FC<IProps> = ({
     false,
   ]);
 
-  /** Local variables */
+  /* Local variables */
   let cpt = 0;
   let cptOpeningHours = 0;
 
