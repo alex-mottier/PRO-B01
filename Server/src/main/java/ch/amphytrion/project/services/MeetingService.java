@@ -28,6 +28,7 @@ public class MeetingService implements IGenericService<Meeting> {
     private LocationRepository locationRepository;
     private ChatRepository chatRepository;
     private LocationService locationService;
+    private UserRepository userRepository;
 
     @Autowired
     public MeetingService(MeetingRepository meetingRepository, LocationRepository locationRepository, ChatRepository chatRepository, LocationService locationService, UserRepository userRepository) {
@@ -36,6 +37,7 @@ public class MeetingService implements IGenericService<Meeting> {
         this.chatRepository = chatRepository;
         this.locationRepository = locationRepository;
         this.locationService = locationService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -70,8 +72,8 @@ public class MeetingService implements IGenericService<Meeting> {
         LocalDateTime now = LocalDateTime.now();
 
         for(Meeting meeting : meetings) {
-            String start = meeting.getStartDate();
-            Instant instant = Instant.parse(start);
+            String end = meeting.getEndDate();
+            Instant instant = Instant.parse(end);
             LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
             if(dateTime.isAfter(now)) {
                 futureMeetings.add(meeting);
