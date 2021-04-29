@@ -148,6 +148,7 @@ public class MeetingController extends BaseController implements IGenericControl
             meetingService.save(entity);
             user.getStudentProfil().getMeetingsOwnerID().add(entity.getId());
             user.getStudentProfil().getMeetingsParticipationsID().add(entity.getId());
+            studentService.save(user);
                 return ResponseEntity.ok(new MeetingResponse(entity, locationService));
         } catch (Exception e) {
             throw new CustomException("Aucun meeting créé", HttpStatus.NOT_ACCEPTABLE, null);
