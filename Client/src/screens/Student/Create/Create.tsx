@@ -244,7 +244,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
         setIsLoading(false);
       });
     }
-  }, [isEditMode, meeting]);
+  }, []);
 
   return (
     <Provider theme={useTheme()}>

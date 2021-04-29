@@ -50,7 +50,6 @@ export type Location = {
 };
 
 export type OpeningHour = {
-  id: string;
   // Format hh:mm
   startTime: string;
   endTime: string;
@@ -67,7 +66,7 @@ export type Meeting = {
   chatID: string;
   tags: Tag[];
   nbPeople: number;
-  membersID: string[];
+  membersId: string[];
   maxPeople: number;
   startDate: string;
   endDate: string;

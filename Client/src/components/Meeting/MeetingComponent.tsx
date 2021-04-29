@@ -49,10 +49,10 @@ const MeetingComponent: React.FC<IProps> = ({
   /* Local variables */
   let nbColors = 0;
   const isOwner = meeting.ownerID === authenticationStore.getAuthenticatedUser()?.id;
-  const isMemberOfMeeting = true;
-  // meeting.membersID.findIndex((current: string) => {
-  //   return store.getAuthenticatedUser()?.id === current;
-  // }) !== -1;
+  const isMemberOfMeeting =
+    meeting.membersId.findIndex((current: string) => {
+      return authenticationStore.getAuthenticatedUser()?.id === current;
+    }) !== -1;
 
   /**
    * Deploy or reduce meeting informations
@@ -191,7 +191,7 @@ const MeetingComponent: React.FC<IProps> = ({
               style={styles.icon}
             />
             <Text style={styles.gray}>
-              {format(new Date(meeting.startDate), 'EEEE MM LLLL yyyy | HH:mm', {
+              {format(new Date(meeting.startDate), 'EEEE dd LLLL yyyy | HH:mm', {
                 locale: frenchLocale,
               })}{' '}
               -{format(new Date(meeting.endDate), 'HH:mm', { locale: frenchLocale })}

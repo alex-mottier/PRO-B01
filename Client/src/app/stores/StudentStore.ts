@@ -114,7 +114,7 @@ class StudentStore {
     if (response) {
       if (response.ok) {
         void runInAction(async () => {
-          this.meetingsCreatedByUser = await response.json();
+          this.userMeetings = await response.json();
         });
       } else {
         void RootStore.getInstance().manageErrorInResponse(response);
@@ -174,11 +174,11 @@ class StudentStore {
    * Load chat data
    * @param chatId to load
    */
-  @action async loadChat(chatId: string): Promise<void> {
-    const response = await this.amphitryonDAO.loadMessages(this.chatToLoad);
+  @action async loadChat(): Promise<void> {
+    const response = await this.amphitryonDAO.loadChat(this.chatToLoad);
     if (response) {
       if (response.ok) {
-        this.chat = { id: chatId, messages: await response.json() };
+        this.chat = await response.json();
       } else {
         void RootStore.getInstance().manageErrorInResponse(response);
       }
@@ -413,37 +413,40 @@ class StudentStore {
    * Generate next 10 days agenda items from a given date
    * @param from date from to generate items
    */
-  @action generateItems(from: Date): void {
-    this.dateInCalendar = from;
-    const nbDays = 10;
-    const items = ['{ '];
-    for (let i = 0; i <= nbDays; ++i) {
-      items.push('"' + format(addDays(from, i), 'yyyy-MM-dd') + '" : [');
-      const dayMeetings = this.userMeetings?.filter((current: Meeting) => {
-        return (
-          format(new Date(current.startDate), 'yyyy-MM-dd') ===
-          format(addDays(from, i), 'yyyy-MM-dd')
-        );
-      });
+  @action async generateItems(from: Date): Promise<void> {
+    await this.loadUserMeetings(startOfDay(from), endOfDay(addDays(from, 10)));
+    runInAction(() => {
+      this.dateInCalendar = from;
+      const nbDays = 10;
+      const items = ['{ '];
+      for (let i = 0; i <= nbDays; ++i) {
+        items.push('"' + format(addDays(from, i), 'yyyy-MM-dd') + '" : [');
+        const dayMeetings = this.userMeetings?.filter((current: Meeting) => {
+          return (
+            format(new Date(current.startDate), 'yyyy-MM-dd') ===
+            format(addDays(from, i), 'yyyy-MM-dd')
+          );
+        });
 
-      let cpt = 0;
-      dayMeetings?.map((current: Meeting) => {
-        items.push(JSON.stringify(current));
-        cpt++;
-        if (cpt !== dayMeetings?.length) items.push(',');
-      });
-      items.push(']');
-      if (i != nbDays) items.push(',');
-    }
-    items.push(' }');
-    this.items = JSON.parse(items.join(''));
+        let cpt = 0;
+        dayMeetings?.map((current: Meeting) => {
+          items.push(JSON.stringify(current));
+          cpt++;
+          if (cpt !== dayMeetings?.length) items.push(',');
+        });
+        items.push(']');
+        if (i != nbDays) items.push(',');
+      }
+      items.push(' }');
+      this.items = JSON.parse(items.join(''));
+    });
   }
 
   /**
    * Regeneration of calendar items
    */
   @action regenerateItems(): void {
-    this.generateItems(this.dateInCalendar);
+    void this.generateItems(this.dateInCalendar);
   }
 }
 

@@ -180,9 +180,15 @@ export default class AmphitryonDAO {
 
   /**
    * Load user meetings
+   * @param startDate date from
+   * @param endDate date to
    * @returns list of meetings
    */
   async loadUserMeetings(startDate: Date, endDate: Date): Promise<Response | null> {
+    console.log(
+      JSON.stringify({ endDate: endDate.toISOString(), startDate: startDate.toISOString() }),
+    );
+    console.log(this.headerWithSessionToken);
     return await fetch(Globals.URLS.API_URL + '/getMyMeetings ', {
       method: 'POST',
       headers: this.headerWithSessionToken,
@@ -280,11 +286,11 @@ export default class AmphitryonDAO {
   }
 
   /**
-   * Load chat messages
+   * Load chat
    * @param chatID to load
-   * @returns list of messages
+   * @returns the chat loaded
    */
-  async loadMessages(chatID: string): Promise<Response | null> {
+  async loadChat(chatID: string): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/chat/' + chatID, {
       method: 'GET',
       headers: this.headerWithSessionToken,

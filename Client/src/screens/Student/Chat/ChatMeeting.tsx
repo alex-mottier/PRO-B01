@@ -10,7 +10,7 @@ import { SafeAreaView, ScrollView, View } from 'react-native';
 import { IconButton, Text, TextInput } from 'react-native-paper';
 import styles from './styles';
 import { observer } from 'mobx-react-lite';
-import { Chat, Meeting, Message, User } from '../../../app/models/ApplicationTypes';
+import { Chat, Message } from '../../../app/models/ApplicationTypes';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
 import { formatDistance } from 'date-fns';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
@@ -33,7 +33,7 @@ const ChatMeeting: React.FC = () => {
    */
   React.useEffect(() => {
     setIsLoading(true);
-    void studentStore.loadChat(chat ? chat.id : '').then(() => {
+    void studentStore.loadChat().then(() => {
       setChat(studentStore.chat);
       setIsLoading(false);
     });

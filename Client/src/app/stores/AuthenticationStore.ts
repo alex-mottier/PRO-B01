@@ -7,6 +7,7 @@
 
 import { TokenResponse } from 'expo-app-auth';
 import { action, makeAutoObservable, observable } from 'mobx';
+import { Alert } from 'react-native';
 import GoogleAuth from '../authentication/GoogleAuth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 import { User } from '../models/ApplicationTypes';
@@ -111,6 +112,7 @@ class AuthenticationStore {
         if (response.ok) {
           this.setAuthenticatedUser(await response.json());
           this.setIsLoggedIn(true);
+          RootStore.getInstance().setIsLoading(false);
           return true;
         } else {
           void RootStore.getInstance().manageErrorInResponse(response);
@@ -135,7 +137,10 @@ class AuthenticationStore {
           this.setIsLoggedIn(true);
           return true;
         } else {
-          void RootStore.getInstance().manageErrorInResponse(response);
+          Alert.alert(
+            'Compte non trouvé',
+            "Le compte choisi n'est pas relié à un compte amphitryon",
+          );
         }
       }
     }

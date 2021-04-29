@@ -43,6 +43,7 @@ class RootStore {
    * @param response contenant l'erreur
    */
   async manageErrorInResponse(response: Response): Promise<void> {
+    const error: Error = await response.json();
     switch (response.status) {
       case 401:
         Alert.alert('Non autorisé', "Vous n'êtes pas autorisé à effectuer cette manipulation");
@@ -57,8 +58,6 @@ class RootStore {
         Alert.alert('Erreur', "Une erreur s'est produite sur le serveur");
         break;
       case 406:
-        // eslint-disable-next-line no-case-declarations
-        const error: Error = await response.json();
         Alert.alert("Une erreur s'est produite", error.message);
         break;
       default:

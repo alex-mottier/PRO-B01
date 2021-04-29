@@ -97,7 +97,7 @@ const LocationDetails: React.FC = () => {
                 {location?.openingHours?.map((openingHour: OpeningHour) => {
                   return (
                     <OpeninHourComponent
-                      key={openingHour.id}
+                      key={openingHour.day.toString() + openingHour.startTime}
                       openingHour={openingHour}></OpeninHourComponent>
                   );
                 })}
