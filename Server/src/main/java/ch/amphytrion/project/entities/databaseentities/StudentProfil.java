@@ -14,13 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 @Document
 public class StudentProfil {
-    private List<Message> messages;
-    private List<Meeting> meetingsParticipations;
-    private List<Meeting> meetingsOwner;
+    private List<Message> messages = new ArrayList<>();
+    private List<Meeting> meetingsParticipations = new ArrayList<>();
+    private List<Meeting> meetingsOwner = new ArrayList<>();
 
     public  StudentProfil(){
-        messages = new ArrayList<>();
-        meetingsParticipations = new ArrayList<>();
-        meetingsOwner = new ArrayList<>();
     }
 }

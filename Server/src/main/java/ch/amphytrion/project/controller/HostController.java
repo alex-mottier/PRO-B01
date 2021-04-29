@@ -4,6 +4,7 @@ import ch.amphytrion.project.dto.HostResponse;
 import ch.amphytrion.project.dto.UserResponse;
 import ch.amphytrion.project.entities.databaseentities.HostProfil;
 import ch.amphytrion.project.entities.databaseentities.User;
+import ch.amphytrion.project.services.HostService;
 import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,10 +23,10 @@ import java.util.stream.Collectors;
 @RestController
 public class HostController extends BaseController implements IGenericController<HostProfil> {
 
-    private UserService hostService;
+    private HostService hostService;
 
     @Autowired
-    public HostController(UserService hostService) {
+    public HostController(HostService hostService) {
         this.hostService = hostService;
     }
 
@@ -42,22 +44,28 @@ public class HostController extends BaseController implements IGenericController
             throw new CustomException("Aucun hôte trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
-//    @SneakyThrows
-//    @PostMapping("/host")
-//    public ResponseEntity<HostProfil> save(User entity) {
-//        try {
-//            return ResponseEntity.ok(hostService.save(entity));
-//        } catch (Exception e) {
-//            throw new CustomException("hôte non modifié/créé", HttpStatus.NOT_ACCEPTABLE, null);
-//        }
-//    }
+    @SneakyThrows
+    @PostMapping("/host")
+    public ResponseEntity<HostResponse> save(User entity) {
+        try {
+            return ResponseEntity.ok(new HostResponse(hostService.save(entity)));
+        } catch (Exception e) {
+            throw new CustomException("hôte non modifié/créé", HttpStatus.NOT_ACCEPTABLE, null);
+        }
+    }
+
     @SneakyThrows
     @GetMapping("/host/{id}")
     public ResponseEntity<HostResponse> getById(String id) {
         try {
-            return ResponseEntity.ok(new HostResponse(hostService.findById(id)));
+            User host = hostService.findById(id);
+            if (host != null) {
+                return ResponseEntity.ok(new HostResponse(host));
+            } else {
+                throw new CustomException("Aucun hôte correspondant trouvé", HttpStatus.NOT_ACCEPTABLE, null);
+            }
         } catch (Exception e) {
-            throw new CustomException("Aucun hôte trouvé", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Aucun hôte correspondant trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 

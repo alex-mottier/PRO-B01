@@ -24,7 +24,7 @@ public class LocationResponse implements InterfaceDTO {
     public List<Tag> tags;
     public List<OpeningHourResponse> openingHours;
 
-    public LocationResponse(Location location, User user,  UserService userService) {
+    public LocationResponse(Location location, UserService userService) {
         User host = userService.findById(location.getHostId());
         List<OpeningHourResponse> openingHours = location.getOpeningHours()
                 .stream()

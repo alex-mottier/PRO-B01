@@ -31,7 +31,7 @@ public class HostService {
 
     public User findById(String id) {
         try {
-            return hostRepository.findById(id).orElseThrow(Exception::new);
+            return hostRepository.findByIdAndHostProfilIsNotNull(id);
         } catch (Exception e) {
             e.printStackTrace();
         }

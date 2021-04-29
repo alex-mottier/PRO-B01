@@ -129,36 +129,38 @@ public class MeetingService implements IGenericService<Meeting> {
     }
 
     public ArrayList<Meeting> searchFilter(FilterRequest filter) {
-        ArrayList<Meeting> meetings = new ArrayList<>();
-        TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(filter.startDate);
-        Instant i = Instant.from(ta);
-        Date startDate = Date.from(i);
-        meetings = findByStartAfter(startDate);
+//        ArrayList<Meeting> meetings = new ArrayList<>();
+//        TemporalAccessor ta = null;
+//        Instant i = Instant.from(ta);
+//        Date startDate = Date.from(i);
+//        meetings = findByStartAfter(startDate);
 
-        if (filter.name != null && !filter.name.isEmpty()) {
-            meetings = searchFilterName(meetings, filter.name);
-        }
-        if (filter.startDate == null) {
-            filter.startDate = "";
-        }
-        else {
-            TemporalAccessor taend = DateTimeFormatter.ISO_INSTANT.parse(filter.startDate);
-            Instant iend = Instant.from(taend);
-            Date endDate = Date.from(iend);
-            meetings = findByStartAfter(endDate);
-            meetings = searchFilterDateEnd(meetings, endDate);
-        }
-        if (filter.endDate == null) {
-            filter.endDate = "";
-        }
-        if (filter.tags != null && filter.tags.size() > 0) {
-            meetings = searchFilterTags(meetings, filter.tags);
-        }
-        if (filter.location != null) {
-            meetings = searchFilterLocations(meetings, filter.location);
-        }
+//        if (filter.name != null && !filter.name.isEmpty()) {
+//            meetings = searchFilterName(meetings, filter.name);
+//        }
+//        if (filter.startDate == null) {
+//            filter.startDate = "";
+//        } else {
+//            ta = DateTimeFormatter.ISO_INSTANT.parse(filter.startDate);
+//        }
+//        TemporalAccessor taend = null;
+//        Instant iend = Instant.from(taend);
+//        Date endDate = Date.from(iend);
+//        meetings = findByStartAfter(endDate);
+//        meetings = searchFilterDateEnd(meetings, endDate);
+//        if (filter.endDate == null) {
+//            filter.endDate = "";
+//        } else {
+//            taend = DateTimeFormatter.ISO_INSTANT.parse(filter.startDate);
+//        }
+//        if (filter.tags != null && filter.tags.size() > 0) {
+//            meetings = searchFilterTags(meetings, filter.tags);
+//        }
+//        if (filter.location != null) {
+//            meetings = searchFilterLocations(meetings, filter.location);
+//        }
 
-        return meetings;
+        return meetingRepository.findByNameLike(filter.name);
 
     }
 

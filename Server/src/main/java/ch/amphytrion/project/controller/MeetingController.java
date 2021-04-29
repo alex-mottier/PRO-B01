@@ -3,10 +3,7 @@ package ch.amphytrion.project.controller;
 import ch.amphytrion.project.dto.DatesFilterDTO;
 import ch.amphytrion.project.dto.FilterRequest;
 import ch.amphytrion.project.dto.MeetingResponse;
-import ch.amphytrion.project.entities.databaseentities.Chat;
-import ch.amphytrion.project.entities.databaseentities.Meeting;
-import ch.amphytrion.project.entities.databaseentities.StudentProfil;
-import ch.amphytrion.project.entities.databaseentities.User;
+import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.services.ChatService;
 import ch.amphytrion.project.services.LocationService;
 import ch.amphytrion.project.services.MeetingService;
@@ -55,7 +52,6 @@ public class MeetingController extends BaseController implements IGenericControl
         } catch (Exception e) {
             throw new CustomException("Aucun meeting n'a été trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
-
     }
 
     //X
@@ -99,7 +95,7 @@ public class MeetingController extends BaseController implements IGenericControl
     @PostMapping("/meeting/join/{meetingID}")
     public ResponseEntity<MeetingResponse> joinMeeting(@PathVariable String meetingID) {
         try {
-            checkHostIsStudent();
+            checkUserIsStudent();
             Meeting meeting = meetingService.addMemberToMeeting(getCurrentUser(), meetingID);
             return ResponseEntity.ok(new MeetingResponse(meeting, locationService));
         }

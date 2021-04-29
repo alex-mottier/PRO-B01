@@ -23,8 +23,8 @@ public class Location {
     // Use addressID to facilitate address search
     private Address address;
     // List de String ?
-    private List<Tag> tags;
-    private List<OpeningHour> openingHours;
+    private List<Tag> tags = new ArrayList<>();
+    private List<OpeningHour> openingHours = new ArrayList<>();
 
     public Location(String name, String description, Integer nbPeople,Address address, String hostId, List<Tag> tags, List<OpeningHour> openingHours) {
         this.name = name;

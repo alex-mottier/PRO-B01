@@ -44,5 +44,6 @@ public class MeetingResponse implements InterfaceDTO {
         this.isPrivate = meeting.getIsPrivate();
         this.maxPeople = location.getNbPeople();
         this.locationName = location.getName();
+        this.membersId = meeting.getMembersID();
     }
 }
