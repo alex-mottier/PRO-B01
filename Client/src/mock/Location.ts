@@ -11,19 +11,16 @@ export const mockLocation: Location = {
   nbPeople: 10,
   openingHours: [
     {
-      id: '1',
       startTime: date.toISOString(),
       endTime: endDate.toISOString(),
       day: 1,
     },
     {
-      id: '2',
       startTime: date.toISOString(),
       endTime: endDate.toISOString(),
       day: 4,
     },
     {
-      id: '3',
       startTime: date.toISOString(),
       endTime: endDate.toISOString(),
       day: 5,

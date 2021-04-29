@@ -18,7 +18,7 @@ import { mockHost } from '../../../mock/Host';
 const Welcome: React.FC = () => {
   /* Usage of React Navigation */
   const navigation = useNavigation();
-  const { authenticationStore } = useStores();
+  const { hostStore, authenticationStore } = useStores();
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -69,6 +69,7 @@ const Welcome: React.FC = () => {
               color={Globals.COLORS.GRAY}
               labelStyle={{ color: Globals.COLORS.WHITE }}
               onPress={() => {
+                hostStore.loadUserData();
                 authenticationStore.setIsLoggedIn(true);
                 authenticationStore.setAuthenticatedHost(mockHost);
               }}>

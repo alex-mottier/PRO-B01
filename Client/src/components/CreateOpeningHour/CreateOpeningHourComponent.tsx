@@ -57,6 +57,7 @@ const CreateOpeningHourComponent: React.FC<IProps> = ({
 
   /** Local variables */
   let cpt = 0;
+  let cptOpeningHours = 0;
 
   /**
    * Action when a day is added
@@ -127,12 +128,16 @@ const CreateOpeningHourComponent: React.FC<IProps> = ({
         />
       </View>
       <View style={styles.openingHoursList}>
-        {openingHours.map((openingHour: OpeningHour) => (
-          <OpeninHourComponent
-            openingHour={openingHour}
-            key={openingHour.day.toString() + openingHour.startTime}
-          />
-        ))}
+        {openingHours.map((openingHour: OpeningHour) => {
+          return (
+            <OpeninHourComponent
+              openingHour={openingHour}
+              key={cptOpeningHours++}
+              onDelete={() => removeOpeningHour(openingHour)}
+              isDeleteEnabled={true}
+            />
+          );
+        })}
       </View>
       <Portal>
         <Modal

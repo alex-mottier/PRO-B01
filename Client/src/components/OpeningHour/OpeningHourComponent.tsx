@@ -18,9 +18,11 @@ import { dateLocale } from '../../app/context/DateFormat';
  */
 interface IProps {
   openingHour: OpeningHour;
+  onDelete: () => void;
+  isDeleteEnabled: boolean;
 }
 
-const OpeninHourComponent: React.FC<IProps> = ({ openingHour }) => {
+const OpeninHourComponent: React.FC<IProps> = ({ openingHour, onDelete, isDeleteEnabled }) => {
   return (
     <View>
       <Card elevation={10} style={styles.card}>
@@ -44,6 +46,16 @@ const OpeninHourComponent: React.FC<IProps> = ({ openingHour }) => {
               </Text>
             </View>
           </View>
+          {isDeleteEnabled && (
+            <View>
+              <IconButton
+                icon={Globals.ICONS.DELETE}
+                size={20}
+                onPress={onDelete}
+                color={Globals.COLORS.GRAY}
+              />
+            </View>
+          )}
         </View>
       </Card>
     </View>

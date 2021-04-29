@@ -11,7 +11,7 @@ import Globals from '../app/context/Globals';
 import Home from '../screens/Host/Home/Home';
 import Profile from '../screens/Host/Profile/Profile';
 import Create from '../screens/Host/Create/Create';
-import Location from '../screens/Host/Location/Location';
+import MyLocations from '../screens/Host/Location/MyLocations';
 import { useTheme } from 'react-native-paper';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -46,7 +46,7 @@ export const BottomHostTabs = (): React.ReactElement => {
         />
         <Tab.Screen
           name={Globals.STRINGS.LOCATIONS}
-          component={Location}
+          component={MyLocations}
           options={{
             tabBarLabel: 'Mes lieux',
             tabBarIcon: Globals.ICONS.LOCATION,

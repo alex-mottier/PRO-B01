@@ -6,6 +6,7 @@
  */
 
 import { StyleSheet } from 'react-native';
+import Globals from '../../app/context/Globals';
 
 const styles = StyleSheet.create({
   row: {
@@ -40,6 +41,14 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   hours: {},
+  gray: {
+    color: Globals.COLORS.TEXT,
+  },
+  buttonText: {
+    fontSize: 12,
+    marginTop: -10,
+    textAlign: 'center',
+  },
 });
 
 export default styles;
