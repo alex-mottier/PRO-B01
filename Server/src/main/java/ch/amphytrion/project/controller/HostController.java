@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,7 +57,7 @@ public class HostController extends BaseController implements IGenericController
 
     @SneakyThrows
     @GetMapping("/host/{id}")
-    public ResponseEntity<HostResponse> getById(String id) {
+    public ResponseEntity<HostResponse> getById(@PathVariable String id) {
         try {
             User host = hostService.findById(id);
             if (host != null) {
