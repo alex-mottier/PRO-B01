@@ -1,7 +1,7 @@
 /**
- * @file    BottomStudentTabs.tsx
+ * @file    BottomHostTabs.tsx
  * @author  Alexis Allemann & Alexandre Mottier
- * @date    22.03.2021
+ * @date    29.04.2021
  * @brief   Bottom tabs navigator
  */
 

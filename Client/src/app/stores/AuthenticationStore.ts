@@ -7,10 +7,9 @@
 
 import { TokenResponse } from 'expo-app-auth';
 import { action, makeAutoObservable, observable } from 'mobx';
-import { Alert } from 'react-native';
 import GoogleAuth from '../authentication/GoogleAuth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
-import { User } from '../models/ApplicationTypes';
+import { Host, User } from '../models/ApplicationTypes';
 import RootStore from './RootStore';
 
 class AuthenticationStore {
@@ -20,6 +19,7 @@ class AuthenticationStore {
 
   @observable userToken: TokenResponse | null = null;
   @observable authenticatedUser: User | null = null;
+  @observable authenticatedHost: Host | null = null;
   @observable isLoggedIn = false;
 
   /**
@@ -61,6 +61,22 @@ class AuthenticationStore {
    */
   @action setAuthenticatedUser(userAuthenticated: User | null): void {
     this.authenticatedUser = userAuthenticated;
+  }
+
+  /**
+   * Set the authenticated host
+   * @param userAuthenticated the authenticated host or null
+   */
+  @action getAuthenticatedHost(): Host | null {
+    return this.authenticatedHost;
+  }
+
+  /**
+   * Set the authenticated host
+   * @param hostAuthenticated the authenticated host or null
+   */
+  @action setAuthenticatedHost(hostAuthenticated: Host | null): void {
+    this.authenticatedHost = hostAuthenticated;
   }
 
   /**
@@ -112,7 +128,6 @@ class AuthenticationStore {
         if (response.ok) {
           this.setAuthenticatedUser(await response.json());
           this.setIsLoggedIn(true);
-          RootStore.getInstance().setIsLoading(false);
           return true;
         } else {
           void RootStore.getInstance().manageErrorInResponse(response);
@@ -137,10 +152,7 @@ class AuthenticationStore {
           this.setIsLoggedIn(true);
           return true;
         } else {
-          Alert.alert(
-            'Compte non trouvé',
-            "Le compte choisi n'est pas relié à un compte amphitryon",
-          );
+          void RootStore.getInstance().manageErrorInResponse(response);
         }
       }
     }

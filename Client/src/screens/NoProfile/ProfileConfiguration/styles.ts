@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 320,
     margin: 30,
     paddingTop: 20,
   },
@@ -38,14 +37,14 @@ const styles = StyleSheet.create({
   },
   fields70: {
     width: '70%',
-    marginRight:10
+    marginRight: 10,
   },
-  button:{ marginTop: 10},
+  button: { marginTop: 20 },
   row: {
     display: 'flex',
     flexDirection: 'row',
-    width: '100%'
-  }
+    width: '100%',
+  },
 });
 
 export default styles;

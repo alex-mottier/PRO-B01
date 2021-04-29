@@ -15,6 +15,7 @@ import StudentStack from './StudentStack';
 
 import { lightThemeNavigation } from '../app/context/Theme';
 import { useStores } from '../app/context/storesContext';
+import HostStack from './HostStack';
 
 const Routes: React.FC = () => {
   const theme = useTheme();
@@ -23,11 +24,9 @@ const Routes: React.FC = () => {
 
   return (
     <NavigationContainer theme={navigationTheme}>
-      {authenticationStore.authenticatedUser && authenticationStore.isLoggedIn ? (
-        <StudentStack />
-      ) : (
-        <AuthenticationStack />
-      )}
+      {authenticationStore.isLoggedIn && authenticationStore.authenticatedHost && <HostStack />}
+      {authenticationStore.isLoggedIn && authenticationStore.authenticatedUser && <StudentStack />}
+      {!authenticationStore.isLoggedIn && <AuthenticationStack />}
     </NavigationContainer>
   );
 };

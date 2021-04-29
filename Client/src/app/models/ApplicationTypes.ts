@@ -13,6 +13,14 @@ export type Address = {
   npa: string;
 };
 
+export type CovidData = {
+  isOpen: boolean;
+  masksRequired: boolean;
+  disinfectionRequired: boolean;
+  recommendedDistancing: string;
+  comments: string;
+};
+
 export type Chat = {
   id: string;
   messages: Message[];

@@ -13,8 +13,7 @@ import styles from '../ProfileConfiguration/styles';
 import { Tabs, TabScreen } from 'react-native-paper-tabs';
 import { useStores } from '../../../app/context/storesContext';
 import TagsComponent from '../../../components/Tags/TagsComponent';
-import {Tag} from '../../../app/models/ApplicationTypes';
-
+import { Tag } from '../../../app/models/ApplicationTypes';
 
 const ProfileConfiguration: React.FC = () => {
   // Usage of react native paper theme library
@@ -36,7 +35,6 @@ const ProfileConfiguration: React.FC = () => {
   const [description, setDescription] = React.useState('');
   const [tags, setTags] = React.useState<Tag[]>([]);
 
-
   /**
    * Action done when submit button for student tab is pressed
    */
@@ -52,9 +50,9 @@ const ProfileConfiguration: React.FC = () => {
   const handleAddTag = (tag: Tag) => {
     tag.name = tag.name.toUpperCase();
     if (
-        !tags.find((current: Tag) => {
-          return current.name == tag.name;
-        })
+      !tags.find((current: Tag) => {
+        return current.name == tag.name;
+      })
     )
       setTags([...tags, tag]);
   };
@@ -88,7 +86,7 @@ const ProfileConfiguration: React.FC = () => {
     //   description: description,
     //   tags: tags
     // });
-  }
+  };
 
   return (
     <Tabs
@@ -141,7 +139,8 @@ const ProfileConfiguration: React.FC = () => {
                 mode="contained"
                 color={Globals.COLORS.PRIMARY}
                 labelStyle={{ color: Globals.COLORS.WHITE }}
-                onPress={handleSubmit}>
+                onPress={handleSubmit}
+                style={styles.button}>
                 Finaliser le profile
               </Button>
             </View>
@@ -151,78 +150,81 @@ const ProfileConfiguration: React.FC = () => {
       <TabScreen label="Hebergeur">
         <SafeAreaView>
           <ScrollView>
-          <Image
-            source={require('../../../../assets/Establishment.jpg')}
-            style={styles.image}
-            resizeMode="cover"
-            blurRadius={1}
-          />
-          <Image
-            source={require('../../../../assets/Logo.png')}
-            style={styles.logo}
-            resizeMode="stretch"
-          />
-          <View style={styles.container}>
-            <TextInput
+            <Image
+              source={require('../../../../assets/Establishment.jpg')}
+              style={styles.image}
+              resizeMode="cover"
+              blurRadius={1}
+            />
+            <Image
+              source={require('../../../../assets/Logo.png')}
+              style={styles.logo}
+              resizeMode="stretch"
+            />
+            <View style={styles.container}>
+              <TextInput
                 label="Nom de l'hébébergement"
                 value={host}
                 onChangeText={(host) => setHost(host)}
                 style={styles.fields}
                 mode={'outlined'}
-            />
-            <TextInput
+              />
+              <TextInput
                 label="Description de l'hébébergement"
                 value={description}
                 onChangeText={(description) => setDescription(description)}
                 style={styles.fields}
                 mode={'outlined'}
-            />
-            <View style={styles.row}>
-              <TextInput
+              />
+              <View style={styles.row}>
+                <TextInput
                   label="Adresse de l'hébébergement"
                   value={addressName}
                   onChangeText={(addressName) => setAddressName(addressName)}
                   style={styles.fields70}
                   mode={'outlined'}
-              />
-              <TextInput
+                />
+                <TextInput
                   label="Numéro de l'adresse"
                   value={addressNumber}
                   onChangeText={(addressNumber) => setAddressNumber(addressNumber)}
                   style={styles.fields20}
                   mode={'outlined'}
-              />
-            </View>
-            <View style={styles.row}>
-              <TextInput
+                />
+              </View>
+              <View style={styles.row}>
+                <TextInput
                   label="Ville"
                   value={city}
                   onChangeText={(city) => setCity(city)}
                   style={styles.fields70}
                   mode={'outlined'}
-              />
-              <TextInput
+                />
+                <TextInput
                   label="NPA"
                   value={npa}
                   onChangeText={(npa) => setNpa(npa)}
                   style={styles.fields20}
                   mode={'outlined'}
-              />
-            </View>
-            <TagsComponent
-                tags={tags}
-                addTag={(tag: Tag) => handleAddTag(tag)}
-                removeTag={(tag: Tag) => handleDeleteTag(tag)} />
-            <Button
+                />
+              </View>
+              <View style={{ width: '100%' }}>
+                <TagsComponent
+                  tags={tags}
+                  addTag={(tag: Tag) => handleAddTag(tag)}
+                  removeTag={(tag: Tag) => handleDeleteTag(tag)}
+                />
+              </View>
+              <Button
                 icon={Globals.ICONS.SEND}
                 mode="contained"
                 color={Globals.COLORS.PRIMARY}
                 labelStyle={{ color: Globals.COLORS.WHITE }}
                 onPress={handleHostSubmit}
-                style={ styles.button }>
-              Finaliser le profile
-            </Button>
-          </View>
+                style={styles.button}>
+                Finaliser le profile
+              </Button>
+            </View>
           </ScrollView>
         </SafeAreaView>
       </TabScreen>
