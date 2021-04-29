@@ -5,6 +5,7 @@ import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.repositories.ChatRepository;
 import ch.amphytrion.project.repositories.LocationRepository;
 import ch.amphytrion.project.repositories.MeetingRepository;
+import ch.amphytrion.project.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -15,8 +16,6 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,13 +27,15 @@ public class MeetingService implements IGenericService<Meeting> {
     private LocationRepository locationRepository;
     private ChatRepository chatRepository;
     private LocationService locationService;
+    private UserRepository userRepository;
 
     @Autowired
-    public MeetingService(MeetingRepository meetingRepository, LocationRepository locationRepository, ChatRepository chatRepository, LocationService locationService) {
+    public MeetingService(MeetingRepository meetingRepository, LocationRepository locationRepository, ChatRepository chatRepository, LocationService locationService, UserRepository userRepository) {
         this.meetingRepository = meetingRepository;
         this.chatRepository = chatRepository;
         this.locationRepository = locationRepository;
         this.locationService = locationService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -69,8 +70,8 @@ public class MeetingService implements IGenericService<Meeting> {
         LocalDateTime now = LocalDateTime.now();
 
         for(Meeting meeting : meetings) {
-            String start = meeting.getStartDate();
-            Instant instant = Instant.parse(start);
+            String end = meeting.getEndDate();
+            Instant instant = Instant.parse(end);
             LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
             if(dateTime.isAfter(now)) {
                 futureMeetings.add(meeting);
@@ -101,8 +102,9 @@ public class MeetingService implements IGenericService<Meeting> {
             if (studentProfil != null) {
                 meeting.getMembersID().add(member.getId());
                 studentProfil.getMeetingsParticipations().add(meeting);
+
                 save(meeting);
-//                userService.save(member);
+                userRepository.save(member);
                 return meeting;
             } else {
                 return null;
