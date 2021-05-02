@@ -152,7 +152,11 @@ public class MeetingController extends BaseController implements IGenericControl
             if(entity.getId() != null){
                 try {
                     Meeting existantMeeting = meetingService.findById(entity.getId());
-                    existantMeeting = entity;
+                    /* Patch for update selected fields */
+                    existantMeeting.setName(entity.getName());
+                    existantMeeting.setDescription(entity.getDescription());
+                    existantMeeting.setTags(entity.getTags());
+                    existantMeeting.setLocationID(entity.getLocationID());
                     return ResponseEntity.ok(new MeetingResponse(meetingService.save(existantMeeting), locationService));
                 } catch (Exception e){
                     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
