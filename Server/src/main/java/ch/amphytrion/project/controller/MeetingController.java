@@ -91,6 +91,11 @@ public class MeetingController extends BaseController implements IGenericControl
                 MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
                 meetingResponses.add(meetingResponse);
             }
+            for(String meetingId : studentProfil.getMeetingsOwnerID()){
+                Meeting meeting = meetingService.findById(meetingId);
+                MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
+                meetingResponses.add(meetingResponse);
+            }
             return ResponseEntity.ok(meetingResponses);
         } catch (Exception e) {
             throw new CustomException("Aucun meeting n'a été trouvé", HttpStatus.NOT_ACCEPTABLE, null);
