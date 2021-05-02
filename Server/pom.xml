@@ -56,19 +56,16 @@
 			<artifactId>spring-data-jpa</artifactId>
 			<version>2.4.6</version>
 		</dependency>
-
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>${springfox-version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>${springfox-version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.google.api-client</groupId>
 			<artifactId>google-api-client</artifactId>
@@ -93,7 +90,11 @@
 			<artifactId>multiple-read-servlet</artifactId>
 			<version>4.0.1</version>
         </dependency>
-
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.10.10</version>
+		</dependency>
 	</dependencies>
 
 	<build>

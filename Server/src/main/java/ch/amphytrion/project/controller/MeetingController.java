@@ -202,7 +202,6 @@ public class MeetingController extends BaseController implements IGenericControl
             }
         } catch (Exception e) {
             throw new CustomException("Meeting avec id :" + meetingID + " non trouvé", HttpStatus.NOT_ACCEPTABLE, null);
-
         }
     }
 
