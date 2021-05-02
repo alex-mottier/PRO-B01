@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageResponse implements InterfaceDTO {
-    public String id;
     public String message;
     public String username;
     // Format ISO 8601

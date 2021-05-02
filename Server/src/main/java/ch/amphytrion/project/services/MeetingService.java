@@ -24,14 +24,15 @@ import java.util.List;
 public class MeetingService implements IGenericService<Meeting> {
 
     private MeetingRepository meetingRepository;
+    private UserRepository userRepository;
     private LocationRepository locationRepository;
     private ChatRepository chatRepository;
     private LocationService locationService;
-    private UserRepository userRepository;
 
     @Autowired
     public MeetingService(MeetingRepository meetingRepository, LocationRepository locationRepository, ChatRepository chatRepository, LocationService locationService, UserRepository userRepository) {
         this.meetingRepository = meetingRepository;
+        this.userRepository = userRepository;
         this.chatRepository = chatRepository;
         this.locationRepository = locationRepository;
         this.locationService = locationService;
@@ -101,8 +102,8 @@ public class MeetingService implements IGenericService<Meeting> {
             Meeting meeting = findById(meetingID);
             if (studentProfil != null) {
                 meeting.getMembersID().add(member.getId());
-                studentProfil.getMeetingsParticipations().add(meeting);
-
+                meeting.setNbPeople(meeting.getNbPeople() + 1);
+                studentProfil.getMeetingsParticipationsID().add(meeting.getId());
                 save(meeting);
                 userRepository.save(member);
                 return meeting;
