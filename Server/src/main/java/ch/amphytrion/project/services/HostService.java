@@ -1,53 +1,51 @@
 package ch.amphytrion.project.services;
 
-import ch.amphytrion.project.entities.databaseentities.Host;
-import ch.amphytrion.project.repositories.HostRepository;
+import ch.amphytrion.project.entities.databaseentities.User;
+import ch.amphytrion.project.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class HostService implements IGenericService<Host> {
+public class HostService {
 
-    private HostRepository hostRepository;
+    private UserRepository hostRepository;
 
     @Autowired
-    public HostService(HostRepository hostRepository) {
+    public HostService(UserRepository hostRepository) {
         this.hostRepository = hostRepository;
     }
 
-    @Override
-    public List<Host> findAll() {
-        return hostRepository.findAll();
+    public List<User> findAll() {
+        return hostRepository.findAll()
+                .stream()
+                .filter(user -> user.getHostProfil() != null)
+                .collect(Collectors.toList());
     }
 
-    @Override
-    public Host save(Host host) {
+    public User save(User host) {
         return hostRepository.save(host);
     }
 
-    @Override
-    public Host findById(String id) {
+    public User findById(String id) {
         try {
-            return hostRepository.findById(id).orElseThrow(Exception::new);
+            return hostRepository.findByIdAndHostProfilIsNotNull(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    @Override
-    public void delete(Host host) {
+    public void delete(User host) {
         hostRepository.delete(host);
     }
 
-    @Override
     public void deleteById(String id) {
         hostRepository.deleteById(id);
     }
 
-    @Override
     public long count() {
         return hostRepository.count();
     }

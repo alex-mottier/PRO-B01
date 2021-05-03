@@ -14,16 +14,12 @@ public class Address {
     @Id
     private String id;
     private String street;
-    private Integer streetNr;
+    private String streetNb;
     private City city;
-    private Host host;
-    private Location location;
 
-    public Address(String street, Integer streetNr, City city, Host host, Location location) {
+    public Address(String street, String streetNb, City city) {
         this.street = street;
-        this.streetNr = streetNr;
+        this.streetNb = streetNb;
         this.city = city;
-        this.host = host;
-        this.location = location;
     }
 }

@@ -1,13 +1,25 @@
 package ch.amphytrion.project.controller;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.List;
+import ch.amphytrion.project.entities.databaseentities.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public interface IGenericController<T> {
-    ResponseEntity<List<T>> getAll();
-    ResponseEntity<T> save(@RequestBody T entity);
-    ResponseEntity<T> getById(@PathVariable String id);
+    default User getCurrentUser(){
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    default void checkUserIsStudent() throws CustomException {
+        User currentUser = getCurrentUser();
+        if(currentUser.getStudentProfil() == null){
+            throw new CustomException("Ce n'est pas un compte étudiant", HttpStatus.UNAUTHORIZED, null);
+        }
+    }
+
+    default void checkUserIsHost() throws CustomException {
+        User currentUser = getCurrentUser();
+        if(currentUser.getHostProfil() == null){
+            throw new CustomException("Ce n'est pas un compte hébergeur", HttpStatus.UNAUTHORIZED, null);
+        }
+    }
 }

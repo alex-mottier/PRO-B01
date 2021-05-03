@@ -1,20 +1,24 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.repositories.AddressRepository;
-import ch.amphytrion.project.services.AddressService;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+@SpringBootTest
+@AutoConfigureMockMvc
 class AddressControllerTest {
 
-    AddressRepository addressRepository;
-    AddressService addressService = new AddressService(addressRepository);
-    AddressController addressController = new AddressController(addressService);
+    @Autowired
+    private MockMvc mockMvc;
 
     @Test
-    void name() {
-        assertEquals(AddressController.class.getCanonicalName(),
-                addressController.controllerName());
+    void testStatusAddresses() throws Exception {
+        mockMvc.perform(get("/addresses"))
+                .andExpect(status().isOk());
     }
 }

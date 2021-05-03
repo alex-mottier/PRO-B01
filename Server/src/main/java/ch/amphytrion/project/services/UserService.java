@@ -1,15 +1,23 @@
 package ch.amphytrion.project.services;
 
+import ch.amphytrion.project.authentication.google_authentication.GoogleTokenValider;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.repositories.UserRepository;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.Map;
 
 @Service
-public class UserService implements IGenericService<User> {
+public class UserService implements IGenericService<User>{
 
+    private final String DEV_TOKEN = "tokenTest";
     private UserRepository userRepository;
+
+    @Autowired
+    private GoogleTokenValider valider;
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -30,6 +38,15 @@ public class UserService implements IGenericService<User> {
     public User findById(String id) {
         try {
             return userRepository.findById(id).orElseThrow(Exception::new);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public User findByGoogleId(String id) {
+        try {
+            return userRepository.findByGoogleId(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,4 +77,26 @@ public class UserService implements IGenericService<User> {
         return userRepository.count();
     }
 
+    public User checkAndSignUp(Map<String, String> json) {
+        //TODO Separate User creation & unicity check
+        String userName = json.get("username");
+        String tokenInput = json.get("tokenID");
+
+        User newUser = null;
+        if(findByUsername(userName) == null) {
+            if (tokenInput.equals(DEV_TOKEN)) {
+                newUser = new User("mock-google-id" + userName, userName);
+            } else {
+                GoogleIdToken tokenID = valider.validateToken(tokenInput);
+                if (tokenID != null) {
+                    GoogleIdToken.Payload payload = tokenID.getPayload();
+                    String userId = payload.get("sub").toString();
+                    if(findByGoogleId(userId) == null){
+                        newUser = new User(userId, userName);
+                    }
+                }
+            }
+        }
+        return newUser;
+    }
 }
