@@ -106,12 +106,14 @@ public class MeetingService implements IGenericService<Meeting> {
             StudentProfil studentProfil = member.getStudentProfil();
             Meeting meeting = findById(meetingID);
             if (studentProfil == null
-                    || meeting.getMembersID().contains(member.getId())
-                    || meeting.getMembersID().size() >= meeting.getNbPeople()) {
+                    || meeting.getMembersID().contains(member.getId())) {
                 return null;
             } else {
+                Location location = locationService.findById(meeting.getLocationID());
+                if (location != null && meeting.getMembersID().size() >= location.getNbPeople()){
+                    return null;
+                }
                 meeting.getMembersID().add(member.getId());
-                meeting.setNbPeople(meeting.getNbPeople() + 1);
                 studentProfil.getMeetingsParticipationsID().add(meeting.getId());
                 save(meeting);
                 userRepository.save(member);
