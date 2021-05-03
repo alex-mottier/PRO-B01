@@ -107,6 +107,8 @@ public class MeetingController extends BaseController implements IGenericControl
     @SneakyThrows
     @PostMapping("/meeting/join/{meetingID}")
     public ResponseEntity<MeetingResponse> joinMeeting(@PathVariable String meetingID) {
+        // NE PAS S'INSCRIRE PLUSIEURS FOIS
+        // NE PAS POUVOIR EXCEDER LA TAILLE DU MEETING!
         try {
             checkUserIsStudent();
             Meeting meeting = meetingService.addMemberToMeeting(getCurrentUser(), meetingID);

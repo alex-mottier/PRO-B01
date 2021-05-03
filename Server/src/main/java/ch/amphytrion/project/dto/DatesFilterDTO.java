@@ -20,12 +20,34 @@ public class DatesFilterDTO implements InterfaceDTO {
     }
 
     public boolean isBetween(DatesFilterDTO datesFilter) {
-        boolean isCorrect = true;
         // CHECK IF DATE NOT NULL OR EMPTY
-        boolean isStartInBetween = compareStringDatesBigger(this.getStartDate(), datesFilter.startDate) &&
-                compareStringDatesSmaller(this.getStartDate(), datesFilter.endDate);
-        boolean isEndInBetween = compareStringDatesBigger(this.getEndDate(), datesFilter.startDate) &&
-                compareStringDatesSmaller(this.getEndDate(), datesFilter.endDate);
+
+        /*
+        4 cases :
+        - filtre a 2 dates => vérifications
+        - filtre a 1 date de début mais pas date de fin => tout ce qui fini après date début filtre
+        - filtre a 1 date fin mais pas de date début =>  tout ce qui commence avant date de fin filtre
+        - filtre pas de date => TOUT
+         */
+        boolean isStartInBetween = true;
+        boolean isEndInBetween = true;
+        if( !datesFilter.startDate.equals("") && !datesFilter.endDate.equals("")) {
+            if (datesFilter.startDate.equals("")) {
+                isEndInBetween = false;
+                isStartInBetween = compareStringDatesSmaller(this.getStartDate(), datesFilter.getEndDate());
+            }else if (datesFilter.endDate.equals("")) {
+                isStartInBetween = false;
+                isEndInBetween = compareStringDatesBigger(this.getEndDate(), datesFilter.getStartDate());
+            } else {
+                /* les deux dates sont remplies : */
+                isStartInBetween = compareStringDatesSmaller(this.getStartDate(), datesFilter.getEndDate())
+                                    && compareStringDatesBigger(this.getStartDate(), datesFilter.getStartDate());
+                /* on vérifie que la date de début de l'objet est bien comprise entre la date de début et date de fin du filter */
+                isEndInBetween = compareStringDatesBigger(this.getEndDate(), datesFilter.getStartDate())
+                                    && compareStringDatesSmaller(this.getEndDate(), datesFilter.getEndDate());
+                /* on vérifie que la date de fin de l'objet est bien comprise entre la date de début et date de fin du filter */
+            }
+        }
         return isStartInBetween || isEndInBetween;
     }
 
