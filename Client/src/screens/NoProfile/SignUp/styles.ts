@@ -2,7 +2,7 @@
  * @file    styles.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    08.04.2021
- * @brief   Authentication page styles
+ * @brief   Sign up page styles
  */
 
 import { StyleSheet } from 'react-native';

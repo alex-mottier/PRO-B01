@@ -1,8 +1,8 @@
 /**
- * @file    stlyes.ts
+ * @file    styles.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    04.03.2021
- * @brief   Authentication page styles
+ * @brief   Tags component styles
  */
 
 import { StyleSheet } from 'react-native';
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     margin: 20,
-    backgroundColor: 'white',
   },
   field: {
     width: '80%',

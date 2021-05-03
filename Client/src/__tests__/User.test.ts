@@ -9,7 +9,7 @@ import { User } from '../app/models/ApplicationTypes';
 
 describe('User', () => {
   it('should create a new user instance', () => {
-    const user: User = { name: 'Username' };
+    const user: User = { id: '1', username: 'Username' };
     expect(user).not.toBeNull();
     expect(user).not.toBeUndefined();
   });

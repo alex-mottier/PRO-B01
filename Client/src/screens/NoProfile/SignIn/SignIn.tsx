@@ -2,11 +2,11 @@
  * @file    SignIn.tsx
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    27.03.2021
- * @brief   Authentication page of the application
+ * @brief   Sign in page
  */
 
 import * as React from 'react';
-import { Image, SafeAreaView, ScrollView, View } from 'react-native';
+import { Alert, Image, SafeAreaView, ScrollView, View } from 'react-native';
 import { Text, Title } from 'react-native-paper';
 import styles from './styles';
 import Globals from '../../../app/context/Globals';
@@ -14,15 +14,18 @@ import { useNavigation } from '@react-navigation/native';
 import FacebookButton from '../../../components/Buttons/FacebookButton';
 import GoogleButton from '../../../components/Buttons/GoogleButton';
 import CustomButton from '../../../components/Buttons/CustomButton';
-import GlobalStore from '../../../app/stores/GlobalStore';
+import { useStores } from '../../../app/context/storesContext';
 
 const SignIn: React.FC = () => {
-  const store = React.useContext(GlobalStore);
+  /* Usage of React Navigation */
   const navigation = useNavigation();
 
-  const handleLogin = () => {
-    store.setIsLoading(true);
-    store.signIn();
+  /* Usage of MobX global state store */
+  const { authenticationStore, studentStore } = useStores();
+
+  const handleLogin = async () => {
+    const succeed = await authenticationStore.signIn();
+    if (succeed) void studentStore.loadUserData();
   };
 
   return (
@@ -43,7 +46,11 @@ const SignIn: React.FC = () => {
           <Title>Se connecter avec</Title>
           <Text style={styles.text}>Veuillez choisir une option de connexion</Text>
           <View style={styles.buttons}>
-            <FacebookButton onPress={() => console.log('todo')} />
+            <FacebookButton
+              onPress={() => {
+                Alert.alert('En développement', 'Fonctionnalité en développement');
+              }}
+            />
             <GoogleButton onPress={handleLogin} />
             <CustomButton
               icon={Globals.ICONS.PROFILE}

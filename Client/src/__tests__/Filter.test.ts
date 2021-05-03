@@ -5,46 +5,40 @@
  * @brief   Test class of a filter
  */
 
-import { DayEnum, Filter } from '../app/models/ApplicationTypes';
+import { Filter } from '../app/models/ApplicationTypes';
 
 describe('Filter', () => {
   const filter: Filter = {
     name: 'Filtre',
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date().toISOString(),
+    endDate: new Date().toISOString(),
     tags: [{ name: 'test1' }, { name: 'test2' }, { name: 'test3' }],
-    locations: [
-      {
-        name: 'G02',
-        description: 'Salle de cours avec Wifi',
-        tags: [{ name: 'Salle de cours' }, { name: 'HEIG-VD' }],
-        nbPeople: 8,
-        openingHours: [
-          {
-            id: '1',
-            startTime: new Date(),
-            endTime: new Date(),
-            days: [{ name: 'Lundi', day: DayEnum.MON }],
-          },
-          {
-            id: '2',
-            startTime: new Date(),
-            endTime: new Date(),
-            days: [{ name: 'Lundi', day: DayEnum.TUE }],
-          },
-        ],
-        host: {
-          name: 'HEIG-VD',
-          description: 'Prix Béton !',
-          tags: [{ name: 'HES-SO' }, { name: 'HEIG-VD' }],
-          address: {
-            streetName: 'Rue du vieux Port 1',
-            city: 'Yverdon-les-bains',
-            npa: 1400,
-          },
+    location: {
+      id: '1',
+      name: 'G01',
+      description: 'Salle de cours avec Wifi',
+      tags: [{ name: 'Salle de cours' }, { name: 'HEIG-VD' }],
+      nbPeople: 10,
+      openingHours: [
+        {
+          startTime: '2021-04-20T15:00:00',
+          endTime: '2021-04-20T16:00:00',
+          day: 2,
         },
-      },
-    ],
+        {
+          startTime: '2021-04-20T15:00:00',
+          endTime: '2021-04-20T16:00:00',
+          day: 2,
+        },
+        {
+          startTime: '2021-04-20T15:00:00',
+          endTime: '2021-04-20T16:00:00',
+          day: 2,
+        },
+      ],
+      hostId: '1',
+      hostName: 'HEIG-VD',
+    },
   };
 
   it('should create a new filter instance', () => {
@@ -69,8 +63,7 @@ describe('Filter', () => {
     expect(filter.tags?.length).toBe(3);
   });
 
-  it('should return its locations', () => {
-    expect(filter.locations).not.toBe(null);
-    expect(filter.locations?.length).toBe(1);
+  it('should return its location', () => {
+    expect(filter.location).not.toBe(null);
   });
 });

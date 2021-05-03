@@ -1,8 +1,8 @@
 /**
- * @file    Profile.tsx
+ * @file    LocationDetails.tsx
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    04.03.2021
- * @brief   Student profile page
+ * @brief   Location details page
  */
 
 import * as React from 'react';
@@ -11,27 +11,38 @@ import { Avatar, Text, Title, IconButton, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from './styles';
 import { observer } from 'mobx-react-lite';
-import GlobalStore from '../../../app/stores/GlobalStore';
 import { Location, OpeningHour, Tag } from '../../../app/models/ApplicationTypes';
 import Globals from '../../../app/context/Globals';
 import { colors } from '../../../app/context/Theme';
 import OpeninHourComponent from '../../../components/OpeningHour/OpeningHourComponent';
 import { useNavigation } from '@react-navigation/core';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
+import { useStores } from '../../../app/context/storesContext';
 
 const LocationDetails: React.FC = () => {
+  /* Usage of React Navigation */
   const navigation = useNavigation();
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [location, setLocation] = React.useState<Location>();
-  const store = React.useContext(GlobalStore);
 
+  /* Usage of MobX global state store */
+  const { studentStore } = useStores();
+
+  /* Component states */
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [location, setLocation] = React.useState<Location | null>();
+
+  /* Local variables */
+  let nbColors = 0;
+
+  /**
+   * Action when component is loaded
+   */
   React.useEffect(() => {
     setIsLoading(true);
-    setLocation(store.loadMyLocation());
-    setIsLoading(false);
+    void studentStore.loadLocationToDisplay().then(() => {
+      setLocation(studentStore.locationToDisplay);
+      setIsLoading(false);
+    });
   }, []);
-
-  let nbColors = 0;
 
   return (
     <SafeAreaView>
@@ -41,12 +52,15 @@ const LocationDetails: React.FC = () => {
         ) : (
           <View style={styles.container}>
             <View style={styles.host}>
-              <Text style={styles.text}>{location?.host.name}</Text>
+              <Text style={styles.text}>{location?.hostName}</Text>
               <IconButton
                 icon={Globals.ICONS.INFO}
                 size={Globals.SIZES.ICON_HEADER}
                 color={Globals.COLORS.GRAY}
-                onPress={() => navigation.navigate('HostDetails')}
+                onPress={() => {
+                  if (location?.hostId) void studentStore.setHostToLoad(location.hostId);
+                  if (location) navigation.navigate('HostDetails');
+                }}
               />
             </View>
             <View style={styles.row}>
@@ -83,7 +97,7 @@ const LocationDetails: React.FC = () => {
                 {location?.openingHours?.map((openingHour: OpeningHour) => {
                   return (
                     <OpeninHourComponent
-                      key={openingHour.id}
+                      key={openingHour.day.toString() + openingHour.startTime}
                       openingHour={openingHour}></OpeninHourComponent>
                   );
                 })}
