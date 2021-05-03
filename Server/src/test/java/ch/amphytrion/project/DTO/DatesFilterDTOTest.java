@@ -16,7 +16,7 @@ public class DatesFilterDTOTest {
     private DateTime oneSecBefore;
     private DateTime oneYearAfter;
     private DateTime oneYearBefore;
-    private String snow;
+    private String sNow;
     private String sOneSecAfter;
     private String sOneSecBefore;
     private String sOneYearAfter;
@@ -29,7 +29,7 @@ public class DatesFilterDTOTest {
          oneSecBefore = now.minusSeconds(1);
          oneYearAfter = now.plusYears(1);
          oneYearBefore = now.minusYears(1);
-         snow = now.toString();
+         sNow = now.toString();
          sOneSecAfter = oneSecAfter.toString();
          sOneSecBefore = oneSecBefore.toString();
          sOneYearAfter = oneYearAfter.toString();
@@ -46,7 +46,7 @@ public class DatesFilterDTOTest {
     }
     @Test
     public void startDateAndIsBetweenTest(){
-        filter = new DatesFilterDTO(sOneYearAfter, "");
+        filter = new DatesFilterDTO(sOneYearBefore, "");
         assertEquals( new DatesFilterDTO(now.toString(), oneSecAfter.toString())
                             .isBetween(filter),
                 true);
@@ -75,7 +75,7 @@ public class DatesFilterDTOTest {
     }
     @Test
     public void startDateNotBetweenTest(){
-        filter = new DatesFilterDTO(snow, "");
+        filter = new DatesFilterDTO(sNow, "");
         assertNotEquals( new DatesFilterDTO(sOneYearBefore, sOneSecBefore)
                         .isBetween(filter),
                 true);
@@ -83,7 +83,7 @@ public class DatesFilterDTOTest {
     }
     @Test
     public void endDateNotBetweenTest(){
-        filter = new DatesFilterDTO("", snow);
+        filter = new DatesFilterDTO("", sNow);
         assertNotEquals( new DatesFilterDTO(sOneSecAfter, sOneYearAfter)
                         .isBetween(filter),
                 true);

@@ -31,7 +31,7 @@ public class DatesFilterDTO implements InterfaceDTO {
          */
         boolean isStartInBetween = true;
         boolean isEndInBetween = true;
-        if( !datesFilter.startDate.equals("") && !datesFilter.endDate.equals("")) {
+        if( !datesFilter.startDate.equals("") || !datesFilter.endDate.equals("")) {
             if (datesFilter.startDate.equals("")) {
                 isEndInBetween = false;
                 isStartInBetween = compareStringDatesSmaller(this.getStartDate(), datesFilter.getEndDate());
