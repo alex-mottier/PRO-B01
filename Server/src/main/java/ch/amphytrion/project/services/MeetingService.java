@@ -1,11 +1,14 @@
 package ch.amphytrion.project.services;
 
+import ch.amphytrion.project.dto.DatesFilterDTO;
 import ch.amphytrion.project.dto.FilterRequest;
 import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.repositories.ChatRepository;
 import ch.amphytrion.project.repositories.LocationRepository;
 import ch.amphytrion.project.repositories.MeetingRepository;
 import ch.amphytrion.project.repositories.UserRepository;
+import org.joda.time.DateTime;
+import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -14,11 +17,13 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MeetingService implements IGenericService<Meeting> {
@@ -200,6 +205,16 @@ public class MeetingService implements IGenericService<Meeting> {
                 .filter(meeting ->
                         result1.parse(meeting.getEnd()) <= end.getTime());*/
     }
+
+    public List<Meeting> filterByDateFilter(ArrayList<Meeting> meetings, DatesFilterDTO datesFilter){
+
+        return meetings.stream()
+                .filter(meeting ->
+                        new DatesFilterDTO(meeting).isBetween(datesFilter))
+                .collect(Collectors.toList());
+    }
+
+
 
     public ArrayList<Meeting> searchFilterTags(ArrayList<Meeting> meetings, ArrayList<Tag> tags){
         return (ArrayList<Meeting>) meetings.stream()
