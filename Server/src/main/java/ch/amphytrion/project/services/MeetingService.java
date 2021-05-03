@@ -105,15 +105,17 @@ public class MeetingService implements IGenericService<Meeting> {
         try {
             StudentProfil studentProfil = member.getStudentProfil();
             Meeting meeting = findById(meetingID);
-            if (studentProfil != null) {
+            if (studentProfil == null
+                    || meeting.getMembersID().contains(member.getId())
+                    || meeting.getMembersID().size() >= meeting.getNbPeople()) {
+                return null;
+            } else {
                 meeting.getMembersID().add(member.getId());
                 meeting.setNbPeople(meeting.getNbPeople() + 1);
                 studentProfil.getMeetingsParticipationsID().add(meeting.getId());
                 save(meeting);
                 userRepository.save(member);
                 return meeting;
-            } else {
-                return null;
             }
         } catch (Exception e) {
             return null;
