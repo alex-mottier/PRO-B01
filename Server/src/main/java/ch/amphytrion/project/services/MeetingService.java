@@ -122,112 +122,51 @@ public class MeetingService implements IGenericService<Meeting> {
         }
     }
 
-    public ArrayList<Meeting> findByNameLike(String name) {
-        return meetingRepository.findByNameLike(name);
-    }
-
-    public ArrayList<Meeting> findByName(String name) {
-        return meetingRepository.findByName(name);
-    }
-
-    ArrayList<Meeting> findByStartAfter(Date start) {
-        return meetingRepository.findByStartDateAfter(start);
-    }
-
-    ArrayList<Meeting> findByEndBefore(Date end) {
-        return meetingRepository.findByEndDateBefore(end);
-    }
-
-    public ArrayList<Meeting> searchFilter(FilterRequest filter) {
-//        ArrayList<Meeting> meetings = new ArrayList<>();
-//        TemporalAccessor ta = null;
-//        Instant i = Instant.from(ta);
-//        Date startDate = Date.from(i);
-//        meetings = findByStartAfter(startDate);
-
-//        if (filter.name != null && !filter.name.isEmpty()) {
-//            meetings = searchFilterName(meetings, filter.name);
-//        }
-//        if (filter.startDate == null) {
-//            filter.startDate = "";
-//        } else {
-//            ta = DateTimeFormatter.ISO_INSTANT.parse(filter.startDate);
-//        }
-//        TemporalAccessor taend = null;
-//        Instant iend = Instant.from(taend);
-//        Date endDate = Date.from(iend);
-//        meetings = findByStartAfter(endDate);
-//        meetings = searchFilterDateEnd(meetings, endDate);
-//        if (filter.endDate == null) {
-//            filter.endDate = "";
-//        } else {
-//            taend = DateTimeFormatter.ISO_INSTANT.parse(filter.startDate);
-//        }
-//        if (filter.tags != null && filter.tags.size() > 0) {
-//            meetings = searchFilterTags(meetings, filter.tags);
-//        }
-//        if (filter.location != null) {
-//            meetings = searchFilterLocations(meetings, filter.location);
-//        }
-
-        return meetingRepository.findByNameLike(filter.name);
-
-    }
-
-    public ArrayList<Meeting> allFilters(ArrayList<Meeting> meetings, FilterRequest filter) {
-        System.out.println("");
-        return (ArrayList<Meeting>) meetings.stream()
-                .filter(meeting ->
-                        meeting.getName().contains(filter.name))
-                .filter(meeting ->
-                        CollectionUtils.containsAny(meeting.getTags(), filter.tags))
-                .filter(meeting ->
-                        meeting.getLocationID() == filter.location.getId());
-        //stream avec le meeting et son score, on le passe dans la map et on met a jour le score
-        //enlever du stream si besoin
-    }
-
-    public ArrayList<Meeting> searchFilterName(ArrayList<Meeting> meetings, String name) {
-        return (ArrayList<Meeting>) meetings.stream()
-                .filter(meeting ->
-                        meeting.getName().contains(name));
-    }
-
-    public ArrayList<Meeting> searchFilterDateEnd(ArrayList<Meeting> meetings, Date end) {
-        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        String string1 = "2001-07-04T12:08:56.235-0700";
-        Date result1 = null;
-        try {
-            result1= df1.parse(string1);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return meetings ;/*(ArrayList<Meeting>) meetings.stream()
-                .filter(meeting ->
-                        result1.parse(meeting.getEnd()) <= end.getTime());*/
-    }
-
-    public List<Meeting> filterByDateFilter(ArrayList<Meeting> meetings, DatesFilterDTO datesFilter){
-
+    public List<Meeting> allFilters(List<Meeting> meetings, FilterRequest filter) {
         return meetings.stream()
                 .filter(meeting ->
-                        new DatesFilterDTO(meeting).isBetween(datesFilter))
+                        filterByName(meeting, filter.name))
+                .filter(meeting ->
+                        filterByDateFilter(meeting, new DatesFilterDTO(filter.startDate, filter.endDate)))
+                .filter(meeting ->
+                        searchFilterTags(meeting, filter.tags))
+                .filter(meeting ->
+                        searchFilterLocations(meeting, filter.location))
                 .collect(Collectors.toList());
     }
 
+    public boolean filterByName(Meeting meeting, String name) {
+        if (name == null) {
+            return true;
+        } else {
+            return  meeting.getName().contains(name);
+        }
 
-
-    public ArrayList<Meeting> searchFilterTags(ArrayList<Meeting> meetings, ArrayList<Tag> tags){
-        return (ArrayList<Meeting>) meetings.stream()
-                .filter(meeting ->
-                        CollectionUtils.containsAny(meeting.getTags(), tags));
     }
 
-    public ArrayList<Meeting> searchFilterLocations(ArrayList<Meeting> meetings, Location location){
-        return (ArrayList<Meeting>) meetings.stream()
-                .filter(meeting ->
-                        meeting.getLocationID() == location.getId());
+    public boolean filterByDateFilter(Meeting meeting, DatesFilterDTO datesFilter){
+        if (datesFilter == null) {
+            return true;
+        } else {
+            return new DatesFilterDTO(meeting).isBetween(datesFilter);
+
+        }
+    }
+
+    public boolean searchFilterTags(Meeting meeting, List<Tag> tags){
+        if (tags == null || tags.isEmpty()) {
+            return true;
+        } else {
+            return CollectionUtils.containsAny(meeting.getTags(), tags);
+        }
+    }
+
+    public boolean searchFilterLocations(Meeting meeting, Location location){
+        if (location == null) {
+            return true;
+        } else {
+            return meeting.getLocationID() == location.getId();
+        }
     }
 }
 

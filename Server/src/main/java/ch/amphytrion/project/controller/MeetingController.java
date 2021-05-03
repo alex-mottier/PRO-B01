@@ -124,14 +124,14 @@ public class MeetingController extends BaseController implements IGenericControl
     @PostMapping("/meetings/filter")
     public ResponseEntity<List<MeetingResponse>> searchWithFilter(@RequestBody FilterRequest filter){
         try {
-            ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
+            List<MeetingResponse> meetingResponses = new ArrayList<>();
             /*for(Meeting meeting : meetingService.findByOwnerID(user.getId())) {
                 MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
                 meetingResponses.add(meetingResponse);
             }*/
 
             User user = getCurrentUser();
-            ArrayList<Meeting> result = meetingService.allFilters(meetingService.findByOwnerID(user.getId()), filter);
+            List<Meeting> result = meetingService.allFilters(meetingService.findByOwnerID(user.getId()), filter);
             for(Meeting meeting : result) {
                 MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
                 meetingResponses.add(meetingResponse);
