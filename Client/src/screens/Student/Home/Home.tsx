@@ -47,6 +47,7 @@ const Home: React.FC = () => {
                 isSearchView={false}
                 isChatable={true}
                 isInCalendar={true}
+                isChatView={false}
               />
             </View>
           </View>

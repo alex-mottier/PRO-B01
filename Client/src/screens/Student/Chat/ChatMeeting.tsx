@@ -47,6 +47,7 @@ const ChatMeeting: React.FC = () => {
    */
   const handleSubmit = () => {
     const user = authenticationStore.getAuthenticatedUser();
+    console.log(new Date().toISOString());
     if (user) {
       const newMessage: Message = {
         message: message,
@@ -71,6 +72,7 @@ const ChatMeeting: React.FC = () => {
                   isSearchView={false}
                   isChatable={false}
                   isInCalendar={false}
+                  isChatView={true}
                 />
               </View>
             )}

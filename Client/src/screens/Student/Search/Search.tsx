@@ -178,6 +178,7 @@ const Search: React.FC = () => {
                 isSearchView={true}
                 isChatable={true}
                 isInCalendar={false}
+                isChatView={false}
                 onJoin={handleChanged}
                 onLeave={handleChanged}
                 onDelete={handleChanged}

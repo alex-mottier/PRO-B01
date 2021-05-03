@@ -38,6 +38,7 @@ const Profile: React.FC = () => {
                 isSearchView={false}
                 isChatable={true}
                 isInCalendar={false}
+                isChatView={false}
               />
             ))
           )}

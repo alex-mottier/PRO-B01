@@ -29,6 +29,7 @@ interface IProps {
   isChatable: boolean;
   isInCalendar: boolean;
   isSearchView: boolean;
+  isChatView: boolean;
   onJoin?: () => void;
   onLeave?: () => void;
   onDelete?: () => void;
@@ -36,12 +37,13 @@ interface IProps {
 
 const MeetingComponent: React.FC<IProps> = ({
   meeting,
-  isChatable = true,
-  isInCalendar = false,
+  isChatable,
+  isInCalendar,
+  isSearchView,
+  isChatView,
   onJoin,
   onLeave,
   onDelete,
-  isSearchView,
 }) => {
   /* Usage of React Navigation */
   const navigation = useNavigation();
@@ -242,7 +244,7 @@ const MeetingComponent: React.FC<IProps> = ({
                 <Text style={[styles.gray, styles.buttonText]}>Discuter</Text>
               </View>
             )}
-            {isOwner && (
+            {isOwner && !isChatView && (
               <View>
                 <IconButton
                   icon={Globals.ICONS.COPY}
@@ -264,7 +266,7 @@ const MeetingComponent: React.FC<IProps> = ({
                 <Text style={[styles.gray, styles.buttonText]}>Rejoindre</Text>
               </View>
             )}
-            {isOwner && (
+            {isOwner && !isChatView && (
               <View>
                 <IconButton
                   icon={Globals.ICONS.EDIT}
@@ -275,7 +277,7 @@ const MeetingComponent: React.FC<IProps> = ({
                 <Text style={[styles.gray, styles.buttonText]}>Modifier</Text>
               </View>
             )}
-            {isOwner && (
+            {isOwner && !isChatView && (
               <View>
                 <IconButton
                   icon={Globals.ICONS.DELETE}

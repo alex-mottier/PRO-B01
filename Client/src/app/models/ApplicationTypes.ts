@@ -50,7 +50,6 @@ export type Location = {
 };
 
 export type OpeningHour = {
-  // Format hh:mm
   startTime: string;
   endTime: string;
   day: number;
