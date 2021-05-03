@@ -31,7 +31,7 @@ public class DatesFilterDTOTest {
          oneYearBefore = now.minusYears(1);
          snow = now.toString();
          sOneSecAfter = oneSecAfter.toString();
-         sOneSecAfter = oneSecBefore.toString();
+         sOneSecBefore = oneSecBefore.toString();
          sOneYearAfter = oneYearAfter.toString();
          sOneYearBefore = oneYearBefore.toString();
      }
