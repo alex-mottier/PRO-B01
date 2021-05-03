@@ -36,8 +36,7 @@ const Home: React.FC = () => {
       minDate={format(new Date(), 'yyyy-MM-dd')}
       maxDate={format(addYears(new Date(), 1), 'yyyy-MM-dd')}
       onDayPress={(day) => {
-        const newDate = new Date(day.dateString);
-        studentStore.generateItems(newDate);
+        void studentStore.generateItems(new Date(day.dateString));
       }}
       renderItem={(item) => {
         return (
