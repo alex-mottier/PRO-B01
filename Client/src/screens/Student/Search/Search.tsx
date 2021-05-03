@@ -135,19 +135,9 @@ const Search: React.FC = () => {
   };
 
   /**
-   * Action when user join the meeting
+   * Action when meeting has changed
    */
-  const handleJoin = () => {
-    setIsLoading(true);
-    if (searchWithId) handleSearchWithId(search);
-    else handleSubmit();
-    setIsLoading(false);
-  };
-
-  /**
-   * Action when user leave the meeting
-   */
-  const handleLeave = () => {
+  const handleChanged = () => {
     setIsLoading(true);
     if (searchWithId) handleSearchWithId(search);
     else handleSubmit();
@@ -188,8 +178,9 @@ const Search: React.FC = () => {
                 isSearchView={true}
                 isChatable={true}
                 isInCalendar={false}
-                onJoin={handleJoin}
-                onLeave={handleLeave}
+                onJoin={handleChanged}
+                onLeave={handleChanged}
+                onDelete={handleChanged}
               />
             ))}
           <Portal>

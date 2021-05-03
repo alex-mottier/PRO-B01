@@ -31,6 +31,7 @@ interface IProps {
   isSearchView: boolean;
   onJoin?: () => void;
   onLeave?: () => void;
+  onDelete?: () => void;
 }
 
 const MeetingComponent: React.FC<IProps> = ({
@@ -39,6 +40,7 @@ const MeetingComponent: React.FC<IProps> = ({
   isInCalendar = false,
   onJoin,
   onLeave,
+  onDelete,
   isSearchView,
 }) => {
   /* Usage of React Navigation */
@@ -114,7 +116,9 @@ const MeetingComponent: React.FC<IProps> = ({
         {
           text: 'Oui',
           onPress: () => {
-            void studentStore.deleteMeeting(meeting.id);
+            void studentStore.deleteMeeting(meeting.id).then(() => {
+              if (onDelete) onDelete();
+            });
           },
         },
       ],
