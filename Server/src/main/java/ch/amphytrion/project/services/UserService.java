@@ -1,6 +1,11 @@
 package ch.amphytrion.project.services;
 
 import ch.amphytrion.project.authentication.google_authentication.GoogleTokenValider;
+import ch.amphytrion.project.dto.HostRequest;
+import ch.amphytrion.project.dto.HostResponse;
+import ch.amphytrion.project.entities.databaseentities.Address;
+import ch.amphytrion.project.entities.databaseentities.City;
+import ch.amphytrion.project.entities.databaseentities.HostProfil;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.repositories.UserRepository;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -99,4 +104,39 @@ public class UserService implements IGenericService<User>{
         }
         return newUser;
     }
+
+
+    public User checkAndSignUpHost(HostRequest hostRequest) {
+        //TODO Separate User creation & unicity check
+        String tokenInput = hostRequest.tokenID;
+        String name = hostRequest.name;
+        HostProfil hostProfil = new HostProfil();
+
+        User newUser = null;
+        if(findByUsername(name) == null) {
+            if (tokenInput.equals(DEV_TOKEN)) {
+                newUser = new User("mock-google-id" + name, name);
+            } else {
+                GoogleIdToken tokenID = valider.validateToken(tokenInput);
+                if (tokenID != null) {
+                    GoogleIdToken.Payload payload = tokenID.getPayload();
+                    String userId = payload.get("sub").toString();
+                    if(findByGoogleId(userId) == null){
+                        newUser = new User(userId, name);
+                    }
+                }
+            }
+
+            //Ajout des informations du host
+            City city = new City( hostRequest.cityName, hostRequest.npa);
+            Address address = new Address(hostRequest.street, hostRequest.streetNb, city);
+            hostProfil.setAddress(address);
+            hostProfil.setTags(hostRequest.tags);
+            hostProfil.setDescription(hostRequest.description);
+            newUser.setHostProfil(hostProfil);
+            userRepository.save(newUser);
+        }
+        return newUser;
+    }
+
 }

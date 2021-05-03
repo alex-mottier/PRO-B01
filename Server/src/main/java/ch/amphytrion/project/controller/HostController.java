@@ -5,7 +5,6 @@ import ch.amphytrion.project.dto.UserResponse;
 import ch.amphytrion.project.entities.databaseentities.HostProfil;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.HostService;
-import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
