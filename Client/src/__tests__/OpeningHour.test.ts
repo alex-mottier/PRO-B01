@@ -9,7 +9,6 @@ import { OpeningHour } from '../app/models/ApplicationTypes';
 
 describe('Opening hour', () => {
   const openingHour: OpeningHour = {
-    id: '1',
     startTime: new Date().toISOString(),
     endTime: new Date().toISOString(),
     day: 0,

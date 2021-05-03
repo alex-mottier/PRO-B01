@@ -16,19 +16,16 @@ describe('Location', () => {
     nbPeople: 10,
     openingHours: [
       {
-        id: '1',
         startTime: '2021-04-20T15:00:00',
         endTime: '2021-04-20T16:00:00',
         day: 2,
       },
       {
-        id: '2',
         startTime: '2021-04-20T15:00:00',
         endTime: '2021-04-20T16:00:00',
         day: 2,
       },
       {
-        id: '3',
         startTime: '2021-04-20T15:00:00',
         endTime: '2021-04-20T16:00:00',
         day: 2,

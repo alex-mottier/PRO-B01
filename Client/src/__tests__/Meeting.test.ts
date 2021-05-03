@@ -22,7 +22,7 @@ describe('Meeting', () => {
     ownerID: '#9876',
     chatID: '#6789',
     isPrivate: true,
-    membersID: ['#123', '#456'],
+    membersId: ['#123', '#456'],
   };
 
   it('should create a new meeting instance', () => {
@@ -85,7 +85,7 @@ describe('Meeting', () => {
   });
 
   it('should return it members id', () => {
-    expect(meeting.membersID).not.toBe(true);
-    expect(meeting.membersID.length).toBe(2);
+    expect(meeting.membersId).not.toBe(true);
+    expect(meeting.membersId.length).toBe(2);
   });
 });
