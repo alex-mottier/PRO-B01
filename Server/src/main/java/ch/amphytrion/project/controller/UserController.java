@@ -26,6 +26,26 @@ public class UserController extends BaseController implements IGenericController
     @Autowired
     public UserController(UserService userService) {this.userService = userService;}
 
+    @SneakyThrows
+    @PostMapping("/signUpHost")
+    public ResponseEntity<UserResponse> signUpHost(@RequestBody Map<String, String> json) {
+        User newUser = userService.checkAndSignUp(json);
+        HostProfil hostProfil = new HostProfil();
+        if(newUser != null) {
+            newUser.setHostProfil(hostProfil);
+            userService.save(newUser);
+            String token = JwtUtils.makeHeaderToken(newUser.getUsername());
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+            return ResponseEntity.ok().headers(responseHeaders).body(new UserResponse(newUser));
+        }
+        else {
+            //user already exists
+            throw new CustomException("Ce compte host existe déjà", HttpStatus.NOT_ACCEPTABLE, null);
+        }
+    }
+
+
     // X
     @SneakyThrows
     @PostMapping("/signUpStudent")
