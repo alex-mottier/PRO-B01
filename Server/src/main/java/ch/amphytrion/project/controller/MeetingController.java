@@ -92,13 +92,9 @@ public class MeetingController extends BaseController implements IGenericControl
                 MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
                 meetingResponses.add(meetingResponse);
             }
-            for(String meetingId : studentProfil.getMeetingsOwnerID()){
-                Meeting meeting = meetingService.findById(meetingId);
-                MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
-                meetingResponses.add(meetingResponse);
-            }
             return ResponseEntity.ok(meetingResponses);
         } catch (Exception e) {
+            System.out.println("");
             throw new CustomException("Aucun meeting n'a été trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
@@ -193,10 +189,13 @@ public class MeetingController extends BaseController implements IGenericControl
             if(meeting != null){
                 for(String id : meeting.getMembersID()){
                     User member = studentService.findById(id);
-                    member.getStudentProfil().getMeetingsParticipationsID().removeIf(mID -> mID.equals(meetingID));
+                    List<String> meetingsOwner = member.getStudentProfil().getMeetingsOwnerID();
+                    if(meetingsOwner.contains(meetingID)) {
+                        member.getStudentProfil().getMeetingsParticipationsID().remove(meetingID);
+                        meetingsOwner.remove(meetingID);
+                        studentService.save(member);
+                    }
                 }
-                User owner = studentService.findById(meeting.getOwnerID());
-                owner.getStudentProfil().getMeetingsOwnerID().removeIf(mID -> mID.equals(meetingID));
                 meetingService.delete(meeting);
             }
         } catch (Exception e) {

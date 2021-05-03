@@ -3,11 +3,13 @@ package ch.amphytrion.project.dto;
 import ch.amphytrion.project.entities.databaseentities.Location;
 import ch.amphytrion.project.entities.databaseentities.Meeting;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 import lombok.Data;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class DatesFilterDTO implements InterfaceDTO {
     public String startDate;
