@@ -3,10 +3,8 @@ package ch.amphytrion.project.services;
 import ch.amphytrion.project.authentication.google_authentication.GoogleTokenValider;
 import ch.amphytrion.project.dto.HostRequest;
 import ch.amphytrion.project.dto.HostResponse;
-import ch.amphytrion.project.entities.databaseentities.Address;
-import ch.amphytrion.project.entities.databaseentities.City;
-import ch.amphytrion.project.entities.databaseentities.HostProfil;
-import ch.amphytrion.project.entities.databaseentities.User;
+import ch.amphytrion.project.dto.StudentRequest;
+import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.repositories.UserRepository;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,10 +80,11 @@ public class UserService implements IGenericService<User>{
         return userRepository.count();
     }
 
-    public User checkAndSignUp(Map<String, String> json) {
+    public User checkAndSignUp(StudentRequest studentRequest) {
         //TODO Separate User creation & unicity check
-        String userName = json.get("username");
-        String tokenInput = json.get("tokenID");
+        String userName = studentRequest.userName;
+        String tokenInput = studentRequest.tokenID;
+        StudentProfil studentProfil = new StudentProfil();
 
         User newUser = null;
         if(findByUsername(userName) == null) {
@@ -101,6 +100,8 @@ public class UserService implements IGenericService<User>{
                     }
                 }
             }
+            newUser.setStudentProfil(studentProfil);
+            userRepository.save(newUser);
         }
         return newUser;
     }
