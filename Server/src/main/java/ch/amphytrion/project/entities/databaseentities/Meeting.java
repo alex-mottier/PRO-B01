@@ -26,7 +26,6 @@ public class Meeting {
     private String chatID;
     // List de String ?
     private List<Tag> tags;
-    private Integer nbPeople;
     private List<String> membersID = new ArrayList<>();
     private String startDate;
     private String endDate;
@@ -40,7 +39,6 @@ public class Meeting {
         this.ownerID = ownerID;
         this.chatID = chatID;
         this.tags = tags;
-        this.nbPeople = nbPeople;
         this.startDate = startDate;
         this.endDate = endDate;
     }

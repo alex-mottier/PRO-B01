@@ -67,7 +67,6 @@ public class MeetingController extends BaseController implements IGenericControl
             StudentProfil studentProfil = user.getStudentProfil();
             if (studentProfil != null) {
                  meeting.getMembersID().removeIf(memberId -> memberId.equals(user.getId()));
-                 meeting.setNbPeople(meeting.getNbPeople()-1);
                  studentProfil.getMeetingsParticipationsID().removeIf(id -> id.equals(meetingID));
                  studentService.save(user);
                  meetingService.save(meeting);
