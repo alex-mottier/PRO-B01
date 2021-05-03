@@ -10,18 +10,22 @@ import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { useTheme } from 'react-native-paper';
 import { AuthenticationStack } from './AuthenticationStack';
 import { observer } from 'mobx-react-lite';
-import GlobalStore from '../app/stores/GlobalStore';
 import StudentStack from './StudentStack';
 import { lightThemeNavigation } from '../app/context/Theme';
+import { useStores } from '../app/context/storesContext';
 
 const Routes: React.FC = () => {
   const theme = useTheme();
-  const store = React.useContext(GlobalStore);
+  const { authenticationStore } = useStores();
   const navigationTheme = theme.dark ? DarkTheme : lightThemeNavigation;
 
   return (
     <NavigationContainer theme={navigationTheme}>
-      {store.authenticatedUser && store.isLoggedIn ? <StudentStack /> : <AuthenticationStack />}
+      {authenticationStore.authenticatedUser && authenticationStore.isLoggedIn ? (
+        <StudentStack />
+      ) : (
+        <AuthenticationStack />
+      )}
     </NavigationContainer>
   );
 };

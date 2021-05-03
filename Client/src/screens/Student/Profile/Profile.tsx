@@ -10,38 +10,36 @@ import { SafeAreaView, ScrollView, View } from 'react-native';
 import { Avatar, Text, Title } from 'react-native-paper';
 import styles from './styles';
 import { observer } from 'mobx-react-lite';
-import LoadingComponent from '../../../components/Loading/LoadingComponent';
-import GlobalStore from '../../../app/stores/GlobalStore';
 import { Meeting } from '../../../app/models/ApplicationTypes';
 import NoMeeting from '../../../components/NoMeeting/NoMeeting';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
+import { useStores } from '../../../app/context/storesContext';
 
 const Profile: React.FC = () => {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [meetings, setMeetings] = React.useState<Meeting[]>([]);
-  const store = React.useContext(GlobalStore);
-
-  React.useEffect(() => {
-    setIsLoading(true);
-    setMeetings(store.loadMyMeetings());
-    setIsLoading(false);
-  }, []);
-
+  /* Usage of MobX global state store */
+  const { studentStore, authenticationStore } = useStores();
+  const meetings = studentStore.meetingsCreatedByUser;
   return (
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.row}>
             <Avatar.Image size={80} source={require('../../../../assets/Logo.png')} />
-            <Title style={styles.title}>{store.authenticatedUser?.name}</Title>
+            <Title style={styles.title}>{authenticationStore.authenticatedUser?.username}</Title>
           </View>
-          <Text style={styles.text}>Réunions que j&apos;ai crées :</Text>
-          {isLoading && <LoadingComponent />}
-          {!isLoading && meetings.length === 0 ? (
+          <Text style={styles.text}>Réunions à venir créées :</Text>
+          {meetings && meetings.length === 0 ? (
             <NoMeeting />
           ) : (
             meetings.map((meeting: Meeting) => (
-              <MeetingComponent key={meeting.name} meeting={meeting} isOwner={true} />
+              <MeetingComponent
+                key={meeting.id}
+                meeting={meeting}
+                isSearchView={false}
+                isChatable={true}
+                isInCalendar={false}
+                isChatView={false}
+              />
             ))
           )}
         </View>

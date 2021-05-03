@@ -1,11 +1,12 @@
 /**
- * @file    stlyes.ts
+ * @file    styles.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    04.03.2021
- * @brief   No meetings page styles
+ * @brief   No meetings styles
  */
 
 import { StyleSheet } from 'react-native';
+import Globals from '../../app/context/Globals';
 
 const styles = StyleSheet.create({
   row: {
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    color: 'gray',
+    color: Globals.COLORS.TEXT,
     justifyContent: 'center',
     fontSize: 20,
   },

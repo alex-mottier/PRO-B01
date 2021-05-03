@@ -1,69 +1,16 @@
 /**
- * @file    Interfaces.ts
+ * @file    ApplicationTypes.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    08.04.2021
  * @brief   Application types for typing
  */
 
-export type Location = {
-  name: string;
-  description: string;
-  tags: Tag[];
-  nbPeople: number;
-  openingHours: OpeningHour[];
-  host: Host;
-};
-
-// TODO : Sujet à modification
-export type Host = {
-  name: string;
-  description: string;
-  address: Address;
-  tags: Tag[];
-};
-
-// TODO : Sujet à modification
 export type Address = {
-  streetName: string;
-  city: string;
-  npa: number;
-};
-
-export type OpeningHour = {
   id: string;
-  startTime: Date;
-  endTime: Date;
-  days: Day[];
-};
-
-export type Day = {
-  name: string;
-  day: DayEnum;
-};
-
-export enum DayEnum {
-  SUN,
-  MON,
-  TUE,
-  WED,
-  THU,
-  FRI,
-  SAT,
-}
-
-export type Meeting = {
-  name: string;
-  description: string;
-  tags: Tag[];
-  locationID: string;
-  locationName: string;
-  maxPeople: number;
-  nbPeople: number;
-  start: Date;
-  end: Date;
-  ownerID: string;
-  chatId: string;
-  isPrivate: boolean;
+  street: string;
+  streetNb: string;
+  cityName: string;
+  npa: string;
 };
 
 export type Chat = {
@@ -71,11 +18,63 @@ export type Chat = {
   messages: Message[];
 };
 
-export type Message = {
+export type Error = {
+  message: string;
+};
+
+export type Filter = {
+  name: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  tags: Tag[] | null;
+  location: Location | null;
+};
+
+export type Host = {
   id: string;
+  name: string;
+  address: Address;
+  description: string;
+  tags: Tag[];
+};
+
+export type Location = {
+  id: string;
+  name: string;
+  description: string;
+  nbPeople: number;
+  hostId: string;
+  hostName: string;
+  tags: Tag[];
+  openingHours: OpeningHour[];
+};
+
+export type OpeningHour = {
+  startTime: string;
+  endTime: string;
+  day: number;
+};
+
+export type Meeting = {
+  id: string;
+  name: string;
+  description: string;
+  locationID: string;
+  locationName: string;
+  ownerID: string;
+  chatID: string;
+  tags: Tag[];
+  membersId: string[];
+  maxPeople: number;
+  startDate: string;
+  endDate: string;
+  isPrivate: boolean;
+};
+
+export type Message = {
   message: string;
   username: string;
-  date: Date;
+  date: string;
 };
 
 export type Tag = {
@@ -83,13 +82,6 @@ export type Tag = {
 };
 
 export type User = {
-  name: string;
-};
-
-export type Filter = {
-  name: string | null;
-  startDate: Date | null;
-  endDate: Date | null;
-  tags: Tag[] | null;
-  locations: Location[] | null;
+  id: string;
+  username: string;
 };

@@ -2,7 +2,7 @@
  * @file    styles.ts
  * @author  Alexandre Mottier
  * @date    04.03.2021
- * @brief   Configuration profile page styles
+ * @brief   Profile configuration page styles
  */
 
 import { StyleSheet } from 'react-native';

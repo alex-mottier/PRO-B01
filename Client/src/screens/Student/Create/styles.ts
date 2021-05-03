@@ -2,12 +2,19 @@
  * @file    styles.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    04.03.2021
- * @brief   Authentication page styles
+ * @brief   Meeting creation page styles
  */
 
 import { StyleSheet } from 'react-native';
+import Globals from '../../../app/context/Globals';
 
 const styles = StyleSheet.create({
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '100%',
+  },
+  fab: { marginTop: 20 },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -39,7 +46,7 @@ const styles = StyleSheet.create({
   },
   marginLeft: {
     marginLeft: 20,
-    color: 'gray',
+    color: Globals.COLORS.TEXT,
   },
   private: {
     flexDirection: 'column',

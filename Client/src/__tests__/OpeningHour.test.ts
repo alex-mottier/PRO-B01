@@ -5,14 +5,13 @@
  * @brief   Test class of opening hours
  */
 
-import { DayEnum, OpeningHour } from '../app/models/ApplicationTypes';
+import { OpeningHour } from '../app/models/ApplicationTypes';
 
 describe('Opening hour', () => {
   const openingHour: OpeningHour = {
-    id: '1',
-    startTime: new Date(),
-    endTime: new Date(),
-    days: [{ name: 'Lundi', day: DayEnum.MON }],
+    startTime: new Date().toISOString(),
+    endTime: new Date().toISOString(),
+    day: 0,
   };
 
   it('should create a new opening hour instance', () => {
@@ -29,6 +28,6 @@ describe('Opening hour', () => {
   });
 
   it('should return its day', () => {
-    expect(openingHour.days[0].day).toBe(DayEnum.MON);
+    expect(openingHour.day).toBe(0);
   });
 });

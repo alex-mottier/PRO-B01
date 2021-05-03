@@ -1,12 +1,10 @@
-
-
 # Installation environnent Front-End :iphone:
 
 Voici la procédure de mise en place de l'environnement Front-End. La partie concernant l'installation locale n'est à effectuer qu'une seule fois. La partie concernant l'exécution du projet en développement doit être effectuée à chaque fois pour obtenir l'application sur le périphérique émulé.
 
 ## A installer sur le PC local :computer:
 
-> :whale:  Lorsque l'environnement Docker sera en place, cette étape ne sera plus nécessaire.
+> :whale: Lorsque l'environnement Docker sera en place, cette étape ne sera plus nécessaire.
 
 **Node JS :**
 
@@ -46,7 +44,7 @@ Démarrer l'émulateur virtuel précédemment créé.
 
 **Ouvrir projet client :** (dossier "Client") du repository.
 
-Installer dépendances : `npm install` 
+Installer dépendances : `npm install`
 
 Une fois l'ensemble des dépendances installées, démarrer l'émulation avec Expo : `npm start`
 
@@ -73,4 +71,3 @@ Cela va tester : les tests Jest et la syntaxe TypeScript
 Pour lancer la création de l'application native pour Android : `expo build:android`
 
 Pour lancer la création de l'application native pour IOS : `expo build:ios`
-

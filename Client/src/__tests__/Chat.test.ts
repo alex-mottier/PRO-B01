@@ -10,7 +10,7 @@ import { Chat } from '../app/models/ApplicationTypes';
 describe('Chat', () => {
   const chat: Chat = {
     id: '#1234',
-    messages: [{ id: '#1234', message: 'Hey :)', username: 'developpeur', date: new Date() }],
+    messages: [{ message: 'Hey :)', username: 'developpeur', date: new Date().toISOString() }],
   };
 
   it('should create a new chat instance', () => {

@@ -16,12 +16,16 @@ import {
   Modal,
   Button,
   Title,
+  useTheme,
 } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
 import { colors } from '../../app/context/Theme';
 import { Tag } from '../../app/models/ApplicationTypes';
 import styles from './styles';
 
+/**
+ * Component props
+ */
 interface IProps {
   tags: Tag[];
   addTag(tag: Tag): void;
@@ -29,9 +33,11 @@ interface IProps {
 }
 
 const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
+  /* Component states */
   const [tagName, setTagName] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
 
+  /* Local variables */
   let nbColors = 0;
 
   /**
@@ -50,7 +56,7 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
   return (
     <View>
       <View style={styles.tags}>
-        <Text style={{ color: 'gray' }}>Tags</Text>
+        <Text style={{ color: Globals.COLORS.TEXT }}>Tags</Text>
         <IconButton
           icon={Globals.ICONS.ADD_TAG}
           size={Globals.SIZES.ICON_MENU}
@@ -74,7 +80,10 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
         <Modal
           visible={modalVisible}
           onDismiss={() => setModalVisible(false)}
-          contentContainerStyle={styles.container}>
+          contentContainerStyle={[
+            styles.container,
+            { backgroundColor: useTheme().colors.surface },
+          ]}>
           <View style={styles.modal}>
             <View style={styles.close}>
               <IconButton

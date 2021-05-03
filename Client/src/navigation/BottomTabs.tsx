@@ -17,6 +17,7 @@ import { useTheme } from 'react-native-paper';
 const Tab = createMaterialBottomTabNavigator();
 
 export const BottomTabs = (): React.ReactElement => {
+  // Usage of react native paper theme library
   const paperTheme = useTheme();
 
   return (

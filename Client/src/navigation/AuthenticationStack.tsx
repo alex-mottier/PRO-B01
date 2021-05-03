@@ -26,6 +26,7 @@ type AuthParamList = {
 const Stack = createStackNavigator<AuthParamList>();
 
 export const AuthenticationStack: React.FC = () => {
+  // Usage of react native paper theme library
   const paperTheme = useTheme();
 
   return (

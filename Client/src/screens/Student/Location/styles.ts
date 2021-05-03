@@ -1,11 +1,12 @@
 /**
- * @file    stlyes.ts
+ * @file    styles.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    04.03.2021
- * @brief   Authentication page styles
+ * @brief   Location details page styles
  */
 
 import { StyleSheet } from 'react-native';
+import Globals from '../../../app/context/Globals';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   title: {
-    color: 'gray',
+    color: Globals.COLORS.TEXT,
     marginLeft: 20,
     fontSize: 25,
   },
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   gray: {
-    color: 'gray',
+    color: Globals.COLORS.TEXT,
   },
   host: {
     width: '100%',

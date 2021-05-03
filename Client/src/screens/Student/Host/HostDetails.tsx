@@ -1,8 +1,8 @@
 /**
- * @file    Profile.tsx
+ * @file    HostDetails.tsx
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    04.03.2021
- * @brief   Student profile page
+ * @brief   Host details page
  */
 
 import * as React from 'react';
@@ -10,23 +10,32 @@ import { SafeAreaView, ScrollView, View } from 'react-native';
 import { Avatar, Text, Title, Chip } from 'react-native-paper';
 import styles from './styles';
 import { observer } from 'mobx-react-lite';
-import GlobalStore from '../../../app/stores/GlobalStore';
 import { Host, Tag } from '../../../app/models/ApplicationTypes';
 import { colors } from '../../../app/context/Theme';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
+import { useStores } from '../../../app/context/storesContext';
 
 const HostDetails: React.FC = () => {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [host, setHost] = React.useState<Host>();
-  const store = React.useContext(GlobalStore);
+  /* Usage of MobX global state store */
+  const { studentStore } = useStores();
 
+  /* Component states */
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [host, setHost] = React.useState<Host | null>();
+
+  /* Local variables */
+  let nbColors = 0;
+
+  /**
+   * Action when component is loaded
+   */
   React.useEffect(() => {
     setIsLoading(true);
-    setHost(store.loadMyHost());
-    setIsLoading(false);
+    void studentStore.loadHost().then(() => {
+      setHost(studentStore.hostToDisplay);
+      setIsLoading(false);
+    });
   }, []);
-
-  let nbColors = 0;
 
   return (
     <SafeAreaView>
@@ -45,7 +54,8 @@ const HostDetails: React.FC = () => {
               <Text style={styles.gray}>{host?.description}</Text>
               <View>
                 <Text>
-                  {host?.address.streetName}, {host?.address.npa} {host?.address.city}
+                  {host?.address.street} {host?.address.streetNb}, {host?.address.npa}{' '}
+                  {host?.address.cityName}
                 </Text>
               </View>
               <View style={styles.chips}>

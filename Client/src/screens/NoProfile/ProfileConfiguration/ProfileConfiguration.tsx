@@ -11,19 +11,25 @@ import { TextInput, Button, useTheme, Title, Drawer } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
 import styles from '../ProfileConfiguration/styles';
 import { Tabs, TabScreen } from 'react-native-paper-tabs';
-import GlobalStore from '../../../app/stores/GlobalStore';
+import { useStores } from '../../../app/context/storesContext';
 
 const ProfileConfiguration: React.FC = () => {
+  // Usage of react native paper theme library
   const paperTheme = useTheme();
-  const store = React.useContext(GlobalStore);
+
+  /* Usage of MobX global state store */
+  const { authenticationStore, studentStore } = useStores();
+
+  /* Component states */
   const [username, setUsername] = React.useState('');
   const [establishment, setEstablishment] = React.useState('');
 
   /**
    * Action done when submit button is pressed
    */
-  const handleSubmit = () => {
-    void store.signUp({ name: username });
+  const handleSubmit = async () => {
+    const loginSucceed = await authenticationStore.signUp({ id: '', username: username });
+    if (loginSucceed) void studentStore.loadUserData();
   };
 
   return (
