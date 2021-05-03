@@ -23,7 +23,7 @@ class StudentStore {
 
   @observable meetingToUpdate: Meeting | null = null;
   @observable meetingsCreatedByUser: Meeting[] = [];
-  @observable userMeetings: Meeting[] | null = null;
+  @observable userMeetings: Meeting[] = [];
   @observable chat: Chat | null = null;
   @observable locations: Location[] | null = null;
   @observable locationToDisplay: Location | null = null;
@@ -131,11 +131,15 @@ class StudentStore {
     const response = await this.amphitryonDAO.joinMeeting(meeting.id);
     if (response) {
       if (response.ok) {
-        if (this.userMeetings) {
-          this.userMeetings.push(meeting);
-          Alert.alert('Meeting rejoint', 'Vous avez rejiont la réunion ' + meeting.name);
-          this.regenerateItems();
-        }
+        void runInAction(async () => {
+          if (this.userMeetings) {
+            const newMeeting = await response.json();
+            this.setMeetingToUpdate(newMeeting);
+            this.userMeetings.push(newMeeting);
+            Alert.alert('Meeting rejoint', 'Vous avez rejoint la réunion ' + meeting.name);
+            this.regenerateItems();
+          }
+        });
       } else {
         void RootStore.getInstance().manageErrorInResponse(response);
       }
@@ -150,13 +154,16 @@ class StudentStore {
     const response = await this.amphitryonDAO.leaveMeeting(meeting.id);
     if (response) {
       if (response.ok) {
-        if (this.userMeetings) {
-          this.userMeetings = this.userMeetings?.filter((current: Meeting) => {
-            return current.id !== current.id;
-          });
-          Alert.alert('Meeting quitté', 'Vous avez quitté la réunion ' + meeting.name);
-          this.regenerateItems();
-        }
+        void runInAction(async () => {
+          if (this.userMeetings) {
+            this.setMeetingToUpdate(await response.json());
+            this.userMeetings = this.userMeetings?.filter((current: Meeting) => {
+              return current.id !== current.id;
+            });
+            Alert.alert('Meeting quitté', 'Vous avez quitté la réunion ' + meeting.name);
+            this.regenerateItems();
+          }
+        });
       } else {
         void RootStore.getInstance().manageErrorInResponse(response);
       }

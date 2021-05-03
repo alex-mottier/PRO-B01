@@ -29,12 +29,17 @@ interface IProps {
   isChatable: boolean;
   isInCalendar: boolean;
   isSearchView: boolean;
+  onJoin?: () => void;
+  onLeave?: () => void;
 }
 
 const MeetingComponent: React.FC<IProps> = ({
   meeting,
   isChatable = true,
   isInCalendar = false,
+  onJoin,
+  onLeave,
+  isSearchView,
 }) => {
   /* Usage of React Navigation */
   const navigation = useNavigation();
@@ -76,6 +81,7 @@ const MeetingComponent: React.FC<IProps> = ({
   const handleJoinMeeting = () => {
     setIsLoading(true);
     void studentStore.joinMeeting(meeting).then(() => {
+      if (onJoin) onJoin();
       isMemberOfMeeting = true;
       setIsLoading(false);
     });
@@ -87,6 +93,7 @@ const MeetingComponent: React.FC<IProps> = ({
   const handleLeaveMeeting = () => {
     setIsLoading(true);
     void studentStore.leaveMeeting(meeting).then(() => {
+      if (onLeave) onLeave();
       isMemberOfMeeting = false;
       setIsLoading(false);
     });
@@ -242,7 +249,7 @@ const MeetingComponent: React.FC<IProps> = ({
                 <Text style={[styles.gray, styles.buttonText]}>Copier ID</Text>
               </View>
             )}
-            {!isMemberOfMeeting && !isOwner && !isInCalendar && (
+            {!isMemberOfMeeting && !isOwner && !isInCalendar && isSearchView && (
               <View>
                 <IconButton
                   icon={Globals.ICONS.JOIN}
@@ -275,7 +282,7 @@ const MeetingComponent: React.FC<IProps> = ({
                 <Text style={[styles.gray, styles.buttonText]}>Supprimer</Text>
               </View>
             )}
-            {isMemberOfMeeting && !isOwner && (
+            {isMemberOfMeeting && !isOwner && (isInCalendar || isSearchView) && (
               <View>
                 <IconButton
                   icon={Globals.ICONS.LEAVE}
