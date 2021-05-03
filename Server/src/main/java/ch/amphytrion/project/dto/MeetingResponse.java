@@ -19,7 +19,6 @@ public class MeetingResponse implements InterfaceDTO {
     public String ownerID;
     public String chatID;
     public List<Tag> tags;
-    public Integer nbPeople;
     public List<String> membersId;
     public Integer maxPeople;
     // Format ISO 8601
@@ -38,7 +37,6 @@ public class MeetingResponse implements InterfaceDTO {
         this.ownerID = meeting.getOwnerID();
         this.chatID = meeting.getChatID();
         this.tags = meeting.getTags();
-        this.nbPeople = meeting.getNbPeople();
         this.startDate = meeting.getStartDate();
         this.endDate = meeting.getEndDate();
         this.isPrivate = meeting.getIsPrivate();

@@ -67,7 +67,6 @@ public class MeetingController extends BaseController implements IGenericControl
             StudentProfil studentProfil = user.getStudentProfil();
             if (studentProfil != null) {
                  meeting.getMembersID().removeIf(memberId -> memberId.equals(user.getId()));
-                 meeting.setNbPeople(meeting.getNbPeople()-1);
                  studentProfil.getMeetingsParticipationsID().removeIf(id -> id.equals(meetingID));
                  studentService.save(user);
                  meetingService.save(meeting);
@@ -88,11 +87,6 @@ public class MeetingController extends BaseController implements IGenericControl
             StudentProfil studentProfil = getCurrentUser().getStudentProfil();
             ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
             for(String meetingId : studentProfil.getMeetingsParticipationsID()) {
-                Meeting meeting = meetingService.findById(meetingId);
-                MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
-                meetingResponses.add(meetingResponse);
-            }
-            for(String meetingId : studentProfil.getMeetingsOwnerID()){
                 Meeting meeting = meetingService.findById(meetingId);
                 MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
                 meetingResponses.add(meetingResponse);
@@ -126,13 +120,9 @@ public class MeetingController extends BaseController implements IGenericControl
     public ResponseEntity<List<MeetingResponse>> searchWithFilter(@RequestBody FilterRequest filter){
         try {
             List<MeetingResponse> meetingResponses = new ArrayList<>();
-            /*for(Meeting meeting : meetingService.findByOwnerID(user.getId())) {
-                MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
-                meetingResponses.add(meetingResponse);
-            }*/
 
-            User user = getCurrentUser();
-            List<Meeting> result = meetingService.allFilters(meetingService.findByOwnerID(user.getId()), filter);
+
+            List<Meeting> result = meetingService.allFilters(meetingService.findAll(), filter);
             for(Meeting meeting : result) {
                 MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
                 meetingResponses.add(meetingResponse);

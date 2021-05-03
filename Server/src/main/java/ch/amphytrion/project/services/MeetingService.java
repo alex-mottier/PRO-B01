@@ -106,12 +106,14 @@ public class MeetingService implements IGenericService<Meeting> {
             StudentProfil studentProfil = member.getStudentProfil();
             Meeting meeting = findById(meetingID);
             if (studentProfil == null
-                    || meeting.getMembersID().contains(member.getId())
-                    || meeting.getMembersID().size() >= meeting.getNbPeople()) {
+                    || meeting.getMembersID().contains(member.getId())) {
                 return null;
             } else {
+                Location location = locationService.findById(meeting.getLocationID());
+                if (location != null && meeting.getMembersID().size() >= location.getNbPeople()){
+                    return null;
+                }
                 meeting.getMembersID().add(member.getId());
-                meeting.setNbPeople(meeting.getNbPeople() + 1);
                 studentProfil.getMeetingsParticipationsID().add(meeting.getId());
                 save(meeting);
                 userRepository.save(member);
@@ -136,7 +138,7 @@ public class MeetingService implements IGenericService<Meeting> {
     }
 
     public boolean filterByName(Meeting meeting, String name) {
-        if (name == null) {
+        if (name == null || name == "") {
             return true;
         } else {
             return  meeting.getName().contains(name);
@@ -162,7 +164,7 @@ public class MeetingService implements IGenericService<Meeting> {
     }
 
     public boolean searchFilterLocations(Meeting meeting, Location location){
-        if (location == null) {
+        if (location == null || location.getId() == null || location.getId() == "") {
             return true;
         } else {
             return meeting.getLocationID() == location.getId();
