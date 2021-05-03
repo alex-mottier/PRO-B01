@@ -47,7 +47,6 @@ const ChatMeeting: React.FC = () => {
    */
   const handleSubmit = () => {
     const user = authenticationStore.getAuthenticatedUser();
-    console.log(new Date().toISOString());
     if (user) {
       const newMessage: Message = {
         message: message,

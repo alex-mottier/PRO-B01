@@ -64,7 +64,6 @@ export type Meeting = {
   ownerID: string;
   chatID: string;
   tags: Tag[];
-  nbPeople: number;
   membersId: string[];
   maxPeople: number;
   startDate: string;

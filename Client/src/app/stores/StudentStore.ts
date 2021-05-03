@@ -115,7 +115,6 @@ class StudentStore {
       if (response.ok) {
         void runInAction(async () => {
           this.userMeetings = await response.json();
-          console.log(this.userMeetings);
         });
       } else {
         void RootStore.getInstance().manageErrorInResponse(response);
@@ -314,6 +313,7 @@ class StudentStore {
         void runInAction(() => {
           this.userMeetings?.push(meetingWithId);
           this.meetingsCreatedByUser?.push(meetingWithId);
+          this.meetingsCreatedByUser.sort((a, b) => a.startDate.localeCompare(b.startDate));
         });
         this.regenerateItems();
         Alert.alert('Réunion crée', 'La réunion que vous avez soumise a bien été enregistrée');
@@ -409,7 +409,7 @@ class StudentStore {
     const response = await this.amphitryonDAO.searchMeeting(filter);
     if (response) {
       if (response.ok) {
-        void runInAction(async () => {
+        await runInAction(async () => {
           this.searchMeetings = await response.json();
         });
       } else {

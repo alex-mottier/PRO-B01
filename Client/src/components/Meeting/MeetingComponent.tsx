@@ -162,7 +162,7 @@ const MeetingComponent: React.FC<IProps> = ({
                 <View>
                   <View style={styles.nbPeople}>
                     <Text style={styles.gray}>
-                      {meeting.nbPeople}/{meeting.maxPeople}
+                      {meeting.membersId.length}/{meeting.maxPeople}
                     </Text>
                     <MaterialCommunityIcons
                       name={Globals.ICONS.PROFILE}

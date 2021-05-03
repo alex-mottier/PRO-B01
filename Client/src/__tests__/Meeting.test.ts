@@ -15,7 +15,6 @@ describe('Meeting', () => {
     tags: [{ name: 'PRO' }, { name: 'Coordination' }],
     locationID: '#1234',
     locationName: 'Salle G01',
-    nbPeople: 2,
     maxPeople: 5,
     startDate: new Date().toISOString(),
     endDate: new Date().toISOString(),
@@ -48,10 +47,6 @@ describe('Meeting', () => {
 
   it('should return its location name', () => {
     expect(meeting.locationName).toBe('Salle G01');
-  });
-
-  it('should return its number of people', () => {
-    expect(meeting.nbPeople).toBe(2);
   });
 
   it('should return its max number of people', () => {
