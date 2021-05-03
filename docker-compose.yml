@@ -1,0 +1,20 @@
+version: '3'
+services:
+
+    amphitryon_db:
+        image: mongo:4.1.1
+        ports:
+            - 27017:27017
+        container_name: amphitryon_db
+        
+    amphitryon_backend:
+  
+        build:
+            context: .
+            dockerfile: Server/Dockerfile_local
+        restart : always
+        ports:
+          - 8080:8080
+        depends_on:
+            - amphitryon_db
+            - amphitryon_graphdb

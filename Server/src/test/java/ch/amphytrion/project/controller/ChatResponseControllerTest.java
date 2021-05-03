@@ -1,0 +1,18 @@
+package ch.amphytrion.project.controller;
+
+import ch.amphytrion.project.repositories.ChatRepository;
+import ch.amphytrion.project.services.ChatService;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class ChatResponseControllerTest {
+
+    ChatRepository chatRepository;
+
+    @Test
+    void name() {
+        /*assertEquals(ChatController.class.getCanonicalName(),
+                chatController.controllerName());*/
+    }
+}
