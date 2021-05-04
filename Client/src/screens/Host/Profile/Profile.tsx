@@ -7,22 +7,12 @@
 
 import * as React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
-import {
-  Avatar,
-  Card,
-  Chip,
-  IconButton,
-  Paragraph,
-  Provider,
-  Text,
-  Title,
-} from 'react-native-paper';
+import { Avatar, Card, Chip, IconButton, Text, Title } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { observer } from 'mobx-react-lite';
 import styles from './styles';
 import { useStores } from '../../../app/context/storesContext';
 import Globals from '../../../app/context/Globals';
-import TagsComponent from '../../../components/Tags/TagsComponent';
 import { Tag } from '../../../app/models/ApplicationTypes';
 import { colors } from '../../../app/context/Theme';
 

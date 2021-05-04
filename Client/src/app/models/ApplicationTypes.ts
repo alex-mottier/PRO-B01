@@ -13,17 +13,17 @@ export type Address = {
   npa: string;
 };
 
+export type Chat = {
+  id: string;
+  messages: Message[];
+};
+
 export type CovidData = {
   isOpen: boolean;
   masksRequired: boolean;
   disinfectionRequired: boolean;
   recommendedDistancing: string;
   comments: string;
-};
-
-export type Chat = {
-  id: string;
-  messages: Message[];
 };
 
 export type Error = {
@@ -72,8 +72,7 @@ export type Meeting = {
   ownerID: string;
   chatID: string;
   tags: Tag[];
-  nbPeople: number;
-  membersID: string[];
+  membersId: string[];
   maxPeople: number;
   startDate: string;
   endDate: string;
@@ -81,7 +80,6 @@ export type Meeting = {
 };
 
 export type Message = {
-  id: string;
   message: string;
   username: string;
   date: string;
