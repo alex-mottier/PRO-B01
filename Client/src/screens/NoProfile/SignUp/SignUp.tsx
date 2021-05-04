@@ -30,24 +30,23 @@ const SignUp: React.FC = () => {
   const handleSignUp = () => {
     rootStore.setIsLoading(true);
     // Try to see if an account already match the selected account
-    // void authenticationStore.signInWithGoogle().then(async (isLoggedIn: boolean) => {
-    //   if (authenticationStore.userToken && authenticationStore.userToken.idToken) {
-    //     const response = await authenticationStore.tryToConnect(
-    //       authenticationStore.userToken.idToken,
-    //     );
+    void authenticationStore.signInWithGoogle().then(async (isLoggedIn: boolean) => {
+      if (authenticationStore.userToken && authenticationStore.userToken.idToken) {
+        const response = await authenticationStore.tryToConnect(
+          authenticationStore.userToken.idToken,
+        );
 
-    //     // If selected email is not assigned to an account
-    //     if (!response || !response.ok) {
-    //       if (isLoggedIn) navigation.navigate('ProfileConfiguration');
-    //     } else {
-    //       Alert.alert(
-    //         'Compte déjà utilisé',
-    //         'Ce compte Google est déjà rattaché à un compte Amphitryon, veuillez vous connecter',
-    //       );
-    //     }
-    //   }
-    // });
-    navigation.navigate('ProfileConfiguration');
+        // If selected email is not assigned to an account
+        if (!response || !response.ok) {
+          if (isLoggedIn) navigation.navigate('ProfileConfiguration');
+        } else {
+          Alert.alert(
+            'Compte déjà utilisé',
+            'Ce compte Google est déjà rattaché à un compte Amphitryon, veuillez vous connecter',
+          );
+        }
+      }
+    });
     rootStore.setIsLoading(false);
   };
 

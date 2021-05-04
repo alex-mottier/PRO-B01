@@ -98,7 +98,9 @@ const LocationDetails: React.FC = () => {
                   return (
                     <OpeninHourComponent
                       key={openingHour.day.toString() + openingHour.startTime}
-                      openingHour={openingHour}></OpeninHourComponent>
+                      openingHour={openingHour}
+                      onDelete={() => {}}
+                      isDeleteEnabled={false}></OpeninHourComponent>
                   );
                 })}
               </View>

@@ -69,7 +69,7 @@ const Welcome: React.FC = () => {
               color={Globals.COLORS.GRAY}
               labelStyle={{ color: Globals.COLORS.WHITE }}
               onPress={() => {
-                hostStore.loadUserData();
+                void hostStore.loadUserData();
                 authenticationStore.setIsLoggedIn(true);
                 authenticationStore.setAuthenticatedHost(mockHost);
               }}>
