@@ -7,15 +7,7 @@
 
 import { Alert } from 'react-native';
 import Globals from '../context/Globals';
-import {
-  CovidData,
-  Filter,
-  Host,
-  Location,
-  Meeting,
-  Message,
-  User,
-} from '../models/ApplicationTypes';
+import { Filter, Meeting, Message, User } from '../models/ApplicationTypes';
 
 export default class AmphitryonDAO {
   private static instance: AmphitryonDAO = new AmphitryonDAO();
@@ -188,8 +180,6 @@ export default class AmphitryonDAO {
 
   /**
    * Load user meetings
-   * @param startDate date from
-   * @param endDate date to
    * @returns list of meetings
    */
   async loadUserMeetings(startDate: Date, endDate: Date): Promise<Response | null> {
@@ -275,7 +265,7 @@ export default class AmphitryonDAO {
    * @returns if the meeting has been leaved by user
    */
   async leaveMeeting(meetingID: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/leaveMeeting/' + meetingID, {
+    return await fetch(Globals.URLS.API_URL + '/meeting/leave/' + meetingID, {
       method: 'POST',
       headers: this.headerWithSessionToken,
     })
@@ -290,11 +280,11 @@ export default class AmphitryonDAO {
   }
 
   /**
-   * Load chat
+   * Load chat messages
    * @param chatID to load
-   * @returns the chat loaded
+   * @returns list of messages
    */
-  async loadChat(chatID: string): Promise<Response | null> {
+  async loadMessages(chatID: string): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/chat/' + chatID, {
       method: 'GET',
       headers: this.headerWithSessionToken,
@@ -336,7 +326,7 @@ export default class AmphitryonDAO {
    * @returns the location
    */
   async getLocationDetails(locationID: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/location/' + locationID, {
+    return await fetch(Globals.URLS.API_URL + '/location/{id}?id=' + locationID, {
       method: 'GET',
       headers: this.headerWithSessionToken,
     })
@@ -354,22 +344,13 @@ export default class AmphitryonDAO {
    * Get all locations available
    * @param start date of the meeting (at 00h00)
    * @param end date of the meeting (at 23h59)
-   * @param meetingId meeting id
    * @returns the location
    */
-  async getAllLocationsAvailable(
-    start: Date,
-    end: Date,
-    meetingId: string | null,
-  ): Promise<Response | null> {
+  async getAllLocationsAvailable(start: Date, end: Date): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/locations/withDate', {
       method: 'POST',
       headers: this.headerWithSessionToken,
-      body: JSON.stringify({
-        startDate: start.toISOString(),
-        endDate: end.toISOString(),
-        meetingID: meetingId,
-      }),
+      body: JSON.stringify({ startDate: start.toISOString(), endDate: end.toISOString() }),
     })
       .then((response: Response) => {
         this.setSessionToken(response);
@@ -415,210 +396,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert(
-          "Une erreur s'est produite",
-          "Erreur lors de la récupération des détails de l'hébergeur",
-        );
-        return null;
-      });
-  }
-
-  /** HOST PROFILE */
-
-  /**
-   * Create a host
-   * @param tokenId of the user
-   * @param host to create
-   * @returns the session token
-   */
-  async createHost(tokenId: string, host: Host): Promise<Response | null> {
-    return fetch(Globals.URLS.API_URL + '/signUpHost', {
-      method: 'POST',
-      headers: this.headerWithoutSessionToken,
-      body: JSON.stringify({
-        tokenID: tokenId,
-        name: host.name,
-        street: host.address.street,
-        streetNb: host.address.street,
-        cityName: host.address.cityName,
-        npa: host.address.npa,
-        description: host.description,
-        tags: host.tags,
-      }),
-    })
-      .then((response: Response) => {
-        this.setSessionToken(response);
-        return response;
-      })
-      .catch(() => {
-        Alert.alert("Une erreur s'est produite", "Erreur lors de la création de l'hébergeur");
-        return null;
-      });
-  }
-
-  /**
-   * Get host locations
-   * @returns host locations
-   */
-  async getHostLocations(): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/getMyLocations', {
-      method: 'GET',
-      headers: this.headerWithSessionToken,
-    })
-      .then((response: Response) => {
-        this.setSessionToken(response);
-        return response;
-      })
-      .catch(() => {
         Alert.alert("Une erreur s'est produite", 'Erreur lors du lieu');
-        return null;
-      });
-  }
-
-  /**
-   * Create a location
-   * @param location to create
-   * @returns the location created
-   */
-  async createLocation(location: Location): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/location', {
-      method: 'POST',
-      headers: this.headerWithSessionToken,
-      body: JSON.stringify(location),
-    })
-      .then((response: Response) => {
-        this.setSessionToken(response);
-        return response;
-      })
-      .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la création du lieu');
-        return null;
-      });
-  }
-
-  /**
-   * Delete a location
-   * @param locationId to delete
-   * @returns if the location has been successfully deleted or null
-   */
-  async deleteLocation(locationId: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/location/' + locationId, {
-      method: 'DELETE',
-      headers: this.headerWithSessionToken,
-    })
-      .then((response: Response) => {
-        this.setSessionToken(response);
-        return response;
-      })
-      .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la suppression du lieu');
-        return null;
-      });
-  }
-
-  /**
-   * Update a location
-   * @param location to update
-   * @returns if the location has been successfully updated or null
-   */
-  async updateLocation(location: Location): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/location', {
-      method: 'PATCH',
-      headers: this.headerWithSessionToken,
-      body: JSON.stringify(location),
-    })
-      .then((response: Response) => {
-        this.setSessionToken(response);
-        return response;
-      })
-      .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la mise à jour du lieu');
-        return null;
-      });
-  }
-
-  /**
-   * Get host reservations
-   * @param startDate date from
-   * @param endDate date to
-   * @returns host reservations
-   */
-  async getReservations(startDate: Date, endDate: Date): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/getReservations', {
-      method: 'GET',
-      headers: this.headerWithSessionToken,
-      body: JSON.stringify({ endDate: endDate.toISOString(), startDate: startDate.toISOString() }),
-    })
-      .then((response: Response) => {
-        this.setSessionToken(response);
-        return response;
-      })
-      .catch(() => {
-        Alert.alert("Une erreur s'est produite", "Erreur lors de l'obtention des réservations");
-        return null;
-      });
-  }
-
-  /**
-   * Get host reservations
-   * @returns covid data
-   */
-  async getCovidData(): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/CovidData', {
-      method: 'GET',
-      headers: this.headerWithSessionToken,
-    })
-      .then((response: Response) => {
-        this.setSessionToken(response);
-        return response;
-      })
-      .catch(() => {
-        Alert.alert(
-          "Une erreur s'est produite",
-          'Erreur lors de la récupération des données Covid',
-        );
-        return null;
-      });
-  }
-
-  /**
-   * Update covid data
-   * @param covidData to update
-   * @returns if the covid data have been successfully updated or null
-   */
-  async updateCovidData(covidData: CovidData): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/CovidData', {
-      method: 'PATCH',
-      headers: this.headerWithSessionToken,
-      body: JSON.stringify(covidData),
-    })
-      .then((response: Response) => {
-        this.setSessionToken(response);
-        return response;
-      })
-      .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la mise à jour du lieu');
-        return null;
-      });
-  }
-
-  /**
-   * Update host
-   * @param host to update
-   * @returns if the host has been successfully updated or null
-   */
-  async updateHost(host: Host): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/host', {
-      method: 'PATCH',
-      headers: this.headerWithSessionToken,
-      body: JSON.stringify(host),
-    })
-      .then((response: Response) => {
-        this.setSessionToken(response);
-        return response;
-      })
-      .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la mise à jour du lieu');
         return null;
       });
   }

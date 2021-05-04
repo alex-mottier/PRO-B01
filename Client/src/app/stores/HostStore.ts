@@ -16,6 +16,7 @@ import { addDays, format } from 'date-fns';
 import { AgendaItemsMap } from 'react-native-calendars';
 import AuthenticationStore from './AuthenticationStore';
 import { Alert } from 'react-native';
+import RootStore from './RootStore';
 
 class HostStore {
   private static instance: HostStore;
