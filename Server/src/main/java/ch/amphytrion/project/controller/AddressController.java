@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class AddressController extends BaseController implements IGenericControl
     }
     @SneakyThrows
     @PostMapping("/address")
-    public ResponseEntity<Address> save(Address entity) {
+    public ResponseEntity<Address> save(@RequestBody Address entity) {
         try {
             return ResponseEntity.ok(addressService.save(entity));
         } catch (Exception e) {
