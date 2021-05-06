@@ -7,7 +7,15 @@
 
 import { Alert } from 'react-native';
 import Globals from '../context/Globals';
-import { Filter, Meeting, Message, User } from '../models/ApplicationTypes';
+import {
+  CovidData,
+  Filter,
+  Host,
+  Location,
+  Meeting,
+  Message,
+  User,
+} from '../models/ApplicationTypes';
 
 export default class AmphitryonDAO {
   private static instance: AmphitryonDAO = new AmphitryonDAO();
@@ -407,7 +415,210 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
+        Alert.alert(
+          "Une erreur s'est produite",
+          "Erreur lors de la récupération des détails de l'hébergeur",
+        );
+        return null;
+      });
+  }
+
+  /** HOST PROFILE */
+
+  /**
+   * Create a host
+   * @param tokenId of the user
+   * @param host to create
+   * @returns the session token
+   */
+  async createHost(tokenId: string, host: Host): Promise<Response | null> {
+    return fetch(Globals.URLS.API_URL + '/signUpHost', {
+      method: 'POST',
+      headers: this.headerWithoutSessionToken,
+      body: JSON.stringify({
+        tokenID: tokenId,
+        name: host.name,
+        street: host.address.street,
+        streetNb: host.address.street,
+        cityName: host.address.cityName,
+        npa: host.address.npa,
+        description: host.description,
+        tags: host.tags,
+      }),
+    })
+      .then((response: Response) => {
+        this.setSessionToken(response);
+        return response;
+      })
+      .catch(() => {
+        Alert.alert("Une erreur s'est produite", "Erreur lors de la création de l'hébergeur");
+        return null;
+      });
+  }
+
+  /**
+   * Get host locations
+   * @returns host locations
+   */
+  async getHostLocations(): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/getMyLocations', {
+      method: 'GET',
+      headers: this.headerWithSessionToken,
+    })
+      .then((response: Response) => {
+        this.setSessionToken(response);
+        return response;
+      })
+      .catch(() => {
         Alert.alert("Une erreur s'est produite", 'Erreur lors du lieu');
+        return null;
+      });
+  }
+
+  /**
+   * Create a location
+   * @param location to create
+   * @returns the location created
+   */
+  async createLocation(location: Location): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/location', {
+      method: 'POST',
+      headers: this.headerWithSessionToken,
+      body: JSON.stringify(location),
+    })
+      .then((response: Response) => {
+        this.setSessionToken(response);
+        return response;
+      })
+      .catch(() => {
+        Alert.alert("Une erreur s'est produite", 'Erreur lors de la création du lieu');
+        return null;
+      });
+  }
+
+  /**
+   * Delete a location
+   * @param locationId to delete
+   * @returns if the location has been successfully deleted or null
+   */
+  async deleteLocation(locationId: string): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/location/' + locationId, {
+      method: 'DELETE',
+      headers: this.headerWithSessionToken,
+    })
+      .then((response: Response) => {
+        this.setSessionToken(response);
+        return response;
+      })
+      .catch(() => {
+        Alert.alert("Une erreur s'est produite", 'Erreur lors de la suppression du lieu');
+        return null;
+      });
+  }
+
+  /**
+   * Update a location
+   * @param location to update
+   * @returns if the location has been successfully updated or null
+   */
+  async updateLocation(location: Location): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/location', {
+      method: 'PATCH',
+      headers: this.headerWithSessionToken,
+      body: JSON.stringify(location),
+    })
+      .then((response: Response) => {
+        this.setSessionToken(response);
+        return response;
+      })
+      .catch(() => {
+        Alert.alert("Une erreur s'est produite", 'Erreur lors de la mise à jour du lieu');
+        return null;
+      });
+  }
+
+  /**
+   * Get host reservations
+   * @param startDate date from
+   * @param endDate date to
+   * @returns host reservations
+   */
+  async getReservations(startDate: Date, endDate: Date): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/getReservations', {
+      method: 'GET',
+      headers: this.headerWithSessionToken,
+      body: JSON.stringify({ endDate: endDate.toISOString(), startDate: startDate.toISOString() }),
+    })
+      .then((response: Response) => {
+        this.setSessionToken(response);
+        return response;
+      })
+      .catch(() => {
+        Alert.alert("Une erreur s'est produite", "Erreur lors de l'obtention des réservations");
+        return null;
+      });
+  }
+
+  /**
+   * Get host reservations
+   * @returns covid data
+   */
+  async getCovidData(): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/CovidData', {
+      method: 'GET',
+      headers: this.headerWithSessionToken,
+    })
+      .then((response: Response) => {
+        this.setSessionToken(response);
+        return response;
+      })
+      .catch(() => {
+        Alert.alert(
+          "Une erreur s'est produite",
+          'Erreur lors de la récupération des données Covid',
+        );
+        return null;
+      });
+  }
+
+  /**
+   * Update covid data
+   * @param covidData to update
+   * @returns if the covid data have been successfully updated or null
+   */
+  async updateCovidData(covidData: CovidData): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/CovidData', {
+      method: 'PATCH',
+      headers: this.headerWithSessionToken,
+      body: JSON.stringify(covidData),
+    })
+      .then((response: Response) => {
+        this.setSessionToken(response);
+        return response;
+      })
+      .catch(() => {
+        Alert.alert("Une erreur s'est produite", 'Erreur lors de la mise à jour du lieu');
+        return null;
+      });
+  }
+
+  /**
+   * Update host
+   * @param host to update
+   * @returns if the host has been successfully updated or null
+   */
+  async updateHost(host: Host): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/host', {
+      method: 'PATCH',
+      headers: this.headerWithSessionToken,
+      body: JSON.stringify(host),
+    })
+      .then((response: Response) => {
+        this.setSessionToken(response);
+        return response;
+      })
+      .catch(() => {
+        Alert.alert("Une erreur s'est produite", 'Erreur lors de la mise à jour du lieu');
         return null;
       });
   }

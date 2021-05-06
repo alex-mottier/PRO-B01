@@ -11,7 +11,6 @@ import { IconButton, Card, Text } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
 import { OpeningHour } from '../../app/models/ApplicationTypes';
 import styles from './styles';
-import { format } from 'date-fns';
 import { dateLocale } from '../../app/context/DateFormat';
 
 /**
@@ -19,15 +18,11 @@ import { dateLocale } from '../../app/context/DateFormat';
  */
 interface IProps {
   openingHour: OpeningHour;
+  onDelete: () => void;
+  isDeleteEnabled: boolean;
 }
 
-const OpeninHourComponent: React.FC<IProps> = ({ openingHour }) => {
-  /* Local variables */
-  const startHour = format(new Date(openingHour.startTime), 'HH');
-  const startMinute = format(new Date(openingHour.startTime), 'mm');
-  const endHour = format(new Date(openingHour.endTime), 'HH');
-  const endMinute = format(new Date(openingHour.endTime), 'mm');
-
+const OpeninHourComponent: React.FC<IProps> = ({ openingHour, onDelete, isDeleteEnabled }) => {
   return (
     <View>
       <Card elevation={10} style={styles.card}>
@@ -41,14 +36,26 @@ const OpeninHourComponent: React.FC<IProps> = ({ openingHour }) => {
           </View>
           <View style={styles.text}>
             <View style={styles.days}>
-              <Text>{dateLocale.dayNames[openingHour.day]}</Text>
+              <Text style={{ color: Globals.COLORS.TEXT }}>
+                {dateLocale.dayNames[openingHour.day]}
+              </Text>
             </View>
             <View style={styles.hours}>
-              <Text>
-                {startHour}h{startMinute} - {endHour}h{endMinute}
+              <Text style={{ color: Globals.COLORS.TEXT }}>
+                {openingHour.startTime} - {openingHour.endTime}
               </Text>
             </View>
           </View>
+          {isDeleteEnabled && (
+            <View>
+              <IconButton
+                icon={Globals.ICONS.DELETE}
+                size={20}
+                onPress={onDelete}
+                color={Globals.COLORS.GRAY}
+              />
+            </View>
+          )}
         </View>
       </Card>
     </View>

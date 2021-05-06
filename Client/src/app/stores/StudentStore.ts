@@ -266,6 +266,11 @@ class StudentStore {
     if (location) this.locationToDisplay = location;
   }
 
+  /**
+   * Load location with given id
+   * @param locationId to load
+   * @returns the location loaded
+   */
   @action async loadLocation(locationId: string): Promise<Location | null> {
     const response = await this.amphitryonDAO.getLocationDetails(locationId);
     if (response) {
@@ -309,14 +314,14 @@ class StudentStore {
     const response = await this.amphitryonDAO.createMeeting(meeting);
     if (response) {
       if (response.ok) {
-        const meetingWithId = JSON.parse(await response.text());
-        void runInAction(() => {
+        void runInAction(async () => {
+          const meetingWithId = await response.json();
           this.userMeetings?.push(meetingWithId);
           this.meetingsCreatedByUser?.push(meetingWithId);
-          this.meetingsCreatedByUser.sort((a, b) => a.startDate.localeCompare(b.startDate));
+          this.regenerateItems();
+          Alert.alert('Réunion créée', 'La réunion que vous avez soumise a bien été enregistrée');
         });
         this.regenerateItems();
-        Alert.alert('Réunion crée', 'La réunion que vous avez soumise a bien été enregistrée');
       } else {
         void RootStore.getInstance().manageErrorInResponse(response);
       }

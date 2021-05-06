@@ -1,38 +1,31 @@
 /**
- * @file    StudentStack.tsx
+ * @file    HostStack.tsx
  * @author  Alexis Allemann & Alexandre Mottier
- * @date    22.03.2021
- * @brief   Stack navigation when student is logged in
+ * @date    29.04.2021
+ * @brief   Stack navigation when host is logged in
  */
 
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Appbar, IconButton, Switch, useTheme } from 'react-native-paper';
-import { BottomStudentTabs } from './BottomStudentTabs';
+import { BottomHostTabs } from './BottomHostTabs';
 import Globals from '../app/context/Globals';
 import { View } from 'react-native';
 import { observer } from 'mobx-react-lite';
-import LocationDetails from '../screens/Student/Location/LocationDetails';
-import HostDetails from '../screens/Student/Host/HostDetails';
-import ChatMeeting from '../screens/Student/Chat/ChatMeeting';
-import Edit from '../screens/Student/Edit/Edit';
 import { useStores } from '../app/context/storesContext';
+import Edit from '../screens/Host/Edit/Edit';
 
 // Parameters of the screens
 type StackNavigatorParamlist = {
   Main: undefined;
-  Settings: undefined;
-  LocationDetails: undefined;
-  HostDetails: undefined;
-  Chat: undefined;
   Edit: undefined;
 };
 
 // Creating the application stack
 const Stack = createStackNavigator<StackNavigatorParamlist>();
 
-const StudentStack: React.FC = () => {
+const HostStack: React.FC = () => {
   // Usage of react native paper theme library
   const paperTheme = useTheme();
 
@@ -98,37 +91,7 @@ const StudentStack: React.FC = () => {
       }}>
       <Stack.Screen
         name="Main"
-        component={BottomStudentTabs}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
-          return {
-            headerTitle: routeName,
-          };
-        }}
-      />
-      <Stack.Screen
-        name="LocationDetails"
-        component={LocationDetails}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
-          return {
-            headerTitle: routeName,
-          };
-        }}
-      />
-      <Stack.Screen
-        name="HostDetails"
-        component={HostDetails}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
-          return {
-            headerTitle: routeName,
-          };
-        }}
-      />
-      <Stack.Screen
-        name="Chat"
-        component={ChatMeeting}
+        component={BottomHostTabs}
         options={({ route }) => {
           const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
           return {
@@ -150,4 +113,4 @@ const StudentStack: React.FC = () => {
   );
 };
 
-export default observer(StudentStack);
+export default observer(HostStack);

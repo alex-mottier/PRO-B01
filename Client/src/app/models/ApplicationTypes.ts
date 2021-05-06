@@ -18,6 +18,14 @@ export type Chat = {
   messages: Message[];
 };
 
+export type CovidData = {
+  isOpen: boolean;
+  masksRequired: boolean;
+  disinfectionRequired: boolean;
+  recommendedDistancing: string;
+  comments: string;
+};
+
 export type Error = {
   message: string;
 };

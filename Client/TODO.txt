@@ -1,0 +1,6 @@
+Prioritaire : 
+[]
+
+Finalisation : 
+[] Mettre toutes les strings dans les globals
+[] Feuilles de styles : unification ?
