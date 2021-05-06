@@ -26,7 +26,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
             "/swagger-ui.html",
             "/v2/api-docs",
             "/webjars/**",
-            SecurityConstants.SIGN_UP_URL,
+            SecurityConstants.SIGN_UP_URL_STUDENT,
+            SecurityConstants.SIGN_UP_URL_HOST,
             "/**",
     };
 
