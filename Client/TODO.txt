@@ -4,3 +4,4 @@ Prioritaire :
 Finalisation : 
 [] Mettre toutes les strings dans les globals
 [] Feuilles de styles : unification ?
+[] Dans la navigation, définir ce qui est affiché en haut dans la barre (toujours Amphitryon)

@@ -13,7 +13,8 @@ import styles from '../ProfileConfiguration/styles';
 import { Tabs, TabScreen } from 'react-native-paper-tabs';
 import { useStores } from '../../../app/context/storesContext';
 import TagsComponent from '../../../components/Tags/TagsComponent';
-import { Tag } from '../../../app/models/ApplicationTypes';
+import { Host, Tag } from '../../../app/models/ApplicationTypes';
+import HostData from '../../../components/HostData/HostData';
 
 const ProfileConfiguration: React.FC = () => {
   // Usage of react native paper theme library
@@ -70,20 +71,8 @@ const ProfileConfiguration: React.FC = () => {
   /**
    * Action done when submit button for host tab is pressed
    */
-  const handleHostSubmit = () => {
-    void authenticationStore.signUpHost({
-      id: '',
-      name: host,
-      address: {
-        id: '',
-        street: addressName,
-        streetNb: addressNumber,
-        cityName: city,
-        npa: npa,
-      },
-      description: description,
-      tags: tags,
-    });
+  const handleHostSubmit = (host: Host) => {
+    void authenticationStore.signUpHost(host);
   };
 
   return (
@@ -147,83 +136,10 @@ const ProfileConfiguration: React.FC = () => {
       </TabScreen>
       <TabScreen label="Hebergeur">
         <SafeAreaView>
-          <ScrollView>
-            <Image
-              source={require('../../../../assets/Establishment.jpg')}
-              style={styles.image}
-              resizeMode="cover"
-              blurRadius={1}
-            />
-            <Image
-              source={require('../../../../assets/Logo.png')}
-              style={styles.logo}
-              resizeMode="stretch"
-            />
-            <View style={styles.container}>
-              <TextInput
-                label="Nom de l'hébébergement"
-                value={host}
-                onChangeText={(host) => setHost(host)}
-                style={styles.fields}
-                mode={'outlined'}
-              />
-              <TextInput
-                label="Description de l'hébébergement"
-                value={description}
-                onChangeText={(description) => setDescription(description)}
-                style={styles.fields}
-                mode={'outlined'}
-              />
-              <View style={styles.row}>
-                <TextInput
-                  label="Adresse de l'hébébergement"
-                  value={addressName}
-                  onChangeText={(addressName) => setAddressName(addressName)}
-                  style={styles.fields70}
-                  mode={'outlined'}
-                />
-                <TextInput
-                  label="Numéro de l'adresse"
-                  value={addressNumber}
-                  onChangeText={(addressNumber) => setAddressNumber(addressNumber)}
-                  style={styles.fields20}
-                  mode={'outlined'}
-                />
-              </View>
-              <View style={styles.row}>
-                <TextInput
-                  label="Ville"
-                  value={city}
-                  onChangeText={(city) => setCity(city)}
-                  style={styles.fields70}
-                  mode={'outlined'}
-                />
-                <TextInput
-                  label="NPA"
-                  value={npa}
-                  onChangeText={(npa) => setNpa(npa)}
-                  style={styles.fields20}
-                  mode={'outlined'}
-                />
-              </View>
-              <View style={{ width: '100%' }}>
-                <TagsComponent
-                  tags={tags}
-                  addTag={(tag: Tag) => handleAddTag(tag)}
-                  removeTag={(tag: Tag) => handleDeleteTag(tag)}
-                />
-              </View>
-              <Button
-                icon={Globals.ICONS.SEND}
-                mode="contained"
-                color={Globals.COLORS.PRIMARY}
-                labelStyle={{ color: Globals.COLORS.WHITE }}
-                onPress={handleHostSubmit}
-                style={styles.button}>
-                Finaliser le profile
-              </Button>
-            </View>
-          </ScrollView>
+          <HostData
+            onSubmit={(host: Host) => handleHostSubmit(host)}
+            buttonText={'Finaliser le profil'}
+          />
         </SafeAreaView>
       </TabScreen>
     </Tabs>

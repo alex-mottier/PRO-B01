@@ -6,7 +6,7 @@
  */
 
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
-import { Meeting, Location } from '../models/ApplicationTypes';
+import { Meeting, Location, Host } from '../models/ApplicationTypes';
 import { mockMeetings } from '../../mock/Meetings';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 //import { addDays, endOfDay, format, startOfDay } from 'date-fns';
@@ -14,6 +14,7 @@ import { addDays, endOfDay, format, startOfDay } from 'date-fns';
 import { AgendaItemsMap } from 'react-native-calendars';
 import { Alert } from 'react-native';
 import RootStore from './RootStore';
+import AuthenticationStore from './AuthenticationStore';
 
 class HostStore {
   private static instance: HostStore;
@@ -51,6 +52,23 @@ class HostStore {
       endOfDay(addDays(new Date(), 10)),
     );
     void this.generateItems(new Date());
+  }
+
+  /**
+   * Update host
+   * @param host new host value
+   */
+  @action async updateHost(host: Host): Promise<void> {
+    const response = await this.amphitryonDAO.updateHost(host);
+    if (response) {
+      if (response.ok) {
+        runInAction(() => {
+          AuthenticationStore.getInstance().setAuthenticatedHost(host);
+        });
+      } else {
+        void RootStore.getInstance().manageErrorInResponse(response);
+      }
+    }
   }
 
   /**

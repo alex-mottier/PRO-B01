@@ -15,6 +15,7 @@ import { useStores } from '../../../app/context/storesContext';
 import Globals from '../../../app/context/Globals';
 import { Tag } from '../../../app/models/ApplicationTypes';
 import { colors } from '../../../app/context/Theme';
+import { useNavigation } from '@react-navigation/core';
 
 const Profile: React.FC = () => {
   /* Usage of MobX global state store */
@@ -23,6 +24,7 @@ const Profile: React.FC = () => {
   /* Local variables */
   const host = authenticationStore.authenticatedHost;
   let nbColors = 0;
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView>
@@ -40,7 +42,9 @@ const Profile: React.FC = () => {
                   icon={Globals.ICONS.EDIT}
                   size={Globals.SIZES.ICON_MENU}
                   color={Globals.COLORS.PRIMARY}
-                  onPress={() => {}}
+                  onPress={() => {
+                    navigation.navigate('EditHost');
+                  }}
                 />
               </View>
               <View style={styles.infoWithIcon}>

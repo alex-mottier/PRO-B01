@@ -97,7 +97,7 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
             <TextInput
               label="Nom du tag"
               value={tagName}
-              onChangeText={(tag) => setTagName(tag)}
+              onChangeText={setTagName}
               style={styles.field}
             />
             <Button
