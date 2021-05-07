@@ -38,9 +38,8 @@ const ProfileConfiguration: React.FC = () => {
   /**
    * Action done when submit button for student tab is pressed
    */
-  const handleSubmit = async () => {
-    const loginSucceed = await authenticationStore.signUp({ id: '', username: username });
-    if (loginSucceed) void studentStore.loadUserData();
+  const handleStudentSubmit = () => {
+    void authenticationStore.signUpStudent({ id: '', username: username });
   };
 
   /**
@@ -72,20 +71,19 @@ const ProfileConfiguration: React.FC = () => {
    * Action done when submit button for host tab is pressed
    */
   const handleHostSubmit = () => {
-    // TO UNCOMMENT
-    // void store.signUpHost({
-    //   id: '',
-    //   name: host,
-    //   address: {
-    //     id: '',
-    //     street: addressName,
-    //     streetNb: addressNumber,
-    //     cityName: city,
-    //     npa: npa,
-    //   },
-    //   description: description,
-    //   tags: tags
-    // });
+    void authenticationStore.signUpHost({
+      id: '',
+      name: host,
+      address: {
+        id: '',
+        street: addressName,
+        streetNb: addressNumber,
+        cityName: city,
+        npa: npa,
+      },
+      description: description,
+      tags: tags,
+    });
   };
 
   return (
@@ -139,7 +137,7 @@ const ProfileConfiguration: React.FC = () => {
                 mode="contained"
                 color={Globals.COLORS.PRIMARY}
                 labelStyle={{ color: Globals.COLORS.WHITE }}
-                onPress={handleSubmit}
+                onPress={handleStudentSubmit}
                 style={styles.button}>
                 Finaliser le profile
               </Button>

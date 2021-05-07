@@ -55,7 +55,7 @@ class HostStore {
       const response = await this.amphitryonDAO.connectUser(token.idToken);
       if (response) {
         if (response.ok) {
-          AuthenticationStore.getInstance().setAuthenticatedUser(await response.json());
+          AuthenticationStore.getInstance().setAuthenticatedStudent(await response.json());
           AuthenticationStore.getInstance().setIsLoggedIn(true);
           await this.loadUserData();
         }

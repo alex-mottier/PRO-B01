@@ -9,7 +9,7 @@ import { TokenResponse } from 'expo-app-auth';
 import { action, makeAutoObservable, observable } from 'mobx';
 import GoogleAuth from '../authentication/GoogleAuth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
-import { Host, User } from '../models/ApplicationTypes';
+import { Host, Student, UserResponse } from '../models/ApplicationTypes';
 import RootStore from './RootStore';
 
 class AuthenticationStore {
@@ -18,7 +18,7 @@ class AuthenticationStore {
   private googleAuth = GoogleAuth.getInstance();
 
   @observable userToken: TokenResponse | null = null;
-  @observable authenticatedUser: User | null = null;
+  @observable authenticatedUser: Student | null = null;
   @observable authenticatedHost: Host | null = null;
   @observable isLoggedIn = false;
 
@@ -51,7 +51,7 @@ class AuthenticationStore {
    * Set the authenticated user
    * @param userAuthenticated the authenticated user or null
    */
-  @action getAuthenticatedUser(): User | null {
+  @action getAuthenticatedUser(): Student | null {
     return this.authenticatedUser;
   }
 
@@ -59,7 +59,7 @@ class AuthenticationStore {
    * Set the authenticated user
    * @param userAuthenticated the authenticated user or null
    */
-  @action setAuthenticatedUser(userAuthenticated: User | null): void {
+  @action setAuthenticatedStudent(userAuthenticated: Student | null): void {
     this.authenticatedUser = userAuthenticated;
   }
 
@@ -111,7 +111,7 @@ class AuthenticationStore {
   @action async signOutWithGoogle(): Promise<void> {
     RootStore.getInstance().setIsLoading(true);
     await this.googleAuth.handleSignOutAsync(this.userToken);
-    this.setAuthenticatedUser(null);
+    this.setAuthenticatedStudent(null);
     this.setIsLoggedIn(false);
     RootStore.getInstance().setIsLoading(false);
   }
@@ -120,14 +120,48 @@ class AuthenticationStore {
    * Create a new user
    * @param user to create
    */
-  @action async signUp(user: User): Promise<boolean> {
+  @action async signUpStudent(user: Student): Promise<boolean> {
     RootStore.getInstance().setIsLoading(true);
     if (this.userToken?.idToken) {
-      const response = await this.amphitryonDAO.createUser(this.userToken.idToken, user);
+      const response = await this.amphitryonDAO.createStudent(this.userToken.idToken, user);
       if (response) {
         if (response.ok) {
-          this.setAuthenticatedUser(await response.json());
+          const userResponse: UserResponse = await response.json();
+          this.setAuthenticatedStudent({
+            id: userResponse.id,
+            username: user.username,
+          });
           this.setIsLoggedIn(true);
+          return true;
+        } else {
+          void RootStore.getInstance().manageErrorInResponse(response);
+        }
+      }
+      RootStore.getInstance().setIsLoading(false);
+    }
+    return false;
+  }
+
+  /**
+   * Create a new host
+   * @param host to create
+   */
+  @action async signUpHost(host: Host): Promise<boolean> {
+    RootStore.getInstance().setIsLoading(true);
+    if (this.userToken?.idToken) {
+      const response = await this.amphitryonDAO.createHost(this.userToken.idToken, host);
+      if (response) {
+        if (response.ok) {
+          const userResponse: UserResponse = await response.json();
+          this.setAuthenticatedHost({
+            id: userResponse.id,
+            name: host.name,
+            address: host.address,
+            description: host.description,
+            tags: host.tags,
+          });
+          this.setIsLoggedIn(true);
+          RootStore.getInstance().setIsLoading(false);
           return true;
         } else {
           void RootStore.getInstance().manageErrorInResponse(response);
@@ -148,7 +182,19 @@ class AuthenticationStore {
       const response = await this.tryToConnect(this.userToken?.idToken);
       if (response) {
         if (response.ok) {
-          this.setAuthenticatedUser(await response.json());
+          const userResponse: UserResponse = await response.json();
+          if (userResponse.isStudent) {
+            this.setAuthenticatedHost(null);
+            this.setAuthenticatedStudent({ id: userResponse.id, username: userResponse.username });
+          } else {
+            this.setAuthenticatedStudent(null);
+            const host = await this.amphitryonDAO.getHostDetails(userResponse.id);
+            if (host) {
+              if (host.ok) {
+                this.setAuthenticatedHost(await host.json());
+              }
+            }
+          }
           this.setIsLoggedIn(true);
           return true;
         } else {

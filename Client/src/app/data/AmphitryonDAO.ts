@@ -14,7 +14,7 @@ import {
   Location,
   Meeting,
   Message,
-  User,
+  Student,
 } from '../models/ApplicationTypes';
 
 export default class AmphitryonDAO {
@@ -46,7 +46,7 @@ export default class AmphitryonDAO {
    * Set the user session token
    * @param token of the user session
    */
-  public setSessionToken(response: Response): void {
+  public setSessionTokenFromResponse(response: Response): void {
     const sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
     if (sessionToken)
       this.headerWithSessionToken = {
@@ -62,14 +62,14 @@ export default class AmphitryonDAO {
    * @param user to create
    * @returns the session token
    */
-  async createUser(tokenId: string, user: User): Promise<Response | null> {
+  async createStudent(tokenId: string, user: Student): Promise<Response | null> {
     return fetch(Globals.URLS.API_URL + '/signUpStudent', {
       method: 'POST',
       headers: this.headerWithoutSessionToken,
       body: JSON.stringify({ tokenID: tokenId, username: user.username }),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -90,7 +90,7 @@ export default class AmphitryonDAO {
       body: JSON.stringify({ tokenID: tokenId }),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -114,7 +114,7 @@ export default class AmphitryonDAO {
       body: JSON.stringify(meeting),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -135,7 +135,7 @@ export default class AmphitryonDAO {
       body: JSON.stringify(meeting),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -155,7 +155,7 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -174,7 +174,7 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -199,7 +199,7 @@ export default class AmphitryonDAO {
       body: JSON.stringify({ endDate: endDate.toISOString(), startDate: startDate.toISOString() }),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -219,7 +219,7 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -240,7 +240,7 @@ export default class AmphitryonDAO {
       body: JSON.stringify(filter),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -260,7 +260,7 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -280,7 +280,7 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -300,7 +300,7 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -321,7 +321,7 @@ export default class AmphitryonDAO {
       body: JSON.stringify(message),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -341,7 +341,7 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -372,7 +372,7 @@ export default class AmphitryonDAO {
       }),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -391,7 +391,7 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -411,7 +411,7 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -447,7 +447,7 @@ export default class AmphitryonDAO {
       }),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -466,7 +466,7 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -487,7 +487,7 @@ export default class AmphitryonDAO {
       body: JSON.stringify(location),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -507,7 +507,7 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -528,7 +528,7 @@ export default class AmphitryonDAO {
       body: JSON.stringify(location),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -550,7 +550,7 @@ export default class AmphitryonDAO {
       body: JSON.stringify({ endDate: endDate.toISOString(), startDate: startDate.toISOString() }),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -569,7 +569,7 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -593,7 +593,7 @@ export default class AmphitryonDAO {
       body: JSON.stringify(covidData),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
@@ -614,7 +614,7 @@ export default class AmphitryonDAO {
       body: JSON.stringify(host),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {

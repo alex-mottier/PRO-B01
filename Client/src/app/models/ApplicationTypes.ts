@@ -89,7 +89,13 @@ export type Tag = {
   name: string;
 };
 
-export type User = {
+export type Student = {
   id: string;
   username: string;
+};
+
+export type UserResponse = {
+  id: string;
+  username: string;
+  isStudent: boolean;
 };
