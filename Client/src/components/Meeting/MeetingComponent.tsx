@@ -57,10 +57,10 @@ const MeetingComponent: React.FC<IProps> = ({
 
   /* Local variables */
   let nbColors = 0;
-  const isOwner = meeting.ownerID === authenticationStore.getAuthenticatedUser()?.id;
+  const isOwner = meeting.ownerID === authenticationStore.getAuthenticatedStudent()?.id;
   let isMemberOfMeeting =
     meeting.membersId.findIndex((current: string) => {
-      return authenticationStore.getAuthenticatedUser()?.id === current;
+      return authenticationStore.getAuthenticatedStudent()?.id === current;
     }) !== -1;
 
   /**
