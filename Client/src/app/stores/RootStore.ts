@@ -11,6 +11,8 @@ import { Alert } from 'react-native';
 import AuthenticationStore from './AuthenticationStore';
 import GoogleAuth from '../authentication/GoogleAuth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
+import HostStore from './HostStore';
+import StudentStore from './StudentStore';
 
 class RootStore {
   private static instance: RootStore;
@@ -59,12 +61,14 @@ class RootStore {
               id: userResponse.id,
               username: userResponse.username,
             });
+            await StudentStore.getInstance().loadUserData();
           } else {
             AuthenticationStore.getInstance().setAuthenticatedStudent(null);
             const host = await AmphitryonDAO.getInstance().getHostDetails(userResponse.id);
             if (host) {
               if (host.ok) {
                 AuthenticationStore.getInstance().setAuthenticatedHost(await host.json());
+                await HostStore.getInstance().loadUserData();
               }
             }
           }

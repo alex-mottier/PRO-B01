@@ -7,14 +7,11 @@
 
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import { Meeting, Location } from '../models/ApplicationTypes';
-import { mockLocations } from '../../mock/Locations';
 import { mockMeetings } from '../../mock/Meetings';
-import GoogleAuth from '../authentication/GoogleAuth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 //import { addDays, endOfDay, format, startOfDay } from 'date-fns';
 import { addDays, format } from 'date-fns';
 import { AgendaItemsMap } from 'react-native-calendars';
-import AuthenticationStore from './AuthenticationStore';
 import { Alert } from 'react-native';
 import RootStore from './RootStore';
 
@@ -23,7 +20,7 @@ class HostStore {
   private amphitryonDAO = AmphitryonDAO.getInstance();
   private dateInCalendar = new Date();
 
-  @observable hostLocations: Location[] | null = null;
+  @observable hostLocations: Location[] = [];
   @observable meetingsLocatedAtHostLocations: Meeting[] | null = null;
   @observable items: AgendaItemsMap<Meeting> | null = null;
   @observable locationToUpdate: Location | null = null;
@@ -58,22 +55,17 @@ class HostStore {
    * Retrieve locations created by host
    */
   @action async loadLocationsCreatedByHost(): Promise<void> {
-    // const response = await this.amphitryonDAO.loadLocationsCreatedByHost();
-    // if (response) {
-    //     if (response.ok) {
-    //         const meetings = await response.json();
-    //         runInAction(() => {
-    //             this.hostLocations = meetings;
-    //         });
-    //     } else {
-    //         void RootStore.getInstance().manageErrorInResponse;
-    //     }
-    // }
-    // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    runInAction(() => {
-      this.hostLocations = mockLocations;
-    });
+    const response = await this.amphitryonDAO.getHostLocations();
+    if (response) {
+      if (response.ok) {
+        const locations = await response.json();
+        runInAction(() => {
+          this.hostLocations = locations;
+        });
+      } else {
+        void RootStore.getInstance().manageErrorInResponse(response);
+      }
+    }
   }
 
   /**
@@ -89,7 +81,7 @@ class HostStore {
     //             this.meetingsLocatedAtHostLocations = await response.json();
     //         });
     //     } else {
-    //         void RootStore.getInstance().manageErrorInResponse;
+    //         void RootStore.getInstance().manageErrorInResponse(response);
     //     }
     // }
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -101,35 +93,25 @@ class HostStore {
    * @param location to update
    */
   @action async updateLocation(location: Location): Promise<void> {
-    // const response = await this.amphitryonDAO.updateLocation(location);
-    // if (response) {
-    //   if (response.ok) {
-    //     runInAction(() => {
-    //       if (this.hostLocations) {
-    //         const index = this.hostLocations.findIndex((current: Location) => {
-    //           return current.id == location.id;
-    //         });
-    //         if (index) this.hostLocations[index] = location;
-    //       }
-    //       Alert.alert(
-    //         'Location mise à jour',
-    //         'La location que vous avez soumise a bien été mise à jour',
-    //       );
-    //     });
-    //   } else {
-    //     void RootStore.getInstance().manageErrorInResponse;
-    //   }
-    // }
-
-    // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    if (this.hostLocations) {
-      const index = this.hostLocations.findIndex((current: Location) => {
-        return current.id == location.id;
-      });
-      if (index) this.hostLocations[index] = location;
+    const response = await this.amphitryonDAO.updateLocation(location);
+    if (response) {
+      if (response.ok) {
+        runInAction(() => {
+          if (this.hostLocations) {
+            const index = this.hostLocations.findIndex((current: Location) => {
+              return current.id == location.id;
+            });
+            if (index) this.hostLocations[index] = location;
+          }
+          Alert.alert(
+            'Location mise à jour',
+            'La location que vous avez soumise a bien été mise à jour',
+          );
+        });
+      } else {
+        void RootStore.getInstance().manageErrorInResponse(response);
+      }
     }
-    Alert.alert('Lieu mise à jour', 'Le lieu que vous avez soumis a bien été mise à jour');
   }
 
   /**
@@ -137,18 +119,16 @@ class HostStore {
    * @param location to create
    */
   @action async createLocation(location: Location): Promise<void> {
-    console.log(location);
     const response = await this.amphitryonDAO.createLocation(location);
     if (response) {
       if (response.ok) {
-        void runInAction(async () => {
-          const locationWithId = await response.json();
-          console.log(locationWithId);
-          this.hostLocations?.push(locationWithId);
+        const locationWithId = await response.json();
+        void runInAction(() => {
+          this.hostLocations.push(locationWithId);
           Alert.alert('Lieu créée', 'Le lieu que vous avez soumis a bien été enregistré');
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse;
+        void RootStore.getInstance().manageErrorInResponse(response);
       }
     }
   }
@@ -158,31 +138,21 @@ class HostStore {
    * @param location to delete
    */
   @action async deleteLocation(locationId: string): Promise<void> {
-    // const response = await this.amphitryonDAO.deleteLocation(locationId);
-    // if (response) {
-    //   if (response.ok) {
-    //     runInAction(() => {
-    //       if (this.hostLocations)
-    //         this.hostLocations = this.hostLocations.filter((current: Location) => {
-    //           return current.id !== locationId;
-    //         });
-    //       Alert.alert('Supprimée', 'Le lieu a correctement été supprimé');
-    //       this.regenerateItems();
-    //     });
-    //   } else {
-    //     void RootStore.getInstance().manageErrorInResponse;
-    //   }
-    // }
-
-    // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    runInAction(() => {
-      if (this.hostLocations)
-        this.hostLocations = this.hostLocations.filter((current: Location) => {
-          return current.id !== locationId;
+    const response = await this.amphitryonDAO.deleteLocation(locationId);
+    if (response) {
+      if (response.ok) {
+        runInAction(() => {
+          if (this.hostLocations)
+            this.hostLocations = this.hostLocations.filter((current: Location) => {
+              return current.id !== locationId;
+            });
+          Alert.alert('Supprimée', 'Le lieu a correctement été supprimé');
+          this.regenerateItems();
         });
-    });
-    Alert.alert('Supprimée', 'Le lieu a correctement été supprimé');
+      } else {
+        void RootStore.getInstance().manageErrorInResponse(response);
+      }
+    }
   }
 
   /**

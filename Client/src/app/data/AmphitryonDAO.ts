@@ -487,12 +487,10 @@ export default class AmphitryonDAO {
       body: JSON.stringify(location),
     })
       .then((response: Response) => {
-        console.log('ok');
         this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        console.log('ko');
         Alert.alert("Une erreur s'est produite", 'Erreur lors de la création du lieu');
         return null;
       });

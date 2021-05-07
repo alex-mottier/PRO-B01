@@ -10,7 +10,9 @@ import { action, makeAutoObservable, observable } from 'mobx';
 import GoogleAuth from '../authentication/GoogleAuth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 import { Host, Student, UserResponse } from '../models/ApplicationTypes';
+import HostStore from './HostStore';
 import RootStore from './RootStore';
+import StudentStore from './StudentStore';
 
 class AuthenticationStore {
   private static instance: AuthenticationStore;
@@ -187,12 +189,14 @@ class AuthenticationStore {
           if (userResponse.isStudent) {
             this.setAuthenticatedHost(null);
             this.setAuthenticatedStudent({ id: userResponse.id, username: userResponse.username });
+            await StudentStore.getInstance().loadUserData();
           } else {
             this.setAuthenticatedStudent(null);
             const host = await this.amphitryonDAO.getHostDetails(userResponse.id);
             if (host) {
               if (host.ok) {
                 this.setAuthenticatedHost(await host.json());
+                await HostStore.getInstance().loadUserData();
               }
             }
           }
