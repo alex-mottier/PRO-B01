@@ -1,5 +1,6 @@
 Prioritaire : 
-[]
+[] Inclusions circulaires à enlever
+[] Voir les warnings : [Unhandled promise rejection: TypeError: Already read]
 
 Finalisation : 
 [] Mettre toutes les strings dans les globals
