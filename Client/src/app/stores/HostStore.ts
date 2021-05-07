@@ -10,7 +10,7 @@ import { Meeting, Location } from '../models/ApplicationTypes';
 import { mockMeetings } from '../../mock/Meetings';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 //import { addDays, endOfDay, format, startOfDay } from 'date-fns';
-import { addDays, format } from 'date-fns';
+import { addDays, endOfDay, format, startOfDay } from 'date-fns';
 import { AgendaItemsMap } from 'react-native-calendars';
 import { Alert } from 'react-native';
 import RootStore from './RootStore';
@@ -46,8 +46,10 @@ class HostStore {
    */
   @action async loadUserData(): Promise<void> {
     await this.loadLocationsCreatedByHost();
-    //await this.loadMeetingsLocatedAtHostLocations(startOfDay(new Date()), endOfDay(addDays(new Date(), 10)));
-    await this.loadMeetingsLocatedAtHostLocations();
+    await this.loadMeetingsLocatedAtHostLocations(
+      startOfDay(new Date()),
+      endOfDay(addDays(new Date(), 10)),
+    );
     void this.generateItems(new Date());
   }
 
@@ -73,19 +75,17 @@ class HostStore {
    * @param startDate from date
    * @param endDate to date
    */
-  @action async loadMeetingsLocatedAtHostLocations(): Promise<void> {
-    // const response = await this.amphitryonDAO.loadMeetingsLocatedAtHostLocations(startDate, endDate);
-    // if (response) {
-    //     if (response.ok) {
-    //         void runInAction(async () => {
-    //             this.meetingsLocatedAtHostLocations = await response.json();
-    //         });
-    //     } else {
-    //         void RootStore.getInstance().manageErrorInResponse(response);
-    //     }
-    // }
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.meetingsLocatedAtHostLocations = mockMeetings;
+  @action async loadMeetingsLocatedAtHostLocations(startDate: Date, endDate: Date): Promise<void> {
+    const response = await this.amphitryonDAO.getReservations(startDate, endDate);
+    if (response) {
+      if (response.ok) {
+        void runInAction(async () => {
+          this.meetingsLocatedAtHostLocations = await response.json();
+        });
+      } else {
+        void RootStore.getInstance().manageErrorInResponse(response);
+      }
+    }
   }
 
   /**
