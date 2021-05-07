@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 @Data
 @Document
 public class OpeningHour {
-    @Id
-    private String id;
     private enum Day {
         SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY
     }
