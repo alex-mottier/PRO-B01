@@ -1,10 +1,10 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.dto.HostResponse;
-import ch.amphytrion.project.dto.UserResponse;
-import ch.amphytrion.project.entities.databaseentities.HostProfil;
-import ch.amphytrion.project.entities.databaseentities.User;
+import ch.amphytrion.project.dto.*;
+import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.services.HostService;
+import ch.amphytrion.project.services.LocationService;
+import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,10 +25,14 @@ import java.util.stream.Collectors;
 public class HostController extends BaseController implements IGenericController<HostProfil> {
 
     private HostService hostService;
+    private LocationService locationService;
+    private UserService userService;
 
     @Autowired
-    public HostController(HostService hostService) {
+    public HostController(HostService hostService, LocationService locationService, UserService userService) {
         this.hostService = hostService;
+        this.locationService = locationService;
+        this.userService = userService;
     }
 
     @SneakyThrows
@@ -66,6 +71,24 @@ public class HostController extends BaseController implements IGenericController
             }
         } catch (Exception e) {
             throw new CustomException("Aucun hôte correspondant trouvé", HttpStatus.NOT_ACCEPTABLE, null);
+        }
+    }
+
+    //X
+    @SneakyThrows
+    @GetMapping("/getMyLocations")
+    public ResponseEntity<List<LocationResponse>> getMyLocations() {
+        try {
+            checkUserIsHost();
+            User user = getCurrentUser();
+            ArrayList<LocationResponse> locationResponses = new ArrayList<>();
+            String userID = user.getId();
+            for(Location location : locationService.findByHostId(userID)) {
+                locationResponses.add(new LocationResponse(location, userService));
+            }
+            return ResponseEntity.ok(locationResponses);
+        } catch (Exception e) {
+            throw new CustomException("Aucune location n'a été trouvée", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
