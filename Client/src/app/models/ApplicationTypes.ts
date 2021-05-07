@@ -44,6 +44,7 @@ export type Host = {
   address: Address;
   description: string;
   tags: Tag[];
+  covidData: CovidData;
 };
 
 export type Location = {

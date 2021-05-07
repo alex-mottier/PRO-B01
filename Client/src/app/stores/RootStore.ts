@@ -6,8 +6,11 @@
  */
 
 import { action, makeAutoObservable, observable } from 'mobx';
-import { Error } from '../models/ApplicationTypes';
+import { Error, UserResponse } from '../models/ApplicationTypes';
 import { Alert } from 'react-native';
+import AuthenticationStore from './AuthenticationStore';
+import GoogleAuth from '../authentication/GoogleAuth';
+import AmphitryonDAO from '../data/AmphitryonDAO';
 
 class RootStore {
   private static instance: RootStore;
@@ -18,6 +21,7 @@ class RootStore {
    * Instantiation of the store
    */
   private constructor() {
+    void this.loadTokens();
     makeAutoObservable(this);
   }
 
@@ -36,6 +40,41 @@ class RootStore {
    */
   @action setIsLoading(isLoading: boolean): void {
     this.isLoading = isLoading;
+  }
+
+  /**
+   * Loading the user's tokens
+   */
+  @action async loadTokens(): Promise<void> {
+    const token = await GoogleAuth.getInstance().getCachedAuthAsync();
+    AuthenticationStore.getInstance().userToken = token;
+    if (token && token.idToken) {
+      const response = await AmphitryonDAO.getInstance().connectUser(token.idToken);
+      if (response) {
+        if (response.ok) {
+          const userResponse: UserResponse = await response.json();
+          if (userResponse.isStudent) {
+            AuthenticationStore.getInstance().setAuthenticatedHost(null);
+            AuthenticationStore.getInstance().setAuthenticatedStudent({
+              id: userResponse.id,
+              username: userResponse.username,
+            });
+          } else {
+            AuthenticationStore.getInstance().setAuthenticatedStudent(null);
+            const host = await AmphitryonDAO.getInstance().getHostDetails(userResponse.id);
+            if (host) {
+              if (host.ok) {
+                AuthenticationStore.getInstance().setAuthenticatedHost(await host.json());
+              }
+            }
+          }
+          AuthenticationStore.getInstance().setIsLoggedIn(true);
+          AuthenticationStore.getInstance().setAuthenticatedStudent(await response.json());
+          AuthenticationStore.getInstance().setIsLoggedIn(true);
+        }
+      }
+      // this.setIsLoading(false);
+    }
   }
 
   /**

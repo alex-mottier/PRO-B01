@@ -81,7 +81,7 @@ export default class AmphitryonDAO {
   /**
    * Connect a user
    * @param tokenId of the user
-   * @returns Réponse axios
+   * @returns user response or null if connection failed
    */
   async connectUser(tokenId: string): Promise<Response | null> {
     return fetch(Globals.URLS.API_URL + '/login', {
@@ -487,10 +487,12 @@ export default class AmphitryonDAO {
       body: JSON.stringify(location),
     })
       .then((response: Response) => {
+        console.log('ok');
         this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
+        console.log('ko');
         Alert.alert("Une erreur s'est produite", 'Erreur lors de la création du lieu');
         return null;
       });

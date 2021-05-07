@@ -18,7 +18,7 @@ class AuthenticationStore {
   private googleAuth = GoogleAuth.getInstance();
 
   @observable userToken: TokenResponse | null = null;
-  @observable authenticatedUser: Student | null = null;
+  @observable authenticatedStudent: Student | null = null;
   @observable authenticatedHost: Host | null = null;
   @observable isLoggedIn = false;
 
@@ -51,8 +51,8 @@ class AuthenticationStore {
    * Set the authenticated user
    * @param userAuthenticated the authenticated user or null
    */
-  @action getAuthenticatedUser(): Student | null {
-    return this.authenticatedUser;
+  @action getAuthenticatedStudent(): Student | null {
+    return this.authenticatedStudent;
   }
 
   /**
@@ -60,7 +60,7 @@ class AuthenticationStore {
    * @param userAuthenticated the authenticated user or null
    */
   @action setAuthenticatedStudent(userAuthenticated: Student | null): void {
-    this.authenticatedUser = userAuthenticated;
+    this.authenticatedStudent = userAuthenticated;
   }
 
   /**
@@ -112,6 +112,7 @@ class AuthenticationStore {
     RootStore.getInstance().setIsLoading(true);
     await this.googleAuth.handleSignOutAsync(this.userToken);
     this.setAuthenticatedStudent(null);
+    this.setAuthenticatedHost(null);
     this.setIsLoggedIn(false);
     RootStore.getInstance().setIsLoading(false);
   }
@@ -153,14 +154,14 @@ class AuthenticationStore {
       if (response) {
         if (response.ok) {
           const userResponse: UserResponse = await response.json();
-          this.setAuthenticatedHost({
-            id: userResponse.id,
-            name: host.name,
-            address: host.address,
-            description: host.description,
-            tags: host.tags,
-          });
-          this.setIsLoggedIn(true);
+          this.setAuthenticatedStudent(null);
+          const host = await this.amphitryonDAO.getHostDetails(userResponse.id);
+          if (host) {
+            if (host.ok) {
+              this.setAuthenticatedHost(await host.json());
+              this.setIsLoggedIn(true);
+            }
+          }
           RootStore.getInstance().setIsLoading(false);
           return true;
         } else {

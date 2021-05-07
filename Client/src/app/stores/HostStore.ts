@@ -16,11 +16,11 @@ import { addDays, format } from 'date-fns';
 import { AgendaItemsMap } from 'react-native-calendars';
 import AuthenticationStore from './AuthenticationStore';
 import { Alert } from 'react-native';
+import RootStore from './RootStore';
 
 class HostStore {
   private static instance: HostStore;
   private amphitryonDAO = AmphitryonDAO.getInstance();
-  private googleAuth = GoogleAuth.getInstance();
   private dateInCalendar = new Date();
 
   @observable hostLocations: Location[] | null = null;
@@ -32,7 +32,6 @@ class HostStore {
    * Instantiation of the store
    */
   private constructor() {
-    void this.loadTokens();
     makeAutoObservable(this);
   }
 
@@ -43,25 +42,6 @@ class HostStore {
   public static getInstance(): HostStore {
     if (!HostStore.instance) this.instance = new HostStore();
     return this.instance;
-  }
-
-  /**
-   * Loading the user's tokens
-   */
-  @action async loadTokens(): Promise<void> {
-    const token = await this.googleAuth.getCachedAuthAsync();
-    AuthenticationStore.getInstance().userToken = token;
-    if (token && token.idToken) {
-      const response = await this.amphitryonDAO.connectUser(token.idToken);
-      if (response) {
-        if (response.ok) {
-          AuthenticationStore.getInstance().setAuthenticatedStudent(await response.json());
-          AuthenticationStore.getInstance().setIsLoggedIn(true);
-          await this.loadUserData();
-        }
-      }
-      // this.setIsLoading(false);
-    }
   }
 
   /**
@@ -157,23 +137,20 @@ class HostStore {
    * @param location to create
    */
   @action async createLocation(location: Location): Promise<void> {
-    // const response = await this.amphitryonDAO.createLocation(location);
-    // if (response) {
-    //   if (response.ok) {
-    //     void runInAction(async () => {
-    //       const locationWithId = await response.json();
-    //       this.hostLocations?.push(locationWithId);
-    //       Alert.alert('Location créée', 'La location que vous avez soumise a bien été enregistrée');
-    //     });
-    //   } else {
-    //     void RootStore.getInstance().manageErrorInResponse;
-    //   }
-    // }
-
-    // TO DELETE
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.hostLocations?.push(location);
-    Alert.alert('Lieu créé', 'Le lieu que vous avez soumis a bien été enregistré');
+    console.log(location);
+    const response = await this.amphitryonDAO.createLocation(location);
+    if (response) {
+      if (response.ok) {
+        void runInAction(async () => {
+          const locationWithId = await response.json();
+          console.log(locationWithId);
+          this.hostLocations?.push(locationWithId);
+          Alert.alert('Lieu créée', 'Le lieu que vous avez soumis a bien été enregistré');
+        });
+      } else {
+        void RootStore.getInstance().manageErrorInResponse;
+      }
+    }
   }
 
   /**

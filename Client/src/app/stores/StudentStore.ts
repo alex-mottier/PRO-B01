@@ -7,18 +7,15 @@
 
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import { Meeting, Location, Host, Chat, Message, Filter } from '../models/ApplicationTypes';
-import GoogleAuth from '../authentication/GoogleAuth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 import { addDays, endOfDay, format, startOfDay } from 'date-fns';
 import { Alert } from 'react-native';
 import { AgendaItemsMap } from 'react-native-calendars';
-import AuthenticationStore from './AuthenticationStore';
 import RootStore from './RootStore';
 
 class StudentStore {
   private static instance: StudentStore;
   private amphitryonDAO = AmphitryonDAO.getInstance();
-  private googleAuth = GoogleAuth.getInstance();
   private dateInCalendar = new Date();
 
   @observable meetingToUpdate: Meeting | null = null;
@@ -38,7 +35,6 @@ class StudentStore {
    * Instantiation of the store
    */
   private constructor() {
-    void this.loadTokens();
     makeAutoObservable(this);
   }
 
@@ -49,25 +45,6 @@ class StudentStore {
   public static getInstance(): StudentStore {
     if (!StudentStore.instance) this.instance = new StudentStore();
     return this.instance;
-  }
-
-  /**
-   * Loading the user's tokens
-   */
-  @action async loadTokens(): Promise<void> {
-    const token = await this.googleAuth.getCachedAuthAsync();
-    AuthenticationStore.getInstance().userToken = token;
-    if (token && token.idToken) {
-      const response = await this.amphitryonDAO.connectUser(token.idToken);
-      if (response) {
-        if (response.ok) {
-          AuthenticationStore.getInstance().setAuthenticatedStudent(await response.json());
-          AuthenticationStore.getInstance().setIsLoggedIn(true);
-          void this.loadUserData();
-        }
-      }
-      // this.setIsLoading(false);
-    }
   }
 
   /**

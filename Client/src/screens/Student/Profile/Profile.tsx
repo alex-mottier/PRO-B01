@@ -25,7 +25,7 @@ const Profile: React.FC = () => {
         <View style={styles.container}>
           <View style={styles.row}>
             <Avatar.Image size={80} source={require('../../../../assets/Logo.png')} />
-            <Title style={styles.title}>{authenticationStore.authenticatedUser?.username}</Title>
+            <Title style={styles.title}>{authenticationStore.authenticatedStudent?.username}</Title>
           </View>
           <Text style={styles.text}>Réunions à venir créées :</Text>
           {meetings && meetings.length === 0 ? (
