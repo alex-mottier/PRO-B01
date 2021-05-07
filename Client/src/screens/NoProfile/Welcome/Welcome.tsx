@@ -12,13 +12,10 @@ import { Button, Text, Title } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/core';
-import { useStores } from '../../../app/context/storesContext';
-import { mockHost } from '../../../mock/Host';
 
 const Welcome: React.FC = () => {
   /* Usage of React Navigation */
   const navigation = useNavigation();
-  const { hostStore, authenticationStore } = useStores();
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -61,19 +58,6 @@ const Welcome: React.FC = () => {
               labelStyle={{ color: Globals.COLORS.WHITE }}
               onPress={() => navigation.navigate('SignUp')}>
               S&apos;inscrire
-            </Button>
-            <Button
-              icon={Globals.ICONS.SEND}
-              mode="contained"
-              style={styles.buttons}
-              color={Globals.COLORS.GRAY}
-              labelStyle={{ color: Globals.COLORS.WHITE }}
-              onPress={() => {
-                void hostStore.loadUserData();
-                authenticationStore.setIsLoggedIn(true);
-                authenticationStore.setAuthenticatedHost(mockHost);
-              }}>
-              Developpement host
             </Button>
           </View>
         </View>
