@@ -12,8 +12,7 @@ import Globals from '../../../app/context/Globals';
 import styles from '../ProfileConfiguration/styles';
 import { Tabs, TabScreen } from 'react-native-paper-tabs';
 import { useStores } from '../../../app/context/storesContext';
-import TagsComponent from '../../../components/Tags/TagsComponent';
-import { Host, Tag } from '../../../app/models/ApplicationTypes';
+import { Host } from '../../../app/models/ApplicationTypes';
 import HostData from '../../../components/HostData/HostData';
 
 const ProfileConfiguration: React.FC = () => {
@@ -21,51 +20,17 @@ const ProfileConfiguration: React.FC = () => {
   const paperTheme = useTheme();
 
   /* Usage of MobX global state store */
-  const { authenticationStore, studentStore } = useStores();
+  const { authenticationStore } = useStores();
 
   /* Component states for Student */
   const [username, setUsername] = React.useState('');
   const [establishment, setEstablishment] = React.useState('');
-
-  /* Component states for Host */
-  const [host, setHost] = React.useState('');
-  const [addressName, setAddressName] = React.useState('');
-  const [addressNumber, setAddressNumber] = React.useState('');
-  const [city, setCity] = React.useState('');
-  const [npa, setNpa] = React.useState('');
-  const [description, setDescription] = React.useState('');
-  const [tags, setTags] = React.useState<Tag[]>([]);
 
   /**
    * Action done when submit button for student tab is pressed
    */
   const handleStudentSubmit = () => {
     void authenticationStore.signUpStudent({ id: '', username: username });
-  };
-
-  /**
-   * Add tag to filter
-   * @param tag to add
-   */
-  const handleAddTag = (tag: Tag) => {
-    tag.name = tag.name.toUpperCase();
-    if (
-      !tags.find((current: Tag) => {
-        return current.name == tag.name;
-      })
-    )
-      setTags([...tags, tag]);
-  };
-
-  /**
-   * Remove tag from filter
-   * @param tag to remove
-   */
-  const handleDeleteTag = (tag: Tag) => {
-    const newTags = tags.filter((current: Tag) => {
-      return current.name !== tag.name;
-    });
-    setTags(newTags);
   };
 
   /**

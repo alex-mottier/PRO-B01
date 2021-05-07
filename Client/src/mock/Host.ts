@@ -12,4 +12,11 @@ export const mockHost: Host = {
     cityName: 'Yverdon-les-bains',
     npa: '1401',
   },
+  covidData: {
+    isOpen: true,
+    masksRequired: true,
+    disinfectionRequired: true,
+    recommendedDistancing: '2 mètres',
+    comments: 'Commentaire',
+  },
 };
