@@ -108,7 +108,7 @@ const Profile: React.FC = () => {
               <CovidData isEnabled={false} />
             </Card.Content>
           </Card>
-          <Card style={styles.card} elevation={10}>
+          {/* <Card style={styles.card} elevation={10}>
             <Card.Content>
               <View style={styles.cardTitle}>
                 <Text style={styles.gray}>Avantages :</Text>
@@ -121,7 +121,7 @@ const Profile: React.FC = () => {
               </View>
               <Text style={styles.gray}>TODO</Text>
             </Card.Content>
-          </Card>
+          </Card> */}
         </View>
       </ScrollView>
     </SafeAreaView>
