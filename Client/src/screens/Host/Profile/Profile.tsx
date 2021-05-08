@@ -16,6 +16,7 @@ import Globals from '../../../app/context/Globals';
 import { Tag } from '../../../app/models/ApplicationTypes';
 import { colors } from '../../../app/context/Theme';
 import { useNavigation } from '@react-navigation/core';
+import CovidData from '../../../components/CovidData/CovidData';
 
 const Profile: React.FC = () => {
   /* Usage of MobX global state store */
@@ -99,66 +100,12 @@ const Profile: React.FC = () => {
                   icon={Globals.ICONS.EDIT}
                   size={Globals.SIZES.ICON_MENU}
                   color={Globals.COLORS.PRIMARY}
-                  onPress={() => {}}
+                  onPress={() => {
+                    navigation.navigate('EditCovidData');
+                  }}
                 />
               </View>
-              <View style={styles.infoWithIcon}>
-                <MaterialCommunityIcons
-                  name={Globals.ICONS.OPEN}
-                  color={Globals.COLORS.GRAY}
-                  size={Globals.SIZES.ICON_BUTTON}
-                  style={styles.icon}
-                />
-                <View style={{ width: '100%' }}>
-                  <Text style={[styles.paragraph, styles.gray]}>Etablissement ouvert</Text>
-                </View>
-              </View>
-              <View style={styles.infoWithIcon}>
-                <MaterialCommunityIcons
-                  name={Globals.ICONS.FACEMASK}
-                  color={Globals.COLORS.GRAY}
-                  size={Globals.SIZES.ICON_BUTTON}
-                  style={styles.icon}
-                />
-                <View style={{ width: '100%' }}>
-                  <Text style={[styles.paragraph, styles.gray]}>Masques obligatoires</Text>
-                </View>
-              </View>
-              <View style={styles.infoWithIcon}>
-                <MaterialCommunityIcons
-                  name={Globals.ICONS.DISINFECTION}
-                  color={Globals.COLORS.GRAY}
-                  size={Globals.SIZES.ICON_BUTTON}
-                  style={styles.icon}
-                />
-                <View style={{ width: '100%' }}>
-                  <Text style={[styles.paragraph, styles.gray]}>Désinfection obligatoire</Text>
-                </View>
-              </View>
-              <View style={styles.infoWithIcon}>
-                <MaterialCommunityIcons
-                  name={Globals.ICONS.DISTANCING}
-                  color={Globals.COLORS.GRAY}
-                  size={Globals.SIZES.ICON_BUTTON}
-                  style={styles.icon}
-                />
-                <View style={{ width: '100%' }}>
-                  <Text style={[styles.paragraph, styles.gray]}>2 mètres de distanciation</Text>
-                </View>
-              </View>
-              <View style={styles.infoWithIcon}>
-                <MaterialCommunityIcons
-                  name={Globals.ICONS.ABC}
-                  color={Globals.COLORS.GRAY}
-                  size={Globals.SIZES.ICON_BUTTON}
-                  style={styles.icon}
-                />
-                <View style={{ width: '100%' }}>
-                  <Text style={[styles.paragraph, styles.gray]}>
-                    Le matériel de la salle doit être désinfecté lorsque vous quittez celle-ci.
-                  </Text>
-                </View>
-              </View>
+              <CovidData isEnabled={false} />
             </Card.Content>
           </Card>
           <Card style={styles.card} elevation={10}>

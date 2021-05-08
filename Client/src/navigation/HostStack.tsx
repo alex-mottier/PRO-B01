@@ -16,12 +16,14 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from '../app/context/storesContext';
 import Edit from '../screens/Host/Edit/Edit';
 import EditHost from '../screens/Host/EditHost/EditHost';
+import CovidData from '../screens/Host/EditCovidData/EditCovidData';
 
 // Parameters of the screens
 type StackNavigatorParamlist = {
   Main: undefined;
   Edit: undefined;
   EditHost: undefined;
+  EditCovidData: undefined;
 };
 
 // Creating the application stack
@@ -114,6 +116,16 @@ const HostStack: React.FC = () => {
       <Stack.Screen
         name="EditHost"
         component={EditHost}
+        options={({ route }) => {
+          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+          return {
+            headerTitle: routeName,
+          };
+        }}
+      />
+      <Stack.Screen
+        name="EditCovidData"
+        component={CovidData}
         options={({ route }) => {
           const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
           return {
