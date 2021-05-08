@@ -11,7 +11,6 @@ import { IconButton, TextInput, Text, Portal, Modal, Title, useTheme } from 'rea
 import Globals from '../../app/context/Globals';
 import { useStores } from '../../app/context/storesContext';
 import { Location } from '../../app/models/ApplicationTypes';
-import { mockLocations } from '../../mock/Locations';
 import LoadingComponent from '../Loading/LoadingComponent';
 import LocationComponent from '../Location/LocationComponent';
 import styles from './styles';
@@ -44,7 +43,7 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
     chooseLocation(location);
     setModalVisible(false);
     setLocationName('');
-    setLocations(mockLocations);
+    setLocations(studentStore.locations);
   };
 
   /**
@@ -53,9 +52,11 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
    */
   const handleLocationNameChange = (locationName: string) => {
     setLocationName(locationName);
-    const newLocations = mockLocations.filter((current: Location) => {
-      return current.name.search(locationName) !== -1;
-    });
+    const newLocations =
+      studentStore.locations &&
+      studentStore.locations.filter((current: Location) => {
+        return current.name.search(locationName) !== -1;
+      });
     setLocations(newLocations);
   };
 

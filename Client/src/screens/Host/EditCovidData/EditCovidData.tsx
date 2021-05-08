@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { Image, View } from 'react-native';
+import { Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import CovidData from '../../../components/CovidData/CovidData';
 import styles from './styles';

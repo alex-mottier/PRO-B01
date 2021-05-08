@@ -6,7 +6,7 @@
  */
 
 import { TokenResponse } from 'expo-app-auth';
-import { action, makeAutoObservable, observable } from 'mobx';
+import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import GoogleAuth from '../authentication/GoogleAuth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 import { Host, Student, UserResponse } from '../models/ApplicationTypes';
@@ -23,12 +23,14 @@ class AuthenticationStore {
   @observable authenticatedStudent: Student | null = null;
   @observable authenticatedHost: Host | null = null;
   @observable isLoggedIn = false;
+  @observable isLoading = true;
 
   /**
    * Private instantiation of the store to apply singleton pattern
    */
   constructor() {
     AuthenticationStore.instance = this;
+    void this.loadTokens();
     makeAutoObservable(this);
   }
 
@@ -39,6 +41,14 @@ class AuthenticationStore {
   public static getInstance(): AuthenticationStore {
     if (!AuthenticationStore.instance) this.instance = new AuthenticationStore();
     return this.instance;
+  }
+
+  /**
+   * Set if the application is loading
+   * @param isLoading if the application is loading
+   */
+  @action setIsLoading(isLoading: boolean): void {
+    this.isLoading = isLoading;
   }
 
   /**
@@ -94,14 +104,14 @@ class AuthenticationStore {
    * @returns promise if user is sucessfully signed in
    */
   @action async signInWithGoogle(): Promise<boolean> {
-    RootStore.getInstance().setIsLoading(true);
+    this.setIsLoading(true);
     const token = await this.googleAuth.handleSignInAsync();
     if (token) {
       this.setUserToken(token);
-      RootStore.getInstance().setIsLoading(false);
+      this.setIsLoading(false);
       return true;
     }
-    RootStore.getInstance().setIsLoading(false);
+    this.setIsLoading(false);
     return false;
   }
 
@@ -111,12 +121,12 @@ class AuthenticationStore {
    * @returns promise when sign out is completed
    */
   @action async signOutWithGoogle(): Promise<void> {
-    RootStore.getInstance().setIsLoading(true);
+    this.setIsLoading(true);
     await this.googleAuth.handleSignOutAsync(this.userToken);
     this.setAuthenticatedStudent(null);
     this.setAuthenticatedHost(null);
     this.setIsLoggedIn(false);
-    RootStore.getInstance().setIsLoading(false);
+    this.setIsLoading(false);
   }
 
   /**
@@ -124,7 +134,7 @@ class AuthenticationStore {
    * @param user to create
    */
   @action async signUpStudent(user: Student): Promise<boolean> {
-    RootStore.getInstance().setIsLoading(true);
+    this.setIsLoading(true);
     if (this.userToken?.idToken) {
       const response = await this.amphitryonDAO.createStudent(this.userToken.idToken, user);
       if (response) {
@@ -140,7 +150,7 @@ class AuthenticationStore {
           void RootStore.getInstance().manageErrorInResponse(response);
         }
       }
-      RootStore.getInstance().setIsLoading(false);
+      this.setIsLoading(false);
     }
     return false;
   }
@@ -150,7 +160,7 @@ class AuthenticationStore {
    * @param host to create
    */
   @action async signUpHost(host: Host): Promise<boolean> {
-    RootStore.getInstance().setIsLoading(true);
+    this.setIsLoading(true);
     if (this.userToken?.idToken) {
       const response = await this.amphitryonDAO.createHost(this.userToken.idToken, host);
       if (response) {
@@ -164,13 +174,13 @@ class AuthenticationStore {
               this.setIsLoggedIn(true);
             }
           }
-          RootStore.getInstance().setIsLoading(false);
+          this.setIsLoading(false);
           return true;
         } else {
           void RootStore.getInstance().manageErrorInResponse(response);
         }
       }
-      RootStore.getInstance().setIsLoading(false);
+      this.setIsLoading(false);
     }
     return false;
   }
@@ -179,7 +189,7 @@ class AuthenticationStore {
    * Sign in method
    */
   @action async signIn(): Promise<boolean> {
-    RootStore.getInstance().setIsLoading(true);
+    this.setIsLoading(true);
     const loggedIn = await this.signInWithGoogle();
     if (loggedIn && this.userToken && this.userToken.idToken) {
       const response = await this.tryToConnect(this.userToken?.idToken);
@@ -207,12 +217,65 @@ class AuthenticationStore {
         }
       }
     }
-    RootStore.getInstance().setIsLoading(false);
+    this.setIsLoading(false);
     return false;
   }
 
   @action async tryToConnect(tokenId: string): Promise<Response | null> {
     return await this.amphitryonDAO.connectUser(tokenId);
+  }
+
+  /**
+   * Loading the user's tokens
+   */
+  @action async loadTokens(): Promise<void> {
+    const token = await GoogleAuth.getInstance().getCachedAuthAsync();
+    this.userToken = token;
+    if (token && token.idToken) {
+      const response = await AmphitryonDAO.getInstance().connectUser(token.idToken);
+      if (response) {
+        if (response.ok) {
+          const userResponse: UserResponse = await response.json();
+          if (userResponse.isStudent) {
+            this.setAuthenticatedHost(null);
+            this.setAuthenticatedStudent({
+              id: userResponse.id,
+              username: userResponse.username,
+            });
+            await StudentStore.getInstance().loadUserData();
+          } else {
+            this.setAuthenticatedStudent(null);
+            const host = await AmphitryonDAO.getInstance().getHostDetails(userResponse.id);
+            if (host) {
+              if (host.ok) {
+                this.setAuthenticatedHost(await host.json());
+                await HostStore.getInstance().loadUserData();
+              }
+            }
+          }
+          this.setIsLoggedIn(true);
+          this.setAuthenticatedStudent(await response.json());
+          this.setIsLoggedIn(true);
+        }
+      }
+    }
+  }
+
+  /**
+   * Update host
+   * @param host new host value
+   */
+  @action async updateHost(host: Host): Promise<void> {
+    const response = await this.amphitryonDAO.updateHost(host);
+    if (response) {
+      if (response.ok) {
+        runInAction(() => {
+          this.setAuthenticatedHost(host);
+        });
+      } else {
+        void RootStore.getInstance().manageErrorInResponse(response);
+      }
+    }
   }
 }
 

@@ -16,7 +16,7 @@ import { useStores } from './src/app/context/storesContext';
 
 const App: React.FC = () => {
   /* Usage of MobX global state store */
-  const { rootStore, themeStore } = useStores();
+  const { authenticationStore, themeStore } = useStores();
 
   /* Component states */
   const [isLoading, setIsLoading] = React.useState(true);
@@ -25,13 +25,13 @@ const App: React.FC = () => {
    * Action when component is loaded
    */
   React.useEffect(() => {
-    rootStore.setIsLoading(true);
+    authenticationStore.setIsLoading(true);
 
     // Loading icons font
     void Font.loadAsync({
       MaterialCommunityIcons: require('./assets/MaterialCommunityIcons.ttf'),
     }).then(() => {
-      rootStore.setIsLoading(false);
+      authenticationStore.setIsLoading(false);
       setIsLoading(false);
     });
   }, []);
@@ -46,7 +46,7 @@ const App: React.FC = () => {
 
   return (
     <PaperProvider theme={themeStore.theme === 'light' ? lightTheme : darkTheme}>
-      {rootStore.isLoading ? <LoadingComponent /> : <Routes />}
+      {authenticationStore.isLoading ? <LoadingComponent /> : <Routes />}
     </PaperProvider>
   );
 };

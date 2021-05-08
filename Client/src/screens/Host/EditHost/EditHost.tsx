@@ -18,7 +18,7 @@ const EditHost: React.FC = () => {
   const navigation = useNavigation();
 
   /* Usage of MobX global state store */
-  const { hostStore } = useStores();
+  const { authenticationStore } = useStores();
 
   /* Component states */
   const [isLoading, setIsLoading] = React.useState(false);
@@ -28,7 +28,7 @@ const EditHost: React.FC = () => {
    */
   const handleHostSubmit = async (host: Host) => {
     setIsLoading(true);
-    await hostStore.updateHost(host);
+    await authenticationStore.updateHost(host);
     setIsLoading(false);
     navigation.goBack();
   };

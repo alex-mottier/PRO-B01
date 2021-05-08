@@ -22,13 +22,13 @@ const SignUp: React.FC = () => {
   const navigation = useNavigation();
 
   /* Usage of MobX global state store */
-  const { rootStore, authenticationStore } = useStores();
+  const { authenticationStore } = useStores();
 
   /**
    * Sign up button pressed
    */
   const handleSignUp = () => {
-    rootStore.setIsLoading(true);
+    authenticationStore.setIsLoading(true);
     // Try to see if an account already match the selected account
     void authenticationStore.signInWithGoogle().then(async (isLoggedIn: boolean) => {
       if (authenticationStore.userToken && authenticationStore.userToken.idToken) {
@@ -47,7 +47,7 @@ const SignUp: React.FC = () => {
         }
       }
     });
-    rootStore.setIsLoading(false);
+    authenticationStore.setIsLoading(false);
   };
 
   return (
