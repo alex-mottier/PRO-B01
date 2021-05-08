@@ -102,7 +102,63 @@ const Profile: React.FC = () => {
                   onPress={() => {}}
                 />
               </View>
-              <Text style={styles.gray}>TODO</Text>
+              <View style={styles.infoWithIcon}>
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.OPEN}
+                  color={Globals.COLORS.GRAY}
+                  size={Globals.SIZES.ICON_BUTTON}
+                  style={styles.icon}
+                />
+                <View style={{ width: '100%' }}>
+                  <Text style={[styles.paragraph, styles.gray]}>Etablissement ouvert</Text>
+                </View>
+              </View>
+              <View style={styles.infoWithIcon}>
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.FACEMASK}
+                  color={Globals.COLORS.GRAY}
+                  size={Globals.SIZES.ICON_BUTTON}
+                  style={styles.icon}
+                />
+                <View style={{ width: '100%' }}>
+                  <Text style={[styles.paragraph, styles.gray]}>Masques obligatoires</Text>
+                </View>
+              </View>
+              <View style={styles.infoWithIcon}>
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.DISINFECTION}
+                  color={Globals.COLORS.GRAY}
+                  size={Globals.SIZES.ICON_BUTTON}
+                  style={styles.icon}
+                />
+                <View style={{ width: '100%' }}>
+                  <Text style={[styles.paragraph, styles.gray]}>Désinfection obligatoire</Text>
+                </View>
+              </View>
+              <View style={styles.infoWithIcon}>
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.DISTANCING}
+                  color={Globals.COLORS.GRAY}
+                  size={Globals.SIZES.ICON_BUTTON}
+                  style={styles.icon}
+                />
+                <View style={{ width: '100%' }}>
+                  <Text style={[styles.paragraph, styles.gray]}>2 mètres de distanciation</Text>
+                </View>
+              </View>
+              <View style={styles.infoWithIcon}>
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.ABC}
+                  color={Globals.COLORS.GRAY}
+                  size={Globals.SIZES.ICON_BUTTON}
+                  style={styles.icon}
+                />
+                <View style={{ width: '100%' }}>
+                  <Text style={[styles.paragraph, styles.gray]}>
+                    Le matériel de la salle doit être désinfecté lorsque vous quittez celle-ci.
+                  </Text>
+                </View>
+              </View>
             </Card.Content>
           </Card>
           <Card style={styles.card} elevation={10}>
