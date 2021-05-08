@@ -129,20 +129,18 @@ const StudentStack: React.FC = () => {
       <Stack.Screen
         name="Chat"
         component={ChatMeeting}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: 'Chat',
           };
         }}
       />
       <Stack.Screen
         name="Edit"
         component={Edit}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: 'Modifier réunion',
           };
         }}
       />

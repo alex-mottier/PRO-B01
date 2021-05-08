@@ -106,30 +106,27 @@ const HostStack: React.FC = () => {
       <Stack.Screen
         name="Edit"
         component={Edit}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: 'Modifier lieu',
           };
         }}
       />
       <Stack.Screen
         name="EditHost"
         component={EditHost}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: 'Modifier hébergeur',
           };
         }}
       />
       <Stack.Screen
         name="EditCovidData"
         component={CovidData}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: 'Politique Covid',
           };
         }}
       />
