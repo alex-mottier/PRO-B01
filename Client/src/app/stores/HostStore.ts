@@ -6,7 +6,7 @@
  */
 
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
-import { Meeting, Location, Host } from '../models/ApplicationTypes';
+import { Meeting, Location } from '../models/ApplicationTypes';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 import { addDays, endOfDay, format, startOfDay } from 'date-fns';
 import { AgendaItemsMap } from 'react-native-calendars';
