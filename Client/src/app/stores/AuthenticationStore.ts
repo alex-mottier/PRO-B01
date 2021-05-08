@@ -254,8 +254,6 @@ class AuthenticationStore {
             }
           }
           this.setIsLoggedIn(true);
-          this.setAuthenticatedStudent(await response.json());
-          this.setIsLoggedIn(true);
         }
       }
     }
