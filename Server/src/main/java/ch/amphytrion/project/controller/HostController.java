@@ -4,6 +4,7 @@ import ch.amphytrion.project.dto.*;
 import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.services.HostService;
 import ch.amphytrion.project.services.LocationService;
+import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,12 +26,14 @@ public class HostController extends BaseController implements IGenericController
     private HostService hostService;
     private LocationService locationService;
     private UserService userService;
+    private MeetingService meetingService;
 
     @Autowired
-    public HostController(HostService hostService, LocationService locationService, UserService userService) {
+    public HostController(HostService hostService, LocationService locationService, UserService userService, MeetingService meetingService) {
         this.hostService = hostService;
         this.locationService = locationService;
         this.userService = userService;
+        this.meetingService = meetingService;
     }
 
     @SneakyThrows
@@ -110,34 +114,47 @@ public class HostController extends BaseController implements IGenericController
             HostProfil hostProfil = user.getHostProfil();
             hostProfil.setDescription(hostRequest.description);
             hostProfil.setTags(hostRequest.tags);
-            hostProfil.setAddress(new Address(hostRequest.street, hostRequest.streetNb, new City(hostRequest.cityName, hostRequest.npa)));
+            hostProfil.setAddress(new Address(hostRequest.address.street, hostRequest.address.streetNb,
+                    new City(hostRequest.address.cityName, hostRequest.address.npa)));
             user.setHostProfil(hostProfil);
             return ResponseEntity.ok(new HostResponse(userService.save(user)));
         } catch (Exception e) {
             throw new CustomException("Lieu non modifié/créé", HttpStatus.NOT_ACCEPTABLE, null);
         }
-        //return null;
     }
 
-
-
-
-
-
     @SneakyThrows
-    @PatchMapping("/covidData")
-    public ResponseEntity<CovidDataResponse> update(@RequestBody CovidData covidData) {
+    @GetMapping("/getReservations")
+    public ResponseEntity<List<MeetingResponse>> getReservations(@RequestBody DatesFilterDTO datesFilterDTO) {
         try {
-            if(covidData.getId() != null && hostService.findById(covidData.getId()) != null){
-                checkUserIsHost();
-                User user = getCurrentUser();
-                user.getHostProfil().setCovidData(covidData);
-                return ResponseEntity.ok(new CovidDataResponse(hostService.save(user).getHostProfil().getCovidData()));
+            checkUserIsHost();
+            User user = getCurrentUser();
+            List<Location> locations = locationService.findByHostId(user.getId());
+            List<Meeting> meetings = new ArrayList<>();
+            List<MeetingResponse> meetingResponses = new ArrayList<>();
+            for(Location location : locations) {
+                meetings.addAll(meetingService.findByLocationID(location.getId()));
             }
-        } catch (Exception e) {
-            throw new CustomException("Lieu non modifié/créé", HttpStatus.NOT_ACCEPTABLE, null);
+
+            //Filtrer meetings à l'aide d'iterator car pas de remove dans un foreach
+            Iterator<Meeting> iterator = meetings.iterator();
+            while(iterator.hasNext()) {
+                Meeting meeting = iterator.next();
+                DatesFilterDTO dto = new DatesFilterDTO(meeting.getStartDate(), meeting.getEndDate());
+                if (!dto.isBetween(datesFilterDTO)) {
+                    iterator.remove();
+                }
+            }
+
+            //Construction de la liste de meetingResponses
+            for(Meeting meeting : meetings) {
+                meetingResponses.add(new MeetingResponse(meeting, locationService));
+            }
+            return ResponseEntity.ok(meetingResponses);
         }
-        return null;
+        catch (Exception e) {
+            throw new CustomException("Impossible de récupérer la liste des meetings", HttpStatus.NOT_ACCEPTABLE, null);
+        }
     }
 
 
