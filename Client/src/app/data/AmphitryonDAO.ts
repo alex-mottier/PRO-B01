@@ -439,7 +439,7 @@ export default class AmphitryonDAO {
         tokenID: tokenId,
         name: host.name,
         street: host.address.street,
-        streetNb: host.address.street,
+        streetNb: host.address.streetNb,
         cityName: host.address.cityName,
         npa: host.address.npa,
         description: host.description,
