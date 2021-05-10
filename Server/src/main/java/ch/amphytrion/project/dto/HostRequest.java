@@ -11,12 +11,19 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HostRequest implements InterfaceDTO {
-    public String tokenID;
+    public String id;
     public String name;
-    public String street;
-    public String streetNb;
-    public String cityName;
-    public String npa;
+    public AddressResponse address;
     public String description;
     public List<Tag> tags;
+    public CovidDataResponse covidDataResponse;
+
+    public HostRequest(User user) {
+        this.id = user.getId();
+        this.name = user.getUsername();
+        this.address = new AddressResponse(user.getHostProfil().getAddress());
+        this.description = user.getHostProfil().getDescription();
+        this.tags = user.getHostProfil().getTags();
+        this.covidDataResponse = new CovidDataResponse(user.getHostProfil().getCovidData());
+    }
 }
