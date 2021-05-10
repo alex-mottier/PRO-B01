@@ -1,11 +1,15 @@
 package ch.amphytrion.project.dto;
 
-import ch.amphytrion.project.entities.databaseentities.Address;
 import ch.amphytrion.project.entities.databaseentities.Tag;
 import ch.amphytrion.project.entities.databaseentities.User;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class HostResponse implements InterfaceDTO {
     public String id;
     public String name;

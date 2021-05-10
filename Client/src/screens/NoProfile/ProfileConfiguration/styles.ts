@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 320,
     margin: 30,
     paddingTop: 20,
   },
@@ -31,6 +30,19 @@ const styles = StyleSheet.create({
     borderRadius: 200,
   },
   fields: {
+    width: '100%',
+  },
+  fields20: {
+    width: '27%',
+  },
+  fields70: {
+    width: '70%',
+    marginRight: 10,
+  },
+  button: { marginTop: 20 },
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
     width: '100%',
   },
 });

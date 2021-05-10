@@ -9,7 +9,7 @@ import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Appbar, IconButton, Switch, useTheme } from 'react-native-paper';
-import { BottomTabs } from './BottomTabs';
+import { BottomStudentTabs } from './BottomStudentTabs';
 import Globals from '../app/context/Globals';
 import { View } from 'react-native';
 import { observer } from 'mobx-react-lite';
@@ -98,7 +98,7 @@ const StudentStack: React.FC = () => {
       }}>
       <Stack.Screen
         name="Main"
-        component={BottomTabs}
+        component={BottomStudentTabs}
         options={({ route }) => {
           const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
           return {

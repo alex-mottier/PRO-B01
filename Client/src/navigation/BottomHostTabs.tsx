@@ -1,29 +1,29 @@
 /**
- * @file    BottomTabs.tsx
+ * @file    BottomHostTabs.tsx
  * @author  Alexis Allemann & Alexandre Mottier
- * @date    22.03.2021
+ * @date    29.04.2021
  * @brief   Bottom tabs navigator
  */
 
 import * as React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Globals from '../app/context/Globals';
-import Home from '../screens/Student/Home/Home';
-import Profile from '../screens/Student/Profile/Profile';
-import Search from '../screens/Student/Search/Search';
-import Create from '../screens/Student/Create/Create';
+import Home from '../screens/Host/Home/Home';
+import Profile from '../screens/Host/Profile/Profile';
+import Create from '../screens/Host/Create/Create';
+import MyLocations from '../screens/Host/Location/MyLocations';
 import { useTheme } from 'react-native-paper';
 
 const Tab = createMaterialBottomTabNavigator();
 
-export const BottomTabs = (): React.ReactElement => {
+export const BottomHostTabs = (): React.ReactElement => {
   // Usage of react native paper theme library
   const paperTheme = useTheme();
 
   return (
     <React.Fragment>
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName="Main"
         activeColor={Globals.COLORS.BLUE}
         barStyle={{
           backgroundColor: paperTheme.colors.surface,
@@ -37,7 +37,7 @@ export const BottomTabs = (): React.ReactElement => {
           }}
         />
         <Tab.Screen
-          name={Globals.STRINGS.CREATE}
+          name={Globals.STRINGS.CREATE_LOCATION}
           component={Create}
           options={{
             tabBarLabel: 'Créer',
@@ -45,11 +45,11 @@ export const BottomTabs = (): React.ReactElement => {
           }}
         />
         <Tab.Screen
-          name={Globals.STRINGS.SEARCH}
-          component={Search}
+          name={Globals.STRINGS.LOCATIONS}
+          component={MyLocations}
           options={{
-            tabBarLabel: 'Rechercher',
-            tabBarIcon: Globals.ICONS.SEARCH,
+            tabBarLabel: 'Mes lieux',
+            tabBarIcon: Globals.ICONS.LOCATION,
           }}
         />
         <Tab.Screen

@@ -2,9 +2,11 @@ package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.authentication.SecurityConstants;
 import ch.amphytrion.project.authentication.utils.JwtUtils;
+import ch.amphytrion.project.dto.HostRequest;
+import ch.amphytrion.project.dto.HostResponse;
+import ch.amphytrion.project.dto.StudentRequest;
 import ch.amphytrion.project.dto.UserResponse;
 import ch.amphytrion.project.entities.databaseentities.*;
-import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -24,23 +26,37 @@ public class UserController extends BaseController implements IGenericController
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {this.userService = userService;}
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
-    // X
     @SneakyThrows
-    @PostMapping("/signUpStudent")
-    public ResponseEntity<UserResponse> signUpStudent(@RequestBody Map<String, String> json) {
-        User newUser = userService.checkAndSignUp(json);
-        StudentProfil studentProfil = new StudentProfil();
-        if(newUser != null) {
-            newUser.setStudentProfil(studentProfil);
-            userService.save(newUser);
+    @PostMapping("/signUpHost")
+    public ResponseEntity<UserResponse> signUpHost(@RequestBody HostRequest hostRequest) {
+        User newUser = userService.checkAndSignUpHost(hostRequest);
+        if (newUser != null) {
             String token = JwtUtils.makeHeaderToken(newUser.getUsername());
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
             return ResponseEntity.ok().headers(responseHeaders).body(new UserResponse(newUser));
+        } else {
+            //user already exists
+            throw new CustomException("Ce compte host existe déjà", HttpStatus.NOT_ACCEPTABLE, null);
         }
-        else {
+    }
+
+
+    // X
+    @SneakyThrows
+    @PostMapping("/signUpStudent")
+    public ResponseEntity<UserResponse> signUpStudent(@RequestBody StudentRequest studentRequest) {
+        User newUser = userService.checkAndSignUp(studentRequest);
+        if (newUser != null) {
+            String token = JwtUtils.makeHeaderToken(newUser.getUsername());
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+            return ResponseEntity.ok().headers(responseHeaders).body(new UserResponse(newUser));
+        } else {
             //user already exists
             throw new CustomException("Ce compte utilisateur existe déjà", HttpStatus.NOT_ACCEPTABLE, null);
         }
@@ -50,13 +66,14 @@ public class UserController extends BaseController implements IGenericController
     @SneakyThrows
     @PostMapping("/login")
     public ResponseEntity<UserResponse> login(@RequestBody Map<String, String> json) {
-            User current = getCurrentUser();
-            if (current != null) {
-                return ResponseEntity.ok().body(new UserResponse(current));
-            } else {
-                throw new CustomException("Erreur de login", HttpStatus.NOT_ACCEPTABLE, null);
-            }
+        User current = getCurrentUser();
+        if (current != null) {
+            return ResponseEntity.ok().body(new UserResponse(current));
+        } else {
+            throw new CustomException("Erreur de login", HttpStatus.NOT_ACCEPTABLE, null);
+        }
     }
+
     @SneakyThrows
     @GetMapping("/user/{username}")
     public ResponseEntity<UserResponse> getById(@PathVariable String username) {

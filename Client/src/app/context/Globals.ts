@@ -64,6 +64,8 @@ export default {
   STRINGS: {
     APP_NAME: 'Amphitryon',
     CREATE: 'Créer une réunion',
+    CREATE_LOCATION: 'Créer un lieu',
+    LOCATIONS: 'Mes lieux de réunion',
     PROFILE: 'Profil',
     SEARCH: 'Rechercher une réunion',
     SESSION_TOKEN_NAME: 'SESSION_TOKEN_AMPHITRYON',
