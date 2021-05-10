@@ -7,6 +7,7 @@
 
 import { TokenResponse } from 'expo-app-auth';
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
+import { Alert } from 'react-native';
 import GoogleAuth from '../authentication/GoogleAuth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 import { Host, Student, UserResponse } from '../models/ApplicationTypes';
@@ -229,6 +230,7 @@ class AuthenticationStore {
    * Loading the user's tokens
    */
   @action async loadTokens(): Promise<void> {
+    this.setIsLoading(true);
     const token = await GoogleAuth.getInstance().getCachedAuthAsync();
     this.userToken = token;
     if (token && token.idToken) {
@@ -243,18 +245,32 @@ class AuthenticationStore {
               username: userResponse.username,
             });
             await StudentStore.getInstance().loadUserData();
+            this.setIsLoading(false);
           } else {
             this.setAuthenticatedStudent(null);
             const host = await AmphitryonDAO.getInstance().getHostDetails(userResponse.id);
             if (host) {
               if (host.ok) {
                 this.setAuthenticatedHost(await host.json());
+                console.log(this.authenticatedHost);
                 await HostStore.getInstance().loadUserData();
+                this.setIsLoading(false);
+              } else {
+                void RootStore.getInstance().manageErrorInResponse(host);
               }
+            } else {
+              Alert.alert(
+                'Erreur',
+                "Une erreur s'est produite lors du chargement de l'utilisateur",
+              );
             }
           }
           this.setIsLoggedIn(true);
+        } else {
+          void RootStore.getInstance().manageErrorInResponse(response);
         }
+      } else {
+        Alert.alert('Erreur', "Une erreur s'est produite lors du chargement de l'utilisateur");
       }
     }
   }
