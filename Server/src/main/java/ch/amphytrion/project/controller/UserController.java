@@ -2,8 +2,7 @@ package ch.amphytrion.project.controller;
 
 import ch.amphytrion.project.authentication.SecurityConstants;
 import ch.amphytrion.project.authentication.utils.JwtUtils;
-import ch.amphytrion.project.dto.HostRequest;
-import ch.amphytrion.project.dto.HostResponse;
+import ch.amphytrion.project.dto.SignUpHostRequest;
 import ch.amphytrion.project.dto.StudentRequest;
 import ch.amphytrion.project.dto.UserResponse;
 import ch.amphytrion.project.entities.databaseentities.*;
@@ -32,8 +31,8 @@ public class UserController extends BaseController implements IGenericController
 
     @SneakyThrows
     @PostMapping("/signUpHost")
-    public ResponseEntity<UserResponse> signUpHost(@RequestBody HostRequest hostRequest) {
-        User newUser = userService.checkAndSignUpHost(hostRequest);
+    public ResponseEntity<UserResponse> signUpHost(@RequestBody SignUpHostRequest signUpHostRequest) {
+        User newUser = userService.checkAndSignUpHost(signUpHostRequest);
         if (newUser != null) {
             String token = JwtUtils.makeHeaderToken(newUser.getUsername());
             HttpHeaders responseHeaders = new HttpHeaders();

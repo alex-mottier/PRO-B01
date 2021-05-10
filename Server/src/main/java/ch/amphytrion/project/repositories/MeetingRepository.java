@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface MeetingRepository extends MongoRepository<Meeting, String> {
@@ -19,6 +20,8 @@ public interface MeetingRepository extends MongoRepository<Meeting, String> {
     ArrayList<Meeting> findByEndDateBefore(Date end);
     ArrayList<Meeting> findByOwnerID(String ownerID);
     ArrayList<Meeting> findByTagsEquals(ArrayList<Tag> tags);
+
+    ArrayList<Meeting> findByLocationID(String id);
     //ArrayList<Meeting> findByLocationID();
     //ArrayList<Meeting> searchFilter(FilterRequest filter);
 }

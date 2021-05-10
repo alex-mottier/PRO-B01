@@ -170,5 +170,9 @@ public class MeetingService implements IGenericService<Meeting> {
             return meeting.getLocationID() == location.getId();
         }
     }
+
+    public List<Meeting> findByLocationID(String id) {
+        return meetingRepository.findByLocationID(id);
+    }
 }
 
