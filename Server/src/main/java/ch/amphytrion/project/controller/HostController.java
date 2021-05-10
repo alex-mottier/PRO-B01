@@ -104,6 +104,7 @@ public class HostController extends BaseController implements IGenericController
             hostProfil.setTags(hostRequest.tags);
             hostProfil.setAddress(new Address(hostRequest.address.street, hostRequest.address.streetNb,
                     new City(hostRequest.address.cityName, hostRequest.address.npa)));
+            hostProfil.setCovidData(hostRequest.covidData);
             user.setHostProfil(hostProfil);
             return ResponseEntity.ok(new HostResponse(userService.save(user)));
         } catch (Exception e) {
