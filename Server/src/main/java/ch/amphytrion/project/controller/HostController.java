@@ -94,18 +94,6 @@ public class HostController extends BaseController implements IGenericController
     }
 
     @SneakyThrows
-    @GetMapping("/getCovidData")
-    public ResponseEntity<CovidDataResponse> getCovidData() {
-        try {
-            checkUserIsHost();
-            User user = getCurrentUser();
-            return ResponseEntity.ok(new CovidDataResponse(user.getHostProfil().getCovidData()));
-        } catch (Exception e) {
-            throw new CustomException("Aucune donnée covid n'a été trouvée", HttpStatus.NOT_ACCEPTABLE, null);
-        }
-    }
-
-    @SneakyThrows
     @PatchMapping("/host")
     public ResponseEntity<HostResponse> update(@RequestBody HostRequest hostRequest) {
         try {
