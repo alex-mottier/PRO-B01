@@ -99,6 +99,7 @@ public class HostController extends BaseController implements IGenericController
         try {
             checkUserIsHost();
             User user = getCurrentUser();
+            user.setUsername(hostRequest.name);
             HostProfil hostProfil = user.getHostProfil();
             hostProfil.setDescription(hostRequest.description);
             hostProfil.setTags(hostRequest.tags);
@@ -108,7 +109,7 @@ public class HostController extends BaseController implements IGenericController
             user.setHostProfil(hostProfil);
             return ResponseEntity.ok(new HostResponse(userService.save(user)));
         } catch (Exception e) {
-            throw new CustomException("Lieu non modifié/créé", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("L'hôte n'a pas été mis à jour", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
