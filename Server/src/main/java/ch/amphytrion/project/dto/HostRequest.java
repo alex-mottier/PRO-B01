@@ -1,5 +1,6 @@
 package ch.amphytrion.project.dto;
 
+import ch.amphytrion.project.entities.databaseentities.CovidData;
 import ch.amphytrion.project.entities.databaseentities.Tag;
 import ch.amphytrion.project.entities.databaseentities.User;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ public class HostRequest implements InterfaceDTO {
     public AddressResponse address;
     public String description;
     public List<Tag> tags;
-    public CovidDataResponse covidDataResponse;
+    public CovidData covidData;
 
     public HostRequest(User user) {
         this.id = user.getId();
@@ -24,6 +25,6 @@ public class HostRequest implements InterfaceDTO {
         this.address = new AddressResponse(user.getHostProfil().getAddress());
         this.description = user.getHostProfil().getDescription();
         this.tags = user.getHostProfil().getTags();
-        this.covidDataResponse = new CovidDataResponse(user.getHostProfil().getCovidData());
+        this.covidData = user.getHostProfil().getCovidData();
     }
 }
