@@ -3,23 +3,14 @@ package ch.amphytrion.project.authentication.google_authentication;
 import ch.amphytrion.project.authentication.SecurityConstants;
 import ch.amphytrion.project.authentication.utils.AbstractMultiReadAuthenticationProcessingFilter;
 import ch.amphytrion.project.authentication.utils.JwtUtils;
-import ch.amphytrion.project.dto.AuthenticationDto;
-import ch.amphytrion.project.entities.databaseentities.User;
-import ch.amphytrion.project.services.UserService;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.FilterChain;
@@ -29,10 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 // verify user credential and asssign token
@@ -52,7 +39,11 @@ public class GoogleAuthenticationFilter extends AbstractMultiReadAuthenticationP
         if (res.getHeader(SecurityConstants.HEADER_STRING) != null) {
             return false;
         }
-        if(new AntPathRequestMatcher(SecurityConstants.SIGN_UP_URL).matches(req)){
+        if(new AntPathRequestMatcher(SecurityConstants.SIGN_UP_URL_STUDENT).matches(req)){
+            return false;
+        }
+        //TODO : A check Alois - Ajout pour signup host
+        if(new AntPathRequestMatcher(SecurityConstants.SIGN_UP_URL_HOST).matches(req)){
             return false;
         }
         try {
