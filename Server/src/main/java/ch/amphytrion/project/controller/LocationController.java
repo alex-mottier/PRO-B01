@@ -91,14 +91,15 @@ public class LocationController extends BaseController implements IGenericContro
     //X
     @SneakyThrows
     @PatchMapping("/location")
-    public void update(@RequestBody Location entity) {
+    public ResponseEntity<LocationResponse> update(@RequestBody Location entity) {
         try {
             if(entity.getId() != null && locationService.findById(entity.getId()) != null){
-               locationService.save(entity);
+               return  ResponseEntity.ok(new LocationResponse(locationService.save(entity), userService));
             }
         } catch (Exception e) {
-            throw new CustomException("Lieu non modifié/créé", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Lieu non modifié", HttpStatus.NOT_ACCEPTABLE, null);
         }
+        return null;
     }
 
     //X

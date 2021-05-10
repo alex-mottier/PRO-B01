@@ -16,6 +16,7 @@ public class HostResponse implements InterfaceDTO {
     public AddressResponse address;
     public String description;
     public List<Tag> tags;
+    public CovidDataResponse covidDataResponse;
 
     public HostResponse(User user) {
         this.id = user.getId();
@@ -23,5 +24,6 @@ public class HostResponse implements InterfaceDTO {
         this.address = new AddressResponse(user.getHostProfil().getAddress());
         this.description = user.getHostProfil().getDescription();
         this.tags = user.getHostProfil().getTags();
+        this.covidDataResponse = new CovidDataResponse(user.getHostProfil().getCovidData());
     }
 }
