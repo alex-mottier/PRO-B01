@@ -12,10 +12,7 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +88,58 @@ public class HostController extends BaseController implements IGenericController
             throw new CustomException("Aucune location n'a été trouvée", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
+
+    @SneakyThrows
+    @GetMapping("/getCovidData")
+    public ResponseEntity<CovidDataResponse> getCovidData() {
+        try {
+            checkUserIsHost();
+            User user = getCurrentUser();
+            return ResponseEntity.ok(new CovidDataResponse(user.getHostProfil().getCovidData()));
+        } catch (Exception e) {
+            throw new CustomException("Aucune donnée covid n'a été trouvée", HttpStatus.NOT_ACCEPTABLE, null);
+        }
+    }
+
+    @SneakyThrows
+    @PatchMapping("/host")
+    public ResponseEntity<HostResponse> update(@RequestBody HostRequest hostRequest) {
+        try {
+            checkUserIsHost();
+            User user = getCurrentUser();
+            HostProfil hostProfil = user.getHostProfil();
+            hostProfil.setDescription(hostRequest.description);
+            hostProfil.setTags(hostRequest.tags);
+            hostProfil.setAddress(new Address(hostRequest.street, hostRequest.streetNb, new City(hostRequest.cityName, hostRequest.npa)));
+            user.setHostProfil(hostProfil);
+            return ResponseEntity.ok(new HostResponse(userService.save(user)));
+        } catch (Exception e) {
+            throw new CustomException("Lieu non modifié/créé", HttpStatus.NOT_ACCEPTABLE, null);
+        }
+        //return null;
+    }
+
+
+
+
+
+
+    @SneakyThrows
+    @PatchMapping("/covidData")
+    public ResponseEntity<CovidDataResponse> update(@RequestBody CovidData covidData) {
+        try {
+            if(covidData.getId() != null && hostService.findById(covidData.getId()) != null){
+                checkUserIsHost();
+                User user = getCurrentUser();
+                user.getHostProfil().setCovidData(covidData);
+                return ResponseEntity.ok(new CovidDataResponse(hostService.save(user).getHostProfil().getCovidData()));
+            }
+        } catch (Exception e) {
+            throw new CustomException("Lieu non modifié/créé", HttpStatus.NOT_ACCEPTABLE, null);
+        }
+        return null;
+    }
+
 
     @ApiOperation(value = "Retrieve hostController")
     @ApiResponses(value = {
