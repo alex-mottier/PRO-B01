@@ -127,6 +127,8 @@ public class MeetingService implements IGenericService<Meeting> {
     public List<Meeting> allFilters(List<Meeting> meetings, FilterRequest filter) {
         return meetings.stream()
                 .filter(meeting ->
+                        filterByPrivate(meeting))
+                .filter(meeting ->
                         filterByName(meeting, filter.name))
                 .filter(meeting ->
                         filterByDateFilter(meeting, new DatesFilterDTO(filter.startDate, filter.endDate)))
@@ -141,9 +143,12 @@ public class MeetingService implements IGenericService<Meeting> {
         if (name == null || name == "") {
             return true;
         } else {
-            return  meeting.getName().contains(name);
+            return meeting.getName().contains(name);
         }
 
+    }
+    public boolean filterByPrivate(Meeting meeting) {
+        return !meeting.getIsPrivate();
     }
 
     public boolean filterByDateFilter(Meeting meeting, DatesFilterDTO datesFilter){
