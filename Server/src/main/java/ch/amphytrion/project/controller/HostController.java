@@ -113,7 +113,7 @@ public class HostController extends BaseController implements IGenericController
     }
 
     @SneakyThrows
-    @GetMapping("/getReservations")
+    @PostMapping("/getReservations")
     public ResponseEntity<List<MeetingResponse>> getReservations(@RequestBody DatesFilterDTO datesFilterDTO) {
         try {
             checkUserIsHost();
