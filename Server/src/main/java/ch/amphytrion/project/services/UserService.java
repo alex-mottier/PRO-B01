@@ -131,6 +131,8 @@ public class UserService implements IGenericService<User>{
             //Ajout des informations du host
             City city = new City( hostRequest.cityName, hostRequest.npa);
             Address address = new Address(hostRequest.street, hostRequest.streetNb, city);
+            CovidData covidData = new CovidData(true, true, true, "" , "");
+            hostProfil.setCovidData(covidData);
             hostProfil.setAddress(address);
             hostProfil.setTags(hostRequest.tags);
             hostProfil.setDescription(hostRequest.description);
