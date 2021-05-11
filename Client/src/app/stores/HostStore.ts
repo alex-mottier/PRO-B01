@@ -11,13 +11,14 @@ import AmphitryonDAO from '../data/AmphitryonDAO';
 import { addDays, endOfDay, format, startOfDay } from 'date-fns';
 import { AgendaItemsMap } from 'react-native-calendars';
 import { Alert } from 'react-native';
-import RootStore from './RootStore';
 import Strings from '../context/Strings';
+import Utils from '../utils/Utils';
 
 class HostStore {
   private static instance: HostStore;
   private amphitryonDAO = AmphitryonDAO.getInstance();
   private dateInCalendar = new Date();
+  private utils = Utils.getInstance();
 
   @observable hostLocations: Location[] = [];
   @observable meetingsLocatedAtHostLocations: Meeting[] | null = null;
@@ -64,7 +65,7 @@ class HostStore {
           this.hostLocations = locations;
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -82,7 +83,7 @@ class HostStore {
           this.meetingsLocatedAtHostLocations = await response.json();
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -104,7 +105,7 @@ class HostStore {
           }
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -123,7 +124,7 @@ class HostStore {
           Alert.alert(Strings.SAVED, Strings.LOCATION_CREATED);
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -144,7 +145,7 @@ class HostStore {
           this.regenerateItems();
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }

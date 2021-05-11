@@ -12,14 +12,15 @@ import GoogleAuth from '../authentication/GoogleAuth';
 import Strings from '../context/Strings';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 import { Host, Student, UserResponse } from '../models/ApplicationTypes';
+import Utils from '../utils/Utils';
 import HostStore from './HostStore';
-import RootStore from './RootStore';
 import StudentStore from './StudentStore';
 
 class AuthenticationStore {
   private static instance: AuthenticationStore;
   private amphitryonDAO = AmphitryonDAO.getInstance();
   private googleAuth = GoogleAuth.getInstance();
+  private utils = Utils.getInstance();
 
   @observable userToken: TokenResponse | null = null;
   @observable authenticatedStudent: Student | null = null;
@@ -149,7 +150,7 @@ class AuthenticationStore {
           this.setIsLoggedIn(true);
           return true;
         } else {
-          void RootStore.getInstance().manageErrorInResponse(response);
+          void this.utils.manageErrorInResponse(response);
         }
       }
       this.setIsLoading(false);
@@ -179,7 +180,7 @@ class AuthenticationStore {
           this.setIsLoading(false);
           return true;
         } else {
-          void RootStore.getInstance().manageErrorInResponse(response);
+          void this.utils.manageErrorInResponse(response);
         }
       }
       this.setIsLoading(false);
@@ -215,7 +216,7 @@ class AuthenticationStore {
           this.setIsLoggedIn(true);
           return true;
         } else {
-          void RootStore.getInstance().manageErrorInResponse(response);
+          void this.utils.manageErrorInResponse(response);
         }
       }
     }
@@ -256,7 +257,7 @@ class AuthenticationStore {
                 await HostStore.getInstance().loadUserData();
                 this.setIsLoading(false);
               } else {
-                void RootStore.getInstance().manageErrorInResponse(host);
+                void this.utils.manageErrorInResponse(host);
               }
             } else {
               Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_LOAD);
@@ -264,7 +265,7 @@ class AuthenticationStore {
           }
           this.setIsLoggedIn(true);
         } else {
-          void RootStore.getInstance().manageErrorInResponse(response);
+          void this.utils.manageErrorInResponse(response);
         }
       } else {
         Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_LOAD);
@@ -282,7 +283,7 @@ class AuthenticationStore {
       if (response.ok) {
         this.setAuthenticatedHost(host);
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }

@@ -11,12 +11,13 @@ import AmphitryonDAO from '../data/AmphitryonDAO';
 import { addDays, endOfDay, format, startOfDay } from 'date-fns';
 import { Alert } from 'react-native';
 import { AgendaItemsMap } from 'react-native-calendars';
-import RootStore from './RootStore';
 import Strings from '../context/Strings';
+import Utils from '../utils/Utils';
 
 class StudentStore {
   private static instance: StudentStore;
   private amphitryonDAO = AmphitryonDAO.getInstance();
+  private utils = Utils.getInstance();
   private dateInCalendar = new Date();
 
   @observable meetingToUpdate: Meeting | null = null;
@@ -77,7 +78,7 @@ class StudentStore {
           this.meetingsCreatedByUser = meetings;
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -95,7 +96,7 @@ class StudentStore {
           this.userMeetings = await response.json();
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -118,7 +119,7 @@ class StudentStore {
           }
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -141,7 +142,7 @@ class StudentStore {
           }
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -164,7 +165,7 @@ class StudentStore {
       if (response.ok) {
         this.chat = await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -182,7 +183,7 @@ class StudentStore {
           this.chat?.messages.push(message);
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -215,7 +216,7 @@ class StudentStore {
       if (response.ok) {
         this.locations = await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -229,7 +230,7 @@ class StudentStore {
       if (response.ok) {
         this.locations = await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -254,7 +255,7 @@ class StudentStore {
       if (response.ok) {
         return await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
     return null;
@@ -278,7 +279,7 @@ class StudentStore {
       if (response.ok) {
         this.hostToDisplay = await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -300,7 +301,7 @@ class StudentStore {
         });
         this.regenerateItems();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -329,7 +330,7 @@ class StudentStore {
         });
         this.regenerateItems();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -354,7 +355,7 @@ class StudentStore {
           this.regenerateItems();
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }

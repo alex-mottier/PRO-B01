@@ -1,37 +1,33 @@
 /**
- * @file    RootStore.ts
+ * @file    Utils.ts
  * @author  Alexis Allemann & Alexandre Mottier
- * @date    22.03.2021
- * @brief   Application root store
+ * @date    11.05.2021
+ * @brief   Utils class
  */
 
-import { makeAutoObservable } from 'mobx';
-import { Error } from '../models/ApplicationTypes';
 import { Alert } from 'react-native';
 import Strings from '../context/Strings';
 
-class RootStore {
-  private static instance: RootStore;
+class Utils {
+  private static instance: Utils;
 
   /**
    * Instantiation of the store
    */
-  private constructor() {
-    makeAutoObservable(this);
-  }
+  private constructor() {}
 
   /**
    * Get store instance
    * @returns the store instance
    */
-  public static getInstance(): RootStore {
-    if (!RootStore.instance) this.instance = new RootStore();
+  public static getInstance(): Utils {
+    if (!Utils.instance) this.instance = new Utils();
     return this.instance;
   }
 
   /**
-   * Gestion des erreurs
-   * @param response contenant l'erreur
+   * Errors management
+   * @param response that is errored
    */
   async manageErrorInResponse(response: Response): Promise<void> {
     const error: Error = await response.json();
@@ -57,4 +53,4 @@ class RootStore {
   }
 }
 
-export default RootStore;
+export default Utils;
