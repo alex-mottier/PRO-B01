@@ -6,7 +6,7 @@
  */
 
 import { TokenResponse } from 'expo-app-auth';
-import { action, makeAutoObservable, observable, runInAction } from 'mobx';
+import { action, makeAutoObservable, observable } from 'mobx';
 import { Alert } from 'react-native';
 import GoogleAuth from '../authentication/GoogleAuth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
@@ -252,7 +252,6 @@ class AuthenticationStore {
             if (host) {
               if (host.ok) {
                 this.setAuthenticatedHost(await host.json());
-                console.log(this.authenticatedHost);
                 await HostStore.getInstance().loadUserData();
                 this.setIsLoading(false);
               } else {
@@ -283,9 +282,7 @@ class AuthenticationStore {
     const response = await this.amphitryonDAO.updateHost(host);
     if (response) {
       if (response.ok) {
-        runInAction(() => {
-          this.setAuthenticatedHost(host);
-        });
+        this.setAuthenticatedHost(host);
       } else {
         void RootStore.getInstance().manageErrorInResponse(response);
       }

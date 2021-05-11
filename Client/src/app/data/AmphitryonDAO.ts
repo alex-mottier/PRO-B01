@@ -545,7 +545,7 @@ export default class AmphitryonDAO {
    */
   async getReservations(startDate: Date, endDate: Date): Promise<Response | null> {
     return await fetch(Globals.URLS.API_URL + '/getReservations', {
-      method: 'GET',
+      method: 'POST',
       headers: this.headerWithSessionToken,
       body: JSON.stringify({ endDate: endDate.toISOString(), startDate: startDate.toISOString() }),
     })
@@ -553,7 +553,9 @@ export default class AmphitryonDAO {
         this.setSessionTokenFromResponse(response);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
+
         Alert.alert("Une erreur s'est produite", "Erreur lors de l'obtention des réservations");
         return null;
       });
