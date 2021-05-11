@@ -11,8 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
-@Document
 public class LocationResponse implements InterfaceDTO {
     @Id
     public String id;
@@ -39,4 +37,5 @@ public class LocationResponse implements InterfaceDTO {
         this.tags = location.getTags();
         this.openingHours = openingHours;
     }
+
 }
