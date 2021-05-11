@@ -15,6 +15,7 @@ import LoadingComponent from '../Loading/LoadingComponent';
 import styles from './styles';
 import Globals from '../../app/context/Globals';
 import { observer } from 'mobx-react-lite';
+import Strings from '../../app/context/Strings';
 
 const CovidDataComponent: React.FC = () => {
   /* Usage of React Navigation */
@@ -73,7 +74,7 @@ const CovidDataComponent: React.FC = () => {
           size={Globals.SIZES.ICON_BUTTON}
           style={styles.icon}
         />
-        <Text style={styles.gray}>Etablissement ouvert</Text>
+        <Text style={styles.gray}>{Strings.HOST_OPEN}</Text>
         <Switch
           value={isOpen}
           color={Globals.COLORS.PRIMARY}
@@ -88,7 +89,7 @@ const CovidDataComponent: React.FC = () => {
           size={Globals.SIZES.ICON_BUTTON}
           style={styles.icon}
         />
-        <Text style={styles.gray}>Masques obligatoires</Text>
+        <Text style={styles.gray}>{Strings.MASKS_REQUIRED}</Text>
         <Switch
           value={faceMask}
           color={Globals.COLORS.PRIMARY}
@@ -103,7 +104,7 @@ const CovidDataComponent: React.FC = () => {
           size={Globals.SIZES.ICON_BUTTON}
           style={styles.icon}
         />
-        <Text style={styles.gray}>Désinfection requise</Text>
+        <Text style={styles.gray}>{Strings.DISINFECTION_REQUIRED}</Text>
         <Switch
           value={disinfection}
           color={Globals.COLORS.PRIMARY}
@@ -133,7 +134,7 @@ const CovidDataComponent: React.FC = () => {
         labelStyle={{ color: Globals.COLORS.WHITE }}
         onPress={handleSubmit}
         style={styles.button}>
-        Enregistrer
+        {Strings.SAVE}
       </Button>
     </View>
   );

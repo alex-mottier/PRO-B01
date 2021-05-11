@@ -8,7 +8,6 @@
 import * as React from 'react';
 import { Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useStores } from '../../../app/context/storesContext';
 import CovidDataComponent from '../../../components/CovidData/CovidDataComponent';
 import styles from './styles';
 
@@ -26,7 +25,7 @@ const EditCovidData: React.FC = () => {
         style={styles.logo}
         resizeMode="stretch"
       />
-      <CovidDataComponent isEnabled={true} />
+      <CovidDataComponent />
     </ScrollView>
   );
 };

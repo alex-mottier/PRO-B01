@@ -20,6 +20,7 @@ import { colors } from '../../app/context/Theme';
 import Clipboard from 'expo-clipboard';
 import LoadingComponent from '../Loading/LoadingComponent';
 import { useStores } from '../../app/context/storesContext';
+import Strings from '../../app/context/Strings';
 
 /**
  * Component props
@@ -107,24 +108,20 @@ const MeetingComponent: React.FC<IProps> = ({
    * Suppression de la réunion
    */
   const handleDelete = () => {
-    Alert.alert(
-      'Supprimer ?',
-      'Etes-vous sûr de vouloir supprimer la réunion ' + meeting.name + ' ?',
-      [
-        {
-          text: 'Non',
-          style: 'cancel',
+    Alert.alert(Strings.ASK_DELETE, Strings.ASK_MEETING_DELETE + meeting.name + ' ?', [
+      {
+        text: Strings.NO,
+        style: 'cancel',
+      },
+      {
+        text: Strings.YES,
+        onPress: () => {
+          void studentStore.deleteMeeting(meeting.id).then(() => {
+            if (onDelete) onDelete();
+          });
         },
-        {
-          text: 'Oui',
-          onPress: () => {
-            void studentStore.deleteMeeting(meeting.id).then(() => {
-              if (onDelete) onDelete();
-            });
-          },
-        },
-      ],
-    );
+      },
+    ]);
   };
 
   /**
@@ -132,7 +129,7 @@ const MeetingComponent: React.FC<IProps> = ({
    */
   const copyToClipboard = () => {
     Clipboard.setString(meeting.id);
-    Alert.alert('Copié', "L'id de la réunion a été copié");
+    Alert.alert(Strings.SAVE, Strings.MEETING_ID_COPIED);
   };
 
   /**
@@ -243,7 +240,7 @@ const MeetingComponent: React.FC<IProps> = ({
                   color={Globals.COLORS.ORANGE}
                   onPress={handleOpenChat}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Discuter</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.CHAT}</Text>
               </View>
             )}
             {isOwner && !isChatView && (
@@ -254,7 +251,7 @@ const MeetingComponent: React.FC<IProps> = ({
                   onPress={copyToClipboard}
                   color={Globals.COLORS.GRAY}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Copier ID</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.COPY_ID}</Text>
               </View>
             )}
             {!isMemberOfMeeting && !isOwner && !isInCalendar && isSearchView && (
@@ -265,7 +262,7 @@ const MeetingComponent: React.FC<IProps> = ({
                   onPress={handleJoinMeeting}
                   color={Globals.COLORS.GREEN}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Rejoindre</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.JOIN}</Text>
               </View>
             )}
             {isOwner && !isChatView && (
@@ -276,7 +273,7 @@ const MeetingComponent: React.FC<IProps> = ({
                   onPress={handleEdit}
                   color={Globals.COLORS.BLUE}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Modifier</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.EDIT}</Text>
               </View>
             )}
             {isOwner && !isChatView && (
@@ -287,7 +284,7 @@ const MeetingComponent: React.FC<IProps> = ({
                   onPress={handleDelete}
                   color={Globals.COLORS.PINK}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Supprimer</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.DELETE}</Text>
               </View>
             )}
             {isMemberOfMeeting && !isOwner && (isInCalendar || isSearchView) && (
@@ -298,7 +295,7 @@ const MeetingComponent: React.FC<IProps> = ({
                   onPress={handleLeaveMeeting}
                   color={Globals.COLORS.PINK}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Quitter</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.LEAVE}</Text>
               </View>
             )}
           </Card.Actions>

@@ -13,6 +13,7 @@ import Profile from '../screens/Host/Profile/Profile';
 import Create from '../screens/Host/Create/Create';
 import MyLocations from '../screens/Host/Location/MyLocations';
 import { useTheme } from 'react-native-paper';
+import Strings from '../app/context/Strings';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -32,7 +33,7 @@ export const BottomHostTabs = (): React.ReactElement => {
           name={Globals.STRINGS.APP_NAME}
           component={Home}
           options={{
-            tabBarLabel: 'Accueil',
+            tabBarLabel: Strings.HOME,
             tabBarIcon: Globals.ICONS.HOME,
           }}
         />
@@ -40,7 +41,7 @@ export const BottomHostTabs = (): React.ReactElement => {
           name={Globals.STRINGS.CREATE_LOCATION}
           component={Create}
           options={{
-            tabBarLabel: 'Créer',
+            tabBarLabel: Strings.CREATE,
             tabBarIcon: Globals.ICONS.CREATE,
           }}
         />
@@ -48,7 +49,7 @@ export const BottomHostTabs = (): React.ReactElement => {
           name={Globals.STRINGS.LOCATIONS}
           component={MyLocations}
           options={{
-            tabBarLabel: 'Mes lieux',
+            tabBarLabel: Strings.MY_LOCATIONS,
             tabBarIcon: Globals.ICONS.LOCATION,
           }}
         />
@@ -56,7 +57,7 @@ export const BottomHostTabs = (): React.ReactElement => {
           name={Globals.STRINGS.PROFILE}
           component={Profile}
           options={{
-            tabBarLabel: 'Profil',
+            tabBarLabel: Strings.PROFILE,
             tabBarIcon: Globals.ICONS.PROFILE,
           }}
         />

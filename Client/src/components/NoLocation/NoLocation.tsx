@@ -12,6 +12,7 @@ import Globals from '../../app/context/Globals';
 import { View } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
+import Strings from '../../app/context/Strings';
 
 const NoLocation: React.FC = () => {
   /* Usage of React Navigation */
@@ -21,7 +22,7 @@ const NoLocation: React.FC = () => {
     <View>
       <View style={styles.row}>
         <MaterialCommunityIcons name={Globals.ICONS.SAD} color={Globals.COLORS.GRAY} size={50} />
-        <Text style={styles.text}>Aucun lieu</Text>
+        <Text style={styles.text}>{Strings.LOCATION_NONE}</Text>
       </View>
       <Button
         icon={Globals.ICONS.CREATE}
@@ -31,7 +32,7 @@ const NoLocation: React.FC = () => {
         onPress={() => {
           navigation.navigate(Globals.STRINGS.CREATE_LOCATION);
         }}>
-        Créer une lieu
+        {Strings.LOCATION_CREATE}
       </Button>
     </View>
   );

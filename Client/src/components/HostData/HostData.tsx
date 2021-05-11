@@ -14,6 +14,7 @@ import { useStores } from '../../app/context/storesContext';
 import { Host, Tag } from '../../app/models/ApplicationTypes';
 import styles from './styles';
 import TagsComponent from '../Tags/TagsComponent';
+import Strings from '../../app/context/Strings';
 
 /**
  * Component props
@@ -111,14 +112,14 @@ const HostData: React.FC<IProps> = ({ onSubmit, buttonText }) => {
           <ScrollView>
             <View style={styles.container}>
               <TextInput
-                label="Nom de l'hébébergement"
+                label={Strings.HOST_NAME}
                 value={host}
                 onChangeText={(host) => setHost(host)}
                 style={styles.fields}
                 mode={'outlined'}
               />
               <TextInput
-                label="Description de l'hébébergement"
+                label={Strings.HOST_DESCRIPTION}
                 value={description}
                 onChangeText={(description) => setDescription(description)}
                 style={styles.fields}
@@ -126,14 +127,14 @@ const HostData: React.FC<IProps> = ({ onSubmit, buttonText }) => {
               />
               <View style={styles.row}>
                 <TextInput
-                  label="Adresse de l'hébébergement"
+                  label={Strings.HOST_ADDRESS_NAME}
                   value={addressName}
                   onChangeText={(addressName) => setAddressName(addressName)}
                   style={styles.fields70}
                   mode={'outlined'}
                 />
                 <TextInput
-                  label="Numéro de l'adresse"
+                  label={Strings.HOST_ADDRESS_NUMBER}
                   value={addressNumber}
                   onChangeText={(addressNumber) => setAddressNumber(addressNumber)}
                   style={styles.fields20}
@@ -142,14 +143,14 @@ const HostData: React.FC<IProps> = ({ onSubmit, buttonText }) => {
               </View>
               <View style={styles.row}>
                 <TextInput
-                  label="Ville"
+                  label={Strings.HOST_ADDRESS_CITY}
                   value={city}
                   onChangeText={(city) => setCity(city)}
                   style={styles.fields70}
                   mode={'outlined'}
                 />
                 <TextInput
-                  label="NPA"
+                  label={Strings.HOST_ADDRESS_ZIP}
                   value={npa}
                   onChangeText={(npa) => setNpa(npa)}
                   style={styles.fields20}

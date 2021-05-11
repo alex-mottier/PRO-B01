@@ -13,6 +13,7 @@ import SignUp from '../screens/NoProfile/SignUp/SignUp';
 import ProfileConfiguration from '../screens/NoProfile/ProfileConfiguration/ProfileConfiguration';
 import { Appbar, IconButton, useTheme } from 'react-native-paper';
 import Globals from '../app/context/Globals';
+import Strings from '../app/context/Strings';
 
 // Parameters of the screens
 type AuthParamList = {
@@ -77,28 +78,28 @@ export const AuthenticationStack: React.FC = () => {
         name="Welcome"
         component={Welcome}
         options={{
-          headerTitle: Globals.STRINGS.APP_NAME,
+          headerTitle: Strings.APP_NAME,
         }}
       />
       <Stack.Screen
         name="SignIn"
         component={SignIn}
         options={{
-          headerTitle: 'Connexion',
+          headerTitle: Strings.SIGN_IN,
         }}
       />
       <Stack.Screen
         name="SignUp"
         component={SignUp}
         options={{
-          headerTitle: 'Inscription',
+          headerTitle: Strings.SIGN_UP,
         }}
       />
       <Stack.Screen
         name="ProfileConfiguration"
         component={ProfileConfiguration}
         options={{
-          headerTitle: 'Configuration du profil',
+          headerTitle: Strings.PROFILE_CONFIGURATION,
         }}
       />
     </Stack.Navigator>

@@ -16,6 +16,7 @@ import { formatDistance } from 'date-fns';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import Globals from '../../../app/context/Globals';
 import { useStores } from '../../../app/context/storesContext';
+import Strings from '../../../app/context/Strings';
 
 const ChatMeeting: React.FC = () => {
   /* Usage of MobX global state store */
@@ -122,7 +123,7 @@ const ChatMeeting: React.FC = () => {
             <View style={styles.message}>
               <View style={styles.row}>
                 <TextInput
-                  label="Tapez votre texte ici ..."
+                  label={Strings.MESSAGE_TYPE}
                   value={message}
                   onChangeText={(message) => setMessage(message)}
                   style={styles.fields}
@@ -134,7 +135,7 @@ const ChatMeeting: React.FC = () => {
                     color={Globals.COLORS.PRIMARY}
                     onPress={() => handleSubmit()}
                   />
-                  <Text style={{ color: Globals.COLORS.TEXT, marginTop: -5 }}>{'Envovez'}</Text>
+                  <Text style={{ color: Globals.COLORS.TEXT, marginTop: -5 }}>{Strings.SEND}</Text>
                 </View>
               </View>
             </View>

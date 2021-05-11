@@ -12,6 +12,7 @@ import { addDays, endOfDay, format, startOfDay } from 'date-fns';
 import { AgendaItemsMap } from 'react-native-calendars';
 import { Alert } from 'react-native';
 import RootStore from './RootStore';
+import Strings from '../context/Strings';
 
 class HostStore {
   private static instance: HostStore;
@@ -101,10 +102,6 @@ class HostStore {
             });
             if (index) this.hostLocations[index] = location;
           }
-          Alert.alert(
-            'Location mise à jour',
-            'La location que vous avez soumise a bien été mise à jour',
-          );
         });
       } else {
         void RootStore.getInstance().manageErrorInResponse(response);
@@ -123,7 +120,7 @@ class HostStore {
         const locationWithId = await response.json();
         void runInAction(() => {
           this.hostLocations.push(locationWithId);
-          Alert.alert('Lieu créée', 'Le lieu que vous avez soumis a bien été enregistré');
+          Alert.alert(Strings.SAVED, Strings.LOCATION_CREATED);
         });
       } else {
         void RootStore.getInstance().manageErrorInResponse(response);
@@ -144,7 +141,6 @@ class HostStore {
             this.hostLocations = this.hostLocations.filter((current: Location) => {
               return current.id !== locationId;
             });
-          Alert.alert('Supprimée', 'Le lieu a correctement été supprimé');
           this.regenerateItems();
         });
       } else {

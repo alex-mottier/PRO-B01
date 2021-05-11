@@ -16,6 +16,7 @@ import CustomButton from '../../../components/Buttons/CustomButton';
 import FacebookButton from '../../../components/Buttons/FacebookButton';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../../../app/context/storesContext';
+import Strings from '../../../app/context/Strings';
 
 const SignUp: React.FC = () => {
   /* Usage of React Navigation */
@@ -40,10 +41,7 @@ const SignUp: React.FC = () => {
         if (!response || !response.ok) {
           if (isLoggedIn) navigation.navigate('ProfileConfiguration');
         } else {
-          Alert.alert(
-            'Compte déjà utilisé',
-            'Ce compte Google est déjà rattaché à un compte Amphitryon, veuillez vous connecter',
-          );
+          Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_ACCOUNT_ALREADY_EXISTS);
         }
       }
     });
@@ -65,12 +63,12 @@ const SignUp: React.FC = () => {
           resizeMode="stretch"
         />
         <View style={styles.container}>
-          <Title>S&apos;inscrire avec</Title>
-          <Text style={styles.text}>Veuillez choisir une option d&apos;inscription</Text>
+          <Title>{Strings.SIGN_UP_WITH}</Title>
+          <Text style={styles.text}>{Strings.SIGN_UP_CHOOSE}</Text>
           <View style={styles.buttons}>
             <FacebookButton
               onPress={() => {
-                Alert.alert('En développement', 'Fonctionnalité en développement');
+                Alert.alert(Strings.DEVELOPPING);
               }}
             />
             <GoogleButton onPress={handleSignUp} />
@@ -78,7 +76,7 @@ const SignUp: React.FC = () => {
               icon={Globals.ICONS.PROFILE}
               color={Globals.COLORS.GRAY}
               onPress={() => navigation.navigate('SignIn')}
-              text={'Se connecter'}
+              text={Strings.SIGN_IN}
             />
           </View>
         </View>

@@ -18,6 +18,7 @@ import { colors } from '../../../app/context/Theme';
 import { useNavigation } from '@react-navigation/core';
 import CovidDataComponent from '../../../components/CovidData/CovidDataComponent';
 import CovidDataDisplay from '../../../components/CovidDataDisplay/CovidDataDisplay';
+import Strings from '../../../app/context/Strings';
 
 const Profile: React.FC = () => {
   /* Usage of MobX global state store */
@@ -39,7 +40,7 @@ const Profile: React.FC = () => {
           <Card style={styles.card} elevation={10}>
             <Card.Content>
               <View style={styles.cardTitle}>
-                <Text style={styles.gray}>Informations générales :</Text>
+                <Text style={styles.gray}>{Strings.HOST_DATA} :</Text>
                 <IconButton
                   icon={Globals.ICONS.EDIT}
                   size={Globals.SIZES.ICON_MENU}
@@ -75,7 +76,7 @@ const Profile: React.FC = () => {
                 <Text style={[styles.paragraph, styles.gray]}>{host?.description}</Text>
               </View>
               <View style={styles.cardTitle}>
-                <Text style={[styles.paragraph, styles.gray]}>Tags : </Text>
+                <Text style={[styles.paragraph, styles.gray]}>{Strings.TAGS} :</Text>
                 <View style={styles.chips}>
                   {host?.tags.map((tag: Tag) => {
                     return (

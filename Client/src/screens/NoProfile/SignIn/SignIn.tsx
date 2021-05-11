@@ -15,6 +15,7 @@ import FacebookButton from '../../../components/Buttons/FacebookButton';
 import GoogleButton from '../../../components/Buttons/GoogleButton';
 import CustomButton from '../../../components/Buttons/CustomButton';
 import { useStores } from '../../../app/context/storesContext';
+import Strings from '../../../app/context/Strings';
 
 const SignIn: React.FC = () => {
   /* Usage of React Navigation */
@@ -42,12 +43,12 @@ const SignIn: React.FC = () => {
           resizeMode="stretch"
         />
         <View style={styles.container}>
-          <Title>Se connecter avec</Title>
-          <Text style={styles.text}>Veuillez choisir une option de connexion</Text>
+          <Title>{Strings.SIGN_IN_WITH}</Title>
+          <Text style={styles.text}>{Strings.SIGN_IN_CHOOSE}</Text>
           <View style={styles.buttons}>
             <FacebookButton
               onPress={() => {
-                Alert.alert('En développement', 'Fonctionnalité en développement');
+                Alert.alert(Strings.DEVELOPPING);
               }}
             />
             <GoogleButton onPress={handleLogin} />
@@ -55,7 +56,7 @@ const SignIn: React.FC = () => {
               icon={Globals.ICONS.PROFILE}
               color={Globals.COLORS.GRAY}
               onPress={() => navigation.navigate('SignUp')}
-              text={"S'inscrire"}
+              text={Strings.SIGN_UP}
             />
           </View>
         </View>

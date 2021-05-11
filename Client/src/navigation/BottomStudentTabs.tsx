@@ -13,6 +13,7 @@ import Profile from '../screens/Student/Profile/Profile';
 import Search from '../screens/Student/Search/Search';
 import Create from '../screens/Student/Create/Create';
 import { useTheme } from 'react-native-paper';
+import Strings from '../app/context/Strings';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -32,7 +33,7 @@ export const BottomStudentTabs = (): React.ReactElement => {
           name={Globals.STRINGS.APP_NAME}
           component={Home}
           options={{
-            tabBarLabel: 'Accueil',
+            tabBarLabel: Strings.HOME,
             tabBarIcon: Globals.ICONS.HOME,
           }}
         />
@@ -40,7 +41,7 @@ export const BottomStudentTabs = (): React.ReactElement => {
           name={Globals.STRINGS.CREATE}
           component={Create}
           options={{
-            tabBarLabel: 'Créer',
+            tabBarLabel: Strings.CREATE,
             tabBarIcon: Globals.ICONS.CREATE,
           }}
         />
@@ -48,7 +49,7 @@ export const BottomStudentTabs = (): React.ReactElement => {
           name={Globals.STRINGS.SEARCH}
           component={Search}
           options={{
-            tabBarLabel: 'Rechercher',
+            tabBarLabel: Strings.SEARCH,
             tabBarIcon: Globals.ICONS.SEARCH,
           }}
         />
@@ -56,7 +57,7 @@ export const BottomStudentTabs = (): React.ReactElement => {
           name={Globals.STRINGS.PROFILE}
           component={Profile}
           options={{
-            tabBarLabel: 'Profil',
+            tabBarLabel: Strings.PROFILE,
             tabBarIcon: Globals.ICONS.PROFILE,
           }}
         />

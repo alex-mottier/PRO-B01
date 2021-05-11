@@ -8,6 +8,7 @@
 import { makeAutoObservable } from 'mobx';
 import { Error } from '../models/ApplicationTypes';
 import { Alert } from 'react-native';
+import Strings from '../context/Strings';
 
 class RootStore {
   private static instance: RootStore;
@@ -36,25 +37,22 @@ class RootStore {
     const error: Error = await response.json();
     switch (response.status) {
       case 401:
-        Alert.alert('Non autorisé', "Vous n'êtes pas autorisé à effectuer cette manipulation");
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_UNAUTHORIZED);
         break;
       case 403:
-        Alert.alert('Interdit', "L'action effectuée est interdite pour l'utilisateur");
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_FORBIDEN);
         break;
       case 404:
-        Alert.alert('Non trouvé', "La ressource demandée n'a pas été trouvée");
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_NOT_FOUND);
         break;
       case 500:
-        Alert.alert('Erreur', "Une erreur s'est produite sur le serveur");
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_SERVER);
         break;
       case 406:
-        Alert.alert("Une erreur s'est produite", error.message);
+        Alert.alert(Strings.ERROR_OCCURED, error.message);
         break;
       default:
-        Alert.alert(
-          'Erreur inattendue',
-          "Une erreur inattendue s'est produite : " + response.status.toString(),
-        );
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_UNEXPECTED);
     }
   }
 }

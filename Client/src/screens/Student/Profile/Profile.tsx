@@ -14,6 +14,7 @@ import { Meeting } from '../../../app/models/ApplicationTypes';
 import NoMeeting from '../../../components/NoMeeting/NoMeeting';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import { useStores } from '../../../app/context/storesContext';
+import Strings from '../../../app/context/Strings';
 
 const Profile: React.FC = () => {
   /* Usage of MobX global state store */
@@ -27,7 +28,7 @@ const Profile: React.FC = () => {
             <Avatar.Image size={80} source={require('../../../../assets/Logo.png')} />
             <Title style={styles.title}>{authenticationStore.authenticatedStudent?.username}</Title>
           </View>
-          <Text style={styles.text}>Réunions à venir créées :</Text>
+          <Text style={styles.text}>{Strings.MEETINGS_TO_COME} :</Text>
           {meetings && meetings.length === 0 ? (
             <NoMeeting />
           ) : (

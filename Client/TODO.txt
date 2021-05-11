@@ -1,8 +1,13 @@
 Prioritaire : 
-[] Inclusions circulaires à enlever
-[] Voir les warnings : [Unhandled promise rejection: TypeError: Already read]
+[X] Inclusions circulaires à enlever
+[X] Voir les warnings : [Unhandled promise rejection: TypeError: Already read]
 
 Finalisation : 
-[] Mettre toutes les strings dans les globals
+[x] Mettre toutes les strings dans les globals
 [] Feuilles de styles : unification ?
 [] Dans la navigation, définir ce qui est affiché en haut dans la barre (toujours Amphitryon)
+[] Generated items : code dupliqué
+[] RootStore ne sert à rien, la fonction va dans les utils
+[] Supprimer les customs buttons
+[] Renommer les rotues ex : STUDENT_PROFILE, HOST_PROFILE
+[] Calendar component le meme dans le home du student que dans le host

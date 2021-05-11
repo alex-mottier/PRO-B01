@@ -12,6 +12,7 @@ import { addDays, endOfDay, format, startOfDay } from 'date-fns';
 import { Alert } from 'react-native';
 import { AgendaItemsMap } from 'react-native-calendars';
 import RootStore from './RootStore';
+import Strings from '../context/Strings';
 
 class StudentStore {
   private static instance: StudentStore;
@@ -112,7 +113,7 @@ class StudentStore {
             const newMeeting = await response.json();
             this.setMeetingToUpdate(newMeeting);
             this.userMeetings.push(newMeeting);
-            Alert.alert('Meeting rejoint', 'Vous avez rejoint la réunion ' + meeting.name);
+            Alert.alert(Strings.SAVED, Strings.MEETING_JOINED + meeting.name);
             this.regenerateItems();
           }
         });
@@ -136,7 +137,6 @@ class StudentStore {
             this.userMeetings = this.userMeetings?.filter((current: Meeting) => {
               return current.id !== current.id;
             });
-            Alert.alert('Meeting quitté', 'Vous avez quitté la réunion ' + meeting.name);
             this.regenerateItems();
           }
         });
@@ -296,7 +296,7 @@ class StudentStore {
           this.userMeetings?.push(meetingWithId);
           this.meetingsCreatedByUser?.push(meetingWithId);
           this.regenerateItems();
-          Alert.alert('Réunion créée', 'La réunion que vous avez soumise a bien été enregistrée');
+          Alert.alert(Strings.CREATED, Strings.MEETING_CREATED);
         });
         this.regenerateItems();
       } else {
@@ -328,10 +328,6 @@ class StudentStore {
           }
         });
         this.regenerateItems();
-        Alert.alert(
-          'Réunion mise à jour',
-          'La réunion que vous avez soumise a bien été mise à jour',
-        );
       } else {
         void RootStore.getInstance().manageErrorInResponse(response);
       }
@@ -355,7 +351,6 @@ class StudentStore {
             this.meetingsCreatedByUser = this.meetingsCreatedByUser.filter((current: Meeting) => {
               return current.id !== meetingId;
             });
-          Alert.alert('Supprimée', 'La réunion a correctement été supprimée');
           this.regenerateItems();
         });
       } else {

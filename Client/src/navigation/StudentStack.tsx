@@ -18,6 +18,7 @@ import HostDetails from '../screens/Student/Host/HostDetails';
 import ChatMeeting from '../screens/Student/Chat/ChatMeeting';
 import Edit from '../screens/Student/Edit/Edit';
 import { useStores } from '../app/context/storesContext';
+import Strings from '../app/context/Strings';
 
 // Parameters of the screens
 type StackNavigatorParamlist = {
@@ -99,30 +100,27 @@ const StudentStack: React.FC = () => {
       <Stack.Screen
         name="Main"
         component={BottomStudentTabs}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: Strings.APP_NAME,
           };
         }}
       />
       <Stack.Screen
         name="LocationDetails"
         component={LocationDetails}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: Strings.LOCATION_DETAILS,
           };
         }}
       />
       <Stack.Screen
         name="HostDetails"
         component={HostDetails}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: Strings.HOST_DETAILS,
           };
         }}
       />
@@ -131,7 +129,7 @@ const StudentStack: React.FC = () => {
         component={ChatMeeting}
         options={() => {
           return {
-            headerTitle: 'Chat',
+            headerTitle: Strings.CHAT,
           };
         }}
       />
@@ -140,7 +138,7 @@ const StudentStack: React.FC = () => {
         component={Edit}
         options={() => {
           return {
-            headerTitle: 'Modifier réunion',
+            headerTitle: Strings.MEETING_UPDATE,
           };
         }}
       />

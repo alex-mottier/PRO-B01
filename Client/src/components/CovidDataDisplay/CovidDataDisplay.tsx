@@ -14,6 +14,7 @@ import styles from './styles';
 import Globals from '../../app/context/Globals';
 import { observer } from 'mobx-react-lite';
 import { Host } from '../../app/models/ApplicationTypes';
+import Strings from '../../app/context/Strings';
 
 /**
  * Component props
@@ -31,7 +32,7 @@ const CovidDataDisplay: React.FC<IProps> = ({ host, editButtonDisplayed }) => {
     <Card style={styles.card} elevation={10}>
       <Card.Content>
         <View style={styles.cardTitle}>
-          <Text style={styles.gray}>Politique Covid :</Text>
+          <Text style={styles.gray}>{Strings.COVID_DATA}</Text>
           {editButtonDisplayed && (
             <IconButton
               icon={Globals.ICONS.EDIT}
@@ -52,7 +53,7 @@ const CovidDataDisplay: React.FC<IProps> = ({ host, editButtonDisplayed }) => {
               style={styles.icon}
             />
             <Text style={styles.gray}>
-              Etablissement {host?.covidData.isOpen ? 'ouvert' : 'fermé '}
+              {host?.covidData.isOpen ? Strings.HOST_OPEN : Strings.HOST_CLOSED}
             </Text>
           </View>
           <View style={styles.row}>
@@ -63,7 +64,7 @@ const CovidDataDisplay: React.FC<IProps> = ({ host, editButtonDisplayed }) => {
               style={styles.icon}
             />
             <Text style={styles.gray}>
-              Masques {host?.covidData.masksRequired ? '' : 'non '}obligatoires
+              {host?.covidData.masksRequired ? Strings.MASKS_REQUIRED : Strings.MASKS_NOT_REQUIRED}
             </Text>
           </View>
           <View style={styles.row}>
@@ -74,7 +75,9 @@ const CovidDataDisplay: React.FC<IProps> = ({ host, editButtonDisplayed }) => {
               style={styles.icon}
             />
             <Text style={styles.gray}>
-              Désinfection {host?.covidData.disinfectionRequired ? '' : 'non '}requise
+              {host?.covidData.disinfectionRequired
+                ? Strings.DISINFECTION_REQUIRED
+                : Strings.DISINFECTION_NOT_REQUIRED}
             </Text>
           </View>
           <View style={styles.row}>
@@ -87,7 +90,7 @@ const CovidDataDisplay: React.FC<IProps> = ({ host, editButtonDisplayed }) => {
             <View style={{ width: '100%' }}>
               <Text style={[styles.paragraph, styles.gray]}>
                 {host?.covidData.recommendedDistancing === ''
-                  ? 'Veuillez définir la distance requise'
+                  ? Strings.DISTANCING_NULL
                   : host?.covidData.recommendedDistancing}
               </Text>
             </View>
@@ -101,9 +104,7 @@ const CovidDataDisplay: React.FC<IProps> = ({ host, editButtonDisplayed }) => {
             />
             <View style={{ width: '100%' }}>
               <Text style={[styles.paragraph, styles.gray]}>
-                {host?.covidData.comments === ''
-                  ? 'Veuillez mettre un commentaire'
-                  : host?.covidData.comments}
+                {host?.covidData.comments === '' ? Strings.COMMENTS_NULL : host?.covidData.comments}
               </Text>
             </View>
           </View>

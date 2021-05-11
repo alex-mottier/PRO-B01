@@ -10,6 +10,7 @@ import { ScrollView, View } from 'react-native';
 import { IconButton, TextInput, Text, Portal, Modal, Title, useTheme } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
 import { useStores } from '../../app/context/storesContext';
+import Strings from '../../app/context/Strings';
 import { Location } from '../../app/models/ApplicationTypes';
 import LoadingComponent from '../Loading/LoadingComponent';
 import LocationComponent from '../Location/LocationComponent';
@@ -80,7 +81,7 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
   return (
     <View>
       <View style={styles.tags}>
-        <Text style={{ color: Globals.COLORS.TEXT }}>Lieu</Text>
+        <Text style={{ color: Globals.COLORS.TEXT }}>{Strings.LOCATION}</Text>
         <IconButton
           icon={Globals.ICONS.SEARCH}
           size={Globals.SIZES.ICON_MENU}
@@ -118,7 +119,7 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
                 onPress={() => setModalVisible(false)}
               />
             </View>
-            <Title style={styles.title}>Recherche de lieux</Title>
+            <Title style={styles.title}>{Strings.LOCATIONS_SEARCH}</Title>
             <TextInput
               label="Nom du lieu"
               value={locationName}

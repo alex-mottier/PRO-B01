@@ -7,15 +7,8 @@
 
 import { Alert } from 'react-native';
 import Globals from '../context/Globals';
-import {
-  CovidData,
-  Filter,
-  Host,
-  Location,
-  Meeting,
-  Message,
-  Student,
-} from '../models/ApplicationTypes';
+import Strings from '../context/Strings';
+import { Filter, Host, Location, Meeting, Message, Student } from '../models/ApplicationTypes';
 
 export default class AmphitryonDAO {
   private static instance: AmphitryonDAO = new AmphitryonDAO();
@@ -73,7 +66,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", "Erreur lors de la création de l 'utilisateur");
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_CREATION);
         return null;
       });
   }
@@ -94,10 +87,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert(
-          "Une erreur s'est produite",
-          'Erreur lors de la récupération des informations de votre compte',
-        );
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_LOGIN);
         return null;
       });
   }
@@ -118,7 +108,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la création de la réunion');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_MEETING_CREATE);
         return null;
       });
   }
@@ -139,7 +129,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la mise à jour de la réunion');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_MEETING_UPDATE);
         return null;
       });
   }
@@ -159,7 +149,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la suppression la réunion');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_MEETING_DELETE);
         return null;
       });
   }
@@ -178,10 +168,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert(
-          "Une erreur s'est produite",
-          "Erreur lors du chargement des meetings de l'utilisateur",
-        );
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_GET_CREATED_MEETINGS);
         return null;
       });
   }
@@ -203,7 +190,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors du chargement de vos réunions');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_LOAD_MEETINGS);
         return null;
       });
   }
@@ -223,7 +210,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la recherche de réunion');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_SEARCH_WITH_ID);
         return null;
       });
   }
@@ -244,7 +231,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la recherche de réunion');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_SEARCH_WITH_FILER);
         return null;
       });
   }
@@ -264,7 +251,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", "Erreur lors de l'inscription");
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_MEETING_JOIN);
         return null;
       });
   }
@@ -284,7 +271,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la désinscription');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_MEETING_LEAVE);
         return null;
       });
   }
@@ -304,7 +291,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la récupération des messages');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_CHAT_LOAD);
         return null;
       });
   }
@@ -325,7 +312,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", "Erreur lors de l'envoi du message");
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_CHAT_SEND);
         return null;
       });
   }
@@ -345,7 +332,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors du lieu');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_LOCATION_LOAD);
         return null;
       });
   }
@@ -376,7 +363,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors du chargement des lieux');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_LOCATIONS_LOAD);
         return null;
       });
   }
@@ -395,7 +382,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors du chargement des lieux');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_LOCATIONS_LOAD);
         return null;
       });
   }
@@ -415,10 +402,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert(
-          "Une erreur s'est produite",
-          "Erreur lors de la récupération des détails de l'hébergeur",
-        );
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_HOST_LOAD);
         return null;
       });
   }
@@ -451,7 +435,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", "Erreur lors de la création de l'hébergeur");
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_HOST_CREATE);
         return null;
       });
   }
@@ -470,7 +454,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors du lieu');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_HOST_LOCATIONS);
         return null;
       });
   }
@@ -491,7 +475,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la création du lieu');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_LOCATION_CREATE);
         return null;
       });
   }
@@ -511,7 +495,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la suppression du lieu');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_LOCATION_DELETE);
         return null;
       });
   }
@@ -532,7 +516,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la mise à jour du lieu');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_LOCATION_UPDATE);
         return null;
       });
   }
@@ -554,50 +538,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", "Erreur lors de l'obtention des réservations");
-        return null;
-      });
-  }
-
-  /**
-   * Get host reservations
-   * @returns covid data
-   */
-  async getCovidData(): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/CovidData', {
-      method: 'GET',
-      headers: this.headerWithSessionToken,
-    })
-      .then((response: Response) => {
-        this.setSessionTokenFromResponse(response);
-        return response;
-      })
-      .catch(() => {
-        Alert.alert(
-          "Une erreur s'est produite",
-          'Erreur lors de la récupération des données Covid',
-        );
-        return null;
-      });
-  }
-
-  /**
-   * Update covid data
-   * @param covidData to update
-   * @returns if the covid data have been successfully updated or null
-   */
-  async updateCovidData(covidData: CovidData): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/CovidData', {
-      method: 'PATCH',
-      headers: this.headerWithSessionToken,
-      body: JSON.stringify(covidData),
-    })
-      .then((response: Response) => {
-        this.setSessionTokenFromResponse(response);
-        return response;
-      })
-      .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la mise à jour du lieu');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_HOST_RESERVATIONS);
         return null;
       });
   }
@@ -618,7 +559,7 @@ export default class AmphitryonDAO {
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la mise à jour du lieu');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_HOST_UPDATE);
         return null;
       });
   }

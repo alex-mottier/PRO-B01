@@ -9,6 +9,7 @@ import { TokenResponse } from 'expo-app-auth';
 import { action, makeAutoObservable, observable } from 'mobx';
 import { Alert } from 'react-native';
 import GoogleAuth from '../authentication/GoogleAuth';
+import Strings from '../context/Strings';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 import { Host, Student, UserResponse } from '../models/ApplicationTypes';
 import HostStore from './HostStore';
@@ -258,10 +259,7 @@ class AuthenticationStore {
                 void RootStore.getInstance().manageErrorInResponse(host);
               }
             } else {
-              Alert.alert(
-                'Erreur',
-                "Une erreur s'est produite lors du chargement de l'utilisateur",
-              );
+              Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_LOAD);
             }
           }
           this.setIsLoggedIn(true);
@@ -269,7 +267,7 @@ class AuthenticationStore {
           void RootStore.getInstance().manageErrorInResponse(response);
         }
       } else {
-        Alert.alert('Erreur', "Une erreur s'est produite lors du chargement de l'utilisateur");
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_LOAD);
       }
     }
   }

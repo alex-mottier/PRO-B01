@@ -31,6 +31,7 @@ import NoMeeting from '../../../components/NoMeeting/NoMeeting';
 import { observer } from 'mobx-react-lite';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
 import { useStores } from '../../../app/context/storesContext';
+import Strings from '../../../app/context/Strings';
 
 const Search: React.FC = () => {
   // Usage of react native paper theme library
@@ -150,7 +151,7 @@ const Search: React.FC = () => {
         <View style={[styles.container, { backgroundColor: paperTheme.colors.surface }]}>
           <View style={styles.search}>
             <TextInput
-              label="Id unique de la réunion"
+              label={Strings.SEARCH_ID}
               value={search}
               onChangeText={(id) => handleSearchWithId(id)}
               style={styles.fields}
@@ -204,13 +205,15 @@ const Search: React.FC = () => {
                 <Title style={styles.title}>Filtres</Title>
                 <View style={styles.content}>
                   <TextInput
-                    label="Nom de la réunion"
+                    label={Strings.MEETING_NAME}
                     value={name}
                     onChangeText={(id) => setName(id)}
                     style={styles.fields}
                   />
                   <View style={styles.dateHeure}>
-                    <Text style={{ color: Globals.COLORS.TEXT }}>Entre les dates :</Text>
+                    <Text style={{ color: Globals.COLORS.TEXT }}>
+                      {Strings.MEETING_DATE_BETWEEN} :
+                    </Text>
                   </View>
                   <View style={styles.date}>
                     <View style={styles.row}>
@@ -257,7 +260,7 @@ const Search: React.FC = () => {
                   labelStyle={{ color: Globals.COLORS.WHITE }}
                   onPress={handleSubmit}
                   style={styles.button}>
-                  Rechercher
+                  {Strings.SEARCH}
                 </Button>
                 <View>
                   {showStartDate && (

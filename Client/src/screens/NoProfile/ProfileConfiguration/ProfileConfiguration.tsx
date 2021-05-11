@@ -14,6 +14,7 @@ import { Tabs, TabScreen } from 'react-native-paper-tabs';
 import { useStores } from '../../../app/context/storesContext';
 import { Host } from '../../../app/models/ApplicationTypes';
 import HostData from '../../../components/HostData/HostData';
+import Strings from '../../../app/context/Strings';
 
 const ProfileConfiguration: React.FC = () => {
   // Usage of react native paper theme library
@@ -52,7 +53,7 @@ const ProfileConfiguration: React.FC = () => {
           primary: Globals.COLORS.BLUE,
         },
       }}>
-      <TabScreen label="Etudiant">
+      <TabScreen label={Strings.STUDENT}>
         <SafeAreaView>
           <ScrollView>
             <Image
@@ -68,22 +69,22 @@ const ProfileConfiguration: React.FC = () => {
             />
             <View style={styles.container}>
               <TextInput
-                label="Nom d'utilisateur"
+                label={Strings.USER_NAME}
                 value={username}
                 onChangeText={(username) => setUsername(username)}
                 style={styles.fields}
                 mode={'outlined'}
               />
-              <Drawer.Section title="Etablissement" style={{ width: '100%' }}>
+              <Drawer.Section title={Strings.ESTABLISHMENT} style={{ width: '100%' }}>
                 <Drawer.Item
-                  label="HEIG-VD"
-                  active={establishment === 'HEIG-VD' || establishment === ''}
-                  onPress={() => setEstablishment('HEIG-VD')}
+                  label={Strings.HEIGVD}
+                  active={establishment === Strings.HEIGVD || establishment === ''}
+                  onPress={() => setEstablishment(Strings.HEIGVD)}
                 />
                 <Drawer.Item
-                  label="Autre"
-                  active={establishment === 'Autre'}
-                  onPress={() => setEstablishment('Autre')}
+                  label={Strings.OTHER}
+                  active={establishment === Strings.OTHER}
+                  onPress={() => setEstablishment(Strings.OTHER)}
                 />
               </Drawer.Section>
               <Button
@@ -93,17 +94,17 @@ const ProfileConfiguration: React.FC = () => {
                 labelStyle={{ color: Globals.COLORS.WHITE }}
                 onPress={handleStudentSubmit}
                 style={styles.button}>
-                Finaliser le profile
+                {Strings.PROFILE_SEND}
               </Button>
             </View>
           </ScrollView>
         </SafeAreaView>
       </TabScreen>
-      <TabScreen label="Hebergeur">
+      <TabScreen label={Strings.HOST}>
         <SafeAreaView>
           <HostData
             onSubmit={(host: Host) => handleHostSubmit(host)}
-            buttonText={'Finaliser le profil'}
+            buttonText={Strings.PROFILE_SEND}
           />
         </SafeAreaView>
       </TabScreen>

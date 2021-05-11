@@ -17,6 +17,7 @@ import { useStores } from '../app/context/storesContext';
 import Edit from '../screens/Host/Edit/Edit';
 import EditHost from '../screens/Host/EditHost/EditHost';
 import CovidData from '../screens/Host/EditCovidData/EditCovidData';
+import Strings from '../app/context/Strings';
 
 // Parameters of the screens
 type StackNavigatorParamlist = {
@@ -96,10 +97,9 @@ const HostStack: React.FC = () => {
       <Stack.Screen
         name="Main"
         component={BottomHostTabs}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: Strings.APP_NAME,
           };
         }}
       />
@@ -108,7 +108,7 @@ const HostStack: React.FC = () => {
         component={Edit}
         options={() => {
           return {
-            headerTitle: 'Modifier lieu',
+            headerTitle: Strings.LOCATION_EDIT,
           };
         }}
       />
@@ -117,7 +117,7 @@ const HostStack: React.FC = () => {
         component={EditHost}
         options={() => {
           return {
-            headerTitle: 'Modifier hébergeur',
+            headerTitle: Strings.HOST_EDIT,
           };
         }}
       />
@@ -126,7 +126,7 @@ const HostStack: React.FC = () => {
         component={CovidData}
         options={() => {
           return {
-            headerTitle: 'Politique Covid',
+            headerTitle: Strings.COVID_DATA,
           };
         }}
       />
