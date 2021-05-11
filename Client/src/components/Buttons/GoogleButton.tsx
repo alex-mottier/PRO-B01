@@ -6,8 +6,8 @@
  */
 
 import * as React from 'react';
+import { Button } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
-import CustomButton from './CustomButton';
 
 interface IProps {
   onPress: () => void;
@@ -15,12 +15,9 @@ interface IProps {
 
 const GoogleButton: React.FC<IProps> = ({ onPress }) => {
   return (
-    <CustomButton
-      icon={Globals.ICONS.GOOGLE}
-      color={Globals.COLORS.GOOGLE}
-      onPress={onPress}
-      text={'Google'}
-    />
+    <Button icon={Globals.ICONS.GOOGLE} color={Globals.COLORS.GOOGLE} onPress={onPress}>
+      Google
+    </Button>
   );
 };
 

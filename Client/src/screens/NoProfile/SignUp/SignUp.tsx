@@ -7,12 +7,11 @@
 
 import * as React from 'react';
 import { Alert, Image, SafeAreaView, ScrollView, View } from 'react-native';
-import { Text, Title } from 'react-native-paper';
+import { Button, Text, Title } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/core';
 import styles from './styles';
 import Globals from '../../../app/context/Globals';
 import GoogleButton from '../../../components/Buttons/GoogleButton';
-import CustomButton from '../../../components/Buttons/CustomButton';
 import FacebookButton from '../../../components/Buttons/FacebookButton';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../../../app/context/storesContext';
@@ -72,12 +71,12 @@ const SignUp: React.FC = () => {
               }}
             />
             <GoogleButton onPress={handleSignUp} />
-            <CustomButton
+            <Button
               icon={Globals.ICONS.PROFILE}
               color={Globals.COLORS.GRAY}
-              onPress={() => navigation.navigate('SignIn')}
-              text={Strings.SIGN_IN}
-            />
+              onPress={() => navigation.navigate('SignIn')}>
+              {Strings.SIGN_IN}
+            </Button>
           </View>
         </View>
       </ScrollView>
