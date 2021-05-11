@@ -30,7 +30,7 @@ const NoMeeting: React.FC = () => {
         color={Globals.COLORS.PRIMARY}
         labelStyle={{ color: Globals.COLORS.WHITE }}
         onPress={() => {
-          navigation.navigate(Globals.STRINGS.CREATE);
+          navigation.navigate(Globals.NAVIGATION.STUDENT_CREATE_MEETING);
         }}>
         {Strings.MEETING_CREATE}
       </Button>

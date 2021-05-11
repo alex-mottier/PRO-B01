@@ -10,7 +10,7 @@ import { Image, SafeAreaView, ScrollView, View } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { TabScreen } from 'react-native-paper-tabs';
 import Globals from '../../app/context/Globals';
-import { useStores } from '../../app/context/storesContext';
+import { useStores } from '../../app/stores/StoresContext';
 import { Host, Tag } from '../../app/models/ApplicationTypes';
 import styles from './styles';
 import TagsComponent from '../Tags/TagsComponent';

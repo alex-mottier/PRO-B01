@@ -12,7 +12,7 @@ import { AuthenticationStack } from './AuthenticationStack';
 import { observer } from 'mobx-react-lite';
 import StudentStack from './StudentStack';
 import { lightThemeNavigation } from '../app/context/Theme';
-import { useStores } from '../app/context/storesContext';
+import { useStores } from '../app/stores/StoresContext';
 import HostStack from './HostStack';
 
 const Routes: React.FC = () => {

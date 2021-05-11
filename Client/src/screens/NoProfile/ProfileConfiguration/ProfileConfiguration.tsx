@@ -11,7 +11,7 @@ import { TextInput, Button, useTheme, Drawer } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
 import styles from '../ProfileConfiguration/styles';
 import { Tabs, TabScreen } from 'react-native-paper-tabs';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
 import { Host } from '../../../app/models/ApplicationTypes';
 import HostData from '../../../components/HostData/HostData';
 import Strings from '../../../app/context/Strings';

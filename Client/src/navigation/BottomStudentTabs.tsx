@@ -24,21 +24,21 @@ export const BottomStudentTabs = (): React.ReactElement => {
   return (
     <React.Fragment>
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName={Globals.NAVIGATION.STUDENT_HOME}
         activeColor={Globals.COLORS.BLUE}
         barStyle={{
           backgroundColor: paperTheme.colors.surface,
         }}>
         <Tab.Screen
-          name={Globals.STRINGS.APP_NAME}
+          name={Globals.NAVIGATION.STUDENT_HOME}
           component={Home}
           options={{
-            tabBarLabel: Strings.HOME,
+            tabBarLabel: Strings.APP_NAME,
             tabBarIcon: Globals.ICONS.HOME,
           }}
         />
         <Tab.Screen
-          name={Globals.STRINGS.CREATE}
+          name={Globals.NAVIGATION.STUDENT_CREATE_MEETING}
           component={Create}
           options={{
             tabBarLabel: Strings.CREATE,
@@ -46,7 +46,7 @@ export const BottomStudentTabs = (): React.ReactElement => {
           }}
         />
         <Tab.Screen
-          name={Globals.STRINGS.SEARCH}
+          name={Globals.NAVIGATION.STUDENT_SEARCH}
           component={Search}
           options={{
             tabBarLabel: Strings.SEARCH,
@@ -54,7 +54,7 @@ export const BottomStudentTabs = (): React.ReactElement => {
           }}
         />
         <Tab.Screen
-          name={Globals.STRINGS.PROFILE}
+          name={Globals.NAVIGATION.STUDENT_PROFILE}
           component={Profile}
           options={{
             tabBarLabel: Strings.PROFILE,

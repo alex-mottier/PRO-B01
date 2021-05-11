@@ -13,7 +13,7 @@ import { observer } from 'mobx-react-lite';
 import { Host, Tag } from '../../../app/models/ApplicationTypes';
 import { colors } from '../../../app/context/Theme';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
 import CovidDataDisplay from '../../../components/CovidDataDisplay/CovidDataDisplay';
 
 const HostDetails: React.FC = () => {

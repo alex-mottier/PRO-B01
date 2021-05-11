@@ -24,21 +24,21 @@ export const BottomHostTabs = (): React.ReactElement => {
   return (
     <React.Fragment>
       <Tab.Navigator
-        initialRouteName="Main"
+        initialRouteName={Globals.NAVIGATION.HOST_HOME}
         activeColor={Globals.COLORS.BLUE}
         barStyle={{
           backgroundColor: paperTheme.colors.surface,
         }}>
         <Tab.Screen
-          name={Globals.STRINGS.APP_NAME}
+          name={Globals.NAVIGATION.HOST_HOME}
           component={Home}
           options={{
-            tabBarLabel: Strings.HOME,
+            tabBarLabel: Strings.APP_NAME,
             tabBarIcon: Globals.ICONS.HOME,
           }}
         />
         <Tab.Screen
-          name={Globals.STRINGS.CREATE_LOCATION}
+          name={Globals.NAVIGATION.HOST_CREATE_LOCATION}
           component={Create}
           options={{
             tabBarLabel: Strings.CREATE,
@@ -46,7 +46,7 @@ export const BottomHostTabs = (): React.ReactElement => {
           }}
         />
         <Tab.Screen
-          name={Globals.STRINGS.LOCATIONS}
+          name={Globals.NAVIGATION.HOST_LOCATIONS}
           component={MyLocations}
           options={{
             tabBarLabel: Strings.MY_LOCATIONS,
@@ -54,7 +54,7 @@ export const BottomHostTabs = (): React.ReactElement => {
           }}
         />
         <Tab.Screen
-          name={Globals.STRINGS.PROFILE}
+          name={Globals.NAVIGATION.HOST_PROFILE}
           component={Profile}
           options={{
             tabBarLabel: Strings.PROFILE,

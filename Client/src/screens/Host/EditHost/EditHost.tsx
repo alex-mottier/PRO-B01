@@ -8,7 +8,7 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { View } from 'react-native';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
 import { Host } from '../../../app/models/ApplicationTypes';
 import HostData from '../../../components/HostData/HostData';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';

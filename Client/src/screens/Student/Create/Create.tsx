@@ -26,7 +26,7 @@ import { addHours, format } from 'date-fns';
 import SearchLocation from '../../../components/SearchLocation/SearchLocation';
 import { useNavigation } from '@react-navigation/native';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
 import Strings from '../../../app/context/Strings';
 
 /**
@@ -358,7 +358,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
                     labelStyle={{ color: Globals.COLORS.WHITE }}
                     onPress={handleEdit}
                     style={styles.button}>
-                    {Strings.MEETING_UDPATE}
+                    {Strings.MEETING_EDIT}
                   </Button>
                 )}
               </View>

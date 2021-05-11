@@ -15,7 +15,7 @@ import LoadingComponent from '../../../components/Loading/LoadingComponent';
 import { formatDistance } from 'date-fns';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import Globals from '../../../app/context/Globals';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
 import Strings from '../../../app/context/Strings';
 
 const ChatMeeting: React.FC = () => {

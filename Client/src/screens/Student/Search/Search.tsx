@@ -30,7 +30,7 @@ import { addDays } from 'date-fns/esm';
 import NoMeeting from '../../../components/NoMeeting/NoMeeting';
 import { observer } from 'mobx-react-lite';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
 import Strings from '../../../app/context/Strings';
 
 const Search: React.FC = () => {

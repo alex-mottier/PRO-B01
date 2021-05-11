@@ -1,10 +1,10 @@
 import * as React from 'react';
-import AuthenticationStore from '../stores/AuthenticationStore';
-import StudentStore from '../stores/StudentStore';
-import ThemeStore from '../stores/ThemeStore';
-import HostStore from '../stores/HostStore';
+import AuthenticationStore from './AuthenticationStore';
+import StudentStore from './StudentStore';
+import ThemeStore from './ThemeStore';
+import HostStore from './HostStore';
 
-const storesContext = React.createContext({
+const StoresContext = React.createContext({
   studentStore: StudentStore.getInstance(),
   themeStore: ThemeStore.getInstance(),
   authenticationStore: AuthenticationStore.getInstance(),
@@ -16,4 +16,4 @@ export const useStores = (): {
   hostStore: HostStore;
   themeStore: ThemeStore;
   authenticationStore: AuthenticationStore;
-} => React.useContext(storesContext);
+} => React.useContext(StoresContext);

@@ -12,7 +12,7 @@ import { lightTheme, darkTheme } from './src/app/context/Theme';
 import Routes from './src/navigation/Routes';
 import * as Font from 'expo-font';
 import LoadingComponent from './src/components/Loading/LoadingComponent';
-import { useStores } from './src/app/context/storesContext';
+import { useStores } from './src/app/stores/StoresContext';
 
 const App: React.FC = () => {
   /* Usage of MobX global state store */

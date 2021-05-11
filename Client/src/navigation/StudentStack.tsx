@@ -17,21 +17,11 @@ import LocationDetails from '../screens/Student/Location/LocationDetails';
 import HostDetails from '../screens/Student/Host/HostDetails';
 import ChatMeeting from '../screens/Student/Chat/ChatMeeting';
 import Edit from '../screens/Student/Edit/Edit';
-import { useStores } from '../app/context/storesContext';
+import { useStores } from '../app/stores/StoresContext';
 import Strings from '../app/context/Strings';
 
-// Parameters of the screens
-type StackNavigatorParamlist = {
-  Main: undefined;
-  Settings: undefined;
-  LocationDetails: undefined;
-  HostDetails: undefined;
-  Chat: undefined;
-  Edit: undefined;
-};
-
 // Creating the application stack
-const Stack = createStackNavigator<StackNavigatorParamlist>();
+const Stack = createStackNavigator();
 
 const StudentStack: React.FC = () => {
   // Usage of react native paper theme library
@@ -77,7 +67,7 @@ const StudentStack: React.FC = () => {
                   textAlign: 'center',
                 }}
               />
-              {options.headerTitle == Globals.STRINGS.PROFILE && (
+              {options.headerTitle === Strings.PROFILE && (
                 <View style={{ flexDirection: 'row' }}>
                   <Switch
                     value={themeStore.theme === 'dark'}
@@ -98,16 +88,17 @@ const StudentStack: React.FC = () => {
         },
       }}>
       <Stack.Screen
-        name="Main"
+        name={Globals.NAVIGATION.STUDENT_HOME}
         component={BottomStudentTabs}
-        options={() => {
+        options={({ route }) => {
+          const routeName = getFocusedRouteNameFromRoute(route) ?? Strings.APP_NAME;
           return {
-            headerTitle: Strings.APP_NAME,
+            headerTitle: routeName,
           };
         }}
       />
       <Stack.Screen
-        name="LocationDetails"
+        name={Globals.NAVIGATION.STUDENT_LOCATION}
         component={LocationDetails}
         options={() => {
           return {
@@ -116,7 +107,7 @@ const StudentStack: React.FC = () => {
         }}
       />
       <Stack.Screen
-        name="HostDetails"
+        name={Globals.NAVIGATION.STUDENT_HOST}
         component={HostDetails}
         options={() => {
           return {
@@ -125,7 +116,7 @@ const StudentStack: React.FC = () => {
         }}
       />
       <Stack.Screen
-        name="Chat"
+        name={Globals.NAVIGATION.STUDENT_CHAT}
         component={ChatMeeting}
         options={() => {
           return {
@@ -134,7 +125,7 @@ const StudentStack: React.FC = () => {
         }}
       />
       <Stack.Screen
-        name="Edit"
+        name={Globals.NAVIGATION.STUDENT_EDIT_MEETING}
         component={Edit}
         options={() => {
           return {

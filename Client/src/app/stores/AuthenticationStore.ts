@@ -256,19 +256,11 @@ class AuthenticationStore {
                 this.setAuthenticatedHost(await host.json());
                 await HostStore.getInstance().loadUserData();
                 this.setIsLoading(false);
-              } else {
-                void this.utils.manageErrorInResponse(host);
               }
-            } else {
-              Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_LOAD);
             }
           }
           this.setIsLoggedIn(true);
-        } else {
-          void this.utils.manageErrorInResponse(response);
         }
-      } else {
-        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_LOAD);
       }
     }
   }

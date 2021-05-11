@@ -14,7 +14,7 @@ import { Location, Tag } from '../../app/models/ApplicationTypes';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../app/context/Theme';
 import { useNavigation } from '@react-navigation/core';
-import { useStores } from '../../app/context/storesContext';
+import { useStores } from '../../app/stores/StoresContext';
 import Strings from '../../app/context/Strings';
 
 /**
@@ -52,7 +52,7 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
    */
   const handleEdit = () => {
     hostStore.setLocationToUpdate(location);
-    navigation.navigate('Edit');
+    navigation.navigate(Globals.NAVIGATION.HOST_EDIT_LOCATION);
   };
 
   /**
@@ -61,11 +61,11 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
   const handleDelete = () => {
     Alert.alert(Strings.ASK_DELETE, Strings.ASK_LOCATION_DELETE + location.name + ' ?', [
       {
-        text: 'Non',
+        text: Strings.NO,
         style: 'cancel',
       },
       {
-        text: 'Oui',
+        text: Strings.YES,
         onPress: () => {
           void hostStore.deleteLocation(location.id);
         },
@@ -89,7 +89,7 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
                     color={Globals.COLORS.GRAY}
                     size={Globals.SIZES.ICON_BUTTON}
                     onPress={() => {
-                      navigation.navigate('LocationDetails');
+                      navigation.navigate(Globals.NAVIGATION.STUDENT_LOCATION);
                       void studentStore.loadLocation(location.id);
                     }}
                   />

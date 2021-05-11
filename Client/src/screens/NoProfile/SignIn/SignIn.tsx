@@ -13,7 +13,7 @@ import Globals from '../../../app/context/Globals';
 import { useNavigation } from '@react-navigation/native';
 import FacebookButton from '../../../components/Buttons/FacebookButton';
 import GoogleButton from '../../../components/Buttons/GoogleButton';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
 import Strings from '../../../app/context/Strings';
 
 const SignIn: React.FC = () => {
@@ -44,7 +44,7 @@ const SignIn: React.FC = () => {
         <View style={styles.container}>
           <Title>{Strings.SIGN_IN_WITH}</Title>
           <Text style={styles.text}>{Strings.SIGN_IN_CHOOSE}</Text>
-          <View style={styles.buttons}>
+          <View>
             <FacebookButton
               onPress={() => {
                 Alert.alert(Strings.DEVELOPPING);
@@ -54,7 +54,9 @@ const SignIn: React.FC = () => {
             <Button
               icon={Globals.ICONS.PROFILE}
               color={Globals.COLORS.GRAY}
-              onPress={() => navigation.navigate('SignUp')}>
+              style={styles.buttons}
+              onPress={() => navigation.navigate(Globals.NAVIGATION.AUTH_SIGN_UP)}
+              mode={'contained'}>
               {Strings.SIGN_UP}
             </Button>
           </View>

@@ -40,7 +40,7 @@ export default class AmphitryonDAO {
    * @param token of the user session
    */
   public setSessionTokenFromResponse(response: Response): void {
-    const sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
+    const sessionToken = response.headers.get(Globals.SESSION_TOKEN_NAME);
     if (sessionToken)
       this.headerWithSessionToken = {
         Accept: '*/*',

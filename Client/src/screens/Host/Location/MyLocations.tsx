@@ -8,7 +8,7 @@
 import * as React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
 import { observer } from 'mobx-react-lite';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
 import { Location } from '../../../app/models/ApplicationTypes';
 import LocationComponent from '../../../components/Location/LocationComponent';
 import NoLocation from '../../../components/NoLocation/NoLocation';

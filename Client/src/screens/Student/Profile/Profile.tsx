@@ -13,7 +13,7 @@ import { observer } from 'mobx-react-lite';
 import { Meeting } from '../../../app/models/ApplicationTypes';
 import NoMeeting from '../../../components/NoMeeting/NoMeeting';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
 import Strings from '../../../app/context/Strings';
 
 const Profile: React.FC = () => {

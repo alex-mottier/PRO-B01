@@ -11,7 +11,7 @@ import { Avatar, Card, Chip, IconButton, Text, Title } from 'react-native-paper'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { observer } from 'mobx-react-lite';
 import styles from './styles';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
 import Globals from '../../../app/context/Globals';
 import { Tag } from '../../../app/models/ApplicationTypes';
 import { colors } from '../../../app/context/Theme';
@@ -46,7 +46,7 @@ const Profile: React.FC = () => {
                   size={Globals.SIZES.ICON_MENU}
                   color={Globals.COLORS.PRIMARY}
                   onPress={() => {
-                    navigation.navigate('EditHost');
+                    navigation.navigate(Globals.NAVIGATION.HOST_EDIT_HOST);
                   }}
                 />
               </View>

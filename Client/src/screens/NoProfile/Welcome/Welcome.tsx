@@ -37,14 +37,14 @@ const Welcome: React.FC = () => {
         <View style={styles.container}>
           <Title>{Strings.WELCOME}</Title>
           <Text style={styles.text}>{Strings.AGREEMENT}</Text>
-          <View style={styles.buttons}>
+          <View>
             <Button
               icon={Globals.ICONS.PROFILE}
               mode="contained"
               style={styles.buttons}
               color={Globals.COLORS.PRIMARY}
               labelStyle={{ color: Globals.COLORS.WHITE }}
-              onPress={() => navigation.navigate('SignIn')}>
+              onPress={() => navigation.navigate(Globals.NAVIGATION.AUTH_SIGN_IN)}>
               {Strings.SIGN_IN}
             </Button>
             <Button
@@ -53,7 +53,7 @@ const Welcome: React.FC = () => {
               style={styles.buttons}
               color={Globals.COLORS.BLUE}
               labelStyle={{ color: Globals.COLORS.WHITE }}
-              onPress={() => navigation.navigate('SignUp')}>
+              onPress={() => navigation.navigate(Globals.NAVIGATION.AUTH_SIGN_UP)}>
               {Strings.SIGN_UP}
             </Button>
           </View>

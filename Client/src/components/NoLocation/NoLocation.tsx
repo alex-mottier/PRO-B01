@@ -30,7 +30,7 @@ const NoLocation: React.FC = () => {
         color={Globals.COLORS.PRIMARY}
         labelStyle={{ color: Globals.COLORS.WHITE }}
         onPress={() => {
-          navigation.navigate(Globals.STRINGS.CREATE_LOCATION);
+          navigation.navigate(Globals.NAVIGATION.HOST_CREATE_LOCATION);
         }}>
         {Strings.LOCATION_CREATE}
       </Button>

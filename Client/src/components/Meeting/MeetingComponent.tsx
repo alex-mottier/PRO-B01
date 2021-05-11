@@ -19,7 +19,7 @@ import { useNavigation } from '@react-navigation/core';
 import { colors } from '../../app/context/Theme';
 import Clipboard from 'expo-clipboard';
 import LoadingComponent from '../Loading/LoadingComponent';
-import { useStores } from '../../app/context/storesContext';
+import { useStores } from '../../app/stores/StoresContext';
 import Strings from '../../app/context/Strings';
 
 /**
@@ -77,7 +77,7 @@ const MeetingComponent: React.FC<IProps> = ({
   const handleEdit = () => {
     studentStore.setMeetingToUpdate(meeting);
     studentStore.setLocationToLoad(meeting.locationID);
-    navigation.navigate('Edit');
+    navigation.navigate(Globals.NAVIGATION.STUDENT_EDIT_MEETING);
   };
 
   /**
@@ -138,7 +138,7 @@ const MeetingComponent: React.FC<IProps> = ({
   const handleOpenChat = () => {
     studentStore.setChatToLoad(meeting.chatID);
     studentStore.setMeetingToUpdate(meeting);
-    navigation.navigate('Chat');
+    navigation.navigate(Globals.NAVIGATION.STUDENT_CHAT);
   };
 
   return (
@@ -225,7 +225,7 @@ const MeetingComponent: React.FC<IProps> = ({
                   size={Globals.SIZES.ICON_HEADER}
                   onPress={() => {
                     void studentStore.setLocationToLoad(meeting.locationID);
-                    navigation.navigate('LocationDetails');
+                    navigation.navigate(Globals.NAVIGATION.STUDENT_LOCATION);
                   }}
                 />
               )}

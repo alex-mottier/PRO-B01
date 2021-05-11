@@ -10,7 +10,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { Button, Switch, Text, TextInput } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useStores } from '../../app/context/storesContext';
+import { useStores } from '../../app/stores/StoresContext';
 import LoadingComponent from '../Loading/LoadingComponent';
 import styles from './styles';
 import Globals from '../../app/context/Globals';

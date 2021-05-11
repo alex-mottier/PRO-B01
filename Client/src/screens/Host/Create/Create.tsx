@@ -11,7 +11,7 @@ import { Button, Card, FAB, Provider, TextInput, useTheme } from 'react-native-p
 
 import { observer } from 'mobx-react-lite';
 import { useNavigation } from '@react-navigation/native';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
 import { Location, OpeningHour, Tag } from '../../../app/models/ApplicationTypes';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
 import TagsComponent from '../../../components/Tags/TagsComponent';

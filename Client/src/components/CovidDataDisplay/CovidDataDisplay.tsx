@@ -39,7 +39,7 @@ const CovidDataDisplay: React.FC<IProps> = ({ host, editButtonDisplayed }) => {
               size={Globals.SIZES.ICON_MENU}
               color={Globals.COLORS.PRIMARY}
               onPress={() => {
-                navigation.navigate('EditCovidData');
+                navigation.navigate(Globals.NAVIGATION.HOST_EDIT_COVID);
               }}
             />
           )}

@@ -9,7 +9,7 @@ import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import { IconButton, TextInput, Text, Portal, Modal, Title, useTheme } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
-import { useStores } from '../../app/context/storesContext';
+import { useStores } from '../../app/stores/StoresContext';
 import Strings from '../../app/context/Strings';
 import { Location } from '../../app/models/ApplicationTypes';
 import LoadingComponent from '../Loading/LoadingComponent';
