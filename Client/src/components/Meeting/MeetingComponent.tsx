@@ -158,7 +158,7 @@ const MeetingComponent: React.FC<IProps> = ({
             subtitle={isReduced ? meeting.description : ''}
             left={() => <Avatar.Image size={40} source={require('../../../assets/HEIG-VD.png')} />}
             right={() =>
-              !isInCalendar && (
+              (!isInCalendar || authenticationStore.getAuthenticatedHost() !== null) && (
                 <View>
                   <View style={styles.nbPeople}>
                     <Text style={styles.gray}>
@@ -221,19 +221,21 @@ const MeetingComponent: React.FC<IProps> = ({
             />
             <Text style={styles.gray}>{meeting.locationName}</Text>
             <View style={styles.iconLittle}>
-              <MaterialCommunityIcons
-                name={Globals.ICONS.INFO}
-                color={Globals.COLORS.GRAY}
-                size={Globals.SIZES.ICON_HEADER}
-                onPress={() => {
-                  void studentStore.setLocationToLoad(meeting.locationID);
-                  navigation.navigate('LocationDetails');
-                }}
-              />
+              {authenticationStore.getAuthenticatedHost() === null && (
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.INFO}
+                  color={Globals.COLORS.GRAY}
+                  size={Globals.SIZES.ICON_HEADER}
+                  onPress={() => {
+                    void studentStore.setLocationToLoad(meeting.locationID);
+                    navigation.navigate('LocationDetails');
+                  }}
+                />
+              )}
             </View>
           </View>
           <Card.Actions style={styles.actions}>
-            {isChatable && (
+            {isChatable && authenticationStore.getAuthenticatedHost() === null && (
               <View>
                 <IconButton
                   icon={Globals.ICONS.MESSAGE}

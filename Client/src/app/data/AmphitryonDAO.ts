@@ -553,9 +553,7 @@ export default class AmphitryonDAO {
         this.setSessionTokenFromResponse(response);
         return response;
       })
-      .catch((error) => {
-        console.log(error);
-
+      .catch(() => {
         Alert.alert("Une erreur s'est produite", "Erreur lors de l'obtention des réservations");
         return null;
       });

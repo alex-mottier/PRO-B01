@@ -14,6 +14,7 @@ import { Host, Tag } from '../../../app/models/ApplicationTypes';
 import { colors } from '../../../app/context/Theme';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
 import { useStores } from '../../../app/context/storesContext';
+import CovidDataDisplay from '../../../components/CovidDataDisplay/CovidDataDisplay';
 
 const HostDetails: React.FC = () => {
   /* Usage of MobX global state store */
@@ -72,6 +73,7 @@ const HostDetails: React.FC = () => {
                   );
                 })}
               </View>
+              {host && <CovidDataDisplay host={host} editButtonDisplayed={false} />}
             </View>
           </View>
         )}

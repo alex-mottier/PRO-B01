@@ -48,7 +48,7 @@ class HostStore {
       startOfDay(new Date()),
       endOfDay(addDays(new Date(), 10)),
     );
-    void this.generateItems(new Date());
+    this.generateItems(new Date());
   }
 
   /**
