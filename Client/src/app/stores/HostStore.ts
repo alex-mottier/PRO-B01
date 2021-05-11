@@ -8,7 +8,7 @@
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import { Meeting, Location } from '../models/ApplicationTypes';
 import AmphitryonDAO from '../data/AmphitryonDAO';
-import { addDays, endOfDay, format, startOfDay } from 'date-fns';
+import { addDays, endOfDay, startOfDay } from 'date-fns';
 import { AgendaItemsMap } from 'react-native-calendars';
 import { Alert } from 'react-native';
 import Strings from '../context/Strings';
@@ -21,7 +21,7 @@ class HostStore {
   private utils = Utils.getInstance();
 
   @observable hostLocations: Location[] = [];
-  @observable meetingsLocatedAtHostLocations: Meeting[] | null = null;
+  @observable meetingsLocatedAtHostLocations: Meeting[] = [];
   @observable items: AgendaItemsMap<Meeting> | null = null;
   @observable locationToUpdate: Location | null = null;
 
@@ -172,28 +172,7 @@ class HostStore {
    */
   @action generateItems(from: Date): void {
     this.dateInCalendar = from;
-    const nbDays = 10;
-    const items = ['{ '];
-    for (let i = 0; i <= nbDays; ++i) {
-      items.push('"' + format(addDays(from, i), 'yyyy-MM-dd') + '" : [');
-      const dayMeetings = this.meetingsLocatedAtHostLocations?.filter((current: Meeting) => {
-        return (
-          format(new Date(current.startDate), 'yyyy-MM-dd') ===
-          format(addDays(from, i), 'yyyy-MM-dd')
-        );
-      });
-
-      let cpt = 0;
-      dayMeetings?.map((current: Meeting) => {
-        items.push(JSON.stringify(current));
-        cpt++;
-        if (cpt !== dayMeetings?.length) items.push(',');
-      });
-      items.push(']');
-      if (i != nbDays) items.push(',');
-    }
-    items.push(' }');
-    this.items = JSON.parse(items.join(''));
+    this.items = this.utils.generateItems(this.meetingsLocatedAtHostLocations, from);
   }
 
   /**
