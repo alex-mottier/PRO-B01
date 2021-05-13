@@ -76,7 +76,7 @@ const ChatMeeting: React.FC = () => {
                 />
               </View>
             )}
-            <View style={styles.messages}>
+            <View>
               <SafeAreaView>
                 <ScrollView>
                   {chat &&
@@ -91,7 +91,7 @@ const ChatMeeting: React.FC = () => {
                                   {message.message}
                                 </Text>
                               </View>
-                              <View style={styles.authenticedUserDate}>
+                              <View>
                                 <Text style={styles.dateText}>
                                   {formatDistance(new Date(message.date), new Date(), {
                                     addSuffix: true,
@@ -102,7 +102,7 @@ const ChatMeeting: React.FC = () => {
                           ) : (
                             <View style={styles.userContainer}>
                               <View style={styles.userMessage}>
-                                <Text style={styles.userMessageText}>{message.message}</Text>
+                                <Text>{message.message}</Text>
                               </View>
                               <View style={styles.userDate}>
                                 <Text style={styles.dateText}>
@@ -120,7 +120,7 @@ const ChatMeeting: React.FC = () => {
                 </ScrollView>
               </SafeAreaView>
             </View>
-            <View style={styles.message}>
+            <View>
               <View style={styles.row}>
                 <TextInput
                   label={Strings.MESSAGE_TYPE}

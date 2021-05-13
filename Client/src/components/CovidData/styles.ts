@@ -9,6 +9,7 @@ import { StyleSheet } from 'react-native';
 import Globals from '../../app/context/Globals';
 
 const styles = StyleSheet.create({
+  button: { marginTop: 20 },
   container: {
     flex: 1,
     flexDirection: 'column',
@@ -21,7 +22,12 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 5,
   },
-  button: { marginTop: 20 },
+  gray: {
+    color: Globals.COLORS.TEXT,
+  },
+  icon: {
+    marginRight: 10,
+  },
   row: {
     display: 'flex',
     flexDirection: 'row',
@@ -29,15 +35,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 40,
     marginBottom: 5,
-  },
-  gray: {
-    color: Globals.COLORS.TEXT,
-  },
-  icon: {
-    marginRight: 10,
-  },
-  paragraph: {
-    maxWidth: '80%',
   },
 });
 

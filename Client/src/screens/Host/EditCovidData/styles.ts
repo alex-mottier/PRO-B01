@@ -21,14 +21,6 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 200,
   },
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    margin: 30,
-    paddingTop: 20,
-  },
 });
 
 export default styles;

@@ -16,7 +16,6 @@ import Globals from '../../../app/context/Globals';
 import { Tag } from '../../../app/models/ApplicationTypes';
 import { colors } from '../../../app/context/Theme';
 import { useNavigation } from '@react-navigation/core';
-import CovidDataComponent from '../../../components/CovidData/CovidDataComponent';
 import CovidDataDisplay from '../../../components/CovidDataDisplay/CovidDataDisplay';
 import Strings from '../../../app/context/Strings';
 

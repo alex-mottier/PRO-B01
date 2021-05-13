@@ -283,7 +283,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
                 />
               </Card>
               <Card style={styles.card} elevation={10}>
-                <View style={styles.dateHeure}>
+                <View style={styles.dateHour}>
                   <Text style={{ color: Globals.COLORS.TEXT }}>{Strings.MEETING_DATE_TIME} :</Text>
                 </View>
                 <View style={styles.date}>

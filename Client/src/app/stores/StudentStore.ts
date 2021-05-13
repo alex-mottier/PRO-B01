@@ -295,7 +295,9 @@ class StudentStore {
         void runInAction(async () => {
           const meetingWithId = await response.json();
           this.userMeetings?.push(meetingWithId);
-          this.meetingsCreatedByUser?.push(meetingWithId);
+          runInAction(() => {
+            this.meetingsCreatedByUser?.push(meetingWithId);
+          });
           this.regenerateItems();
           Alert.alert(Strings.CREATED, Strings.MEETING_CREATED);
         });

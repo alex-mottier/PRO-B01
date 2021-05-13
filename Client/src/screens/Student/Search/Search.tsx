@@ -210,7 +210,7 @@ const Search: React.FC = () => {
                     onChangeText={(id) => setName(id)}
                     style={styles.fields}
                   />
-                  <View style={styles.dateHeure}>
+                  <View style={styles.dateHour}>
                     <Text style={{ color: Globals.COLORS.TEXT }}>
                       {Strings.MEETING_DATE_BETWEEN} :
                     </Text>

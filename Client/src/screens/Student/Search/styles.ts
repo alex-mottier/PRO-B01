@@ -18,27 +18,15 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
   },
-  content: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  modalcontainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 20,
-  },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     margin: 20,
   },
-  fab: {
-    marginTop: 10,
-    marginLeft: 10,
-  },
-  fields: {
-    width: '80%',
+  content: {
+    width: '100%',
+    alignItems: 'center',
   },
   date: {
     paddingLeft: 10,
@@ -47,12 +35,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
   },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  dateHeure: {
+  dateHour: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -60,9 +43,26 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 10,
   },
+  fab: {
+    marginTop: 10,
+    marginLeft: 10,
+  },
+  fields: {
+    width: '80%',
+  },
   modal: {
     padding: 10,
     width: '100%',
+    alignItems: 'center',
+  },
+  modalcontainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 20,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   search: {
@@ -76,10 +76,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
     color: Globals.COLORS.BLUE,
-  },
-  main: {
-    width: '100%',
-    padding: 10,
   },
 });
 

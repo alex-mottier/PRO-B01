@@ -19,7 +19,10 @@ import Strings from '../../../app/context/Strings';
 const Profile: React.FC = () => {
   /* Usage of MobX global state store */
   const { studentStore, authenticationStore } = useStores();
+
+  /* Local variables */
   const meetings = studentStore.meetingsCreatedByUser;
+
   return (
     <SafeAreaView>
       <ScrollView>

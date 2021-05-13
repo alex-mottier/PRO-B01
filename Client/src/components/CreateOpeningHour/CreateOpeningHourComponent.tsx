@@ -176,7 +176,7 @@ const CreateOpeningHourComponent: React.FC<IProps> = ({
                 );
               })}
             </View>
-            <View style={styles.dateHeure}>
+            <View style={styles.dateHour}>
               <Text style={{ color: Globals.COLORS.TEXT }}>{Strings.HOURS}</Text>
             </View>
             <View style={styles.date}>

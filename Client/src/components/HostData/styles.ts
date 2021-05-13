@@ -8,6 +8,7 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  button: { marginTop: 20 },
   container: {
     flex: 1,
     flexDirection: 'column',
@@ -39,7 +40,6 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 200,
   },
-  button: { marginTop: 20 },
   row: {
     display: 'flex',
     flexDirection: 'row',

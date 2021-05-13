@@ -1,5 +1,4 @@
 [] Feuilles de styles : unification ?
-[] Renommer les routes ex : STUDENT_PROFILE, HOST_PROFILE
 [] Calendar component le meme dans le home du student que dans le host
 [] Unit test utils class
 [] Enlever les getters inutils des stores
