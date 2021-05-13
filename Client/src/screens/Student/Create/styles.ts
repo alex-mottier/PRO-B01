@@ -6,7 +6,6 @@
  */
 
 import { StyleSheet } from 'react-native';
-import Globals from '../../../app/context/Globals';
 
 const styles = StyleSheet.create({
   button: {

@@ -7,9 +7,7 @@
 
 import { TokenResponse } from 'expo-app-auth';
 import { action, makeAutoObservable, observable } from 'mobx';
-import { Alert } from 'react-native';
 import GoogleAuth from '../authentication/GoogleAuth';
-import Strings from '../context/Strings';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 import { Host, Student, UserResponse } from '../models/ApplicationTypes';
 import Utils from '../utils/Utils';
