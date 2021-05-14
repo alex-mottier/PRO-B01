@@ -6,19 +6,12 @@
  */
 
 import AuthenticationStore from '../app/stores/AuthenticationStore';
-import RootStore from '../app/stores/RootStore';
 import StudentStore from '../app/stores/StudentStore';
 import ThemeStore from '../app/stores/ThemeStore';
 
 describe('Stores', () => {
   it('should return an authentication store instance', () => {
     const store = AuthenticationStore.getInstance();
-    expect(store).not.toBeNull();
-    expect(store).not.toBeUndefined();
-  });
-
-  it('should return an root store instance', () => {
-    const store = RootStore.getInstance();
     expect(store).not.toBeNull();
     expect(store).not.toBeUndefined();
   });

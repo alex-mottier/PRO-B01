@@ -15,7 +15,8 @@ import LoadingComponent from '../../../components/Loading/LoadingComponent';
 import { formatDistance } from 'date-fns';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import Globals from '../../../app/context/Globals';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
+import Strings from '../../../app/context/Strings';
 
 const ChatMeeting: React.FC = () => {
   /* Usage of MobX global state store */
@@ -25,7 +26,7 @@ const ChatMeeting: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [chat, setChat] = React.useState<Chat | null>(null);
   const meeting = studentStore.meetingToUpdate;
-  const authenticatedUser = authenticationStore.getAuthenticatedUser();
+  const authenticatedUser = authenticationStore.getAuthenticatedStudent();
   const [message, setMessage] = React.useState<string>('');
 
   /* Local variables */
@@ -46,7 +47,7 @@ const ChatMeeting: React.FC = () => {
    * Action done when submit button is pressed
    */
   const handleSubmit = () => {
-    const user = authenticationStore.getAuthenticatedUser();
+    const user = authenticationStore.getAuthenticatedStudent();
     if (user) {
       const newMessage: Message = {
         message: message,
@@ -75,7 +76,7 @@ const ChatMeeting: React.FC = () => {
                 />
               </View>
             )}
-            <View style={styles.messages}>
+            <View>
               <SafeAreaView>
                 <ScrollView>
                   {chat &&
@@ -90,7 +91,7 @@ const ChatMeeting: React.FC = () => {
                                   {message.message}
                                 </Text>
                               </View>
-                              <View style={styles.authenticedUserDate}>
+                              <View>
                                 <Text style={styles.dateText}>
                                   {formatDistance(new Date(message.date), new Date(), {
                                     addSuffix: true,
@@ -101,7 +102,7 @@ const ChatMeeting: React.FC = () => {
                           ) : (
                             <View style={styles.userContainer}>
                               <View style={styles.userMessage}>
-                                <Text style={styles.userMessageText}>{message.message}</Text>
+                                <Text>{message.message}</Text>
                               </View>
                               <View style={styles.userDate}>
                                 <Text style={styles.dateText}>
@@ -119,10 +120,10 @@ const ChatMeeting: React.FC = () => {
                 </ScrollView>
               </SafeAreaView>
             </View>
-            <View style={styles.message}>
+            <View>
               <View style={styles.row}>
                 <TextInput
-                  label="Tapez votre texte ici ..."
+                  label={Strings.MESSAGE_TYPE}
                   value={message}
                   onChangeText={(message) => setMessage(message)}
                   style={styles.fields}
@@ -134,7 +135,7 @@ const ChatMeeting: React.FC = () => {
                     color={Globals.COLORS.PRIMARY}
                     onPress={() => handleSubmit()}
                   />
-                  <Text style={{ color: Globals.COLORS.TEXT, marginTop: -5 }}>{'Envovez'}</Text>
+                  <Text style={{ color: Globals.COLORS.TEXT, marginTop: -5 }}>{Strings.SEND}</Text>
                 </View>
               </View>
             </View>

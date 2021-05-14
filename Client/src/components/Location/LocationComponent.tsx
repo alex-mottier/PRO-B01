@@ -14,7 +14,8 @@ import { Location, Tag } from '../../app/models/ApplicationTypes';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../app/context/Theme';
 import { useNavigation } from '@react-navigation/core';
-import { useStores } from '../../app/context/storesContext';
+import { useStores } from '../../app/stores/StoresContext';
+import Strings from '../../app/context/Strings';
 
 /**
  * Component props
@@ -51,29 +52,25 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
    */
   const handleEdit = () => {
     hostStore.setLocationToUpdate(location);
-    navigation.navigate('Edit');
+    navigation.navigate(Globals.NAVIGATION.HOST_EDIT_LOCATION);
   };
 
   /**
    * Suppression de la réunion
    */
   const handleDelete = () => {
-    Alert.alert(
-      'Supprimer ?',
-      'Etes-vous sûr de vouloir supprimer le lieu ' + location.name + ' ?',
-      [
-        {
-          text: 'Non',
-          style: 'cancel',
+    Alert.alert(Strings.ASK_DELETE, Strings.ASK_LOCATION_DELETE + location.name + ' ?', [
+      {
+        text: Strings.NO,
+        style: 'cancel',
+      },
+      {
+        text: Strings.YES,
+        onPress: () => {
+          void hostStore.deleteLocation(location.id);
         },
-        {
-          text: 'Oui',
-          onPress: () => {
-            void hostStore.deleteLocation(location.id);
-          },
-        },
-      ],
-    );
+      },
+    ]);
   };
 
   return (
@@ -92,7 +89,7 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
                     color={Globals.COLORS.GRAY}
                     size={Globals.SIZES.ICON_BUTTON}
                     onPress={() => {
-                      navigation.navigate('LocationDetails');
+                      navigation.navigate(Globals.NAVIGATION.STUDENT_LOCATION);
                       void studentStore.loadLocation(location.id);
                     }}
                   />
@@ -132,7 +129,7 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
                   color={Globals.COLORS.GREEN}
                   onPress={() => onChoose(location)}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Choisir</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.CHOOSE}</Text>
               </View>
             )}
             {isOwnerView && (
@@ -143,7 +140,7 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
                   onPress={handleEdit}
                   color={Globals.COLORS.BLUE}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Modifier</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.EDIT}</Text>
               </View>
             )}
             {isOwnerView && (
@@ -154,7 +151,7 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
                   onPress={handleDelete}
                   color={Globals.COLORS.PINK}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Supprimer</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.DELETE}</Text>
               </View>
             )}
           </Card.Actions>

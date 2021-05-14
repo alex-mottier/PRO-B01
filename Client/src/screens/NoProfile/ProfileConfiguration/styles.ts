@@ -8,6 +8,7 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  button: { marginTop: 20 },
   container: {
     flex: 1,
     flexDirection: 'column',
@@ -15,6 +16,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     margin: 30,
     paddingTop: 20,
+  },
+  fields: {
+    width: '100%',
   },
   image: {
     width: '100%',
@@ -28,22 +32,6 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 200,
-  },
-  fields: {
-    width: '100%',
-  },
-  fields20: {
-    width: '27%',
-  },
-  fields70: {
-    width: '70%',
-    marginRight: 10,
-  },
-  button: { marginTop: 20 },
-  row: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
   },
 });
 

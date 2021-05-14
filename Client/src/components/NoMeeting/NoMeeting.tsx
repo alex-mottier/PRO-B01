@@ -12,6 +12,7 @@ import Globals from '../../app/context/Globals';
 import { View } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
+import Strings from '../../app/context/Strings';
 
 const NoMeeting: React.FC = () => {
   /* Usage of React Navigation */
@@ -21,7 +22,7 @@ const NoMeeting: React.FC = () => {
     <View>
       <View style={styles.row}>
         <MaterialCommunityIcons name={Globals.ICONS.SAD} color={Globals.COLORS.GRAY} size={50} />
-        <Text style={styles.text}>Aucune réunion</Text>
+        <Text style={styles.text}>{Strings.MEETING_NONE}</Text>
       </View>
       <Button
         icon={Globals.ICONS.CREATE}
@@ -29,9 +30,9 @@ const NoMeeting: React.FC = () => {
         color={Globals.COLORS.PRIMARY}
         labelStyle={{ color: Globals.COLORS.WHITE }}
         onPress={() => {
-          navigation.navigate(Globals.STRINGS.CREATE);
+          navigation.navigate(Globals.NAVIGATION.STUDENT_CREATE_MEETING);
         }}>
-        Créer une réunion
+        {Strings.MEETING_CREATE}
       </Button>
     </View>
   );

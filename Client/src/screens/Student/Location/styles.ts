@@ -15,6 +15,39 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 15,
   },
+  chip: {
+    width: 'auto',
+    margin: 5,
+  },
+  chips: {
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap',
+  },
+  gray: {
+    color: Globals.COLORS.TEXT,
+  },
+  host: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  nbPeople: {
+    width: 70,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  room: {
+    flexDirection: 'row',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginRight: 100,
+  },
   row: {
     width: '100%',
     display: 'flex',
@@ -30,39 +63,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 10,
-  },
-  chips: {
-    marginTop: 10,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    flexWrap: 'wrap',
-  },
-  chip: {
-    width: 'auto',
-    margin: 5,
-  },
-  nbPeople: {
-    width: 70,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  gray: {
-    color: Globals.COLORS.TEXT,
-  },
-  host: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  room: {
-    flexDirection: 'row',
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginRight: 100,
   },
 });
 

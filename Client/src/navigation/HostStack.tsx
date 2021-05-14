@@ -7,23 +7,20 @@
 
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Appbar, IconButton, Switch, useTheme } from 'react-native-paper';
 import { BottomHostTabs } from './BottomHostTabs';
 import Globals from '../app/context/Globals';
 import { View } from 'react-native';
 import { observer } from 'mobx-react-lite';
-import { useStores } from '../app/context/storesContext';
+import { useStores } from '../app/stores/StoresContext';
 import Edit from '../screens/Host/Edit/Edit';
-
-// Parameters of the screens
-type StackNavigatorParamlist = {
-  Main: undefined;
-  Edit: undefined;
-};
+import EditHost from '../screens/Host/EditHost/EditHost';
+import CovidData from '../screens/Host/EditCovidData/EditCovidData';
+import Strings from '../app/context/Strings';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 // Creating the application stack
-const Stack = createStackNavigator<StackNavigatorParamlist>();
+const Stack = createStackNavigator();
 
 const HostStack: React.FC = () => {
   // Usage of react native paper theme library
@@ -34,7 +31,7 @@ const HostStack: React.FC = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName="Main"
+      initialRouteName={Globals.NAVIGATION.HOST_HOME}
       headerMode="screen"
       screenOptions={{
         header: ({ scene, previous, navigation }) => {
@@ -69,7 +66,7 @@ const HostStack: React.FC = () => {
                   textAlign: 'center',
                 }}
               />
-              {options.headerTitle == Globals.STRINGS.PROFILE && (
+              {options.headerTitle === Strings.PROFILE && (
                 <View style={{ flexDirection: 'row' }}>
                   <Switch
                     value={themeStore.theme === 'dark'}
@@ -90,22 +87,39 @@ const HostStack: React.FC = () => {
         },
       }}>
       <Stack.Screen
-        name="Main"
+        name={Globals.NAVIGATION.HOST_HOME}
         component={BottomHostTabs}
         options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+          const routeName = getFocusedRouteNameFromRoute(route) ?? Strings.APP_NAME;
           return {
             headerTitle: routeName,
           };
         }}
       />
       <Stack.Screen
-        name="Edit"
+        name={Globals.NAVIGATION.HOST_EDIT_LOCATION}
         component={Edit}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: Strings.LOCATION_EDIT,
+          };
+        }}
+      />
+      <Stack.Screen
+        name={Globals.NAVIGATION.HOST_EDIT_HOST}
+        component={EditHost}
+        options={() => {
+          return {
+            headerTitle: Strings.HOST_EDIT,
+          };
+        }}
+      />
+      <Stack.Screen
+        name={Globals.NAVIGATION.HOST_EDIT_COVID}
+        component={CovidData}
+        options={() => {
+          return {
+            headerTitle: Strings.COVID_DATA,
           };
         }}
       />

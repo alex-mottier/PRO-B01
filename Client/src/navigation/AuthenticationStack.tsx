@@ -11,27 +11,25 @@ import SignIn from '../screens/NoProfile/SignIn/SignIn';
 import Welcome from '../screens/NoProfile/Welcome/Welcome';
 import SignUp from '../screens/NoProfile/SignUp/SignUp';
 import ProfileConfiguration from '../screens/NoProfile/ProfileConfiguration/ProfileConfiguration';
-import { Appbar, IconButton, useTheme } from 'react-native-paper';
+import { Appbar, IconButton, Switch, useTheme } from 'react-native-paper';
 import Globals from '../app/context/Globals';
-
-// Parameters of the screens
-type AuthParamList = {
-  Welcome: undefined;
-  SignIn: undefined;
-  SignUp: undefined;
-  ProfileConfiguration: undefined;
-};
+import Strings from '../app/context/Strings';
+import { View } from 'react-native';
+import { useStores } from '../app/stores/StoresContext';
 
 // Creating the authentication stack
-const Stack = createStackNavigator<AuthParamList>();
+const Stack = createStackNavigator();
 
 export const AuthenticationStack: React.FC = () => {
   // Usage of react native paper theme library
   const paperTheme = useTheme();
 
+  /* Usage of MobX global state store */
+  const { themeStore } = useStores();
+
   return (
     <Stack.Navigator
-      initialRouteName="Welcome"
+      initialRouteName={Globals.NAVIGATION.AUTH_WELCOME}
       headerMode="screen"
       screenOptions={{
         header: ({ scene, previous, navigation }) => {
@@ -65,40 +63,46 @@ export const AuthenticationStack: React.FC = () => {
                   color: Globals.COLORS.PRIMARY,
                   textAlign: 'center',
                 }}
-                style={{
-                  alignItems: 'center',
-                }}
               />
+
+              <View style={{ flexDirection: 'row' }}>
+                <Switch
+                  value={themeStore.theme === 'dark'}
+                  color={Globals.COLORS.PRIMARY}
+                  style={{ alignItems: 'center', justifyContent: 'center' }}
+                  onValueChange={() => themeStore.invertTheme()}
+                />
+              </View>
             </Appbar.Header>
           );
         },
       }}>
       <Stack.Screen
-        name="Welcome"
+        name={Globals.NAVIGATION.AUTH_WELCOME}
         component={Welcome}
         options={{
-          headerTitle: Globals.STRINGS.APP_NAME,
+          headerTitle: Strings.APP_NAME,
         }}
       />
       <Stack.Screen
-        name="SignIn"
+        name={Globals.NAVIGATION.AUTH_SIGN_IN}
         component={SignIn}
         options={{
-          headerTitle: 'Connexion',
+          headerTitle: Strings.SIGN_IN,
         }}
       />
       <Stack.Screen
-        name="SignUp"
+        name={Globals.NAVIGATION.AUTH_SIGN_UP}
         component={SignUp}
         options={{
-          headerTitle: 'Inscription',
+          headerTitle: Strings.SIGN_UP,
         }}
       />
       <Stack.Screen
-        name="ProfileConfiguration"
+        name={Globals.NAVIGATION.AUTH_PROFILE_CONFIG}
         component={ProfileConfiguration}
         options={{
-          headerTitle: 'Configuration du profil',
+          headerTitle: Strings.PROFILE_CONFIGURATION,
         }}
       />
     </Stack.Navigator>

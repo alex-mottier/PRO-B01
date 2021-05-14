@@ -13,6 +13,7 @@ import Profile from '../screens/Host/Profile/Profile';
 import Create from '../screens/Host/Create/Create';
 import MyLocations from '../screens/Host/Location/MyLocations';
 import { useTheme } from 'react-native-paper';
+import Strings from '../app/context/Strings';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -23,40 +24,40 @@ export const BottomHostTabs = (): React.ReactElement => {
   return (
     <React.Fragment>
       <Tab.Navigator
-        initialRouteName="Main"
+        initialRouteName={Globals.NAVIGATION.HOST_HOME}
         activeColor={Globals.COLORS.BLUE}
         barStyle={{
           backgroundColor: paperTheme.colors.surface,
         }}>
         <Tab.Screen
-          name={Globals.STRINGS.APP_NAME}
+          name={Globals.NAVIGATION.HOST_HOME}
           component={Home}
           options={{
-            tabBarLabel: 'Accueil',
+            tabBarLabel: Strings.APP_NAME,
             tabBarIcon: Globals.ICONS.HOME,
           }}
         />
         <Tab.Screen
-          name={Globals.STRINGS.CREATE_LOCATION}
+          name={Globals.NAVIGATION.HOST_CREATE_LOCATION}
           component={Create}
           options={{
-            tabBarLabel: 'Créer',
+            tabBarLabel: Strings.CREATE,
             tabBarIcon: Globals.ICONS.CREATE,
           }}
         />
         <Tab.Screen
-          name={Globals.STRINGS.LOCATIONS}
+          name={Globals.NAVIGATION.HOST_LOCATIONS}
           component={MyLocations}
           options={{
-            tabBarLabel: 'Mes lieux',
+            tabBarLabel: Strings.MY_LOCATIONS,
             tabBarIcon: Globals.ICONS.LOCATION,
           }}
         />
         <Tab.Screen
-          name={Globals.STRINGS.PROFILE}
+          name={Globals.NAVIGATION.HOST_PROFILE}
           component={Profile}
           options={{
-            tabBarLabel: 'Profil',
+            tabBarLabel: Strings.PROFILE,
             tabBarIcon: Globals.ICONS.PROFILE,
           }}
         />

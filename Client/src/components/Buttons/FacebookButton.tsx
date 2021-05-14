@@ -6,21 +6,26 @@
  */
 
 import * as React from 'react';
+import { Button } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
-import CustomButton from './CustomButton';
 
+/**
+ * Component props
+ */
 interface IProps {
   onPress: () => void;
 }
 
 const FacebookButton: React.FC<IProps> = ({ onPress }) => {
   return (
-    <CustomButton
+    <Button
       icon={Globals.ICONS.FACEBOOK}
       color={Globals.COLORS.FACEBOOK}
       onPress={onPress}
-      text={'Facebook'}
-    />
+      mode={'contained'}
+      style={{ marginTop: 10 }}>
+      Facebook
+    </Button>
   );
 };
 
