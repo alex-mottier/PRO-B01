@@ -17,20 +17,11 @@ import LocationDetails from '../screens/Student/Location/LocationDetails';
 import HostDetails from '../screens/Student/Host/HostDetails';
 import ChatMeeting from '../screens/Student/Chat/ChatMeeting';
 import Edit from '../screens/Student/Edit/Edit';
-import { useStores } from '../app/context/storesContext';
-
-// Parameters of the screens
-type StackNavigatorParamlist = {
-  Main: undefined;
-  Settings: undefined;
-  LocationDetails: undefined;
-  HostDetails: undefined;
-  Chat: undefined;
-  Edit: undefined;
-};
+import { useStores } from '../app/stores/StoresContext';
+import Strings from '../app/context/Strings';
 
 // Creating the application stack
-const Stack = createStackNavigator<StackNavigatorParamlist>();
+const Stack = createStackNavigator();
 
 const StudentStack: React.FC = () => {
   // Usage of react native paper theme library
@@ -76,7 +67,7 @@ const StudentStack: React.FC = () => {
                   textAlign: 'center',
                 }}
               />
-              {options.headerTitle == Globals.STRINGS.PROFILE && (
+              {options.headerTitle === Strings.PROFILE && (
                 <View style={{ flexDirection: 'row' }}>
                   <Switch
                     value={themeStore.theme === 'dark'}
@@ -97,52 +88,48 @@ const StudentStack: React.FC = () => {
         },
       }}>
       <Stack.Screen
-        name="Main"
+        name={Globals.NAVIGATION.STUDENT_HOME}
         component={BottomStudentTabs}
         options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+          const routeName = getFocusedRouteNameFromRoute(route) ?? Strings.APP_NAME;
           return {
             headerTitle: routeName,
           };
         }}
       />
       <Stack.Screen
-        name="LocationDetails"
+        name={Globals.NAVIGATION.STUDENT_LOCATION}
         component={LocationDetails}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: Strings.LOCATION_DETAILS,
           };
         }}
       />
       <Stack.Screen
-        name="HostDetails"
+        name={Globals.NAVIGATION.STUDENT_HOST}
         component={HostDetails}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: Strings.HOST_DETAILS,
           };
         }}
       />
       <Stack.Screen
-        name="Chat"
+        name={Globals.NAVIGATION.STUDENT_CHAT}
         component={ChatMeeting}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: Strings.CHAT,
           };
         }}
       />
       <Stack.Screen
-        name="Edit"
+        name={Globals.NAVIGATION.STUDENT_EDIT_MEETING}
         component={Edit}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Globals.STRINGS.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: Strings.MEETING_UPDATE,
           };
         }}
       />

@@ -7,18 +7,17 @@
 
 import { action, makeAutoObservable, observable, runInAction } from 'mobx';
 import { Meeting, Location, Host, Chat, Message, Filter } from '../models/ApplicationTypes';
-import GoogleAuth from '../authentication/GoogleAuth';
 import AmphitryonDAO from '../data/AmphitryonDAO';
-import { addDays, endOfDay, format, startOfDay } from 'date-fns';
+import { addDays, endOfDay, startOfDay } from 'date-fns';
 import { Alert } from 'react-native';
 import { AgendaItemsMap } from 'react-native-calendars';
-import AuthenticationStore from './AuthenticationStore';
-import RootStore from './RootStore';
+import Strings from '../context/Strings';
+import Utils from '../utils/Utils';
 
 class StudentStore {
   private static instance: StudentStore;
   private amphitryonDAO = AmphitryonDAO.getInstance();
-  private googleAuth = GoogleAuth.getInstance();
+  private utils = Utils.getInstance();
   private dateInCalendar = new Date();
 
   @observable meetingToUpdate: Meeting | null = null;
@@ -38,7 +37,6 @@ class StudentStore {
    * Instantiation of the store
    */
   private constructor() {
-    void this.loadTokens();
     makeAutoObservable(this);
   }
 
@@ -49,25 +47,6 @@ class StudentStore {
   public static getInstance(): StudentStore {
     if (!StudentStore.instance) this.instance = new StudentStore();
     return this.instance;
-  }
-
-  /**
-   * Loading the user's tokens
-   */
-  @action async loadTokens(): Promise<void> {
-    const token = await this.googleAuth.getCachedAuthAsync();
-    AuthenticationStore.getInstance().userToken = token;
-    if (token && token.idToken) {
-      const response = await this.amphitryonDAO.connectUser(token.idToken);
-      if (response) {
-        if (response.ok) {
-          AuthenticationStore.getInstance().setAuthenticatedUser(await response.json());
-          AuthenticationStore.getInstance().setIsLoggedIn(true);
-          void this.loadUserData();
-        }
-      }
-      // this.setIsLoading(false);
-    }
   }
 
   /**
@@ -99,7 +78,7 @@ class StudentStore {
           this.meetingsCreatedByUser = meetings;
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -117,7 +96,7 @@ class StudentStore {
           this.userMeetings = await response.json();
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -135,12 +114,12 @@ class StudentStore {
             const newMeeting = await response.json();
             this.setMeetingToUpdate(newMeeting);
             this.userMeetings.push(newMeeting);
-            Alert.alert('Meeting rejoint', 'Vous avez rejoint la réunion ' + meeting.name);
+            Alert.alert(Strings.SAVED, Strings.MEETING_JOINED + meeting.name);
             this.regenerateItems();
           }
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -159,12 +138,11 @@ class StudentStore {
             this.userMeetings = this.userMeetings?.filter((current: Meeting) => {
               return current.id !== current.id;
             });
-            Alert.alert('Meeting quitté', 'Vous avez quitté la réunion ' + meeting.name);
             this.regenerateItems();
           }
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -187,7 +165,7 @@ class StudentStore {
       if (response.ok) {
         this.chat = await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -205,7 +183,7 @@ class StudentStore {
           this.chat?.messages.push(message);
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -238,7 +216,7 @@ class StudentStore {
       if (response.ok) {
         this.locations = await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -252,7 +230,7 @@ class StudentStore {
       if (response.ok) {
         this.locations = await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -277,7 +255,7 @@ class StudentStore {
       if (response.ok) {
         return await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
     return null;
@@ -301,7 +279,7 @@ class StudentStore {
       if (response.ok) {
         this.hostToDisplay = await response.json();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -317,13 +295,15 @@ class StudentStore {
         void runInAction(async () => {
           const meetingWithId = await response.json();
           this.userMeetings?.push(meetingWithId);
-          this.meetingsCreatedByUser?.push(meetingWithId);
+          runInAction(() => {
+            this.meetingsCreatedByUser?.push(meetingWithId);
+          });
           this.regenerateItems();
-          Alert.alert('Réunion créée', 'La réunion que vous avez soumise a bien été enregistrée');
+          Alert.alert(Strings.CREATED, Strings.MEETING_CREATED);
         });
         this.regenerateItems();
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -351,12 +331,8 @@ class StudentStore {
           }
         });
         this.regenerateItems();
-        Alert.alert(
-          'Réunion mise à jour',
-          'La réunion que vous avez soumise a bien été mise à jour',
-        );
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -378,11 +354,10 @@ class StudentStore {
             this.meetingsCreatedByUser = this.meetingsCreatedByUser.filter((current: Meeting) => {
               return current.id !== meetingId;
             });
-          Alert.alert('Supprimée', 'La réunion a correctement été supprimée');
           this.regenerateItems();
         });
       } else {
-        void RootStore.getInstance().manageErrorInResponse(response);
+        void this.utils.manageErrorInResponse(response);
       }
     }
   }
@@ -441,28 +416,7 @@ class StudentStore {
     await this.loadUserMeetings(startOfDay(from), endOfDay(addDays(from, 10)));
     runInAction(() => {
       this.dateInCalendar = from;
-      const nbDays = 10;
-      const items = ['{ '];
-      for (let i = 0; i <= nbDays; ++i) {
-        items.push('"' + format(addDays(from, i), 'yyyy-MM-dd') + '" : [');
-        const dayMeetings = this.userMeetings?.filter((current: Meeting) => {
-          return (
-            format(new Date(current.startDate), 'yyyy-MM-dd') ===
-            format(addDays(from, i), 'yyyy-MM-dd')
-          );
-        });
-
-        let cpt = 0;
-        dayMeetings?.map((current: Meeting) => {
-          items.push(JSON.stringify(current));
-          cpt++;
-          if (cpt !== dayMeetings?.length) items.push(',');
-        });
-        items.push(']');
-        if (i != nbDays) items.push(',');
-      }
-      items.push(' }');
-      this.items = JSON.parse(items.join(''));
+      this.items = this.utils.generateItems(this.userMeetings, from);
     });
   }
 

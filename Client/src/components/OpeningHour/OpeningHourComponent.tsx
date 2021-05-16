@@ -40,7 +40,7 @@ const OpeninHourComponent: React.FC<IProps> = ({ openingHour, onDelete, isDelete
                 {dateLocale.dayNames[openingHour.day]}
               </Text>
             </View>
-            <View style={styles.hours}>
+            <View>
               <Text style={{ color: Globals.COLORS.TEXT }}>
                 {openingHour.startTime} - {openingHour.endTime}
               </Text>

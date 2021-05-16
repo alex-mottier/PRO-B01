@@ -24,6 +24,7 @@ import OpeninHourComponent from '../OpeningHour/OpeningHourComponent';
 import styles from './styles';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { dateLocale } from '../../app/context/DateFormat';
+import Strings from '../../app/context/Strings';
 
 /**
  * Component props
@@ -112,14 +113,14 @@ const CreateOpeningHourComponent: React.FC<IProps> = ({
       addOpeningHour(openingHoursToAdd);
       setDays([false, false, false, false, false, false, false]);
     } else {
-      Alert.alert('Heures incohérantes', 'Veuillez saisir des heures de début et de fin valides');
+      Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_INVLID_HOURS);
     }
   };
 
   return (
     <View>
       <View style={styles.openingHours}>
-        <Text style={{ color: Globals.COLORS.TEXT }}>Plages horaires</Text>
+        <Text style={{ color: Globals.COLORS.TEXT }}>{Strings.OPENING_HOURS}</Text>
         <IconButton
           icon={Globals.ICONS.ADD_TAG}
           size={Globals.SIZES.ICON_MENU}
@@ -156,7 +157,7 @@ const CreateOpeningHourComponent: React.FC<IProps> = ({
                 onPress={() => setModalVisible(false)}
               />
             </View>
-            <Title style={styles.title}>Ajout d&apos;horaires</Title>
+            <Title style={styles.title}>{Strings.OPENING_HOURS_ADD}</Title>
             <View style={styles.row}>
               {days.map(() => {
                 const index = cpt++;
@@ -175,8 +176,8 @@ const CreateOpeningHourComponent: React.FC<IProps> = ({
                 );
               })}
             </View>
-            <View style={styles.dateHeure}>
-              <Text style={{ color: Globals.COLORS.TEXT }}>Heures :</Text>
+            <View style={styles.dateHour}>
+              <Text style={{ color: Globals.COLORS.TEXT }}>{Strings.HOURS}</Text>
             </View>
             <View style={styles.date}>
               <View style={styles.row}>

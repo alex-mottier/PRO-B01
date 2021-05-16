@@ -6,47 +6,48 @@
  */
 
 import { StyleSheet } from 'react-native';
-import Globals from '../../../app/context/Globals';
 
 const styles = StyleSheet.create({
+  button: {
+    marginTop: 20,
+  },
   buttons: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     width: '100%',
-  },
-  fab: { marginTop: 20 },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 15,
-  },
-  name: {
-    width: '75%',
-    marginBottom: 10,
-  },
-  fields: {
-    width: '100%',
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
   },
   card: {
     marginTop: 10,
     width: '100%',
     padding: 10,
   },
-  button: {
-    marginTop: 20,
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 15,
   },
-  marginRigth: {
-    marginRight: 20,
+  date: {
+    paddingLeft: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  marginLeft: {
-    marginLeft: 20,
-    color: Globals.COLORS.TEXT,
+  dateHour: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginTop: 10,
+  },
+  fab: { marginTop: 20 },
+  fields: {
+    width: '100%',
+  },
+  name: {
+    width: '75%',
+    marginBottom: 10,
   },
   private: {
     flexDirection: 'column',
@@ -55,24 +56,10 @@ const styles = StyleSheet.create({
     marginTop: -10,
     width: '25%',
   },
-  date: {
-    paddingLeft: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  dateHeure: {
-    width: '100%',
+  row: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginLeft: 10,
-    marginTop: 10,
-  },
-  buttonText: {
-    fontSize: 12,
-    marginTop: -10,
-    textAlign: 'center',
   },
 });
 

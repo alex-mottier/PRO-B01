@@ -9,17 +9,22 @@ import { StyleSheet } from 'react-native';
 import Globals from '../../app/context/Globals';
 
 const styles = StyleSheet.create({
-  button: {
-    marginTop: 20,
-    width: '60%',
-  },
   close: {
     position: 'absolute',
     top: 0,
     right: 0,
   },
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 20,
+  },
   deleteLocation: {
     marginLeft: -5,
+  },
+  field: {
+    width: '80%',
+    marginBottom: 20,
   },
   location: {
     marginTop: 10,
@@ -27,26 +32,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
   },
-  tags: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginLeft: 10,
-    marginBottom: -10,
-  },
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 20,
-  },
-  field: {
-    width: '80%',
-    marginBottom: 20,
-  },
-  card: {
-    marginTop: 10,
-    width: '100%',
+  locations: {
+    padding: 10,
+    paddingTop: 0,
+    width: '98%',
   },
   modal: {
     padding: 10,
@@ -57,17 +46,20 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 300,
   },
+  tags: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginBottom: -10,
+  },
   title: {
     justifyContent: 'center',
     textAlign: 'center',
     marginTop: 10,
     marginBottom: 20,
     color: Globals.COLORS.BLUE,
-  },
-  locations: {
-    padding: 10,
-    paddingTop: 0,
-    width: '98%',
   },
 });
 

@@ -2,7 +2,7 @@
  * @file    styles.ts
  * @author  Alexis Allemann & Alexandre Mottier
  * @date    04.03.2021
- * @brief   No meetings styles
+ * @brief   No locations styles
  */
 
 import { StyleSheet } from 'react-native';

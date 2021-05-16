@@ -9,17 +9,17 @@ import { StyleSheet } from 'react-native';
 import Globals from '../../app/context/Globals';
 
 const styles = StyleSheet.create({
-  arrowUp: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-  },
   actions: {
     display: 'flex',
     justifyContent: 'space-evenly',
     marginRight: '10%',
     marginLeft: '10%',
     alignItems: 'center',
+  },
+  arrowUp: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
   },
   buttonText: {
     fontSize: 12,
@@ -41,24 +41,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
   },
-  infoWithIcon: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  logo: {
-    width: 50,
-    height: 50,
-  },
   nbPeople: {
     width: 50,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-  },
-  paragraph: {
-    maxWidth: '80%',
   },
   gray: {
     color: Globals.COLORS.TEXT,

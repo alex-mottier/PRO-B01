@@ -11,13 +11,14 @@ import { Button, Card, FAB, Provider, TextInput, useTheme } from 'react-native-p
 
 import { observer } from 'mobx-react-lite';
 import { useNavigation } from '@react-navigation/native';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
 import { Location, OpeningHour, Tag } from '../../../app/models/ApplicationTypes';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
 import TagsComponent from '../../../components/Tags/TagsComponent';
 import Globals from '../../../app/context/Globals';
 import styles from './styles';
 import CreateOpeningHourComponent from '../../../components/CreateOpeningHour/CreateOpeningHourComponent';
+import Strings from '../../../app/context/Strings';
 
 /**
  * Component props
@@ -54,19 +55,19 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
    */
   const isValid = (): boolean => {
     if (name === '') {
-      Alert.alert('Nom nul', 'Le nom du lieu ne peut pas être nul');
+      Alert.alert(Strings.ERROR_OCCURED, Strings.LOCATION_NAME_NULL);
       return false;
     } else if (description === '') {
-      Alert.alert('Description nulle', 'La description du lieu ne peut pas être nulle');
+      Alert.alert(Strings.ERROR_OCCURED, Strings.LOCATION_DESCRIPTION_NULL);
       return false;
     } else if (nbPeople <= 0) {
-      Alert.alert('Nombre de personnes incorrect', 'Le nombre de personnes doit être > 0');
+      Alert.alert(Strings.ERROR_OCCURED, Strings.LOCATION_NB_PEOPLE_NULL);
       return false;
     } else if (tags.length === 0) {
-      Alert.alert('Aucun tag', 'Veuillez définir au moins un tag à la réunion');
+      Alert.alert(Strings.ERROR_OCCURED, Strings.LOCATION_TAGS_NULL);
       return false;
     } else if (openingHours.length === 0) {
-      Alert.alert('Aucun horaire', 'Veuillez définir au moins une plage horaire');
+      Alert.alert(Strings.ERROR_OCCURED, Strings.LOCATION_OPENING_HOURS_NULL);
       return false;
     }
     return true;
@@ -213,19 +214,19 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
             <View style={styles.container}>
               <Card style={styles.card} elevation={10}>
                 <TextInput
-                  label="Nom du lieu"
+                  label={Strings.LOCATION_NAME}
                   value={name}
                   onChangeText={(name) => setName(name)}
                   style={styles.name}
                 />
                 <TextInput
-                  label="Description du lieu"
+                  label={Strings.LOCATION_DESCRIPTION}
                   value={description}
                   onChangeText={(description) => setDescription(description)}
                   style={styles.fields}
                 />
                 <TextInput
-                  label="Nombre de places disponibles"
+                  label={Strings.LOCATION_NB_PEOPLE}
                   value={nbPeople.toString()}
                   onChangeText={(nbPeople) => setNbPeople(nbPeople === '' ? 0 : parseInt(nbPeople))}
                   style={styles.fields}
@@ -260,7 +261,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
                     labelStyle={{ color: Globals.COLORS.WHITE }}
                     onPress={handleSubmit}
                     style={styles.button}>
-                    Créer le lieu
+                    {Strings.LOCATION_CREATE}
                   </Button>
                 )}
                 {isEditMode && (
@@ -271,7 +272,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
                     labelStyle={{ color: Globals.COLORS.WHITE }}
                     onPress={handleEdit}
                     style={styles.button}>
-                    Modifier le lieu
+                    {Strings.LOCATION_UPDATE}
                   </Button>
                 )}
               </View>

@@ -11,10 +11,8 @@ import { useTheme } from 'react-native-paper';
 import { AuthenticationStack } from './AuthenticationStack';
 import { observer } from 'mobx-react-lite';
 import StudentStack from './StudentStack';
-//import HostStack from './HostStack';
-
 import { lightThemeNavigation } from '../app/context/Theme';
-import { useStores } from '../app/context/storesContext';
+import { useStores } from '../app/stores/StoresContext';
 import HostStack from './HostStack';
 
 const Routes: React.FC = () => {
@@ -25,7 +23,9 @@ const Routes: React.FC = () => {
   return (
     <NavigationContainer theme={navigationTheme}>
       {authenticationStore.isLoggedIn && authenticationStore.authenticatedHost && <HostStack />}
-      {authenticationStore.isLoggedIn && authenticationStore.authenticatedUser && <StudentStack />}
+      {authenticationStore.isLoggedIn && authenticationStore.authenticatedStudent && (
+        <StudentStack />
+      )}
       {!authenticationStore.isLoggedIn && <AuthenticationStack />}
     </NavigationContainer>
   );

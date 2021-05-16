@@ -6,9 +6,27 @@
  */
 
 import { StyleSheet } from 'react-native';
-import Globals from '../../app/context/Globals';
 
 const styles = StyleSheet.create({
+  buttonText: {
+    fontSize: 12,
+    marginTop: -10,
+    textAlign: 'center',
+  },
+  card: {
+    marginTop: 10,
+    width: '100%',
+    elevation: 5,
+  },
+  days: {
+    marginRight: 20,
+  },
+  icon: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
   row: {
     flex: 1,
     width: '100%',
@@ -19,35 +37,12 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingRight: 30,
   },
-  card: {
-    marginTop: 10,
-    width: '100%',
-    elevation: 5,
-  },
-  icon: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
   text: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
     padding: 10,
-  },
-  days: {
-    marginRight: 20,
-  },
-  hours: {},
-  gray: {
-    color: Globals.COLORS.TEXT,
-  },
-  buttonText: {
-    fontSize: 12,
-    marginTop: -10,
-    textAlign: 'center',
   },
 });
 

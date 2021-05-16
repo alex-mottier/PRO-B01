@@ -11,10 +11,13 @@ import { Avatar, Card, Chip, IconButton, Text, Title } from 'react-native-paper'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { observer } from 'mobx-react-lite';
 import styles from './styles';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
 import Globals from '../../../app/context/Globals';
 import { Tag } from '../../../app/models/ApplicationTypes';
 import { colors } from '../../../app/context/Theme';
+import { useNavigation } from '@react-navigation/core';
+import CovidDataDisplay from '../../../components/CovidDataDisplay/CovidDataDisplay';
+import Strings from '../../../app/context/Strings';
 
 const Profile: React.FC = () => {
   /* Usage of MobX global state store */
@@ -23,6 +26,7 @@ const Profile: React.FC = () => {
   /* Local variables */
   const host = authenticationStore.authenticatedHost;
   let nbColors = 0;
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView>
@@ -35,12 +39,14 @@ const Profile: React.FC = () => {
           <Card style={styles.card} elevation={10}>
             <Card.Content>
               <View style={styles.cardTitle}>
-                <Text style={styles.gray}>Informations générales :</Text>
+                <Text style={styles.gray}>{Strings.HOST_DATA} :</Text>
                 <IconButton
                   icon={Globals.ICONS.EDIT}
                   size={Globals.SIZES.ICON_MENU}
                   color={Globals.COLORS.PRIMARY}
-                  onPress={() => {}}
+                  onPress={() => {
+                    navigation.navigate(Globals.NAVIGATION.HOST_EDIT_HOST);
+                  }}
                 />
               </View>
               <View style={styles.infoWithIcon}>
@@ -69,7 +75,7 @@ const Profile: React.FC = () => {
                 <Text style={[styles.paragraph, styles.gray]}>{host?.description}</Text>
               </View>
               <View style={styles.cardTitle}>
-                <Text style={[styles.paragraph, styles.gray]}>Tags : </Text>
+                <Text style={[styles.paragraph, styles.gray]}>{Strings.TAGS} :</Text>
                 <View style={styles.chips}>
                   {host?.tags.map((tag: Tag) => {
                     return (
@@ -87,34 +93,7 @@ const Profile: React.FC = () => {
               </View>
             </Card.Content>
           </Card>
-          <Card style={styles.card} elevation={10}>
-            <Card.Content>
-              <View style={styles.cardTitle}>
-                <Text style={styles.gray}>Politique Covid :</Text>
-                <IconButton
-                  icon={Globals.ICONS.EDIT}
-                  size={Globals.SIZES.ICON_MENU}
-                  color={Globals.COLORS.PRIMARY}
-                  onPress={() => {}}
-                />
-              </View>
-              <Text style={styles.gray}>TODO</Text>
-            </Card.Content>
-          </Card>
-          <Card style={styles.card} elevation={10}>
-            <Card.Content>
-              <View style={styles.cardTitle}>
-                <Text style={styles.gray}>Avantages :</Text>
-                <IconButton
-                  icon={Globals.ICONS.CREATE}
-                  size={Globals.SIZES.ICON_MENU}
-                  color={Globals.COLORS.PRIMARY}
-                  onPress={() => {}}
-                />
-              </View>
-              <Text style={styles.gray}>TODO</Text>
-            </Card.Content>
-          </Card>
+          {host && <CovidDataDisplay host={host} editButtonDisplayed={true} />}
         </View>
       </ScrollView>
     </SafeAreaView>

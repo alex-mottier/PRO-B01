@@ -5,6 +5,8 @@
  * @brief   General application settings
  */
 
+import Strings from './Strings';
+
 export default {
   COLORS: {
     BLUE: '#28d7eb',
@@ -33,11 +35,14 @@ export default {
     COPY: 'box-shadow',
     CREATE: 'plus-circle',
     DELETE: 'delete-outline',
+    DISINFECTION: 'hand-water',
+    DISTANCING: 'arrow-expand',
     EDIT: 'pencil',
     EDIT_IMAGE: 'circle-edit-outline',
     END_TIME: 'clock-time-nine',
     END_TIME_OUT: 'clock-time-nine-outline',
     FACEBOOK: 'facebook',
+    FACEMASK: 'drama-masks',
     FILTER: 'filter',
     GOOGLE: 'google',
     HOME: 'home',
@@ -48,6 +53,7 @@ export default {
     LOCK: 'lock',
     LOGOUT: 'logout',
     MESSAGE: 'message-text',
+    OPEN: 'home-lock-open',
     PROFILE: 'account',
     SAD: 'emoticon-sad-outline',
     SEARCH: 'magnify',
@@ -61,16 +67,29 @@ export default {
     ICON_HEADER: 18,
     ICON_MENU: 20,
   },
-  STRINGS: {
-    APP_NAME: 'Amphitryon',
-    CREATE: 'Créer une réunion',
-    CREATE_LOCATION: 'Créer un lieu',
-    LOCATIONS: 'Mes lieux de réunion',
-    PROFILE: 'Profil',
-    SEARCH: 'Rechercher une réunion',
-    SESSION_TOKEN_NAME: 'SESSION_TOKEN_AMPHITRYON',
+  NAVIGATION: {
+    AUTH_PROFILE_CONFIG: 'AUTH_PROFILE_CONFIG',
+    AUTH_SIGN_IN: 'AUTH_SIGN_IN',
+    AUTH_SIGN_UP: 'AUTH_SIGN_UP',
+    AUTH_WELCOME: 'AUTH_WELCOME',
+    HOST_CREATE_LOCATION: Strings.LOCATION_CREATE,
+    HOST_EDIT_COVID: Strings.COVID_DATA,
+    HOST_EDIT_HOST: Strings.HOST_EDIT,
+    HOST_EDIT_LOCATION: Strings.LOCATION_EDIT,
+    HOST_HOME: Strings.APP_NAME,
+    HOST_LOCATIONS: Strings.MY_LOCATIONS,
+    HOST_PROFILE: Strings.PROFILE,
+    STUDENT_CHAT: Strings.CHAT,
+    STUDENT_CREATE_MEETING: Strings.MEETING_CREATE,
+    STUDENT_EDIT_MEETING: Strings.MEETING_EDIT,
+    STUDENT_HOME: Strings.APP_NAME,
+    STUDENT_HOST: Strings.HOST_DETAILS,
+    STUDENT_LOCATION: Strings.LOCATION_DETAILS,
+    STUDENT_PROFILE: Strings.PROFILE,
+    STUDENT_SEARCH: Strings.SEARCH,
   },
   URLS: {
     API_URL: 'https://amphitryon.herokuapp.com',
   },
+  SESSION_TOKEN_NAME: 'session_token_amphitryon',
 };
