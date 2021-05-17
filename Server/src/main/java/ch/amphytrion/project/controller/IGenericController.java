@@ -6,7 +6,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public interface IGenericController<T> {
     default User getCurrentUser(){
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principal instanceof String){
+            return null;
+        }
+        return (User) principal;
     }
 
     default void checkUserIsStudent() throws CustomException {
