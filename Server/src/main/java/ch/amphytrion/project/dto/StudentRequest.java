@@ -10,5 +10,5 @@ import java.util.List;
 @AllArgsConstructor
 public class StudentRequest implements InterfaceDTO {
     public String tokenID;
-    public String userName;
+    public String username;
 }
