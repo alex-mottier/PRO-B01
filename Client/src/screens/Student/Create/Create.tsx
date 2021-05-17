@@ -26,7 +26,8 @@ import { addHours, format } from 'date-fns';
 import SearchLocation from '../../../components/SearchLocation/SearchLocation';
 import { useNavigation } from '@react-navigation/native';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
+import Strings from '../../../app/context/Strings';
 
 /**
  * Component props
@@ -100,19 +101,19 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
    */
   const isValid = (): boolean => {
     if (meetingName === '') {
-      Alert.alert('Nom nul', 'Le nom de la réunion ne peut pas être nul');
+      Alert.alert(Strings.ERROR_OCCURED, Strings.MEETING_NAME_NULL);
       return false;
     } else if (meetingDescription === '') {
-      Alert.alert('Description nulle', 'La description de la réunion ne peut pas être nulle');
+      Alert.alert(Strings.ERROR_OCCURED, Strings.MEETING_DESCRIPTION_NULL);
       return false;
     } else if (startDate >= endDate) {
-      Alert.alert('Erreur de date', "L'heure de fin doit être après l'heure de début");
+      Alert.alert(Strings.ERROR_OCCURED, Strings.MEETING_DATE_ERROR);
       return false;
     } else if (tags.length === 0) {
-      Alert.alert('Aucun tag', 'Veuillez définir un moins un tag à la réunion');
+      Alert.alert(Strings.ERROR_OCCURED, Strings.MEETING_TAGS_NULL);
       return false;
     } else if (location === null) {
-      Alert.alert('Aucun lieu', 'Veuillez définir le lieu de la réunion');
+      Alert.alert(Strings.ERROR_OCCURED, Strings.MEETING_LOCATION_NULL);
       return false;
     }
     return true;
@@ -257,7 +258,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
               <Card style={styles.card} elevation={10}>
                 <View style={styles.row}>
                   <TextInput
-                    label="Nom de la réunion"
+                    label={Strings.MEETING_NAME}
                     value={meetingName}
                     onChangeText={(meetingName) => setMeetingName(meetingName)}
                     style={styles.name}
@@ -270,20 +271,20 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
                       onPress={() => setIsPrivateOn(!isPrivateOn)}
                     />
                     <Text style={{ color: Globals.COLORS.TEXT, marginTop: -5 }}>
-                      {isPrivateOn ? 'Privée' : 'Publique'}
+                      {isPrivateOn ? Strings.PRIVATE : Strings.PUBLIC}
                     </Text>
                   </View>
                 </View>
                 <TextInput
-                  label="Description de la réunion"
+                  label={Strings.MEETING_DESCRIPTION}
                   value={meetingDescription}
                   onChangeText={(meetingDescription) => setMeetingDescription(meetingDescription)}
                   style={styles.fields}
                 />
               </Card>
               <Card style={styles.card} elevation={10}>
-                <View style={styles.dateHeure}>
-                  <Text style={{ color: Globals.COLORS.TEXT }}>Date / Heure :</Text>
+                <View style={styles.dateHour}>
+                  <Text style={{ color: Globals.COLORS.TEXT }}>{Strings.MEETING_DATE_TIME} :</Text>
                 </View>
                 <View style={styles.date}>
                   <View style={styles.row}>
@@ -346,7 +347,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
                     labelStyle={{ color: Globals.COLORS.WHITE }}
                     onPress={handleSubmit}
                     style={styles.button}>
-                    Créer la réunion
+                    {Strings.MEETING_CREATE}
                   </Button>
                 )}
                 {isEditMode && (
@@ -357,7 +358,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
                     labelStyle={{ color: Globals.COLORS.WHITE }}
                     onPress={handleEdit}
                     style={styles.button}>
-                    Modifier la réunion
+                    {Strings.MEETING_EDIT}
                   </Button>
                 )}
               </View>

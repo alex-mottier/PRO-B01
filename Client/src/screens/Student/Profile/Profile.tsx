@@ -13,21 +13,25 @@ import { observer } from 'mobx-react-lite';
 import { Meeting } from '../../../app/models/ApplicationTypes';
 import NoMeeting from '../../../components/NoMeeting/NoMeeting';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
+import Strings from '../../../app/context/Strings';
 
 const Profile: React.FC = () => {
   /* Usage of MobX global state store */
   const { studentStore, authenticationStore } = useStores();
+
+  /* Local variables */
   const meetings = studentStore.meetingsCreatedByUser;
+
   return (
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.row}>
             <Avatar.Image size={80} source={require('../../../../assets/Logo.png')} />
-            <Title style={styles.title}>{authenticationStore.authenticatedUser?.username}</Title>
+            <Title style={styles.title}>{authenticationStore.authenticatedStudent?.username}</Title>
           </View>
-          <Text style={styles.text}>Réunions à venir créées :</Text>
+          <Text style={styles.text}>{Strings.MEETINGS_TO_COME} :</Text>
           {meetings && meetings.length === 0 ? (
             <NoMeeting />
           ) : (

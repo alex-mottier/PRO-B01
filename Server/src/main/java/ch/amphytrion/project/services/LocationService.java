@@ -37,6 +37,15 @@ public class LocationService implements IGenericService<Location> {
         return null;
     }
 
+    public List<Location> findByHostId(String id) {
+        try {
+            return locationRepository.findByHostId(id);
+        }   catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public void delete(Location location) {
         locationRepository.delete(location);

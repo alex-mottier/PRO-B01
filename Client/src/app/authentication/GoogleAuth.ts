@@ -13,7 +13,7 @@ import LocalStorageDAO from '../../app/data/LocalStorageDAO';
 const config = {
   issuer: 'https://accounts.google.com',
   scopes: ['openid', 'profile'],
-  clientId: '298748587556-bq3umvugaaj2mtrbv1ua842ofq6qdir9.apps.googleusercontent.com',
+  clientId: '298748587556-mpio0261lovc0qkt660nbhgariolp1no.apps.googleusercontent.com',
 };
 
 class GoogleAuth {
@@ -39,7 +39,6 @@ class GoogleAuth {
   async handleSignInAsync(): Promise<TokenResponse | null> {
     try {
       const authState = await authAsync(config);
-		console.log(authState);
       await LocalStorageDAO.getInstance().setToken(authState);
       return authState;
     } catch (e) {

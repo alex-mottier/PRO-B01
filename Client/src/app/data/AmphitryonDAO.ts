@@ -7,7 +7,8 @@
 
 import { Alert } from 'react-native';
 import Globals from '../context/Globals';
-import { Filter, Meeting, Message, User } from '../models/ApplicationTypes';
+import Strings from '../context/Strings';
+import { Filter, Host, Location, Meeting, Message, Student } from '../models/ApplicationTypes';
 
 export default class AmphitryonDAO {
   private static instance: AmphitryonDAO = new AmphitryonDAO();
@@ -38,8 +39,8 @@ export default class AmphitryonDAO {
    * Set the user session token
    * @param token of the user session
    */
-  public setSessionToken(response: Response): void {
-    const sessionToken = response.headers.get(Globals.STRINGS.SESSION_TOKEN_NAME);
+  public setSessionTokenFromResponse(response: Response): void {
+    const sessionToken = response.headers.get(Globals.SESSION_TOKEN_NAME);
     if (sessionToken)
       this.headerWithSessionToken = {
         Accept: '*/*',
@@ -54,18 +55,18 @@ export default class AmphitryonDAO {
    * @param user to create
    * @returns the session token
    */
-  async createUser(tokenId: string, user: User): Promise<Response | null> {
+  async createStudent(tokenId: string, user: Student): Promise<Response | null> {
     return fetch(Globals.URLS.API_URL + '/signUpStudent', {
       method: 'POST',
       headers: this.headerWithoutSessionToken,
       body: JSON.stringify({ tokenID: tokenId, username: user.username }),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", "Erreur lors de la création de l 'utilisateur");
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_CREATION);
         return null;
       });
   }
@@ -73,7 +74,7 @@ export default class AmphitryonDAO {
   /**
    * Connect a user
    * @param tokenId of the user
-   * @returns Réponse axios
+   * @returns user response or null if connection failed
    */
   async connectUser(tokenId: string): Promise<Response | null> {
     return fetch(Globals.URLS.API_URL + '/login', {
@@ -82,14 +83,11 @@ export default class AmphitryonDAO {
       body: JSON.stringify({ tokenID: tokenId }),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert(
-          "Une erreur s'est produite",
-          'Erreur lors de la récupération des informations de votre compte',
-        );
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_LOGIN);
         return null;
       });
   }
@@ -106,11 +104,11 @@ export default class AmphitryonDAO {
       body: JSON.stringify(meeting),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la création de la réunion');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_MEETING_CREATE);
         return null;
       });
   }
@@ -127,11 +125,11 @@ export default class AmphitryonDAO {
       body: JSON.stringify(meeting),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la mise à jour de la réunion');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_MEETING_UPDATE);
         return null;
       });
   }
@@ -147,11 +145,11 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la suppression la réunion');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_MEETING_DELETE);
         return null;
       });
   }
@@ -166,14 +164,11 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert(
-          "Une erreur s'est produite",
-          "Erreur lors du chargement des meetings de l'utilisateur",
-        );
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_GET_CREATED_MEETINGS);
         return null;
       });
   }
@@ -191,11 +186,11 @@ export default class AmphitryonDAO {
       body: JSON.stringify({ endDate: endDate.toISOString(), startDate: startDate.toISOString() }),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors du chargement de vos réunions');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_LOAD_MEETINGS);
         return null;
       });
   }
@@ -211,11 +206,11 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la recherche de réunion');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_SEARCH_WITH_ID);
         return null;
       });
   }
@@ -232,11 +227,11 @@ export default class AmphitryonDAO {
       body: JSON.stringify(filter),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la recherche de réunion');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_SEARCH_WITH_FILER);
         return null;
       });
   }
@@ -252,11 +247,11 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", "Erreur lors de l'inscription");
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_MEETING_JOIN);
         return null;
       });
   }
@@ -272,11 +267,11 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la désinscription');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_MEETING_LEAVE);
         return null;
       });
   }
@@ -292,11 +287,11 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors de la récupération des messages');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_CHAT_LOAD);
         return null;
       });
   }
@@ -313,11 +308,11 @@ export default class AmphitryonDAO {
       body: JSON.stringify(message),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", "Erreur lors de l'envoi du message");
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_CHAT_SEND);
         return null;
       });
   }
@@ -333,11 +328,11 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors du lieu');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_LOCATION_LOAD);
         return null;
       });
   }
@@ -364,11 +359,11 @@ export default class AmphitryonDAO {
       }),
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors du chargement des lieux');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_LOCATIONS_LOAD);
         return null;
       });
   }
@@ -383,11 +378,11 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors du chargement des lieux');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_LOCATIONS_LOAD);
         return null;
       });
   }
@@ -403,11 +398,168 @@ export default class AmphitryonDAO {
       headers: this.headerWithSessionToken,
     })
       .then((response: Response) => {
-        this.setSessionToken(response);
+        this.setSessionTokenFromResponse(response);
         return response;
       })
       .catch(() => {
-        Alert.alert("Une erreur s'est produite", 'Erreur lors du lieu');
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_HOST_LOAD);
+        return null;
+      });
+  }
+
+  /** HOST PROFILE */
+
+  /**
+   * Create a host
+   * @param tokenId of the user
+   * @param host to create
+   * @returns the session token
+   */
+  async createHost(tokenId: string, host: Host): Promise<Response | null> {
+    return fetch(Globals.URLS.API_URL + '/signUpHost', {
+      method: 'POST',
+      headers: this.headerWithoutSessionToken,
+      body: JSON.stringify({
+        tokenID: tokenId,
+        name: host.name,
+        street: host.address.street,
+        streetNb: host.address.streetNb,
+        cityName: host.address.cityName,
+        npa: host.address.npa,
+        description: host.description,
+        tags: host.tags,
+      }),
+    })
+      .then((response: Response) => {
+        this.setSessionTokenFromResponse(response);
+        return response;
+      })
+      .catch(() => {
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_HOST_CREATE);
+        return null;
+      });
+  }
+
+  /**
+   * Get host locations
+   * @returns host locations
+   */
+  async getHostLocations(): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/getMyLocations', {
+      method: 'GET',
+      headers: this.headerWithSessionToken,
+    })
+      .then((response: Response) => {
+        this.setSessionTokenFromResponse(response);
+        return response;
+      })
+      .catch(() => {
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_HOST_LOCATIONS);
+        return null;
+      });
+  }
+
+  /**
+   * Create a location
+   * @param location to create
+   * @returns the location created
+   */
+  async createLocation(location: Location): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/location', {
+      method: 'POST',
+      headers: this.headerWithSessionToken,
+      body: JSON.stringify(location),
+    })
+      .then((response: Response) => {
+        this.setSessionTokenFromResponse(response);
+        return response;
+      })
+      .catch(() => {
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_LOCATION_CREATE);
+        return null;
+      });
+  }
+
+  /**
+   * Delete a location
+   * @param locationId to delete
+   * @returns if the location has been successfully deleted or null
+   */
+  async deleteLocation(locationId: string): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/location/' + locationId, {
+      method: 'DELETE',
+      headers: this.headerWithSessionToken,
+    })
+      .then((response: Response) => {
+        this.setSessionTokenFromResponse(response);
+        return response;
+      })
+      .catch(() => {
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_LOCATION_DELETE);
+        return null;
+      });
+  }
+
+  /**
+   * Update a location
+   * @param location to update
+   * @returns if the location has been successfully updated or null
+   */
+  async updateLocation(location: Location): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/location', {
+      method: 'PATCH',
+      headers: this.headerWithSessionToken,
+      body: JSON.stringify(location),
+    })
+      .then((response: Response) => {
+        this.setSessionTokenFromResponse(response);
+        return response;
+      })
+      .catch(() => {
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_LOCATION_UPDATE);
+        return null;
+      });
+  }
+
+  /**
+   * Get host reservations
+   * @param startDate date from
+   * @param endDate date to
+   * @returns host reservations
+   */
+  async getReservations(startDate: Date, endDate: Date): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/getReservations', {
+      method: 'POST',
+      headers: this.headerWithSessionToken,
+      body: JSON.stringify({ endDate: endDate.toISOString(), startDate: startDate.toISOString() }),
+    })
+      .then((response: Response) => {
+        this.setSessionTokenFromResponse(response);
+        return response;
+      })
+      .catch(() => {
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_HOST_RESERVATIONS);
+        return null;
+      });
+  }
+
+  /**
+   * Update host
+   * @param host to update
+   * @returns if the host has been successfully updated or null
+   */
+  async updateHost(host: Host): Promise<Response | null> {
+    return await fetch(Globals.URLS.API_URL + '/host', {
+      method: 'PATCH',
+      headers: this.headerWithSessionToken,
+      body: JSON.stringify(host),
+    })
+      .then((response: Response) => {
+        this.setSessionTokenFromResponse(response);
+        return response;
+      })
+      .catch(() => {
+        Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_HOST_UPDATE);
         return null;
       });
   }

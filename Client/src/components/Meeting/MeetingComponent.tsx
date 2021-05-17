@@ -19,7 +19,8 @@ import { useNavigation } from '@react-navigation/core';
 import { colors } from '../../app/context/Theme';
 import Clipboard from 'expo-clipboard';
 import LoadingComponent from '../Loading/LoadingComponent';
-import { useStores } from '../../app/context/storesContext';
+import { useStores } from '../../app/stores/StoresContext';
+import Strings from '../../app/context/Strings';
 
 /**
  * Component props
@@ -57,10 +58,10 @@ const MeetingComponent: React.FC<IProps> = ({
 
   /* Local variables */
   let nbColors = 0;
-  const isOwner = meeting.ownerID === authenticationStore.getAuthenticatedUser()?.id;
+  const isOwner = meeting.ownerID === authenticationStore.getAuthenticatedStudent()?.id;
   let isMemberOfMeeting =
     meeting.membersId.findIndex((current: string) => {
-      return authenticationStore.getAuthenticatedUser()?.id === current;
+      return authenticationStore.getAuthenticatedStudent()?.id === current;
     }) !== -1;
 
   /**
@@ -76,7 +77,7 @@ const MeetingComponent: React.FC<IProps> = ({
   const handleEdit = () => {
     studentStore.setMeetingToUpdate(meeting);
     studentStore.setLocationToLoad(meeting.locationID);
-    navigation.navigate('Edit');
+    navigation.navigate(Globals.NAVIGATION.STUDENT_EDIT_MEETING);
   };
 
   /**
@@ -107,24 +108,20 @@ const MeetingComponent: React.FC<IProps> = ({
    * Suppression de la réunion
    */
   const handleDelete = () => {
-    Alert.alert(
-      'Supprimer ?',
-      'Etes-vous sûr de vouloir supprimer la réunion ' + meeting.name + ' ?',
-      [
-        {
-          text: 'Non',
-          style: 'cancel',
+    Alert.alert(Strings.ASK_DELETE, Strings.ASK_MEETING_DELETE + meeting.name + ' ?', [
+      {
+        text: Strings.NO,
+        style: 'cancel',
+      },
+      {
+        text: Strings.YES,
+        onPress: () => {
+          void studentStore.deleteMeeting(meeting.id).then(() => {
+            if (onDelete) onDelete();
+          });
         },
-        {
-          text: 'Oui',
-          onPress: () => {
-            void studentStore.deleteMeeting(meeting.id).then(() => {
-              if (onDelete) onDelete();
-            });
-          },
-        },
-      ],
-    );
+      },
+    ]);
   };
 
   /**
@@ -132,7 +129,7 @@ const MeetingComponent: React.FC<IProps> = ({
    */
   const copyToClipboard = () => {
     Clipboard.setString(meeting.id);
-    Alert.alert('Copié', "L'id de la réunion a été copié");
+    Alert.alert(Strings.SAVE, Strings.MEETING_ID_COPIED);
   };
 
   /**
@@ -141,7 +138,7 @@ const MeetingComponent: React.FC<IProps> = ({
   const handleOpenChat = () => {
     studentStore.setChatToLoad(meeting.chatID);
     studentStore.setMeetingToUpdate(meeting);
-    navigation.navigate('Chat');
+    navigation.navigate(Globals.NAVIGATION.STUDENT_CHAT);
   };
 
   return (
@@ -158,7 +155,7 @@ const MeetingComponent: React.FC<IProps> = ({
             subtitle={isReduced ? meeting.description : ''}
             left={() => <Avatar.Image size={40} source={require('../../../assets/HEIG-VD.png')} />}
             right={() =>
-              !isInCalendar && (
+              (!isInCalendar || authenticationStore.getAuthenticatedHost() !== null) && (
                 <View>
                   <View style={styles.nbPeople}>
                     <Text style={styles.gray}>
@@ -221,19 +218,21 @@ const MeetingComponent: React.FC<IProps> = ({
             />
             <Text style={styles.gray}>{meeting.locationName}</Text>
             <View style={styles.iconLittle}>
-              <MaterialCommunityIcons
-                name={Globals.ICONS.INFO}
-                color={Globals.COLORS.GRAY}
-                size={Globals.SIZES.ICON_HEADER}
-                onPress={() => {
-                  void studentStore.setLocationToLoad(meeting.locationID);
-                  navigation.navigate('LocationDetails');
-                }}
-              />
+              {authenticationStore.getAuthenticatedHost() === null && (
+                <MaterialCommunityIcons
+                  name={Globals.ICONS.INFO}
+                  color={Globals.COLORS.GRAY}
+                  size={Globals.SIZES.ICON_HEADER}
+                  onPress={() => {
+                    void studentStore.setLocationToLoad(meeting.locationID);
+                    navigation.navigate(Globals.NAVIGATION.STUDENT_LOCATION);
+                  }}
+                />
+              )}
             </View>
           </View>
           <Card.Actions style={styles.actions}>
-            {isChatable && (
+            {isChatable && authenticationStore.getAuthenticatedHost() === null && (
               <View>
                 <IconButton
                   icon={Globals.ICONS.MESSAGE}
@@ -241,7 +240,7 @@ const MeetingComponent: React.FC<IProps> = ({
                   color={Globals.COLORS.ORANGE}
                   onPress={handleOpenChat}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Discuter</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.CHAT}</Text>
               </View>
             )}
             {isOwner && !isChatView && (
@@ -252,7 +251,7 @@ const MeetingComponent: React.FC<IProps> = ({
                   onPress={copyToClipboard}
                   color={Globals.COLORS.GRAY}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Copier ID</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.COPY_ID}</Text>
               </View>
             )}
             {!isMemberOfMeeting && !isOwner && !isInCalendar && isSearchView && (
@@ -263,7 +262,7 @@ const MeetingComponent: React.FC<IProps> = ({
                   onPress={handleJoinMeeting}
                   color={Globals.COLORS.GREEN}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Rejoindre</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.JOIN}</Text>
               </View>
             )}
             {isOwner && !isChatView && (
@@ -274,7 +273,7 @@ const MeetingComponent: React.FC<IProps> = ({
                   onPress={handleEdit}
                   color={Globals.COLORS.BLUE}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Modifier</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.EDIT}</Text>
               </View>
             )}
             {isOwner && !isChatView && (
@@ -285,7 +284,7 @@ const MeetingComponent: React.FC<IProps> = ({
                   onPress={handleDelete}
                   color={Globals.COLORS.PINK}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Supprimer</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.DELETE}</Text>
               </View>
             )}
             {isMemberOfMeeting && !isOwner && (isInCalendar || isSearchView) && (
@@ -296,7 +295,7 @@ const MeetingComponent: React.FC<IProps> = ({
                   onPress={handleLeaveMeeting}
                   color={Globals.COLORS.PINK}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Quitter</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.LEAVE}</Text>
               </View>
             )}
           </Card.Actions>

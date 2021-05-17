@@ -17,7 +17,7 @@ import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import { Meeting } from '../../../app/models/ApplicationTypes';
 import { addYears, format } from 'date-fns';
 import { dateLocale } from '../../../app/context/DateFormat';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
 
 // Format date definition
 LocaleConfig.locales['fr'] = dateLocale;
