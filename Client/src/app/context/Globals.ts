@@ -89,8 +89,8 @@ export default {
     STUDENT_SEARCH: Strings.SEARCH,
   },
   URLS: {
-    API_URL: 'https://amphitryon-prod.herokuapp.com',
-    GOOGLE_ID: '298748587556-bq3umvugaaj2mtrbv1ua842ofq6qdir9.apps.googleusercontent.com',
+    API_URL: 'https://amphitryon.herokuapp.com',
+    GOOGLE_ID: '298748587556-mpio0261lovc0qkt660nbhgariolp1no.apps.googleusercontent.com',
   },
   SESSION_TOKEN_NAME: 'session_token_amphitryon',
 };
