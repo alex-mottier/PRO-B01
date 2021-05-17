@@ -9,17 +9,17 @@ import { StyleSheet } from 'react-native';
 import Globals from '../../app/context/Globals';
 
 const styles = StyleSheet.create({
-  arrowUp: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-  },
   actions: {
     display: 'flex',
     justifyContent: 'space-evenly',
     marginRight: '10%',
     marginLeft: '10%',
     alignItems: 'center',
+  },
+  arrowUp: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
   },
   buttonText: {
     fontSize: 12,
@@ -30,12 +30,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: '100%',
   },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 15,
-  },
   chip: {
     width: 'auto',
     margin: 5,
@@ -45,6 +39,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 15,
+  },
+  gray: {
+    color: Globals.COLORS.TEXT,
   },
   icon: {
     marginRight: 10,
@@ -58,10 +61,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
   },
-  logo: {
-    width: 50,
-    height: 50,
-  },
   nbPeople: {
     width: 70,
     flexDirection: 'row',
@@ -70,9 +69,6 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     maxWidth: '80%',
-  },
-  gray: {
-    color: Globals.COLORS.TEXT,
   },
 });
 

@@ -14,6 +14,6 @@ public class HostProfil {
     private Address address;
     private String description;
     private List<Tag> tags= new ArrayList<>();
-
+    private CovidData covidData;
     public HostProfil(){ }
 }

@@ -8,14 +8,17 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  button: { marginTop: 20 },
   container: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 320,
     margin: 30,
     paddingTop: 20,
+  },
+  fields: {
+    width: '100%',
   },
   image: {
     width: '100%',
@@ -29,9 +32,6 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 200,
-  },
-  fields: {
-    width: '100%',
   },
 });
 

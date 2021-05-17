@@ -17,7 +17,7 @@ import { colors } from '../../../app/context/Theme';
 import OpeninHourComponent from '../../../components/OpeningHour/OpeningHourComponent';
 import { useNavigation } from '@react-navigation/core';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
 
 const LocationDetails: React.FC = () => {
   /* Usage of React Navigation */
@@ -59,7 +59,7 @@ const LocationDetails: React.FC = () => {
                 color={Globals.COLORS.GRAY}
                 onPress={() => {
                   if (location?.hostId) void studentStore.setHostToLoad(location.hostId);
-                  if (location) navigation.navigate('HostDetails');
+                  if (location) navigation.navigate(Globals.NAVIGATION.STUDENT_HOST);
                 }}
               />
             </View>
@@ -98,7 +98,9 @@ const LocationDetails: React.FC = () => {
                   return (
                     <OpeninHourComponent
                       key={openingHour.day.toString() + openingHour.startTime}
-                      openingHour={openingHour}></OpeninHourComponent>
+                      openingHour={openingHour}
+                      onDelete={() => {}}
+                      isDeleteEnabled={false}></OpeninHourComponent>
                   );
                 })}
               </View>

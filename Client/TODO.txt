@@ -1,0 +1,6 @@
+[] Feuilles de styles : unification ?
+[] Calendar component le meme dans le home du student que dans le host
+[] Unit test utils class
+[] Enlever les getters inutils des stores
+[] SignIn et loadTokens se ressemblent beaucoup, voir pour unifier
+[] Valider entrée du sign up

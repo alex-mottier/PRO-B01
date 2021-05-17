@@ -9,13 +9,4 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HostProfilControllerTest {
 
-    UserRepository hostRepository;
-    HostService hostService = new HostService(hostRepository);
-    HostController hostController = new HostController(hostService);
-
-    @Test
-    void name() {
-        assertEquals(HostController.class.getCanonicalName(),
-                hostController.controllerName());
-    }
 }
