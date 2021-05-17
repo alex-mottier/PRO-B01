@@ -146,6 +146,7 @@ class AuthenticationStore {
             username: user.username,
           });
           this.setIsLoggedIn(true);
+          this.setIsLoading(false);
           return true;
         } else {
           void this.utils.manageErrorInResponse(response);
