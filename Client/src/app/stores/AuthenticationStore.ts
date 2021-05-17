@@ -146,6 +146,7 @@ class AuthenticationStore {
             username: user.username,
           });
           this.setIsLoggedIn(true);
+          this.setIsLoading(false);
           return true;
         } else {
           void this.utils.manageErrorInResponse(response);
@@ -160,7 +161,7 @@ class AuthenticationStore {
    * Create a new host
    * @param host to create
    */
-  @action async signUpHost(host: Host): Promise<boolean> {
+  @action async signUpHost(host: Host): Promise<void> {
     this.setIsLoading(true);
     if (this.userToken?.idToken) {
       const response = await this.amphitryonDAO.createHost(this.userToken.idToken, host);
@@ -176,54 +177,24 @@ class AuthenticationStore {
             }
           }
           this.setIsLoading(false);
-          return true;
         } else {
           void this.utils.manageErrorInResponse(response);
         }
       }
       this.setIsLoading(false);
     }
-    return false;
   }
 
   /**
    * Sign in method
    */
-  @action async signIn(): Promise<boolean> {
+  @action async signIn(): Promise<void> {
     this.setIsLoading(true);
     const loggedIn = await this.signInWithGoogle();
     if (loggedIn && this.userToken && this.userToken.idToken) {
-      const response = await this.tryToConnect(this.userToken?.idToken);
-      if (response) {
-        if (response.ok) {
-          const userResponse: UserResponse = await response.json();
-          if (userResponse.isStudent) {
-            this.setAuthenticatedHost(null);
-            this.setAuthenticatedStudent({ id: userResponse.id, username: userResponse.username });
-            await StudentStore.getInstance().loadUserData();
-          } else {
-            this.setAuthenticatedStudent(null);
-            const host = await this.amphitryonDAO.getHostDetails(userResponse.id);
-            if (host) {
-              if (host.ok) {
-                this.setAuthenticatedHost(await host.json());
-                await HostStore.getInstance().loadUserData();
-              }
-            }
-          }
-          this.setIsLoggedIn(true);
-          return true;
-        } else {
-          void this.utils.manageErrorInResponse(response);
-        }
-      }
+      await this.connectUser(this.userToken.idToken);
     }
     this.setIsLoading(false);
-    return false;
-  }
-
-  @action async tryToConnect(tokenId: string): Promise<Response | null> {
-    return await this.amphitryonDAO.connectUser(tokenId);
   }
 
   /**
@@ -231,36 +202,46 @@ class AuthenticationStore {
    */
   @action async loadTokens(): Promise<void> {
     this.setIsLoading(true);
-    const token = await GoogleAuth.getInstance().getCachedAuthAsync();
+    const token = await this.googleAuth.getCachedAuthAsync();
     this.userToken = token;
     if (token && token.idToken) {
-      const response = await AmphitryonDAO.getInstance().connectUser(token.idToken);
-      if (response) {
-        if (response.ok) {
-          const userResponse: UserResponse = await response.json();
-          if (userResponse.isStudent) {
-            this.setAuthenticatedHost(null);
-            this.setAuthenticatedStudent({
-              id: userResponse.id,
-              username: userResponse.username,
-            });
-            await StudentStore.getInstance().loadUserData();
-            this.setIsLoading(false);
-          } else {
-            this.setAuthenticatedStudent(null);
-            const host = await AmphitryonDAO.getInstance().getHostDetails(userResponse.id);
-            if (host) {
-              if (host.ok) {
-                this.setAuthenticatedHost(await host.json());
-                await HostStore.getInstance().loadUserData();
-                this.setIsLoading(false);
-              }
+      await this.connectUser(token.idToken);
+    }
+    this.setIsLoading(false);
+  }
+
+  /**
+   * Connect user into application
+   * @param tokenId to connect user
+   */
+  @action async connectUser(tokenId: string): Promise<void> {
+    const response = await this.amphitryonDAO.connectUser(tokenId);
+    if (response) {
+      if (response.ok) {
+        const userResponse: UserResponse = await response.json();
+        if (userResponse.isStudent) {
+          this.setAuthenticatedHost(null);
+          this.setAuthenticatedStudent({ id: userResponse.id, username: userResponse.username });
+          await StudentStore.getInstance().loadUserData();
+        } else {
+          this.setAuthenticatedStudent(null);
+          const host = await this.amphitryonDAO.getHostDetails(userResponse.id);
+          if (host) {
+            if (host.ok) {
+              this.setAuthenticatedHost(await host.json());
+              await HostStore.getInstance().loadUserData();
             }
           }
-          this.setIsLoggedIn(true);
         }
+        this.setIsLoggedIn(true);
+      } else {
+        void this.utils.manageErrorInResponse(response);
       }
     }
+  }
+
+  @action async tryToConnect(tokenId: string): Promise<Response | null> {
+    return await this.amphitryonDAO.connectUser(tokenId);
   }
 
   /**

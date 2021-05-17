@@ -7,12 +7,14 @@
 
 import { authAsync, refreshAsync, revokeAsync, TokenResponse } from 'expo-app-auth';
 import LocalStorageDAO from '../../app/data/LocalStorageDAO';
+import Globals from '../context/Globals';
 
 // Google configuration to authenticate users
+// Keep master's clientId
 const config = {
   issuer: 'https://accounts.google.com',
   scopes: ['openid', 'profile'],
-  clientId: '298748587556-mpio0261lovc0qkt660nbhgariolp1no.apps.googleusercontent.com',
+  clientId: Globals.URLS.GOOGLE_ID,
 };
 
 class GoogleAuth {

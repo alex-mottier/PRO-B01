@@ -23,6 +23,9 @@ const SignIn: React.FC = () => {
   /* Usage of MobX global state store */
   const { authenticationStore } = useStores();
 
+  /**
+   * Action on login
+   */
   const handleLogin = async () => {
     await authenticationStore.signIn();
   };
