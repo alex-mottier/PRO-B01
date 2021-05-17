@@ -78,6 +78,7 @@ class StudentStore {
           this.meetingsCreatedByUser = meetings;
         });
       } else {
+        console.log('getCreatedMeetings');
         void this.utils.manageErrorInResponse(response);
       }
     }
@@ -119,6 +120,7 @@ class StudentStore {
           }
         });
       } else {
+        console.log('getMyMeetings');
         void this.utils.manageErrorInResponse(response);
       }
     }
@@ -303,6 +305,7 @@ class StudentStore {
         });
         this.regenerateItems();
       } else {
+        console.log('createMeeting');
         void this.utils.manageErrorInResponse(response);
       }
     }
