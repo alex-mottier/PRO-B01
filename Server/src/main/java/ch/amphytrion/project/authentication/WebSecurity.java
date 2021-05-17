@@ -28,7 +28,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
             "/webjars/**",
             SecurityConstants.SIGN_UP_URL_STUDENT,
             SecurityConstants.SIGN_UP_URL_HOST,
-            "/**",
     };
 
 
