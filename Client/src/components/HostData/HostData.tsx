@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { Image, SafeAreaView, ScrollView, View } from 'react-native';
+import { Alert, Image, SafeAreaView, ScrollView, View } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { TabScreen } from 'react-native-paper-tabs';
 import Globals from '../../app/context/Globals';
@@ -66,9 +66,39 @@ const HostData: React.FC<IProps> = ({ onSubmit, buttonText }) => {
   };
 
   /**
+   * Validate the form
+   * @returns is the form is valid
+   */
+  const isValid = (): boolean => {
+    if (host === '') {
+      Alert.alert(Strings.ERROR_OCCURED, Strings.HOST_NAME_NULL);
+      return false;
+    } else if (addressName === '') {
+      Alert.alert(Strings.ERROR_OCCURED, Strings.HOST_ADDRESS_NULL);
+      return false;
+    } else if (addressNumber === '') {
+      Alert.alert(Strings.ERROR_OCCURED, Strings.HOST_ADDRESS_NUMBER_NULL);
+      return false;
+    } else if (city === '') {
+      Alert.alert(Strings.ERROR_OCCURED, Strings.HOST_ADDRESS_CITY_NULL);
+      return false;
+    } else if (npa === '') {
+      Alert.alert(Strings.ERROR_OCCURED, Strings.HOST_ADDRESS_ZIP_NULL);
+      return false;
+    } else if (tags.length === 0) {
+      Alert.alert(Strings.ERROR_OCCURED, Strings.HOST_TAGS_NULL);
+      return false;
+    }
+    return true;
+  };
+
+  /**
    * Action when submit button is clicked
    */
   const handleSubmit = () => {
+    // Validation of form entries
+    if (!isValid()) return;
+
     const hostAuth = authenticationStore.authenticatedHost;
     onSubmit({
       id: hostAuth ? hostAuth.id : '',
