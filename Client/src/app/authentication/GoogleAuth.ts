@@ -39,7 +39,8 @@ class GoogleAuth {
   async handleSignInAsync(): Promise<TokenResponse | null> {
     try {
       const authState = await authAsync(config);
-      await LocalStorageDAO.getInstance().setToken(authState);
+      if (authState && authState.idToken !== '')
+        await LocalStorageDAO.getInstance().setToken(authState);
       return authState;
     } catch (e) {
       return null;

@@ -54,8 +54,7 @@ class StudentStore {
    */
   @action async loadUserData(): Promise<void> {
     await this.loadMeetingsCreatedByUser();
-    await this.loadUserMeetings(startOfDay(new Date()), endOfDay(addDays(new Date(), 10)));
-    void this.generateItems(new Date());
+    await this.generateItems(new Date());
   }
 
   /**

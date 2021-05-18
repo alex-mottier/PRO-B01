@@ -1,8 +1,5 @@
-[] Feuilles de styles : unification ?
 [] Calendar component le meme dans le home du student que dans le host
 [] Unit test utils class
-[] Enlever les getters inutils des stores
-[] enlever les getIntance dans les stores si on a l'attribut privé
-[] Valider entrée du sign up
 [] Recharger chat avec un timer
 [] Pouvoir faire des refresh sur les pages
+[] Loader après signUp et signIn
