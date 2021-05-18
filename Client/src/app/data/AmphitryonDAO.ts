@@ -56,7 +56,7 @@ export default class AmphitryonDAO {
    * @returns the session token
    */
   async createStudent(tokenId: string, user: Student): Promise<Response | null> {
-    return fetch(Globals.URLS.API_URL + '/signUpStudent', {
+    return fetch(Globals.SETTINGS.API_URL + '/signUpStudent', {
       method: 'POST',
       headers: this.headerWithoutSessionToken,
       body: JSON.stringify({ tokenID: tokenId, username: user.username }),
@@ -77,7 +77,7 @@ export default class AmphitryonDAO {
    * @returns user response or null if connection failed
    */
   async connectUser(tokenId: string): Promise<Response | null> {
-    return fetch(Globals.URLS.API_URL + '/login', {
+    return fetch(Globals.SETTINGS.API_URL + '/login', {
       method: 'POST',
       headers: this.headerWithoutSessionToken,
       body: JSON.stringify({ tokenID: tokenId }),
@@ -98,7 +98,7 @@ export default class AmphitryonDAO {
    * @returns if the meeting has been successfully added or null
    */
   async createMeeting(meeting: Meeting): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/meeting', {
+    return await fetch(Globals.SETTINGS.API_URL + '/meeting', {
       method: 'POST',
       headers: this.headerWithSessionToken,
       body: JSON.stringify(meeting),
@@ -119,7 +119,7 @@ export default class AmphitryonDAO {
    * @returns if the meeting has been successfully updated or null
    */
   async updateMeeting(meeting: Meeting): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/meeting', {
+    return await fetch(Globals.SETTINGS.API_URL + '/meeting', {
       method: 'PATCH',
       headers: this.headerWithSessionToken,
       body: JSON.stringify(meeting),
@@ -140,7 +140,7 @@ export default class AmphitryonDAO {
    * @returns if the meeting has been successfully deleted or null
    */
   async deleteMeeting(meetingID: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/meeting/' + meetingID, {
+    return await fetch(Globals.SETTINGS.API_URL + '/meeting/' + meetingID, {
       method: 'DELETE',
       headers: this.headerWithSessionToken,
     })
@@ -159,7 +159,7 @@ export default class AmphitryonDAO {
    * @returns list of meetings
    */
   async loadMeetingCreatedByUser(): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/getCreatedMeetings', {
+    return await fetch(Globals.SETTINGS.API_URL + '/getCreatedMeetings', {
       method: 'GET',
       headers: this.headerWithSessionToken,
     })
@@ -180,7 +180,7 @@ export default class AmphitryonDAO {
    * @returns list of meetings
    */
   async loadUserMeetings(startDate: Date, endDate: Date): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/getMyMeetings ', {
+    return await fetch(Globals.SETTINGS.API_URL + '/getMyMeetings ', {
       method: 'POST',
       headers: this.headerWithSessionToken,
       body: JSON.stringify({ endDate: endDate.toISOString(), startDate: startDate.toISOString() }),
@@ -201,7 +201,7 @@ export default class AmphitryonDAO {
    * @returns list of meetings
    */
   async searchMeetingWithID(meetingID: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/meeting/' + meetingID, {
+    return await fetch(Globals.SETTINGS.API_URL + '/meeting/' + meetingID, {
       method: 'GET',
       headers: this.headerWithSessionToken,
     })
@@ -221,7 +221,7 @@ export default class AmphitryonDAO {
    * @returns list of meetings
    */
   async searchMeeting(filter: Filter): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/meetings/filter', {
+    return await fetch(Globals.SETTINGS.API_URL + '/meetings/filter', {
       method: 'POST',
       headers: this.headerWithSessionToken,
       body: JSON.stringify(filter),
@@ -242,7 +242,7 @@ export default class AmphitryonDAO {
    * @returns if the meeting has been joined by user
    */
   async joinMeeting(meetingID: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/meeting/join/' + meetingID, {
+    return await fetch(Globals.SETTINGS.API_URL + '/meeting/join/' + meetingID, {
       method: 'POST',
       headers: this.headerWithSessionToken,
     })
@@ -262,7 +262,7 @@ export default class AmphitryonDAO {
    * @returns if the meeting has been leaved by user
    */
   async leaveMeeting(meetingID: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/leaveMeeting/' + meetingID, {
+    return await fetch(Globals.SETTINGS.API_URL + '/leaveMeeting/' + meetingID, {
       method: 'POST',
       headers: this.headerWithSessionToken,
     })
@@ -282,7 +282,7 @@ export default class AmphitryonDAO {
    * @returns the chat loaded
    */
   async loadChat(chatID: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/chat/' + chatID, {
+    return await fetch(Globals.SETTINGS.API_URL + '/chat/' + chatID, {
       method: 'GET',
       headers: this.headerWithSessionToken,
     })
@@ -302,7 +302,7 @@ export default class AmphitryonDAO {
    * @returns if the messages was successfully sent
    */
   async sendMessage(chatId: string, message: Message): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/chat/createMessage/' + chatId, {
+    return await fetch(Globals.SETTINGS.API_URL + '/chat/createMessage/' + chatId, {
       method: 'POST',
       headers: this.headerWithSessionToken,
       body: JSON.stringify(message),
@@ -323,7 +323,7 @@ export default class AmphitryonDAO {
    * @returns the location
    */
   async getLocationDetails(locationID: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/location/' + locationID, {
+    return await fetch(Globals.SETTINGS.API_URL + '/location/' + locationID, {
       method: 'GET',
       headers: this.headerWithSessionToken,
     })
@@ -349,7 +349,7 @@ export default class AmphitryonDAO {
     end: Date,
     meetingId: string | null,
   ): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/locations/withDate', {
+    return await fetch(Globals.SETTINGS.API_URL + '/locations/withDate', {
       method: 'POST',
       headers: this.headerWithSessionToken,
       body: JSON.stringify({
@@ -373,7 +373,7 @@ export default class AmphitryonDAO {
    * @returns All locations
    */
   async getAllLocations(): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/locations', {
+    return await fetch(Globals.SETTINGS.API_URL + '/locations', {
       method: 'GET',
       headers: this.headerWithSessionToken,
     })
@@ -393,7 +393,7 @@ export default class AmphitryonDAO {
    * @returns the host
    */
   async getHostDetails(hostId: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/host/' + hostId, {
+    return await fetch(Globals.SETTINGS.API_URL + '/host/' + hostId, {
       method: 'GET',
       headers: this.headerWithSessionToken,
     })
@@ -416,7 +416,7 @@ export default class AmphitryonDAO {
    * @returns the session token
    */
   async createHost(tokenId: string, host: Host): Promise<Response | null> {
-    return fetch(Globals.URLS.API_URL + '/signUpHost', {
+    return fetch(Globals.SETTINGS.API_URL + '/signUpHost', {
       method: 'POST',
       headers: this.headerWithoutSessionToken,
       body: JSON.stringify({
@@ -445,7 +445,7 @@ export default class AmphitryonDAO {
    * @returns host locations
    */
   async getHostLocations(): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/getMyLocations', {
+    return await fetch(Globals.SETTINGS.API_URL + '/getMyLocations', {
       method: 'GET',
       headers: this.headerWithSessionToken,
     })
@@ -465,7 +465,7 @@ export default class AmphitryonDAO {
    * @returns the location created
    */
   async createLocation(location: Location): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/location', {
+    return await fetch(Globals.SETTINGS.API_URL + '/location', {
       method: 'POST',
       headers: this.headerWithSessionToken,
       body: JSON.stringify(location),
@@ -486,7 +486,7 @@ export default class AmphitryonDAO {
    * @returns if the location has been successfully deleted or null
    */
   async deleteLocation(locationId: string): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/location/' + locationId, {
+    return await fetch(Globals.SETTINGS.API_URL + '/location/' + locationId, {
       method: 'DELETE',
       headers: this.headerWithSessionToken,
     })
@@ -506,7 +506,7 @@ export default class AmphitryonDAO {
    * @returns if the location has been successfully updated or null
    */
   async updateLocation(location: Location): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/location', {
+    return await fetch(Globals.SETTINGS.API_URL + '/location', {
       method: 'PATCH',
       headers: this.headerWithSessionToken,
       body: JSON.stringify(location),
@@ -528,7 +528,7 @@ export default class AmphitryonDAO {
    * @returns host reservations
    */
   async getReservations(startDate: Date, endDate: Date): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/getReservations', {
+    return await fetch(Globals.SETTINGS.API_URL + '/getReservations', {
       method: 'POST',
       headers: this.headerWithSessionToken,
       body: JSON.stringify({ endDate: endDate.toISOString(), startDate: startDate.toISOString() }),
@@ -549,7 +549,7 @@ export default class AmphitryonDAO {
    * @returns if the host has been successfully updated or null
    */
   async updateHost(host: Host): Promise<Response | null> {
-    return await fetch(Globals.URLS.API_URL + '/host', {
+    return await fetch(Globals.SETTINGS.API_URL + '/host', {
       method: 'PATCH',
       headers: this.headerWithSessionToken,
       body: JSON.stringify(host),

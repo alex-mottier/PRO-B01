@@ -13,7 +13,7 @@ import Globals from '../context/Globals';
 const config = {
   issuer: 'https://accounts.google.com',
   scopes: ['openid', 'profile'],
-  clientId: Globals.URLS.GOOGLE_ID,
+  clientId: Globals.SETTINGS.GOOGLE_ID,
 };
 
 class GoogleAuth {

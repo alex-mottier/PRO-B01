@@ -223,7 +223,7 @@ const Search: React.FC = () => {
                 <View style={styles.content}>
                   <TextInput
                     label={Strings.MEETING_NAME}
-                    value={name}
+                    defaultValue={name}
                     onChangeText={(id) => setName(id)}
                     style={styles.fields}
                   />
