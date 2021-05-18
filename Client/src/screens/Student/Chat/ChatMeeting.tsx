@@ -26,7 +26,7 @@ const ChatMeeting: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [chat, setChat] = React.useState<Chat | null>(null);
   const meeting = studentStore.meetingToUpdate;
-  const authenticatedUser = authenticationStore.getAuthenticatedStudent();
+  const authenticatedUser = authenticationStore.authenticatedStudent;
   const [message, setMessage] = React.useState<string>('');
 
   /* Local variables */
@@ -47,7 +47,7 @@ const ChatMeeting: React.FC = () => {
    * Action done when submit button is pressed
    */
   const handleSubmit = () => {
-    const user = authenticationStore.getAuthenticatedStudent();
+    const user = authenticationStore.authenticatedStudent;
     if (user) {
       const newMessage: Message = {
         message: message,

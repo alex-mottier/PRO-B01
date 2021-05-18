@@ -64,24 +64,8 @@ class AuthenticationStore {
    * Set the authenticated user
    * @param userAuthenticated the authenticated user or null
    */
-  @action getAuthenticatedStudent(): Student | null {
-    return this.authenticatedStudent;
-  }
-
-  /**
-   * Set the authenticated user
-   * @param userAuthenticated the authenticated user or null
-   */
   @action setAuthenticatedStudent(userAuthenticated: Student | null): void {
     this.authenticatedStudent = userAuthenticated;
-  }
-
-  /**
-   * Set the authenticated host
-   * @param userAuthenticated the authenticated host or null
-   */
-  @action getAuthenticatedHost(): Host | null {
-    return this.authenticatedHost;
   }
 
   /**

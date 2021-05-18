@@ -29,7 +29,7 @@ const HostData: React.FC<IProps> = ({ onSubmit, buttonText }) => {
   const { authenticationStore } = useStores();
 
   /* Component states for Host */
-  const hostAuth = authenticationStore.getAuthenticatedHost();
+  const hostAuth = authenticationStore.authenticatedHost;
   const [host, setHost] = React.useState(hostAuth ? hostAuth.name : '');
   const [addressName, setAddressName] = React.useState(hostAuth ? hostAuth.address.street : '');
   const [addressNumber, setAddressNumber] = React.useState(

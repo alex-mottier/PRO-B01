@@ -38,7 +38,7 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
 
   /* Local variables */
   let nbColors = 3;
-  const isOwnerView = location.hostId === authenticationStore.getAuthenticatedHost()?.id;
+  const isOwnerView = location.hostId === authenticationStore.authenticatedHost?.id;
 
   /**
    * Deploy or reduce meeting informations

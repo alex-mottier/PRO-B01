@@ -108,7 +108,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
 
     // Everything is well filled => meeting can be created
     setIsLoading(true);
-    const host = authenticationStore.getAuthenticatedHost();
+    const host = authenticationStore.authenticatedHost;
     void hostStore
       .createLocation({
         id: '',

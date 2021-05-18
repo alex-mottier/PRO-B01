@@ -58,10 +58,10 @@ const MeetingComponent: React.FC<IProps> = ({
 
   /* Local variables */
   let nbColors = 0;
-  const isOwner = meeting.ownerID === authenticationStore.getAuthenticatedStudent()?.id;
+  const isOwner = meeting.ownerID === authenticationStore.authenticatedStudent?.id;
   let isMemberOfMeeting =
     meeting.membersId.findIndex((current: string) => {
-      return authenticationStore.getAuthenticatedStudent()?.id === current;
+      return authenticationStore.authenticatedStudent?.id === current;
     }) !== -1;
 
   /**
@@ -155,7 +155,7 @@ const MeetingComponent: React.FC<IProps> = ({
             subtitle={isReduced ? meeting.description : ''}
             left={() => <Avatar.Image size={40} source={require('../../../assets/HEIG-VD.png')} />}
             right={() =>
-              (!isInCalendar || authenticationStore.getAuthenticatedHost() !== null) && (
+              (!isInCalendar || authenticationStore.authenticatedHost !== null) && (
                 <View>
                   <View style={styles.nbPeople}>
                     <Text style={styles.gray}>
@@ -218,7 +218,7 @@ const MeetingComponent: React.FC<IProps> = ({
             />
             <Text style={styles.gray}>{meeting.locationName}</Text>
             <View style={styles.iconLittle}>
-              {authenticationStore.getAuthenticatedHost() === null && (
+              {authenticationStore.authenticatedHost === null && (
                 <MaterialCommunityIcons
                   name={Globals.ICONS.INFO}
                   color={Globals.COLORS.GRAY}
@@ -232,7 +232,7 @@ const MeetingComponent: React.FC<IProps> = ({
             </View>
           </View>
           <Card.Actions style={styles.actions}>
-            {isChatable && authenticationStore.getAuthenticatedHost() === null && (
+            {isChatable && authenticationStore.authenticatedHost === null && (
               <View>
                 <IconButton
                   icon={Globals.ICONS.MESSAGE}
