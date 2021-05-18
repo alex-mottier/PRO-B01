@@ -20,15 +20,17 @@ public class Location {
     private String description;
     private Integer nbPeople;
     private String hostId;
+    private String hostName;
     // List de String ?
     private List<Tag> tags = new ArrayList<>();
     private List<OpeningHour> openingHours = new ArrayList<>();
 
-    public Location(String name, String description, Integer nbPeople, String hostId, List<Tag> tags, List<OpeningHour> openingHours) {
+    public Location(String name, String description, Integer nbPeople, String hostId, String hostName, List<Tag> tags, List<OpeningHour> openingHours) {
         this.name = name;
         this.description = description;
         this.nbPeople = nbPeople;
         this.hostId = hostId;
+        this.hostName = hostName;
         this.tags = tags;
         this.openingHours = openingHours;
     }

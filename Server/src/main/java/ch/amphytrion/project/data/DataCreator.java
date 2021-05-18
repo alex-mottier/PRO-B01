@@ -11,7 +11,8 @@ public class DataCreator {
                 User host = new User("heig-google-id", "HEIG");
         City city = new City("Yverdon-les-Bains", "1401");
         Address address = new Address("Route de Cheseaux", "1", city);
-        HostProfil hp = new HostProfil(address, "Ecole supérieure mais pas trop", Collections.singletonList(new Tag("HEIG")) );
+        CovidData covidData = new CovidData(true, true, false, "", "");
+        HostProfil hp = new HostProfil(address, "Ecole supérieure mais pas trop", Collections.singletonList(new Tag("HEIG")), covidData);
         host.setHostProfil(hp);
         userService.save(host);
     }

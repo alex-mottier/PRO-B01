@@ -10,6 +10,7 @@ import LocalStorageDAO from '../../app/data/LocalStorageDAO';
 import Globals from '../context/Globals';
 
 // Google configuration to authenticate users
+// Keep master's clientId
 const config = {
   issuer: 'https://accounts.google.com',
   scopes: ['openid', 'profile'],

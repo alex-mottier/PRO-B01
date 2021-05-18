@@ -1,8 +1,7 @@
 package ch.amphytrion.project.services;
 
 import ch.amphytrion.project.authentication.google_authentication.GoogleTokenValider;
-import ch.amphytrion.project.dto.HostRequest;
-import ch.amphytrion.project.dto.HostResponse;
+import ch.amphytrion.project.dto.SignUpHostRequest;
 import ch.amphytrion.project.dto.StudentRequest;
 import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.repositories.UserRepository;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserService implements IGenericService<User>{
@@ -82,21 +80,21 @@ public class UserService implements IGenericService<User>{
 
     public User checkAndSignUp(StudentRequest studentRequest) {
         //TODO Separate User creation & unicity check
-        String userName = studentRequest.userName;
+        String username = studentRequest.username;
         String tokenInput = studentRequest.tokenID;
         StudentProfil studentProfil = new StudentProfil();
 
         User newUser = null;
-        if(findByUsername(userName) == null) {
+        if(findByUsername(username) == null) {
             if (tokenInput.equals(DEV_TOKEN)) {
-                newUser = new User("mock-google-id" + userName, userName);
+                newUser = new User("mock-google-id" + username, username);
             } else {
                 GoogleIdToken tokenID = valider.validateToken(tokenInput);
                 if (tokenID != null) {
                     GoogleIdToken.Payload payload = tokenID.getPayload();
                     String userId = payload.get("sub").toString();
                     if(findByGoogleId(userId) == null){
-                        newUser = new User(userId, userName);
+                        newUser = new User(userId, username);
                     }
                 }
             }
@@ -107,10 +105,10 @@ public class UserService implements IGenericService<User>{
     }
 
 
-    public User checkAndSignUpHost(HostRequest hostRequest) {
+    public User checkAndSignUpHost(SignUpHostRequest signUpHostRequest) {
         //TODO Separate User creation & unicity check
-        String tokenInput = hostRequest.tokenID;
-        String name = hostRequest.name;
+        String tokenInput = signUpHostRequest.tokenID;
+        String name = signUpHostRequest.name;
         HostProfil hostProfil = new HostProfil();
 
         User newUser = null;
@@ -129,11 +127,13 @@ public class UserService implements IGenericService<User>{
             }
 
             //Ajout des informations du host
-            City city = new City( hostRequest.cityName, hostRequest.npa);
-            Address address = new Address(hostRequest.street, hostRequest.streetNb, city);
+            City city = new City( signUpHostRequest.cityName, signUpHostRequest.npa);
+            Address address = new Address(signUpHostRequest.street, signUpHostRequest.streetNb, city);
+            CovidData covidData = new CovidData(true, true, true, "" , "");
+            hostProfil.setCovidData(covidData);
             hostProfil.setAddress(address);
-            hostProfil.setTags(hostRequest.tags);
-            hostProfil.setDescription(hostRequest.description);
+            hostProfil.setTags(signUpHostRequest.tags);
+            hostProfil.setDescription(signUpHostRequest.description);
             newUser.setHostProfil(hostProfil);
             userRepository.save(newUser);
         }
