@@ -171,6 +171,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 existantMeeting.setDescription(entity.getDescription());
                 existantMeeting.setTags(entity.getTags());
                 existantMeeting.setLocationID(entity.getLocationID());
+                existantMeeting.setIsPrivate(entity.getIsPrivate());
                 return ResponseEntity.ok(new MeetingResponse(meetingService.save(existantMeeting), locationService));
             }
         } catch (Exception e) {
