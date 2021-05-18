@@ -89,8 +89,8 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
                     color={Globals.COLORS.GRAY}
                     size={Globals.SIZES.ICON_BUTTON}
                     onPress={() => {
+                      studentStore.setLocationToLoad(location.id);
                       navigation.navigate(Globals.NAVIGATION.STUDENT_LOCATION);
-                      void studentStore.loadLocation(location.id);
                     }}
                   />
                 </View>
