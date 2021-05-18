@@ -51,7 +51,6 @@ class AuthenticationStore {
    * @param isLoading if the application is loading
    */
   @action setIsLoading(isLoading: boolean): void {
-    console.log('test');
     this.isLoading = isLoading;
   }
 

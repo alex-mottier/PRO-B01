@@ -6,25 +6,14 @@
  */
 
 import * as React from 'react';
-import {
-  Dimensions,
-  Keyboard,
-  KeyboardAvoidingView,
-  KeyboardAvoidingViewBase,
-  Platform,
-  RefreshControl,
-  SafeAreaView,
-  ScrollView,
-  View,
-} from 'react-native';
-import { IconButton, Text, TextInput, useTheme } from 'react-native-paper';
+import { Dimensions, RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
+import { Text, TextInput } from 'react-native-paper';
 import styles from './styles';
 import { observer } from 'mobx-react-lite';
 import { Chat, Message } from '../../../app/models/ApplicationTypes';
 import LoadingComponent from '../../../components/Loading/LoadingComponent';
 import { formatDistance } from 'date-fns';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
-import Globals from '../../../app/context/Globals';
 import { useStores } from '../../../app/stores/StoresContext';
 import Strings from '../../../app/context/Strings';
 import { useKeyboard } from '../../../components/Keyboard/Keyboard';
@@ -111,7 +100,11 @@ const ChatMeeting: React.FC = () => {
           )}
         </View>
         <ScrollView
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          /* @ts-ignore */
           ref={scrollViewRef}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          /* @ts-ignore */
           onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
           {isLoading && <LoadingComponent />}

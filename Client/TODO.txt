@@ -1,3 +1,1 @@
 [] Unit test utils class
-[] Loader après signUp et signIn et profileConfig
-[] Autologin -> aucun evenement dans calendrier

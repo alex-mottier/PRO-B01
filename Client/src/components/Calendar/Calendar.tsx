@@ -8,7 +8,7 @@
 import * as React from 'react';
 import { addMonths, format } from 'date-fns';
 import { Agenda, LocaleConfig } from 'react-native-calendars';
-import { RefreshControl, ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import MeetingComponent from '../Meeting/MeetingComponent';
 import styles from './styles';
 import Globals from '../../app/context/Globals';

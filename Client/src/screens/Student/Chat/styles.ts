@@ -5,8 +5,7 @@
  * @brief   Meeting chat page styles
  */
 
-import { Dimensions, StyleSheet } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
 import Globals from '../../../app/context/Globals';
 
 const styles = StyleSheet.create({
