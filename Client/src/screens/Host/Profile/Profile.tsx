@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import { RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
 import { Avatar, Card, Chip, IconButton, Text, Title } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { observer } from 'mobx-react-lite';
@@ -23,6 +23,9 @@ const Profile: React.FC = () => {
   /* Usage of MobX global state store */
   const { authenticationStore } = useStores();
 
+  /** Component states */
+  const [refreshing] = React.useState(false);
+
   /* Local variables */
   const host = authenticationStore.authenticatedHost;
   let nbColors = 0;
@@ -30,7 +33,7 @@ const Profile: React.FC = () => {
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => {}} />}>
         <View style={styles.container}>
           <View style={styles.row}>
             <Avatar.Image size={80} source={require('../../../../assets/HEIG-VD.png')} />

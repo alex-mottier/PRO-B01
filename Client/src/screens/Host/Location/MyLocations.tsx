@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import { RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../../../app/stores/StoresContext';
 import { Location } from '../../../app/models/ApplicationTypes';
@@ -18,9 +18,21 @@ const MyLocations: React.FC = () => {
   /* Usage of MobX global state store */
   const { hostStore } = useStores();
 
+  /** Component states */
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  /**
+   * Refresh action
+   */
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await hostStore.loadLocationsCreatedByHost();
+    setRefreshing(false);
+  }, []);
+
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         <View style={styles.container}>
           {hostStore.hostLocations && hostStore.hostLocations.length === 0 ? (
             <NoLocation />

@@ -24,7 +24,7 @@ const CovidDataComponent: React.FC = () => {
   /* Usage of MobX global state store */
   const { authenticationStore } = useStores();
   /* Component states */
-  const host = authenticationStore.getAuthenticatedHost();
+  const host = authenticationStore.authenticatedHost;
   const [isOpen, setIsOpen] = React.useState<boolean>(host ? host.covidData.isOpen : true);
   const [faceMask, setFaceMask] = React.useState<boolean>(
     host ? host.covidData.masksRequired : true,
@@ -43,7 +43,7 @@ const CovidDataComponent: React.FC = () => {
    */
   const handleSubmit = async () => {
     setIsLoading(true);
-    const newHost = Object.assign({}, authenticationStore.getAuthenticatedHost());
+    const newHost = Object.assign({}, authenticationStore.authenticatedHost);
     if (newHost) {
       newHost.covidData = {
         isOpen: isOpen,
