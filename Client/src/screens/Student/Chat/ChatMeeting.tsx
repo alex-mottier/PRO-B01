@@ -38,10 +38,18 @@ const ChatMeeting: React.FC = () => {
    */
   React.useEffect(() => {
     setIsLoading(true);
+    const interval = setInterval(() => {
+      void studentStore.loadChat().then(() => {
+        setChat(studentStore.chat);
+      });
+    }, 5000);
     void studentStore.loadChat().then(() => {
       setChat(studentStore.chat);
       setIsLoading(false);
     });
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   /**
