@@ -1,5 +1,6 @@
-[] Calendar component le meme dans le home du student que dans le host
 [] Unit test utils class
 [] Recharger chat avec un timer
 [] Pouvoir faire des refresh sur les pages
-[] Loader après signUp et signIn
+[] Loader après signUp et signIn et profileConfig
+[] Chat - barre de saisie en bas
+[] Autologin -> aucun evenement dans calendrier

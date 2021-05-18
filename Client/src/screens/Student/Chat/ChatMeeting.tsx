@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import { RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
 import { IconButton, Text, TextInput } from 'react-native-paper';
 import styles from './styles';
 import { observer } from 'mobx-react-lite';
@@ -28,6 +28,7 @@ const ChatMeeting: React.FC = () => {
   const meeting = studentStore.meetingToUpdate;
   const authenticatedUser = authenticationStore.authenticatedStudent;
   const [message, setMessage] = React.useState<string>('');
+  const [refreshing, setRefreshing] = React.useState(false);
 
   /* Local variables */
   let cpt = 0;
@@ -59,9 +60,20 @@ const ChatMeeting: React.FC = () => {
     }
   };
 
+  /**
+   * Refresh action
+   */
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    void studentStore.loadChat().then(() => {
+      setChat(studentStore.chat);
+      setRefreshing(false);
+    });
+  }, []);
+
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         {isLoading && <LoadingComponent />}
         {!isLoading && (
           <View style={styles.container}>

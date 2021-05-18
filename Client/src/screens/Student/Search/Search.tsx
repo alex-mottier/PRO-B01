@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { Platform, SafeAreaView, ScrollView, View } from 'react-native';
+import { Platform, RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
 import {
   Button,
   FAB,
@@ -53,6 +53,7 @@ const Search: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [meetings, setMeetings] = React.useState<Meeting[]>([]);
   const [searchWithId, setSearchWithId] = React.useState(true);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   /**
    * Action when start date is changed
@@ -145,9 +146,25 @@ const Search: React.FC = () => {
     setIsLoading(false);
   };
 
+  /**
+   * Refresh action
+   */
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    handleSubmit();
+    setRefreshing(false);
+  }, []);
+
+  /**
+   * On component load
+   */
+  React.useEffect(() => {
+    handleSubmit();
+  }, []);
+
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         <View style={[styles.container, { backgroundColor: paperTheme.colors.surface }]}>
           <View style={styles.search}>
             <TextInput

@@ -8,7 +8,7 @@
 import * as React from 'react';
 import { addMonths, format } from 'date-fns';
 import { Agenda, LocaleConfig } from 'react-native-calendars';
-import { View } from 'react-native';
+import { RefreshControl, ScrollView, View } from 'react-native';
 import MeetingComponent from '../Meeting/MeetingComponent';
 import styles from './styles';
 import Globals from '../../app/context/Globals';
@@ -32,8 +32,16 @@ LocaleConfig.locales['fr'] = dateLocale;
 LocaleConfig.defaultLocale = 'fr';
 
 const Calendar: React.FC<IProps> = ({ store, theme }) => {
+  /**
+   * Refresh action
+   */
+  const onRefresh = React.useCallback(async () => {
+    await store.loadUserData();
+  }, []);
+
   return (
     <Agenda
+      onRefresh={onRefresh}
       items={store.items ? store.items : {}}
       pastScrollRange={0}
       futureScrollRange={2}
