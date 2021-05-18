@@ -191,6 +191,8 @@ class AuthenticationStore {
     this.userToken = token;
     if (token && token.idToken) {
       await this.connectUser(token.idToken);
+    } else {
+      this.setIsLoading(false);
     }
   }
 
