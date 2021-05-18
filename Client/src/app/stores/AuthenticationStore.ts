@@ -51,6 +51,7 @@ class AuthenticationStore {
    * @param isLoading if the application is loading
    */
   @action setIsLoading(isLoading: boolean): void {
+    console.log('test');
     this.isLoading = isLoading;
   }
 
@@ -91,16 +92,14 @@ class AuthenticationStore {
    * @returns promise if user is sucessfully signed in
    */
   @action async signInWithGoogle(): Promise<boolean> {
-    this.setIsLoading(true);
     const token = await this.googleAuth.handleSignInAsync();
     if (token) {
       this.setUserToken(token);
-      this.setIsLoading(false);
       return true;
     } else {
+      this.setIsLoading(false);
       Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_LOGIN);
     }
-    this.setIsLoading(false);
     return false;
   }
 
@@ -189,13 +188,11 @@ class AuthenticationStore {
    * Loading the user's tokens
    */
   @action async loadTokens(): Promise<void> {
-    this.setIsLoading(true);
     const token = await this.googleAuth.getCachedAuthAsync();
     this.userToken = token;
     if (token && token.idToken) {
       await this.connectUser(token.idToken);
     }
-    this.setIsLoading(false);
   }
 
   /**
@@ -221,6 +218,7 @@ class AuthenticationStore {
             }
           }
         }
+        this.setIsLoading(false);
         this.setIsLoggedIn(true);
       } else {
         void this.utils.manageErrorInResponse(response);
@@ -228,6 +226,11 @@ class AuthenticationStore {
     }
   }
 
+  /**
+   * Try to connect user with local stored token
+   * @param tokenId store locally
+   * @returns the user connected or null
+   */
   @action async tryToConnect(tokenId: string): Promise<Response | null> {
     return await this.amphitryonDAO.connectUser(tokenId);
   }
@@ -241,6 +244,7 @@ class AuthenticationStore {
     if (response) {
       if (response.ok) {
         this.setAuthenticatedHost(host);
+        this.setIsLoading(false);
       } else {
         void this.utils.manageErrorInResponse(response);
       }

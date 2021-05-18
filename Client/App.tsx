@@ -25,13 +25,10 @@ const App: React.FC = () => {
    * Action when component is loaded
    */
   React.useEffect(() => {
-    authenticationStore.setIsLoading(true);
-
     // Loading icons font
     void Font.loadAsync({
       MaterialCommunityIcons: require('./assets/MaterialCommunityIcons.ttf'),
     }).then(() => {
-      authenticationStore.setIsLoading(false);
       setIsLoading(false);
     });
   }, []);

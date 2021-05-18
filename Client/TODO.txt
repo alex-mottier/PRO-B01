@@ -1,4 +1,3 @@
 [] Unit test utils class
 [] Loader après signUp et signIn et profileConfig
-[] Chat - barre de saisie en bas
 [] Autologin -> aucun evenement dans calendrier
