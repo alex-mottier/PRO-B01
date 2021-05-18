@@ -91,7 +91,7 @@ class StudentStore {
     const response = await this.amphitryonDAO.loadUserMeetings(startDate, endDate);
     if (response) {
       if (response.ok) {
-        void runInAction(async () => {
+        await runInAction(async () => {
           this.userMeetings = await response.json();
         });
       } else {
