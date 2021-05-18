@@ -5,7 +5,8 @@
  * @brief   Meeting chat page styles
  */
 
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
 
 const styles = StyleSheet.create({
@@ -31,12 +32,13 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     width: '100%',
     alignContent: 'space-between',
+    paddingBottom: 10,
   },
   dateText: {
     fontSize: 11,
     color: Globals.COLORS.DARK_GRAY,
   },
-  fields: { width: '80%' },
+  fields: { width: '100%' },
   meeting: {
     marginTop: -10,
   },
