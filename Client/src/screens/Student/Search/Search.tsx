@@ -21,7 +21,7 @@ import {
 import Globals from '../../../app/context/Globals';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import styles from './styles';
-import { Filter, Location, Meeting, Tag } from '../../../app/models/ApplicationTypes';
+import { Filter, Meeting, Tag } from '../../../app/models/ApplicationTypes';
 import TagsComponent from '../../../components/Tags/TagsComponent';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
