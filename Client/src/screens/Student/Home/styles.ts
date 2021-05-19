@@ -8,19 +8,13 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 15,
+  meeting: {
+    width: '90%',
   },
   meetings: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-  },
-  meeting: {
-    width: '90%',
   },
   knob: {
     marginTop: -15,

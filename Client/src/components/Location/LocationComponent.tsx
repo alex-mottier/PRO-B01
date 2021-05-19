@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Alert, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { Card, Avatar, Text, Chip, IconButton } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
@@ -14,7 +14,8 @@ import { Location, Tag } from '../../app/models/ApplicationTypes';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../app/context/Theme';
 import { useNavigation } from '@react-navigation/core';
-import { useStores } from '../../app/context/storesContext';
+import { useStores } from '../../app/stores/StoresContext';
+import Strings from '../../app/context/Strings';
 
 /**
  * Component props
@@ -30,19 +31,46 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
   const navigation = useNavigation();
 
   /* Usage of MobX global state store */
-  const { studentStore } = useStores();
+  const { authenticationStore, studentStore, hostStore } = useStores();
 
   /* Component states */
   const [isReduced, setIsReduced] = React.useState(true);
 
   /* Local variables */
   let nbColors = 3;
+  const isOwnerView = location.hostId === authenticationStore.getAuthenticatedHost()?.id;
 
   /**
    * Deploy or reduce meeting informations
    */
   const handleReduceOrDeploy = () => {
     isReduced ? setIsReduced(false) : setIsReduced(true);
+  };
+
+  /**
+   * Action when the edit button is pressed
+   */
+  const handleEdit = () => {
+    hostStore.setLocationToUpdate(location);
+    navigation.navigate(Globals.NAVIGATION.HOST_EDIT_LOCATION);
+  };
+
+  /**
+   * Suppression de la réunion
+   */
+  const handleDelete = () => {
+    Alert.alert(Strings.ASK_DELETE, Strings.ASK_LOCATION_DELETE + location.name + ' ?', [
+      {
+        text: Strings.NO,
+        style: 'cancel',
+      },
+      {
+        text: Strings.YES,
+        onPress: () => {
+          void hostStore.deleteLocation(location.id);
+        },
+      },
+    ]);
   };
 
   return (
@@ -52,29 +80,31 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
           title={location.name}
           subtitle={location.description}
           left={() => <Avatar.Image size={40} source={require('../../../assets/HEIG-VD.png')} />}
-          right={() => (
-            <View style={styles.iconsRight}>
-              <View style={styles.infos}>
-                <MaterialCommunityIcons
-                  name={Globals.ICONS.INFO}
-                  color={Globals.COLORS.GRAY}
-                  size={Globals.SIZES.ICON_BUTTON}
-                  onPress={() => {
-                    void studentStore.setLocationToLoad(location.id);
-                    navigation.navigate('LocationDetails');
-                  }}
-                />
+          right={() =>
+            !isOwnerView && (
+              <View style={styles.iconsRight}>
+                <View style={styles.infos}>
+                  <MaterialCommunityIcons
+                    name={Globals.ICONS.INFO}
+                    color={Globals.COLORS.GRAY}
+                    size={Globals.SIZES.ICON_BUTTON}
+                    onPress={() => {
+                      navigation.navigate(Globals.NAVIGATION.STUDENT_LOCATION);
+                      void studentStore.loadLocation(location.id);
+                    }}
+                  />
+                </View>
+                <View style={styles.nbPeople}>
+                  <Text style={{ color: Globals.COLORS.TEXT }}>{location.nbPeople}</Text>
+                  <MaterialCommunityIcons
+                    name={Globals.ICONS.PROFILE}
+                    color={Globals.COLORS.GRAY}
+                    size={Globals.SIZES.ICON_BUTTON}
+                  />
+                </View>
               </View>
-              <View style={styles.nbPeople}>
-                <Text style={{ color: Globals.COLORS.TEXT }}>{location.nbPeople}</Text>
-                <MaterialCommunityIcons
-                  name={Globals.ICONS.PROFILE}
-                  color={Globals.COLORS.GRAY}
-                  size={Globals.SIZES.ICON_BUTTON}
-                />
-              </View>
-            </View>
-          )}
+            )
+          }
         />
       </TouchableOpacity>
       {!isReduced && (
@@ -90,8 +120,8 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
               );
             })}
           </View>
-          {isAddView && (
-            <Card.Actions style={styles.actions}>
+          <Card.Actions style={styles.actions}>
+            {isAddView && (
               <View>
                 <IconButton
                   icon={Globals.ICONS.CREATE}
@@ -99,10 +129,32 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
                   color={Globals.COLORS.GREEN}
                   onPress={() => onChoose(location)}
                 />
-                <Text style={[styles.gray, styles.buttonText]}>Choisir</Text>
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.CHOOSE}</Text>
               </View>
-            </Card.Actions>
-          )}
+            )}
+            {isOwnerView && (
+              <View>
+                <IconButton
+                  icon={Globals.ICONS.EDIT}
+                  size={30}
+                  onPress={handleEdit}
+                  color={Globals.COLORS.BLUE}
+                />
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.EDIT}</Text>
+              </View>
+            )}
+            {isOwnerView && (
+              <View>
+                <IconButton
+                  icon={Globals.ICONS.DELETE}
+                  size={30}
+                  onPress={handleDelete}
+                  color={Globals.COLORS.PINK}
+                />
+                <Text style={[styles.gray, styles.buttonText]}>{Strings.DELETE}</Text>
+              </View>
+            )}
+          </Card.Actions>
           <IconButton
             icon={Globals.ICONS.ARROW_UP}
             size={20}

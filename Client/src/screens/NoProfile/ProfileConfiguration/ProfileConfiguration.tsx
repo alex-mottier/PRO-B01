@@ -7,29 +7,38 @@
 
 import * as React from 'react';
 import { Image, SafeAreaView, ScrollView, View } from 'react-native';
-import { TextInput, Button, useTheme, Title, Drawer } from 'react-native-paper';
+import { TextInput, Button, useTheme, Drawer } from 'react-native-paper';
 import Globals from '../../../app/context/Globals';
 import styles from '../ProfileConfiguration/styles';
 import { Tabs, TabScreen } from 'react-native-paper-tabs';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
+import { Host } from '../../../app/models/ApplicationTypes';
+import HostData from '../../../components/HostData/HostData';
+import Strings from '../../../app/context/Strings';
 
 const ProfileConfiguration: React.FC = () => {
   // Usage of react native paper theme library
   const paperTheme = useTheme();
 
   /* Usage of MobX global state store */
-  const { authenticationStore, studentStore } = useStores();
+  const { authenticationStore } = useStores();
 
-  /* Component states */
+  /* Component states for Student */
   const [username, setUsername] = React.useState('');
   const [establishment, setEstablishment] = React.useState('');
 
   /**
-   * Action done when submit button is pressed
+   * Action done when submit button for student tab is pressed
    */
-  const handleSubmit = async () => {
-    const loginSucceed = await authenticationStore.signUp({ id: '', username: username });
-    if (loginSucceed) void studentStore.loadUserData();
+  const handleStudentSubmit = () => {
+    void authenticationStore.signUpStudent({ id: '', username: username });
+  };
+
+  /**
+   * Action done when submit button for host tab is pressed
+   */
+  const handleHostSubmit = (host: Host) => {
+    void authenticationStore.signUpHost(host);
   };
 
   return (
@@ -44,7 +53,7 @@ const ProfileConfiguration: React.FC = () => {
           primary: Globals.COLORS.BLUE,
         },
       }}>
-      <TabScreen label="Etudiant">
+      <TabScreen label={Strings.STUDENT}>
         <SafeAreaView>
           <ScrollView>
             <Image
@@ -60,22 +69,22 @@ const ProfileConfiguration: React.FC = () => {
             />
             <View style={styles.container}>
               <TextInput
-                label="Nom d'utilisateur"
+                label={Strings.USER_NAME}
                 value={username}
                 onChangeText={(username) => setUsername(username)}
                 style={styles.fields}
                 mode={'outlined'}
               />
-              <Drawer.Section title="Etablissement" style={{ width: '100%' }}>
+              <Drawer.Section title={Strings.ESTABLISHMENT} style={{ width: '100%' }}>
                 <Drawer.Item
-                  label="HEIG-VD"
-                  active={establishment === 'HEIG-VD' || establishment === ''}
-                  onPress={() => setEstablishment('HEIG-VD')}
+                  label={Strings.HEIGVD}
+                  active={establishment === Strings.HEIGVD || establishment === ''}
+                  onPress={() => setEstablishment(Strings.HEIGVD)}
                 />
                 <Drawer.Item
-                  label="Autre"
-                  active={establishment === 'Autre'}
-                  onPress={() => setEstablishment('Autre')}
+                  label={Strings.OTHER}
+                  active={establishment === Strings.OTHER}
+                  onPress={() => setEstablishment(Strings.OTHER)}
                 />
               </Drawer.Section>
               <Button
@@ -83,30 +92,21 @@ const ProfileConfiguration: React.FC = () => {
                 mode="contained"
                 color={Globals.COLORS.PRIMARY}
                 labelStyle={{ color: Globals.COLORS.WHITE }}
-                onPress={handleSubmit}>
-                Finaliser le profile
+                onPress={handleStudentSubmit}
+                style={styles.button}>
+                {Strings.PROFILE_SEND}
               </Button>
             </View>
           </ScrollView>
         </SafeAreaView>
       </TabScreen>
-      <TabScreen label="Hebergeur">
-        <View>
-          <Image
-            source={require('../../../../assets/Establishment.jpg')}
-            style={styles.image}
-            resizeMode="cover"
-            blurRadius={1}
+      <TabScreen label={Strings.HOST}>
+        <SafeAreaView>
+          <HostData
+            onSubmit={(host: Host) => handleHostSubmit(host)}
+            buttonText={Strings.PROFILE_SEND}
           />
-          <Image
-            source={require('../../../../assets/Logo.png')}
-            style={styles.logo}
-            resizeMode="stretch"
-          />
-          <View style={styles.container}>
-            <Title style={{ textAlign: 'center' }}>Disponible dans le prochain livrable</Title>
-          </View>
-        </View>
+        </SafeAreaView>
       </TabScreen>
     </Tabs>
   );

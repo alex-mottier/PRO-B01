@@ -8,6 +8,25 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  buttonText: {
+    fontSize: 12,
+    marginTop: -10,
+    textAlign: 'center',
+  },
+  card: {
+    marginTop: 10,
+    width: '100%',
+    elevation: 5,
+  },
+  days: {
+    marginRight: 20,
+  },
+  icon: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
   row: {
     flex: 1,
     width: '100%',
@@ -18,17 +37,6 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingRight: 30,
   },
-  card: {
-    marginTop: 10,
-    width: '100%',
-    elevation: 5,
-  },
-  icon: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
   text: {
     flex: 1,
     flexDirection: 'row',
@@ -36,10 +44,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
   },
-  days: {
-    marginRight: 20,
-  },
-  hours: {},
 });
 
 export default styles;

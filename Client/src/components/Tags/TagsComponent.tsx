@@ -19,6 +19,7 @@ import {
   useTheme,
 } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
+import Strings from '../../app/context/Strings';
 import { colors } from '../../app/context/Theme';
 import { Tag } from '../../app/models/ApplicationTypes';
 import styles from './styles';
@@ -56,7 +57,7 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
   return (
     <View>
       <View style={styles.tags}>
-        <Text style={{ color: Globals.COLORS.TEXT }}>Tags</Text>
+        <Text style={{ color: Globals.COLORS.TEXT }}>{Strings.TAGS}</Text>
         <IconButton
           icon={Globals.ICONS.ADD_TAG}
           size={Globals.SIZES.ICON_MENU}
@@ -93,11 +94,11 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
                 onPress={() => setModalVisible(false)}
               />
             </View>
-            <Title style={styles.title}>Ajout de tags</Title>
+            <Title style={styles.title}>{Strings.TAGS_ADD}</Title>
             <TextInput
               label="Nom du tag"
               value={tagName}
-              onChangeText={(tag) => setTagName(tag)}
+              onChangeText={setTagName}
               style={styles.field}
             />
             <Button

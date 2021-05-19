@@ -7,25 +7,27 @@
 
 import * as React from 'react';
 import { Alert, Image, SafeAreaView, ScrollView, View } from 'react-native';
-import { Text, Title } from 'react-native-paper';
+import { Button, Text, Title } from 'react-native-paper';
 import styles from './styles';
 import Globals from '../../../app/context/Globals';
 import { useNavigation } from '@react-navigation/native';
 import FacebookButton from '../../../components/Buttons/FacebookButton';
 import GoogleButton from '../../../components/Buttons/GoogleButton';
-import CustomButton from '../../../components/Buttons/CustomButton';
-import { useStores } from '../../../app/context/storesContext';
+import { useStores } from '../../../app/stores/StoresContext';
+import Strings from '../../../app/context/Strings';
 
 const SignIn: React.FC = () => {
   /* Usage of React Navigation */
   const navigation = useNavigation();
 
   /* Usage of MobX global state store */
-  const { authenticationStore, studentStore } = useStores();
+  const { authenticationStore } = useStores();
 
+  /**
+   * Action on login
+   */
   const handleLogin = async () => {
-    const succeed = await authenticationStore.signIn();
-    if (succeed) void studentStore.loadUserData();
+    await authenticationStore.signIn();
   };
 
   return (
@@ -43,21 +45,23 @@ const SignIn: React.FC = () => {
           resizeMode="stretch"
         />
         <View style={styles.container}>
-          <Title>Se connecter avec</Title>
-          <Text style={styles.text}>Veuillez choisir une option de connexion</Text>
-          <View style={styles.buttons}>
+          <Title>{Strings.SIGN_IN_WITH}</Title>
+          <Text style={styles.text}>{Strings.SIGN_IN_CHOOSE}</Text>
+          <View>
             <FacebookButton
               onPress={() => {
-                Alert.alert('En développement', 'Fonctionnalité en développement');
+                Alert.alert(Strings.DEVELOPPING);
               }}
             />
             <GoogleButton onPress={handleLogin} />
-            <CustomButton
+            <Button
               icon={Globals.ICONS.PROFILE}
               color={Globals.COLORS.GRAY}
-              onPress={() => navigation.navigate('SignUp')}
-              text={"S'inscrire"}
-            />
+              style={styles.buttons}
+              onPress={() => navigation.navigate(Globals.NAVIGATION.AUTH_SIGN_UP)}
+              mode={'contained'}>
+              {Strings.SIGN_UP}
+            </Button>
           </View>
         </View>
       </ScrollView>

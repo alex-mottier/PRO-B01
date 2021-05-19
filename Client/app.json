@@ -14,9 +14,12 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.amphitryon"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,7 +31,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "Version 1.0",
+    "description": "Version 2.0",
     "githubUrl": "https://github.com/alex-mottier/PRO-B01"
   }
 }
