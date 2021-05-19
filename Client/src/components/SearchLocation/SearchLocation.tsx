@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { ScrollView, View } from 'react-native';
+import { RefreshControl, ScrollView, View } from 'react-native';
 import { IconButton, TextInput, Text, Portal, Modal, Title, useTheme } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
 import { useStores } from '../../app/stores/StoresContext';
@@ -35,6 +35,7 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
   const [modalVisible, setModalVisible] = React.useState(false);
   const [locations, setLocations] = React.useState<Location[] | null>(studentStore.locations);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   /**
    * Action when a location is choosen
@@ -75,6 +76,23 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
       void studentStore.loadAllLocations().then(() => {
         setLocations(studentStore.locations);
         setIsLoading(false);
+      });
+  }, []);
+
+  /**
+   * Refresh action
+   */
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    if (startDate && endDate)
+      void studentStore.loadLocations(startDate, endDate, null).then(() => {
+        setRefreshing(false);
+        setLocations(studentStore.locations);
+      });
+    else
+      void studentStore.loadAllLocations().then(() => {
+        setRefreshing(false);
+        setLocations(studentStore.locations);
       });
   }, []);
 
@@ -132,7 +150,9 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
               </View>
             )}
             {!isLoading && (
-              <ScrollView style={styles.scrollview}>
+              <ScrollView
+                style={styles.scrollview}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                 <View style={styles.locations}>
                   {locations &&
                     locations?.map((location: Location) => (

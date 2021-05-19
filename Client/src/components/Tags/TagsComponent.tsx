@@ -10,13 +10,13 @@ import { Alert, View } from 'react-native';
 import {
   IconButton,
   Chip,
-  TextInput,
   Text,
   Portal,
   Modal,
   Button,
   Title,
   useTheme,
+  TextInput,
 } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
 import Strings from '../../app/context/Strings';
@@ -96,9 +96,9 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
             </View>
             <Title style={styles.title}>{Strings.TAGS_ADD}</Title>
             <TextInput
-              label="Nom du tag"
-              value={tagName}
-              onChangeText={setTagName}
+              label={Strings.TAGS_ADD}
+              defaultValue={tagName}
+              onChangeText={(tagName: string) => setTagName(tagName)}
               style={styles.field}
             />
             <Button

@@ -7,7 +7,9 @@
 
 import { TokenResponse } from 'expo-app-auth';
 import { action, makeAutoObservable, observable } from 'mobx';
+import { Alert } from 'react-native';
 import GoogleAuth from '../authentication/GoogleAuth';
+import Strings from '../context/Strings';
 import AmphitryonDAO from '../data/AmphitryonDAO';
 import { Host, Student, UserResponse } from '../models/ApplicationTypes';
 import Utils from '../utils/Utils';
@@ -64,24 +66,8 @@ class AuthenticationStore {
    * Set the authenticated user
    * @param userAuthenticated the authenticated user or null
    */
-  @action getAuthenticatedStudent(): Student | null {
-    return this.authenticatedStudent;
-  }
-
-  /**
-   * Set the authenticated user
-   * @param userAuthenticated the authenticated user or null
-   */
   @action setAuthenticatedStudent(userAuthenticated: Student | null): void {
     this.authenticatedStudent = userAuthenticated;
-  }
-
-  /**
-   * Set the authenticated host
-   * @param userAuthenticated the authenticated host or null
-   */
-  @action getAuthenticatedHost(): Host | null {
-    return this.authenticatedHost;
   }
 
   /**
@@ -105,14 +91,14 @@ class AuthenticationStore {
    * @returns promise if user is sucessfully signed in
    */
   @action async signInWithGoogle(): Promise<boolean> {
-    this.setIsLoading(true);
     const token = await this.googleAuth.handleSignInAsync();
     if (token) {
       this.setUserToken(token);
-      this.setIsLoading(false);
       return true;
+    } else {
+      this.setIsLoading(false);
+      Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_USER_LOGIN);
     }
-    this.setIsLoading(false);
     return false;
   }
 
@@ -201,13 +187,13 @@ class AuthenticationStore {
    * Loading the user's tokens
    */
   @action async loadTokens(): Promise<void> {
-    this.setIsLoading(true);
     const token = await this.googleAuth.getCachedAuthAsync();
     this.userToken = token;
     if (token && token.idToken) {
       await this.connectUser(token.idToken);
+    } else {
+      this.setIsLoading(false);
     }
-    this.setIsLoading(false);
   }
 
   /**
@@ -233,6 +219,7 @@ class AuthenticationStore {
             }
           }
         }
+        this.setIsLoading(false);
         this.setIsLoggedIn(true);
       } else {
         void this.utils.manageErrorInResponse(response);
@@ -240,6 +227,11 @@ class AuthenticationStore {
     }
   }
 
+  /**
+   * Try to connect user with local stored token
+   * @param tokenId store locally
+   * @returns the user connected or null
+   */
   @action async tryToConnect(tokenId: string): Promise<Response | null> {
     return await this.amphitryonDAO.connectUser(tokenId);
   }
@@ -253,6 +245,7 @@ class AuthenticationStore {
     if (response) {
       if (response.ok) {
         this.setAuthenticatedHost(host);
+        this.setIsLoading(false);
       } else {
         void this.utils.manageErrorInResponse(response);
       }

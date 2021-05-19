@@ -46,11 +46,7 @@ class HostStore {
    */
   @action async loadUserData(): Promise<void> {
     await this.loadLocationsCreatedByHost();
-    await this.loadMeetingsLocatedAtHostLocations(
-      startOfDay(new Date()),
-      endOfDay(addDays(new Date(), 10)),
-    );
-    this.generateItems(new Date());
+    await this.generateItems(new Date());
   }
 
   /**
@@ -79,7 +75,7 @@ class HostStore {
     const response = await this.amphitryonDAO.getReservations(startDate, endDate);
     if (response) {
       if (response.ok) {
-        void runInAction(async () => {
+        await runInAction(async () => {
           this.meetingsLocatedAtHostLocations = await response.json();
         });
       } else {
@@ -170,16 +166,19 @@ class HostStore {
    * Generate next 10 days agenda items from a given date
    * @param from date from to generate items
    */
-  @action generateItems(from: Date): void {
-    this.dateInCalendar = from;
-    this.items = this.utils.generateItems(this.meetingsLocatedAtHostLocations, from);
+  @action async generateItems(from: Date): Promise<void> {
+    await this.loadMeetingsLocatedAtHostLocations(startOfDay(from), endOfDay(addDays(from, 10)));
+    runInAction(() => {
+      this.dateInCalendar = from;
+      this.items = this.utils.generateItems(this.meetingsLocatedAtHostLocations, from);
+    });
   }
 
   /**
    * Regeneration of calendar items
    */
   @action regenerateItems(): void {
-    this.generateItems(this.dateInCalendar);
+    void this.generateItems(this.dateInCalendar);
   }
 }
 

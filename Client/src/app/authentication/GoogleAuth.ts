@@ -14,7 +14,7 @@ import Globals from '../context/Globals';
 const config = {
   issuer: 'https://accounts.google.com',
   scopes: ['openid', 'profile'],
-  clientId: Globals.URLS.GOOGLE_ID,
+  clientId: Globals.SETTINGS.GOOGLE_ID,
 };
 
 class GoogleAuth {
@@ -40,7 +40,8 @@ class GoogleAuth {
   async handleSignInAsync(): Promise<TokenResponse | null> {
     try {
       const authState = await authAsync(config);
-      await LocalStorageDAO.getInstance().setToken(authState);
+      if (authState && authState.idToken !== '')
+        await LocalStorageDAO.getInstance().setToken(authState);
       return authState;
     } catch (e) {
       return null;

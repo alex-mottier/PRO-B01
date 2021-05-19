@@ -28,7 +28,6 @@ const SignUp: React.FC = () => {
    * Sign up button pressed
    */
   const handleSignUp = () => {
-    authenticationStore.setIsLoading(true);
     // Try to see if an account already match the selected account
     void authenticationStore.signInWithGoogle().then(async (isLoggedIn: boolean) => {
       if (authenticationStore.userToken && authenticationStore.userToken.idToken) {
@@ -44,7 +43,6 @@ const SignUp: React.FC = () => {
         }
       }
     });
-    authenticationStore.setIsLoading(false);
   };
 
   return (

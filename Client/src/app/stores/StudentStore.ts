@@ -54,8 +54,7 @@ class StudentStore {
    */
   @action async loadUserData(): Promise<void> {
     await this.loadMeetingsCreatedByUser();
-    await this.loadUserMeetings(startOfDay(new Date()), endOfDay(addDays(new Date(), 10)));
-    void this.generateItems(new Date());
+    await this.generateItems(new Date());
   }
 
   /**
@@ -78,7 +77,6 @@ class StudentStore {
           this.meetingsCreatedByUser = meetings;
         });
       } else {
-        console.log('getCreatedMeetings');
         void this.utils.manageErrorInResponse(response);
       }
     }
@@ -93,7 +91,7 @@ class StudentStore {
     const response = await this.amphitryonDAO.loadUserMeetings(startDate, endDate);
     if (response) {
       if (response.ok) {
-        void runInAction(async () => {
+        await runInAction(async () => {
           this.userMeetings = await response.json();
         });
       } else {
@@ -120,7 +118,6 @@ class StudentStore {
           }
         });
       } else {
-        console.log('getMyMeetings');
         void this.utils.manageErrorInResponse(response);
       }
     }
@@ -305,7 +302,6 @@ class StudentStore {
         });
         this.regenerateItems();
       } else {
-        console.log('createMeeting');
         void this.utils.manageErrorInResponse(response);
       }
     }
