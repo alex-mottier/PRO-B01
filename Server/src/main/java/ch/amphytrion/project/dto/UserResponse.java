@@ -2,6 +2,8 @@ package ch.amphytrion.project.dto;
 
 import ch.amphytrion.project.entities.databaseentities.User;
 
+import java.util.Objects;
+
 public class UserResponse implements InterfaceDTO {
     public String username;
     public String id;
@@ -15,5 +17,18 @@ public class UserResponse implements InterfaceDTO {
         } else {
             isStudent = false;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserResponse that = (UserResponse) o;
+        return username.equals(that.username) && Objects.equals(id, that.id) && isStudent.equals(that.isStudent);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, id, isStudent);
     }
 }
