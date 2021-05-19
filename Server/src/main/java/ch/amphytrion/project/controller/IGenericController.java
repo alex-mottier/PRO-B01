@@ -5,12 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public interface IGenericController<T> {
-    default User getCurrentUser(){
+    default User getCurrentUser() throws CustomException {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal instanceof String){
-            return null;
+        if(principal instanceof User){
+            return (User) principal;
+        } else {
+            throw new CustomException("Aucun utilisateur courant", HttpStatus.UNAUTHORIZED, null);
         }
-        return (User) principal;
+
     }
 
     default void checkUserIsStudent() throws CustomException {

@@ -1,5 +1,7 @@
-package ch.amphytrion.project.controller;
+package ch.amphytrion.project.controller.userControllerTests;
 
+import ch.amphytrion.project.controller.CustomException;
+import ch.amphytrion.project.controller.UserController;
 import ch.amphytrion.project.dto.UserResponse;
 import ch.amphytrion.project.entities.databaseentities.StudentProfil;
 import ch.amphytrion.project.entities.databaseentities.User;
