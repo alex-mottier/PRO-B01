@@ -17,7 +17,6 @@ import Edit from '../screens/Host/Edit/Edit';
 import EditHost from '../screens/Host/EditHost/EditHost';
 import CovidData from '../screens/Host/EditCovidData/EditCovidData';
 import Strings from '../app/context/Strings';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 // Creating the application stack
 const Stack = createStackNavigator();
@@ -89,10 +88,9 @@ const HostStack: React.FC = () => {
       <Stack.Screen
         name={Globals.NAVIGATION.HOST_HOME}
         component={BottomHostTabs}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Strings.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: Strings.AGENDA,
           };
         }}
       />

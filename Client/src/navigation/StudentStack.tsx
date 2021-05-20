@@ -7,7 +7,6 @@
 
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { Appbar, IconButton, Switch, useTheme } from 'react-native-paper';
 import { BottomStudentTabs } from './BottomStudentTabs';
 import Globals from '../app/context/Globals';
@@ -90,10 +89,9 @@ const StudentStack: React.FC = () => {
       <Stack.Screen
         name={Globals.NAVIGATION.STUDENT_HOME}
         component={BottomStudentTabs}
-        options={({ route }) => {
-          const routeName = getFocusedRouteNameFromRoute(route) ?? Strings.APP_NAME;
+        options={() => {
           return {
-            headerTitle: routeName,
+            headerTitle: Strings.AGENDA,
           };
         }}
       />
