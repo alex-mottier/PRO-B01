@@ -4,8 +4,10 @@ import ch.amphytrion.project.dto.DatesFilterDTO;
 import ch.amphytrion.project.dto.LocationFilterDTO;
 import ch.amphytrion.project.dto.LocationResponse;
 import ch.amphytrion.project.entities.databaseentities.Location;
+import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.LocationService;
+import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -23,10 +25,12 @@ public class LocationController extends BaseController implements IGenericContro
 
     private final LocationService locationService;
     private final UserService userService;
+    private final MeetingService meetingService;
 
-    public LocationController(LocationService locationService, UserService userService) {
+    public LocationController(LocationService locationService, UserService userService,MeetingService meetingService) {
         this.locationService = locationService;
         this.userService = userService;
+        this.meetingService = meetingService;
     }
 
     //X
@@ -78,6 +82,8 @@ public class LocationController extends BaseController implements IGenericContro
     public void delete(@PathVariable String locationID) {
         try {
             //TODO vérifier qu'on supprime bien une location qui nous appartient!! ce serait bête sinon :)
+            //TODO : Supprimer une location - revient à supprimer tous les meetings dans ce lieu et supprimer ces meetings - A DISCUTER
+
             checkUserIsHost();
             locationService.deleteById(locationID);
         } catch (Exception e) {
