@@ -59,18 +59,22 @@ const LocationComponent: React.FC<IProps> = ({ location, onChoose, isAddView }) 
    * Suppression de la réunion
    */
   const handleDelete = () => {
-    Alert.alert(Strings.ASK_DELETE, Strings.ASK_LOCATION_DELETE + location.name + ' ?', [
-      {
-        text: Strings.NO,
-        style: 'cancel',
-      },
-      {
-        text: Strings.YES,
-        onPress: () => {
-          void hostStore.deleteLocation(location.id);
+    Alert.alert(
+      Strings.ASK_DELETE,
+      Strings.ASK_LOCATION_DELETE + ' ' + location.name + ' ? ' + Strings.WARNING_DELETE,
+      [
+        {
+          text: Strings.NO,
+          style: 'cancel',
         },
-      },
-    ]);
+        {
+          text: Strings.YES,
+          onPress: () => {
+            void hostStore.deleteLocation(location.id);
+          },
+        },
+      ],
+    );
   };
 
   return (

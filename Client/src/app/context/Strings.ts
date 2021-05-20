@@ -6,6 +6,7 @@
  */
 
 export default {
+  AGENDA: 'Agenda',
   AGREEMENT:
     "En vous connectant, vous acceptez nos conditions générales. Pour en savoir plus sur l'usage que nous faisons de vos données, consultez notre politique de confidentialité et notre politique en matière de cookies.",
   APP_NAME: 'Amphitryon',
@@ -145,6 +146,7 @@ export default {
   TAGS_ADD: 'Ajout de tags',
   UPDATED: 'Mis à jour',
   USER_NAME: "Nom d'utilisateur",
+  WARNING_DELETE: 'Cela va supprimer les réunions agendées.',
   WELCOME: 'Bienvenue sur Amphitryon',
   YES: 'Oui',
 };
