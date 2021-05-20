@@ -254,17 +254,21 @@ const MeetingComponent: React.FC<IProps> = ({
                 <Text style={[styles.gray, styles.buttonText]}>{Strings.COPY_ID}</Text>
               </View>
             )}
-            {!isMemberOfMeeting && !isOwner && !isInCalendar && isSearchView && (
-              <View>
-                <IconButton
-                  icon={Globals.ICONS.JOIN}
-                  size={30}
-                  onPress={handleJoinMeeting}
-                  color={Globals.COLORS.GREEN}
-                />
-                <Text style={[styles.gray, styles.buttonText]}>{Strings.JOIN}</Text>
-              </View>
-            )}
+            {!isMemberOfMeeting &&
+              !isOwner &&
+              !isInCalendar &&
+              isSearchView &&
+              meeting.maxPeople > meeting.membersId.length && (
+                <View>
+                  <IconButton
+                    icon={Globals.ICONS.JOIN}
+                    size={30}
+                    onPress={handleJoinMeeting}
+                    color={Globals.COLORS.GREEN}
+                  />
+                  <Text style={[styles.gray, styles.buttonText]}>{Strings.JOIN}</Text>
+                </View>
+              )}
             {isOwner && !isChatView && (
               <View>
                 <IconButton
