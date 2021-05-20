@@ -45,10 +45,9 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
    * Action when adding a tag
    */
   const handleAddTag = () => {
+    setTagName('');
     if (tagName !== '') {
-      setModalVisible(false);
       addTag({ name: tagName });
-      setTagName('');
     } else {
       Alert.alert('Tag nul', 'Veuillez saisir un tag non nul');
     }
@@ -98,6 +97,7 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
             <TextInput
               label={Strings.TAGS_ADD}
               defaultValue={tagName}
+              value={tagName}
               onChangeText={(tagName: string) => setTagName(tagName)}
               style={styles.field}
             />
