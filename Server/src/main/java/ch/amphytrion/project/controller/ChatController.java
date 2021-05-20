@@ -45,9 +45,10 @@ public class ChatController extends BaseController implements IGenericController
     @SneakyThrows
     @GetMapping("/chat/{chatId}")
     public ResponseEntity<Chat> getById(@PathVariable String chatId) {
-        try {
+        Chat chat = chatService.findById(chatId);
+        if(chat != null){
             return ResponseEntity.ok(chatService.findById(chatId));
-        } catch (Exception e) {
+        } else {
             throw new CustomException("Le chat n'existe pas", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
