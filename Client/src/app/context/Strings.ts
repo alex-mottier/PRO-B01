@@ -146,6 +146,7 @@ export default {
   TAGS_ADD: 'Ajout de tags',
   UPDATED: 'Mis à jour',
   USER_NAME: "Nom d'utilisateur",
+  WARNING_DELETE: 'Cela va supprimer les réunions agendées.',
   WELCOME: 'Bienvenue sur Amphitryon',
   YES: 'Oui',
 };

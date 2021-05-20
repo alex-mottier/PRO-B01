@@ -18,6 +18,7 @@ import ChatMeeting from '../screens/Student/Chat/ChatMeeting';
 import Edit from '../screens/Student/Edit/Edit';
 import { useStores } from '../app/stores/StoresContext';
 import Strings from '../app/context/Strings';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 // Creating the application stack
 const Stack = createStackNavigator();
@@ -89,9 +90,10 @@ const StudentStack: React.FC = () => {
       <Stack.Screen
         name={Globals.NAVIGATION.STUDENT_HOME}
         component={BottomStudentTabs}
-        options={() => {
+        options={({ route }) => {
+          const routeName = getFocusedRouteNameFromRoute(route) ?? Strings.AGENDA;
           return {
-            headerTitle: Strings.AGENDA,
+            headerTitle: routeName,
           };
         }}
       />
