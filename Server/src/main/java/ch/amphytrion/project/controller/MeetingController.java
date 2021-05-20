@@ -172,6 +172,9 @@ public class MeetingController extends BaseController implements IGenericControl
                 existantMeeting.setTags(entity.getTags());
                 existantMeeting.setLocationID(entity.getLocationID());
                 existantMeeting.setIsPrivate(entity.getIsPrivate());
+                //TODO : A confirmer sur Heroku DEV - 20.05
+                existantMeeting.setStartDate(entity.getStartDate());
+                existantMeeting.setEndDate(entity.getEndDate());
                 return ResponseEntity.ok(new MeetingResponse(meetingService.save(existantMeeting), locationService));
             }
         } catch (Exception e) {
