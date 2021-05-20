@@ -100,6 +100,7 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
               value={tagName}
               onChangeText={(tagName: string) => setTagName(tagName)}
               style={styles.field}
+              autoFocus={true}
             />
             <Button
               icon={Globals.ICONS.ADD_TAG}
