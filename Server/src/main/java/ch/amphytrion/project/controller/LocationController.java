@@ -50,11 +50,12 @@ public class LocationController extends BaseController implements IGenericContro
     public ResponseEntity<List<Location>> getAllWithDate(@RequestBody LocationFilterDTO filters) {
         //TODO logique & model dto with startDate & endDate
         try {
-            List<Location> locations = locationService.findAll();
+            /*List<Location> locations = locationService.findAll();
             Meeting meeting = meetingService.findById(filters.meetingID);
             locations.removeIf(location -> location.getNbPeople() <= meeting.getMembersID().size());
 
-            return ResponseEntity.ok(locations);
+            return ResponseEntity.ok(locations);*/
+            return ResponseEntity.ok(locationService.findAll());
         } catch (Exception e) {
             return ResponseEntity.ok(new ArrayList<Location>());
         }
