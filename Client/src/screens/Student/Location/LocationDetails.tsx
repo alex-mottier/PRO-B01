@@ -38,11 +38,17 @@ const LocationDetails: React.FC = () => {
    * Action when component is loaded
    */
   React.useEffect(() => {
-    setIsLoading(true);
-    void studentStore.loadLocationToDisplay().then(() => {
-      setLocation(studentStore.locationToDisplay);
-      setIsLoading(false);
-    });
+    let mounted = true;
+    if (mounted) {
+      setIsLoading(true);
+      void studentStore.loadLocationToDisplay().then(() => {
+        setLocation(studentStore.locationToDisplay);
+        setIsLoading(false);
+      });
+    }
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   /**
