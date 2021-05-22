@@ -72,6 +72,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
     setShowDate(Platform.OS === 'ios');
     setStartDate(currentDate);
     setEndDate(addHours(currentDate, 2));
+    setLocation(null);
   };
 
   /**
@@ -83,6 +84,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
     setShowStartTime(Platform.OS === 'ios');
     setStartDate(currentDate);
     setEndDate(addHours(currentDate, 2));
+    setLocation(null);
   };
 
   /**
@@ -93,6 +95,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
     const currentDate = selectedDate || startDate;
     setShowEndTime(Platform.OS === 'ios');
     setEndDate(currentDate);
+    setLocation(null);
   };
 
   /**

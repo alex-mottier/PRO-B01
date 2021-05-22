@@ -122,6 +122,7 @@ export default {
   MESSAGE_TYPE: 'Tapez votre texte ici ...',
   MY_LOCATIONS: 'Mes lieux',
   NO: 'Non',
+  NO_LOCATIONS: "Aucun lieu disponible à pour l'horaire sélectionné",
   OPENING_HOURS: 'Plages horaires',
   OPENING_HOURS_ADD: "Ajout d'horaires",
   OTHER: 'Autre',
