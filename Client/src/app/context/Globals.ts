@@ -91,7 +91,7 @@ export default {
   SETTINGS: {
     API_URL: 'https://amphitryon.herokuapp.com',
     GOOGLE_ID: '298748587556-mpio0261lovc0qkt660nbhgariolp1no.apps.googleusercontent.com',
-    VERSION: 'Version 1.8',
+    VERSION: 'Version 1.9',
   },
   SESSION_TOKEN_NAME: 'session_token_amphitryon',
 };
