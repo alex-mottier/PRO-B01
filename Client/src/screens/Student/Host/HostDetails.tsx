@@ -32,11 +32,17 @@ const HostDetails: React.FC = () => {
    * Action when component is loaded
    */
   React.useEffect(() => {
-    setIsLoading(true);
-    void studentStore.loadHost().then(() => {
-      setHost(studentStore.hostToDisplay);
-      setIsLoading(false);
-    });
+    let mounted = true;
+    if (mounted) {
+      setIsLoading(true);
+      void studentStore.loadHost().then(() => {
+        setHost(studentStore.hostToDisplay);
+        setIsLoading(false);
+      });
+    }
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   /**

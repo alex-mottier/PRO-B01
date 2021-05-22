@@ -227,24 +227,30 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
    * Action when component is loaded
    */
   React.useEffect(() => {
+    let mounted = true;
     if (isEditMode) {
-      setIsLoading(true);
-      void studentStore.loadLocationToDisplay().then(() => {
-        const meeting = studentStore.meetingToUpdate;
-        setMeeting(meeting);
-        if (meeting) {
-          setMeetingName(meeting.name);
-          setIsPrivateOn(meeting.isPrivate);
-          setMeetingDescription(meeting.description);
-          setStartDate(new Date(meeting.startDate));
-          setEndDate(new Date(meeting.endDate));
-          setTags(meeting.tags);
-        }
+      if (mounted) {
+        setIsLoading(true);
+        void studentStore.loadLocationToDisplay().then(() => {
+          const meeting = studentStore.meetingToUpdate;
+          setMeeting(meeting);
+          if (meeting) {
+            setMeetingName(meeting.name);
+            setIsPrivateOn(meeting.isPrivate);
+            setMeetingDescription(meeting.description);
+            setStartDate(new Date(meeting.startDate));
+            setEndDate(new Date(meeting.endDate));
+            setTags(meeting.tags);
+          }
 
-        setLocation(studentStore.locationToDisplay);
-        setIsLoading(false);
-      });
+          setLocation(studentStore.locationToDisplay);
+          setIsLoading(false);
+        });
+      }
     }
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return (

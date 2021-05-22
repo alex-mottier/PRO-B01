@@ -312,7 +312,6 @@ class StudentStore {
    * @param meeting to update
    */
   @action async updateMeeting(meeting: Meeting): Promise<void> {
-    console.log(meeting);
     const response = await this.amphitryonDAO.updateMeeting(meeting);
     if (response) {
       if (response.ok) {

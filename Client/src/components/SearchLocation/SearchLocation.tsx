@@ -67,10 +67,16 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
    * Action when component is loaded
    */
   React.useEffect(() => {
-    setIsLoading(true);
-    void refreshLocations().then(() => {
-      setIsLoading(false);
-    });
+    let mounted = true;
+    if (mounted) {
+      setIsLoading(true);
+      void refreshLocations().then(() => {
+        setIsLoading(false);
+      });
+    }
+    return () => {
+      mounted = false;
+    };
   }, [startDate]);
 
   /**
@@ -84,7 +90,6 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
    * Load locations and filter them if they are available
    */
   const refreshLocations = async () => {
-    console.log('refresh');
     await studentStore.loadAllLocations().then(() => {
       const availableLocation: Location[] = [];
       studentStore.locations?.map((location: Location) => {

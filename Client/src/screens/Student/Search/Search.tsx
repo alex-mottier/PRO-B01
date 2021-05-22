@@ -157,7 +157,13 @@ const Search: React.FC = () => {
    * On component load
    */
   React.useEffect(() => {
-    handleSubmit();
+    let mounted = true;
+    if (mounted) {
+      handleSubmit();
+    }
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return (
