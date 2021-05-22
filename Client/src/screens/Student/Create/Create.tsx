@@ -136,7 +136,7 @@ const Create: React.FC<IProps> = ({ isEditMode }) => {
         tags: tags,
         locationID: location?.id,
         locationName: location?.name,
-        membersId: [],
+        membersId: meeting ? meeting.membersId : [],
         maxPeople: location.nbPeople,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
