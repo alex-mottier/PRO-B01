@@ -21,6 +21,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * RESTful meeting controller. Used to map HTML requests to the corresponding methods
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 @RestController
 public class MeetingController extends BaseController implements IGenericController<Meeting> {
 
@@ -30,6 +35,13 @@ public class MeetingController extends BaseController implements IGenericControl
     private LocationService locationService;
 
 
+    /**
+     * Constructor of the meeting controller
+     * @param meetingService corresponding meeting service to the meeting controller
+     * @param studentService corresponding student service to the meeting controller
+     * @param chatService corresponding chat service to the meeting controller
+     * @param locationService corresponding location service to the meeting controller
+     */
     @Autowired
     public MeetingController(MeetingService meetingService, UserService studentService, ChatService chatService, LocationService locationService) {
         this.meetingService = meetingService;
@@ -38,6 +50,11 @@ public class MeetingController extends BaseController implements IGenericControl
         this.locationService = locationService;
     }
 
+    /**
+     * Retrieve all the meetings that the user created
+     * @throws CustomException
+     * @return ResponseEntity<List<MeetingResponse>> The list of meetings that the user created, RESTfully formated
+     */
     //X
     @SneakyThrows
     @GetMapping("/getCreatedMeetings")
@@ -56,6 +73,12 @@ public class MeetingController extends BaseController implements IGenericControl
         }
     }
 
+    /**
+     * Delete the user participation in a specified meeting
+     * @param meetingID the ID of the meeting
+     * @throws CustomException
+     * @return ResponseEntity<MeetingResponse> RESTful formatted meeting that has been left
+     */
     //X
     @SneakyThrows
     @PostMapping("/leaveMeeting/{meetingID}")
@@ -78,6 +101,12 @@ public class MeetingController extends BaseController implements IGenericControl
         throw new CustomException("Fuyez pauvres fous", HttpStatus.NOT_ACCEPTABLE, null);
     }
 
+    /**
+     * Retrieve all the meetings that the user is part of
+     * @param datesFilter an object made of two dates to filter the meetings response
+     * @throws CustomException
+     * @return ResponseEntity<List<MeetingResponse>> The list of meetings that the user is part of, RESTfully formated
+     */
     //X
     @SneakyThrows
     @PostMapping("/getMyMeetings")
@@ -97,13 +126,16 @@ public class MeetingController extends BaseController implements IGenericControl
             throw new CustomException("Aucun meeting n'a été trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
-
+    /**
+     * add a student to the meeting
+     * @param meetingID the id of the meeting that the user want to join
+     * @throws CustomException
+     * @return ResponseEntity<MeetingResponse>The meeting that the user is now part of, RESTfully formated
+     */
     //X
     @SneakyThrows
     @PostMapping("/meeting/join/{meetingID}")
     public ResponseEntity<MeetingResponse> joinMeeting(@PathVariable String meetingID) {
-        // NE PAS S'INSCRIRE PLUSIEURS FOIS
-        // NE PAS POUVOIR EXCEDER LA TAILLE DU MEETING!
         try {
             checkUserIsStudent();
             Meeting meeting = meetingService.addMemberToMeeting(getCurrentUser(), meetingID);
@@ -114,14 +146,18 @@ public class MeetingController extends BaseController implements IGenericControl
         }
     }
 
+    /**
+     * Search for specific meetings in the database
+     * @param filter an object used to filter the meetings
+     * @throws CustomException
+     * @return ResponseEntity<List<MeetingResponse>> The meetings found , RESTfully formated
+     */
     //X
     @SneakyThrows
     @PostMapping("/meetings/filter")
     public ResponseEntity<List<MeetingResponse>> searchWithFilter(@RequestBody FilterRequest filter){
         try {
             List<MeetingResponse> meetingResponses = new ArrayList<>();
-
-
             List<Meeting> result = meetingService.allFilters(meetingService.findAll(), filter);
             for(Meeting meeting : result) {
                 MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
@@ -133,6 +169,12 @@ public class MeetingController extends BaseController implements IGenericControl
         }
     }
 
+    /**
+     * Add a specified meeting in the database
+     * @param entity the meeting to add, RESTfully formatted
+     * @throws CustomException
+     * @return ResponseEntity<MeetingResponse> the meeting created
+     */
     //X
     @SneakyThrows
     @PostMapping("/meeting")
@@ -156,6 +198,12 @@ public class MeetingController extends BaseController implements IGenericControl
         }
     }
 
+    /**
+     * Update a specified meeting in the database
+     * @param entity the meeting to add, RESTfully formatted
+     * @throws CustomException
+     * @return ResponseEntity<MeetingResponse> the meeting updated
+     */
     //X
     @SneakyThrows
     @PatchMapping("/meeting")
@@ -179,6 +227,11 @@ public class MeetingController extends BaseController implements IGenericControl
         throw new CustomException("Meeting avec id :" + entity.getId() + " non trouvé", HttpStatus.NOT_ACCEPTABLE, null);
     }
 
+    /**
+     * delete a specific meeting in the database
+     * @param meetingID the ID of the meeting to delete
+     * @throws CustomException
+     */
     //X
     @SneakyThrows
     @DeleteMapping("/meeting/{meetingID}")
@@ -202,6 +255,12 @@ public class MeetingController extends BaseController implements IGenericControl
         }
     }
 
+    /**
+     * find a specific meeting in the database
+     * @param meetingID the ID of the meeting to find
+     * @throws CustomException
+     * @return ResponseEntity<MeetingResponse> The meeting found
+     */
     //X
     @SneakyThrows
     @GetMapping("/meeting/{meetingID}")
@@ -219,6 +278,12 @@ public class MeetingController extends BaseController implements IGenericControl
             @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
             @ApiResponse(code = 403, message = "Access to this resource is forbidden")
     })
+
+//TODO : Check if still relevant
+    /**
+     * Test method of the controller
+     * @return the name of the class
+     */
     @GetMapping("/meetingController")
     private String testController() {
         return this.getClass().getSimpleName();

@@ -11,6 +11,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ *
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 public class LocationResponse implements InterfaceDTO {
     @Id
     public String id;

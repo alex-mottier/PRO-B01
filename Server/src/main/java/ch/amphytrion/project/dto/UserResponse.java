@@ -2,6 +2,11 @@ package ch.amphytrion.project.dto;
 
 import ch.amphytrion.project.entities.databaseentities.User;
 
+/**
+ *
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 public class UserResponse implements InterfaceDTO {
     public String username;
     public String id;

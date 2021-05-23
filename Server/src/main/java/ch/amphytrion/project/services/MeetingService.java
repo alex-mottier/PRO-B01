@@ -25,6 +25,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ *
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 @Service
 public class MeetingService implements IGenericService<Meeting> {
 
@@ -105,6 +110,7 @@ public class MeetingService implements IGenericService<Meeting> {
         try {
             StudentProfil studentProfil = member.getStudentProfil();
             Meeting meeting = findById(meetingID);
+            // Check if student is already part of the meeting
             if (studentProfil == null
                     || meeting.getMembersID().contains(member.getId())) {
                 return null;

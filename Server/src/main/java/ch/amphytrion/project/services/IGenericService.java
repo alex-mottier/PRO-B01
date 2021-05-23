@@ -2,6 +2,11 @@ package ch.amphytrion.project.services;
 
 import java.util.List;
 
+/**
+ *
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 public interface IGenericService<T> {
     List<T> findAll();
     T save(T entity);

@@ -5,6 +5,11 @@ import ch.amphytrion.project.services.UserService;
 
 import java.util.Collections;
 
+/**
+ *
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 public class DataCreator {
 
     public static void createHost(UserService userService){

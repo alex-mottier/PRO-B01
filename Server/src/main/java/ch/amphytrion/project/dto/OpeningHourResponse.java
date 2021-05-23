@@ -4,6 +4,11 @@ import ch.amphytrion.project.entities.databaseentities.OpeningHour;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+/**
+ *
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 public class OpeningHourResponse implements InterfaceDTO {

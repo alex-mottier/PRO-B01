@@ -7,6 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
+/**
+ *
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 @Repository
 public interface LocationRepository extends MongoRepository<Location, String> {
     ArrayList<Location> findByHostId(String hostId);
