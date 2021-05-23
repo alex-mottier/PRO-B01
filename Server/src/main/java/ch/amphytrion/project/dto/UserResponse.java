@@ -3,7 +3,7 @@ package ch.amphytrion.project.dto;
 import ch.amphytrion.project.entities.databaseentities.User;
 
 /**
- *
+ * user RESTful response class
  *
  * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
  */
