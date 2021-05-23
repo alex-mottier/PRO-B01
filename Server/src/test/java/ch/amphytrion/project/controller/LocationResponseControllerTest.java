@@ -4,7 +4,7 @@ import ch.amphytrion.project.repositories.LocationRepository;
 import ch.amphytrion.project.services.LocationService;
 
 /**
- *
+ * Test of LocationResponseController class
  *
  * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
  */
