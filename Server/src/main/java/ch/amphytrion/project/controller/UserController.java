@@ -99,21 +99,6 @@ public class UserController extends BaseController implements IGenericController
         }
     }
 
-    /**
-     * Retrieve a user by its name
-     * @param username The username to look for
-     * @throws CustomException
-     * @return ResponseEntity<UserResponse> The user found
-     */
-    @SneakyThrows
-    public ResponseEntity<UserResponse> getById(@PathVariable String username) {
-        try {
-            return ResponseEntity.ok(new UserResponse(userService.findByUsername(username)));
-        } catch (Exception e) {
-            throw new CustomException("Utilisateur inexistant", HttpStatus.NOT_ACCEPTABLE, null);
-        }
-    }
-
     @ApiOperation(value = "Retrieve userController")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully reached userController"),
