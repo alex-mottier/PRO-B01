@@ -106,7 +106,6 @@ public class UserController extends BaseController implements IGenericController
      * @return ResponseEntity<UserResponse> The user found
      */
     @SneakyThrows
-    @GetMapping("/user/{username}")
     public ResponseEntity<UserResponse> getById(@PathVariable String username) {
         try {
             return ResponseEntity.ok(new UserResponse(userService.findByUsername(username)));
@@ -128,7 +127,6 @@ public class UserController extends BaseController implements IGenericController
      * Test method of the controller
      * @return the name of the class
      */
-    @GetMapping("/userController")
     private String testController() {
         return this.getClass().getSimpleName();
     }

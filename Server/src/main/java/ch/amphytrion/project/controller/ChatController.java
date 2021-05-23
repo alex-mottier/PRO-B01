@@ -84,7 +84,6 @@ public class ChatController extends BaseController implements IGenericController
  * Test method of the controller
  * @return the name of the class
  */
-    @GetMapping("/chatController")
     private String testController() {
         return this.getClass().getSimpleName();
     }

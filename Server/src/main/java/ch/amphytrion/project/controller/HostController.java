@@ -54,7 +54,6 @@ public class HostController extends BaseController implements IGenericController
      * @return ResponseEntity<List<UserResponse>> a RESTful list of students
      */
     @SneakyThrows
-    @GetMapping("/hosts")
     public ResponseEntity<List<UserResponse>> getAll() {
         try {
             List<User> hosts = hostService.findAll();
@@ -76,7 +75,6 @@ public class HostController extends BaseController implements IGenericController
      * @return ResponseEntity<HostResponse> The RESTful formatted host created
      */
     @SneakyThrows
-    @PostMapping("/host")
     public ResponseEntity<HostResponse> save(User entity) {
         try {
             return ResponseEntity.ok(new HostResponse(hostService.save(entity)));
@@ -209,7 +207,6 @@ public class HostController extends BaseController implements IGenericController
      * Test method of the controller
      * @return the name of the class
      */
-    @GetMapping("/hostController")
     private String testController() {
         return this.getClass().getSimpleName();
     }

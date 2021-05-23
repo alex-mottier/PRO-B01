@@ -42,7 +42,6 @@ public class StudentController extends BaseController implements IGenericControl
      * @return ResponseEntity<List<UserResponse>> The list of all students, RESTfully formated
      */
     @SneakyThrows
-    @GetMapping("/students")
     public ResponseEntity<List<UserResponse>> getAll() {
         try {
             List<User> students = studentService.findAll();
@@ -76,7 +75,6 @@ public class StudentController extends BaseController implements IGenericControl
      * @return ResponseEntity<List<UserResponse>> retrieved student, RESTfully formated
      */
     @SneakyThrows
-    @GetMapping("/students/{id}")
     public ResponseEntity<UserResponse> getById(@PathVariable String id) {
         try {
             return ResponseEntity.ok(new UserResponse(studentService.findById(id)));
@@ -98,7 +96,6 @@ public class StudentController extends BaseController implements IGenericControl
      * Test method of the controller
      * @return the name of the class
      */
-    @GetMapping("/studentController")
     private String testController() {
         return this.getClass().getSimpleName();
     }

@@ -284,7 +284,6 @@ public class MeetingController extends BaseController implements IGenericControl
      * Test method of the controller
      * @return the name of the class
      */
-    @GetMapping("/meetingController")
     private String testController() {
         return this.getClass().getSimpleName();
     }

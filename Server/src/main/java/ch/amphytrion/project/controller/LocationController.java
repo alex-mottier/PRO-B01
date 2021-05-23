@@ -62,7 +62,6 @@ public class LocationController extends BaseController implements IGenericContro
      */
     //X
     @SneakyThrows
-    @PostMapping("/locations/withDate")
     public ResponseEntity<List<Location>> getAllWithDate(@RequestBody LocationFilterDTO filters) {
         //TODO logique & model dto with startDate & endDate
         try {
@@ -80,7 +79,6 @@ public class LocationController extends BaseController implements IGenericContro
      */
     //X
     @SneakyThrows
-    @PostMapping("/location")
     public ResponseEntity<LocationResponse> create(@RequestBody Location entity) {
         try {
             checkUserIsHost();
@@ -166,7 +164,6 @@ public class LocationController extends BaseController implements IGenericContro
      * Test method of the controller
      * @return the name of the class
      */
-    @GetMapping("/locationController")
     private String testController() {
         return this.getClass().getSimpleName();
     }
