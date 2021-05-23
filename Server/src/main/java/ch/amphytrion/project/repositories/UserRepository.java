@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- *
+ * Add CRUD methods to User collection in database
  *
  * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
  */

@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
+ * Add CRUD methods to Meeting collection in database
  *
  * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
  */

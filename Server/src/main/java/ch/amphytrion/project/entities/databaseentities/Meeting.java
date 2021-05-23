@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
+ * Meeting class
  *
  * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
  */
@@ -29,7 +29,6 @@ public class Meeting {
     private String locationID;
     private String ownerID;
     private String chatID;
-    // List de String ?
     private List<Tag> tags;
     private List<String> membersID = new ArrayList<>();
     private String startDate;
