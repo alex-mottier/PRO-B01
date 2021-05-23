@@ -3,6 +3,7 @@ package ch.amphytrion.project.controller;
 import ch.amphytrion.project.dto.DatesFilterDTO;
 import ch.amphytrion.project.dto.LocationFilterDTO;
 import ch.amphytrion.project.dto.LocationResponse;
+import ch.amphytrion.project.entities.databaseentities.CovidData;
 import ch.amphytrion.project.entities.databaseentities.Location;
 import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.entities.databaseentities.User;
@@ -38,9 +39,19 @@ public class LocationController extends BaseController implements IGenericContro
     @GetMapping("/locations")
     public ResponseEntity<List<Location>> getAll() {
         try {
-            return ResponseEntity.ok(locationService.findAll());
+            List<Location> locations = locationService.findAll();
+            List<Location> openLocations = new ArrayList<>();
+            for(Location location : locations) {
+                CovidData covidData = userService.findById(location.getHostId()).getHostProfil().getCovidData();
+                if(covidData.getIsOpen()) {
+                    openLocations.add(location);
+                }
+            }
+
+            return ResponseEntity.ok(openLocations);
+
         } catch (Exception e) {
-            throw new CustomException("Are you lost?", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Erreur lors de la récupération des locations", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
@@ -50,11 +61,6 @@ public class LocationController extends BaseController implements IGenericContro
     public ResponseEntity<List<Location>> getAllWithDate(@RequestBody LocationFilterDTO filters) {
         //TODO logique & model dto with startDate & endDate
         try {
-            /*List<Location> locations = locationService.findAll();
-            Meeting meeting = meetingService.findById(filters.meetingID);
-            locations.removeIf(location -> location.getNbPeople() <= meeting.getMembersID().size());
-
-            return ResponseEntity.ok(locations);*/
             return ResponseEntity.ok(locationService.findAll());
         } catch (Exception e) {
             return ResponseEntity.ok(new ArrayList<Location>());
