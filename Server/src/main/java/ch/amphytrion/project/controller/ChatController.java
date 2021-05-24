@@ -13,18 +13,33 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
+/**
+ * RESTful chat controller. Used to map HTML requests to the corresponding methods
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 @RestController
 public class ChatController extends BaseController implements IGenericController<Chat> {
 
     @Autowired
     private ChatService chatService;
 
+    /**
+     * Constructor of the chat controller
+     * @param chatService corresponding chat service to the chat controller
+     */
     @Autowired
     public ChatController(ChatService chatService) {
         this.chatService = chatService;
     }
 
+    /**
+     * Let user add a message to a chat
+     * @param chatId The id of the chat
+     * @param message The content of message
+     * @throws CustomException
+     * @return ResponseEntity<Chat> The chat that received the message
+     */
     //X
     @SneakyThrows
     @PostMapping("/chat/createMessage/{chatId}")
@@ -41,6 +56,12 @@ public class ChatController extends BaseController implements IGenericController
         }
     }
 
+    /**
+     * Get a chat by its id
+     * @param chatId The id of the chat
+     * @throws CustomException
+     * @return ResponseEntity<Chat> the chat with corresponding id
+     */
     //X
     @SneakyThrows
     @GetMapping("/chat/{chatId}")
@@ -58,7 +79,11 @@ public class ChatController extends BaseController implements IGenericController
             @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
             @ApiResponse(code = 403, message = "Access to this resource is forbidden")
     })
-    @GetMapping("/chatController")
+    //TODO : Check if still relevant
+/**
+ * Test method of the controller
+ * @return the name of the class
+ */
     private String testController() {
         return this.getClass().getSimpleName();
     }

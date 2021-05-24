@@ -24,7 +24,7 @@ class StudentStore {
   @observable meetingsCreatedByUser: Meeting[] = [];
   @observable userMeetings: Meeting[] = [];
   @observable chat: Chat | null = null;
-  @observable locations: Location[] | null = null;
+  @observable locations: Location[] = [];
   @observable locationToDisplay: Location | null = null;
   @observable hostToDisplay: Host | null = null;
   @observable searchMeetings: Meeting[] = [];
@@ -54,8 +54,7 @@ class StudentStore {
    */
   @action async loadUserData(): Promise<void> {
     await this.loadMeetingsCreatedByUser();
-    await this.loadUserMeetings(startOfDay(new Date()), endOfDay(addDays(new Date(), 10)));
-    void this.generateItems(new Date());
+    await this.generateItems(new Date());
   }
 
   /**
@@ -92,7 +91,7 @@ class StudentStore {
     const response = await this.amphitryonDAO.loadUserMeetings(startDate, endDate);
     if (response) {
       if (response.ok) {
-        void runInAction(async () => {
+        await runInAction(async () => {
           this.userMeetings = await response.json();
         });
       } else {

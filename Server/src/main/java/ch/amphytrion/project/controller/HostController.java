@@ -20,6 +20,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * RESTful host controller. Used to map HTML requests to the corresponding methods
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 @RestController
 public class HostController extends BaseController implements IGenericController<HostProfil> {
 
@@ -28,6 +33,13 @@ public class HostController extends BaseController implements IGenericController
     private UserService userService;
     private MeetingService meetingService;
 
+    /**
+     * Constructor of HostController class
+     * @param hostService corresponding host service to the host controller
+     * @param locationService corresponding location service to the host controller
+     * @param userService corresponding user service to the host controller
+     * @param meetingService corresponding meeting service to the host controller
+     */
     @Autowired
     public HostController(HostService hostService, LocationService locationService, UserService userService, MeetingService meetingService) {
         this.hostService = hostService;
@@ -36,13 +48,18 @@ public class HostController extends BaseController implements IGenericController
         this.meetingService = meetingService;
     }
 
+    /**
+     * Return all hosts
+     * @throws CustomException
+     * @return ResponseEntity<List<UserResponse>> a RESTful list of students
+     */
     @SneakyThrows
-    @GetMapping("/hosts")
     public ResponseEntity<List<UserResponse>> getAll() {
         try {
             List<User> hosts = hostService.findAll();
             return ResponseEntity.ok(
                     hosts.stream()
+                            //TODO : list of student ? is that right?
                             .map(student -> new UserResponse(student))
                             .collect(Collectors.toList())
             );
@@ -50,8 +67,14 @@ public class HostController extends BaseController implements IGenericController
             throw new CustomException("Aucun hôte trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
+
+    /**
+     * Method used to create a host from its user
+     * @param entity user's datas to create
+     * @throws CustomException
+     * @return ResponseEntity<HostResponse> The RESTful formatted host created
+     */
     @SneakyThrows
-    @PostMapping("/host")
     public ResponseEntity<HostResponse> save(User entity) {
         try {
             return ResponseEntity.ok(new HostResponse(hostService.save(entity)));
@@ -60,6 +83,13 @@ public class HostController extends BaseController implements IGenericController
         }
     }
 
+    /**
+     * Used to retrieve host by its id
+     * @param id the id of the host
+     * @throws CustomException
+     * @throws CustomException
+     * @return ResponseEntity<HostResponse> The RESTful formatted host found
+     */
     @SneakyThrows
     @GetMapping("/host/{id}")
     public ResponseEntity<HostResponse> getById(@PathVariable String id) {
@@ -75,6 +105,11 @@ public class HostController extends BaseController implements IGenericController
         }
     }
 
+    /**
+     * Used to get host's locations
+     * @throws CustomException
+     * @return ResponseEntity<List<LocationResponse>> The RESTful locations retrieved from host
+     */
     //X
     @SneakyThrows
     @GetMapping("/getMyLocations")
@@ -93,6 +128,12 @@ public class HostController extends BaseController implements IGenericController
         }
     }
 
+    /**
+     * Method used to update/create a host from its user
+     * @param hostRequest RESTful formatted host
+     * @throws CustomException
+     * @return ResponseEntity<HostResponse> The RESTful formatted host updated
+     */
     @SneakyThrows
     @PatchMapping("/host")
     public ResponseEntity<HostResponse> update(@RequestBody HostRequest hostRequest) {
@@ -113,6 +154,12 @@ public class HostController extends BaseController implements IGenericController
         }
     }
 
+    /**
+     * return all the meetings of the locations of the host between two dates
+     * @param datesFilterDTO Object made of two dates, REST convenient
+     * @throws CustomException
+     * @return ResponseEntity<List<MeetingResponse>> The RESTful formatted list of meetings between the specified dates
+     */
     @SneakyThrows
     @PostMapping("/getReservations")
     public ResponseEntity<List<MeetingResponse>> getReservations(@RequestBody DatesFilterDTO datesFilterDTO) {
@@ -154,7 +201,12 @@ public class HostController extends BaseController implements IGenericController
             @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
             @ApiResponse(code = 403, message = "Access to this resource is forbidden")
     })
-    @GetMapping("/hostController")
+
+    //TODO : Check if still relevant
+    /**
+     * Test method of the controller
+     * @return the name of the class
+     */
     private String testController() {
         return this.getClass().getSimpleName();
     }

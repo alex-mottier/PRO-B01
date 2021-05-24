@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import { RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
 import { Avatar, Text, Title, Chip } from 'react-native-paper';
 import styles from './styles';
 import { observer } from 'mobx-react-lite';
@@ -23,6 +23,7 @@ const HostDetails: React.FC = () => {
   /* Component states */
   const [isLoading, setIsLoading] = React.useState(true);
   const [host, setHost] = React.useState<Host | null>();
+  const [refreshing, setRefreshing] = React.useState(false);
 
   /* Local variables */
   let nbColors = 0;
@@ -31,16 +32,33 @@ const HostDetails: React.FC = () => {
    * Action when component is loaded
    */
   React.useEffect(() => {
-    setIsLoading(true);
+    let mounted = true;
+    if (mounted) {
+      setIsLoading(true);
+      void studentStore.loadHost().then(() => {
+        setHost(studentStore.hostToDisplay);
+        setIsLoading(false);
+      });
+    }
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  /**
+   * Refresh action
+   */
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
     void studentStore.loadHost().then(() => {
       setHost(studentStore.hostToDisplay);
-      setIsLoading(false);
+      setRefreshing(false);
     });
   }, []);
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         {isLoading ? (
           <LoadingComponent />
         ) : (
