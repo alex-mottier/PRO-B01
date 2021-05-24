@@ -18,17 +18,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * RESTful location controller. Used to map HTML requests to the corresponding methods
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 @RestController
 public class LocationController extends BaseController implements IGenericController<Location> {
 
     private final LocationService locationService;
     private final UserService userService;
 
+    /**
+     * Constuctor of location controller
+     * @param locationService the related location service
+     * @param userService the related user service
+     */
     public LocationController(LocationService locationService, UserService userService) {
         this.locationService = locationService;
         this.userService = userService;
     }
-
+     /**
+     * Retrieve all the locations in the database
+     * @throws CustomException
+     * @return ResponseEntity<List<Location>> return all the locations of the database RESTful formatted
+     */
     //X
     @SneakyThrows
     @GetMapping("/locations")
@@ -40,9 +54,14 @@ public class LocationController extends BaseController implements IGenericContro
         }
     }
 
+    /**
+     * Retrieve all the locations in the database
+     * @param filters a specific filter for locations with a meeting ID and two dates
+     * @throws CustomException
+     * @return ResponseEntity<List<Location>> return the corresponding locations of the database RESTful formatted
+     */
     //X
     @SneakyThrows
-    @PostMapping("/locations/withDate")
     public ResponseEntity<List<Location>> getAllWithDate(@RequestBody LocationFilterDTO filters) {
         //TODO logique & model dto with startDate & endDate
         try {
@@ -52,9 +71,14 @@ public class LocationController extends BaseController implements IGenericContro
         }
     }
 
+    /**
+     * Add a location to the database
+     * @param entity a location RESTfully formatted
+     * @throws CustomException
+     * @return ResponseEntity<LocationResponse> the location created RESTfully formatted
+     */
     //X
     @SneakyThrows
-    @PostMapping("/location")
     public ResponseEntity<LocationResponse> create(@RequestBody Location entity) {
         try {
             checkUserIsHost();
@@ -72,6 +96,11 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
 
+    /**
+     * delete a specific location from the database
+     * @param locationID the ID of the location
+     * @throws CustomException
+     */
     //X
     @SneakyThrows
     @DeleteMapping("/location/{locationID}")
@@ -87,7 +116,12 @@ public class LocationController extends BaseController implements IGenericContro
 
 
 
-
+    /**
+     * update a specific location in the database
+     * @param entity the location to update, RESTfully formatted
+     * @throws CustomException
+     * @return ResponseEntity<LocationResponse> the location updated, RESTfully formatted
+     */
     //X
     @SneakyThrows
     @PatchMapping("/location")
@@ -102,6 +136,12 @@ public class LocationController extends BaseController implements IGenericContro
         return null;
     }
 
+    /**
+     * Retrieve a specific location from the database with its id
+     * @param locationId the ID of the location to find
+     * @throws CustomException
+     * @return ResponseEntity<LocationResponse> the location found, RESTfully formatted
+     */
     //X
     @SneakyThrows
     @GetMapping("/location/{locationId}")
@@ -119,7 +159,11 @@ public class LocationController extends BaseController implements IGenericContro
             @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
             @ApiResponse(code = 403, message = "Access to this resource is forbidden")
     })
-    @GetMapping("/locationController")
+    //TODO : Check if still relevant
+    /**
+     * Test method of the controller
+     * @return the name of the class
+     */
     private String testController() {
         return this.getClass().getSimpleName();
     }

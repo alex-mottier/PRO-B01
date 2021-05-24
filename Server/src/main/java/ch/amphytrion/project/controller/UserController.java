@@ -19,16 +19,31 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/**
+ * RESTful user controller. Used to map HTML requests to the corresponding methods
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 @RestController
 public class UserController extends BaseController implements IGenericController<User> {
 
     private final UserService userService;
 
+    /**
+     * Constructor of the user controller
+     * @param userService corresponding user service to the user controller
+     */
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Method used to signed up as a host
+     * @param signUpHostRequest host to sign up to
+     * @throws CustomException
+     * @return ResponseEntity<UserResponse> The user
+     */
     @SneakyThrows
     @PostMapping("/signUpHost")
     public ResponseEntity<UserResponse> signUpHost(@RequestBody SignUpHostRequest signUpHostRequest) {
@@ -44,7 +59,12 @@ public class UserController extends BaseController implements IGenericController
         }
     }
 
-
+    /**
+     * Method used to signed up as a host
+     * @param studentRequest student to sign up to
+     * @throws CustomException
+     * @return ResponseEntity<UserResponse> The user
+     */
     // X
     @SneakyThrows
     @PostMapping("/signUpStudent")
@@ -61,6 +81,12 @@ public class UserController extends BaseController implements IGenericController
         }
     }
 
+    /**
+     * Method used to login in the application
+     * @param json a map of two strings
+     * @throws CustomException
+     * @return ResponseEntity<UserResponse> The user
+     */
     // X
     @SneakyThrows
     @PostMapping("/login")
@@ -73,16 +99,6 @@ public class UserController extends BaseController implements IGenericController
         }
     }
 
-    @SneakyThrows
-    @GetMapping("/user/{username}")
-    public ResponseEntity<UserResponse> getById(@PathVariable String username) {
-        try {
-            return ResponseEntity.ok(new UserResponse(userService.findByUsername(username)));
-        } catch (Exception e) {
-            throw new CustomException("Utilisateur inexistant", HttpStatus.NOT_ACCEPTABLE, null);
-        }
-    }
-
     @ApiOperation(value = "Retrieve userController")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully reached userController"),
@@ -90,7 +106,12 @@ public class UserController extends BaseController implements IGenericController
             @ApiResponse(code = 403, message = "Access to this resource is forbidden"),
             @ApiResponse(code = 406, message = "The user account already exists in the app")
     })
-    @GetMapping("/userController")
+
+    //TODO : Check if still relevant
+    /**
+     * Test method of the controller
+     * @return the name of the class
+     */
     private String testController() {
         return this.getClass().getSimpleName();
     }

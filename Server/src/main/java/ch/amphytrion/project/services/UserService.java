@@ -11,6 +11,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ *
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 @Service
 public class UserService implements IGenericService<User>{
 
@@ -25,16 +30,30 @@ public class UserService implements IGenericService<User>{
         this.userRepository = userRepository;
     }
 
+    /**
+     * Retrieve all the users of the database
+     * @return List<User> List of all the users
+     */
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
+    /**
+     * The user to add/update in the database
+     * @param user the user to update/add in the database
+     * @return User The user added/modified
+     */
     @Override
     public User save(User user) {
         return userRepository.save(user);
     }
-    
+
+    /**
+     * Find a user by its id
+     * @param id the id of the user to find in the database
+     * @return User The user found
+     */
     @Override
     public User findById(String id) {
         try {
@@ -44,7 +63,11 @@ public class UserService implements IGenericService<User>{
         }
         return null;
     }
-
+    /**
+     * Find a user by its GoogleId
+     * @param id the GoogleId of the user to find in the database
+     * @return User The user found
+     */
     public User findByGoogleId(String id) {
         try {
             return userRepository.findByGoogleId(id);
@@ -53,7 +76,11 @@ public class UserService implements IGenericService<User>{
         }
         return null;
     }
-
+    /**
+     * Find a user by its username
+     * @param username the username of the user to find in the database
+     * @return User The user found
+     */
     public User findByUsername(String username) {
         try{
             return userRepository.findByUsername(username);
@@ -63,21 +90,29 @@ public class UserService implements IGenericService<User>{
         return null;
     }
 
+    /**
+     * delete a specified user
+     * @param user the user to delete
+     */
     @Override
     public void delete(User user) {
         userRepository.delete(user);
     }
 
+    /**
+     * delete a specific user
+     * @param id the id of the user to delete
+     */
     @Override
     public void deleteById(String id) {
         userRepository.deleteById(id);
     }
 
-    @Override
-    public long count() {
-        return userRepository.count();
-    }
-
+    /**
+     * Check the validity of the token of the student and add it to the database
+     * @param studentRequest studentRequest
+     * @return User the user checked
+     */
     public User checkAndSignUp(StudentRequest studentRequest) {
         //TODO Separate User creation & unicity check
         String username = studentRequest.username;
@@ -104,7 +139,11 @@ public class UserService implements IGenericService<User>{
         return newUser;
     }
 
-
+    /**
+     * Check the validity of the token of the host and add it to the database
+     * @param signUpHostRequest signUpHostRequest
+     * @return User the user checked
+     */
     public User checkAndSignUpHost(SignUpHostRequest signUpHostRequest) {
         //TODO Separate User creation & unicity check
         String tokenInput = signUpHostRequest.tokenID;

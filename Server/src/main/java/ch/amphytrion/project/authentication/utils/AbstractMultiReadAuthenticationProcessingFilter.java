@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ *
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 public abstract class AbstractMultiReadAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
     protected AbstractMultiReadAuthenticationProcessingFilter(String defaultFilterProcessesUrl) {
         super(defaultFilterProcessesUrl);
