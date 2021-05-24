@@ -42,6 +42,16 @@ Démarrer l'émulateur virtuel précédemment créé.
 
 > Pour cette étape, l'émulateur doit déjà être démarré. Voir section précédente.
 
+Le fichier [./Client/src/app/context/Globals.ts](./src/app/context/Globals.ts) dans la section `Settings` doit être configuré ainsi :
+
+```json
+SETTINGS: {
+    API_URL: 'https://amphitryon.herokuapp.com',
+    GOOGLE_ID: '298748587556-mpio0261lovc0qkt660nbhgariolp1no.apps.googleusercontent.com',
+    VERSION: 'Version 1.9',
+},
+```
+
 **Ouvrir projet client :** (dossier "Client") du repository.
 
 Installer dépendances : `npm install`
