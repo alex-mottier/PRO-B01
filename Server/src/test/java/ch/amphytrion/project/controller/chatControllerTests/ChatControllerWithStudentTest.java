@@ -14,11 +14,15 @@ import ch.amphytrion.project.services.ChatService;
 import ch.amphytrion.project.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,7 +30,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataMongoTest
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureDataMongo
 class ChatControllerWithStudentTest {
 
    private static final String GOOGLE_ID = "google-mock-up-id";
@@ -40,7 +46,9 @@ class ChatControllerWithStudentTest {
    private UserRepository userRepository;
    @Autowired
    private ChatRepository chatRepository;
+   @Autowired
    private ChatService chatService;
+   @Autowired
    private ChatController chatController;
    private User user;
    private Chat chat;
@@ -52,7 +60,6 @@ class ChatControllerWithStudentTest {
         userRepository.deleteAll();
         user = new User(GOOGLE_ID, STUDENT_NAME);
         user.setStudentProfil(new StudentProfil());
-        chatService = new ChatService(chatRepository);
         chat = new Chat();
         chat.setId(OK_CHAT_ID);
         List<Message> messages = new ArrayList<>();
@@ -66,7 +73,6 @@ class ChatControllerWithStudentTest {
         userRepository.save(user);
         Authentication auth = new UsernamePasswordAuthenticationToken(user,null);
         SecurityContextHolder.getContext().setAuthentication(auth);
-        chatController = new ChatController(chatService);
 
     }
 
