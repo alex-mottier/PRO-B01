@@ -45,6 +45,7 @@ public class Meeting {
         this.tags = tags;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.isPrivate = isPrivate;
     }
 
     public Meeting(String name){ this.name = name; }

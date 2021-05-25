@@ -3,9 +3,12 @@ package ch.amphytrion.project.controller;
 import ch.amphytrion.project.dto.DatesFilterDTO;
 import ch.amphytrion.project.dto.LocationFilterDTO;
 import ch.amphytrion.project.dto.LocationResponse;
+import ch.amphytrion.project.entities.databaseentities.CovidData;
 import ch.amphytrion.project.entities.databaseentities.Location;
+import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.LocationService;
+import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -28,15 +31,18 @@ public class LocationController extends BaseController implements IGenericContro
 
     private final LocationService locationService;
     private final UserService userService;
+    private final MeetingService meetingService;
 
     /**
      * Constuctor of location controller
      * @param locationService the related location service
      * @param userService the related user service
+     * @param meetingServce the related meeting service
      */
-    public LocationController(LocationService locationService, UserService userService) {
+    public LocationController(LocationService locationService, UserService userService,MeetingService meetingService) {
         this.locationService = locationService;
         this.userService = userService;
+        this.meetingService = meetingService;
     }
      /**
      * Retrieve all the locations in the database
@@ -48,9 +54,19 @@ public class LocationController extends BaseController implements IGenericContro
     @GetMapping("/locations")
     public ResponseEntity<List<Location>> getAll() {
         try {
-            return ResponseEntity.ok(locationService.findAll());
+            List<Location> locations = locationService.findAll();
+            List<Location> openLocations = new ArrayList<>();
+            for(Location location : locations) {
+                CovidData covidData = userService.findById(location.getHostId()).getHostProfil().getCovidData();
+                if(covidData.getIsOpen()) {
+                    openLocations.add(location);
+                }
+            }
+
+            return ResponseEntity.ok(openLocations);
+
         } catch (Exception e) {
-            throw new CustomException("Are you lost?", HttpStatus.NOT_ACCEPTABLE, null);
+            throw new CustomException("Erreur lors de la récupération des locations", HttpStatus.NOT_ACCEPTABLE, null);
         }
     }
 
@@ -108,6 +124,8 @@ public class LocationController extends BaseController implements IGenericContro
     public void delete(@PathVariable String locationID) {
         try {
             //TODO vérifier qu'on supprime bien une location qui nous appartient!! ce serait bête sinon :)
+            //TODO : Supprimer une location - revient à supprimer tous les meetings dans ce lieu et supprimer ces meetings - A DISCUTER
+
             checkUserIsHost();
             locationService.deleteById(locationID);
         } catch (Exception e) {
