@@ -95,6 +95,7 @@ public class LocationController extends BaseController implements IGenericContro
      */
     //X
     @SneakyThrows
+    @PostMapping("/location")
     public ResponseEntity<LocationResponse> create(@RequestBody Location entity) {
         try {
             checkUserIsHost();
