@@ -10,14 +10,22 @@ import ch.amphytrion.project.repositories.UserRepository;
 import ch.amphytrion.project.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.jupiter.api.Assertions.*;
-@DataMongoTest
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureDataMongo
 class UserControllerWithStudentTest {
 
    private static final String GOOGLE_ID = "google-mock-up-id";
@@ -25,7 +33,9 @@ class UserControllerWithStudentTest {
 
    @Autowired
    private UserRepository userRepository;
+   @Autowired
    private UserService userService;
+   @Autowired
    private UserController userController;
    private User user;
 
@@ -35,11 +45,9 @@ class UserControllerWithStudentTest {
         userRepository.deleteAll();
         user = new User(GOOGLE_ID, STUDENT_NAME);
         user.setStudentProfil(new StudentProfil());
-        userService = new UserService(userRepository, null);
         userService.save(user);
         Authentication auth = new UsernamePasswordAuthenticationToken(user,null);
         SecurityContextHolder.getContext().setAuthentication(auth);
-        userController = new UserController(userService);
 
     }
 
