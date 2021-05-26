@@ -47,7 +47,8 @@ public class MeetingController extends BaseController implements IGenericControl
             User user = getCurrentUser();
                 ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
                 for(Meeting meeting : meetingService.findFutureMeetings(user.getId())) {
-                    MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
+                    Location location = locationService.findById(meeting.getLocationID());
+                    MeetingResponse meetingResponse = new MeetingResponse(meeting, location);
                     meetingResponses.add(meetingResponse);
                 }
                 return ResponseEntity.ok(meetingResponses);
@@ -70,12 +71,13 @@ public class MeetingController extends BaseController implements IGenericControl
                  studentProfil.getMeetingsParticipationsID().removeIf(id -> id.equals(meetingID));
                  studentService.save(user);
                  meetingService.save(meeting);
-                return ResponseEntity.ok(new MeetingResponse(meeting, locationService));
+                Location location = locationService.findById(meeting.getLocationID());
+                return ResponseEntity.ok(new MeetingResponse(meeting, location));
                 }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+            throw new CustomException("Meeting introuvable", HttpStatus.NOT_ACCEPTABLE, null);
         }
-        throw new CustomException("Fuyez pauvres fous", HttpStatus.NOT_ACCEPTABLE, null);
+        throw new CustomException("L'utilisateur n'est pas un étudiant", HttpStatus.NOT_ACCEPTABLE, null);
     }
 
     //X
@@ -88,7 +90,8 @@ public class MeetingController extends BaseController implements IGenericControl
             ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
             for(String meetingId : studentProfil.getMeetingsParticipationsID()) {
                 Meeting meeting = meetingService.findById(meetingId);
-                MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
+                Location location = locationService.findById(meeting.getLocationID());
+                MeetingResponse meetingResponse = new MeetingResponse(meeting, location);
                 meetingResponses.add(meetingResponse);
             }
             return ResponseEntity.ok(meetingResponses);
@@ -107,7 +110,8 @@ public class MeetingController extends BaseController implements IGenericControl
         try {
             checkUserIsStudent();
             Meeting meeting = meetingService.addMemberToMeeting(getCurrentUser(), meetingID);
-            return ResponseEntity.ok(new MeetingResponse(meeting, locationService));
+            Location location = locationService.findById(meeting.getLocationID());
+            return ResponseEntity.ok(new MeetingResponse(meeting, location));
         }
         catch (Exception e) {
             throw new CustomException("Le meeting n'a pas pu être joint", HttpStatus.NOT_ACCEPTABLE, null);
@@ -124,7 +128,8 @@ public class MeetingController extends BaseController implements IGenericControl
 
             List<Meeting> result = meetingService.allFilters(meetingService.findAll(), filter);
             for(Meeting meeting : result) {
-                MeetingResponse meetingResponse = new MeetingResponse(meeting, locationService);
+                Location location = locationService.findById(meeting.getLocationID());
+                MeetingResponse meetingResponse = new MeetingResponse(meeting, location);
                 meetingResponses.add(meetingResponse);
             }
             return ResponseEntity.ok(meetingResponses);
@@ -136,21 +141,22 @@ public class MeetingController extends BaseController implements IGenericControl
     //X
     @SneakyThrows
     @PostMapping("/meeting")
-    public ResponseEntity<MeetingResponse> create(@RequestBody Meeting entity) {
+    public ResponseEntity<MeetingResponse> create(@RequestBody Meeting meeting) {
         try {
             checkUserIsStudent();
             User user = getCurrentUser();
-            entity.setId(null);
+            meeting.setId(null);
             Chat chat = new Chat();
             chatService.save(chat);
-            entity.setChatID(chat.getId());
-            entity.setMembersID(Collections.singletonList(user.getId()));
-            entity.setOwnerID(user.getId());
-            meetingService.save(entity);
-            user.getStudentProfil().getMeetingsOwnerID().add(entity.getId());
-            user.getStudentProfil().getMeetingsParticipationsID().add(entity.getId());
+            meeting.setChatID(chat.getId());
+            meeting.setMembersID(Collections.singletonList(user.getId()));
+            meeting.setOwnerID(user.getId());
+            meetingService.save(meeting);
+            user.getStudentProfil().getMeetingsOwnerID().add(meeting.getId());
+            user.getStudentProfil().getMeetingsParticipationsID().add(meeting.getId());
             studentService.save(user);
-                return ResponseEntity.ok(new MeetingResponse(entity, locationService));
+            Location location = locationService.findById(meeting.getLocationID());
+            return ResponseEntity.ok(new MeetingResponse(meeting, location));
         } catch (Exception e) {
             throw new CustomException("Aucun meeting créé", HttpStatus.NOT_ACCEPTABLE, null);
         }
@@ -159,24 +165,25 @@ public class MeetingController extends BaseController implements IGenericControl
     //X
     @SneakyThrows
     @PatchMapping("/meeting")
-    public ResponseEntity<MeetingResponse> update(@RequestBody Meeting entity) {
+    public ResponseEntity<MeetingResponse> update(@RequestBody Meeting meeting) {
         try {
-            if(entity.getId() != null){
-                Meeting existantMeeting = meetingService.findById(entity.getId());
+            if(meeting.getId() != null){
+                Meeting existantMeeting = meetingService.findById(meeting.getId());
                 if(existantMeeting == null){
-                    throw new CustomException("Meeting avec id :" + entity.getId() + " non trouvé", HttpStatus.NOT_ACCEPTABLE, null);
+                    throw new CustomException("Meeting avec id :" + meeting.getId() + " non trouvé", HttpStatus.NOT_ACCEPTABLE, null);
                 }
                 /* Patch for update selected fields */
-                existantMeeting.setName(entity.getName());
-                existantMeeting.setDescription(entity.getDescription());
-                existantMeeting.setTags(entity.getTags());
-                existantMeeting.setLocationID(entity.getLocationID());
-                return ResponseEntity.ok(new MeetingResponse(meetingService.save(existantMeeting), locationService));
+                existantMeeting.setName(meeting.getName());
+                existantMeeting.setDescription(meeting.getDescription());
+                existantMeeting.setTags(meeting.getTags());
+                existantMeeting.setLocationID(meeting.getLocationID());
+                Location location = locationService.findById(meeting.getLocationID());
+                return ResponseEntity.ok(new MeetingResponse(meetingService.save(existantMeeting), location));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         }
-        throw new CustomException("Meeting avec id :" + entity.getId() + " non trouvé", HttpStatus.NOT_ACCEPTABLE, null);
+        throw new CustomException("Meeting avec id :" + meeting.getId() + " non trouvé", HttpStatus.NOT_ACCEPTABLE, null);
     }
 
     //X
@@ -207,7 +214,9 @@ public class MeetingController extends BaseController implements IGenericControl
     @GetMapping("/meeting/{meetingID}")
     public ResponseEntity<MeetingResponse> getById(@PathVariable String meetingID) {
         try {
-            return ResponseEntity.ok(new MeetingResponse(meetingService.findById(meetingID), locationService));
+            Meeting meeting = meetingService.findById(meetingID);
+            Location location = locationService.findById(meeting.getLocationID());
+            return ResponseEntity.ok(new MeetingResponse(meeting, location));
         } catch (Exception e) {
             throw new CustomException("Meeting avec id :" + meetingID + " non trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }

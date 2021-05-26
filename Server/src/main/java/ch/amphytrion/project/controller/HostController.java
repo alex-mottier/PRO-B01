@@ -138,7 +138,8 @@ public class HostController extends BaseController implements IGenericController
 
             //Construction de la liste de meetingResponses
             for(Meeting meeting : meetings) {
-                meetingResponses.add(new MeetingResponse(meeting, locationService));
+                Location location = locationService.findById(meeting.getLocationID());
+                meetingResponses.add(new MeetingResponse(meeting, location));
             }
             return ResponseEntity.ok(meetingResponses);
         }
