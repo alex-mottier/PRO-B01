@@ -53,7 +53,6 @@ class UserControllerWithStudentTest {
 
     @Test
     void currentUserIsStudent() {
-
         assertDoesNotThrow(() -> userController.checkUserIsStudent());
         assertThrows(CustomException.class, () -> userController.checkUserIsHost());
     }
