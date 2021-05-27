@@ -6,6 +6,11 @@ import org.springframework.util.Assert;
 
 import java.util.Collection;
 
+/**
+ *
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 public class JWTAuthorizationToken extends AbstractAuthenticationToken {
     private final Object principal;
     private Object credentials;

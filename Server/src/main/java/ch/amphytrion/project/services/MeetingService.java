@@ -25,6 +25,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Contains all the logic of the meeting data management
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 @Service
 public class MeetingService implements IGenericService<Meeting> {
 
@@ -34,6 +39,14 @@ public class MeetingService implements IGenericService<Meeting> {
     private ChatRepository chatRepository;
     private LocationService locationService;
 
+    /**
+     * Location service constructor
+     * @param meetingRepository Repository of meeting class
+     * @param locationRepository Repository of location class
+     * @param chatRepository Repository of chat class
+     * @param locationService Service of location class
+     * @param userRepository Repository of user class
+     */
     @Autowired
     public MeetingService(MeetingRepository meetingRepository, LocationRepository locationRepository, ChatRepository chatRepository, LocationService locationService, UserRepository userRepository) {
         this.meetingRepository = meetingRepository;
@@ -44,11 +57,20 @@ public class MeetingService implements IGenericService<Meeting> {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Retrieve all the meetings of the database
+     * @return List<Meeting> list of all the meetings of the database
+     */
     @Override
     public List<Meeting> findAll() {
         return meetingRepository.findAll();
     }
 
+    /**
+     * Create/update meeting
+     * @param meetingResponse the meeting to create/update
+     * @return Meeting The meeting modified/created
+     */
     @Override
     public Meeting save(Meeting meetingResponse) {
         if (meetingResponse.getId() != null && !meetingResponse.getId().isEmpty()) {
@@ -56,6 +78,11 @@ public class MeetingService implements IGenericService<Meeting> {
         return meetingRepository.save(meetingResponse);
     }
 
+    /**
+     * Find a specific meeting
+     * @param id The id of the meeting to find
+     * @return Meeting The meeting found
+     */
     @Override
     public Meeting findById(String id) {
         try {
@@ -66,10 +93,20 @@ public class MeetingService implements IGenericService<Meeting> {
         return null;
     }
 
+    /**
+     * Find a list of meetings by their owner id
+     * @param ownerID The id of the owner of the meetings to find
+     * @return Meeting The list of meetings found
+     */
     public ArrayList<Meeting> findByOwnerID(String ownerID){
         return meetingRepository.findByOwnerID(ownerID);
     }
 
+    /**
+     * Find a list of meetings by their owner id that haven't happened yet
+     * @param ownerID The id of the owner of the meetings to find
+     * @return Meeting The list of meetings found
+     */
     public ArrayList<Meeting> findFutureMeetings(String ownerID) {
         ArrayList<Meeting> meetings = findByOwnerID(ownerID);
         ArrayList<Meeting> futureMeetings = new ArrayList<>();
@@ -86,25 +123,35 @@ public class MeetingService implements IGenericService<Meeting> {
         return futureMeetings;
     }
 
+    /**
+     * Delete a specified meeting
+     * @param meetingResponse th meeting to delete
+     */
     @Override
     public void delete(Meeting meetingResponse) {
         meetingRepository.delete(meetingResponse);
     }
 
+    /**
+     * Delete a specific meeting by its id
+     * @param id the id of the meeting to find
+     */
     @Override
     public void deleteById(String id) {
         meetingRepository.deleteById(id);
     }
 
-    @Override
-    public long count() {
-        return meetingRepository.count();
-    }
-
+    /**
+     * add a student to a meeting
+     * @param member the user to add as student
+     * @param meetingID the id of the meeting to add a student to
+     * @return Meeting the meeting updated
+     */
     public Meeting addMemberToMeeting(User member, String meetingID) {
         try {
             StudentProfil studentProfil = member.getStudentProfil();
             Meeting meeting = findById(meetingID);
+            // Check if student is already part of the meeting
             if (studentProfil == null
                     || meeting.getMembersID().contains(member.getId())) {
                 return null;
@@ -124,6 +171,12 @@ public class MeetingService implements IGenericService<Meeting> {
         }
     }
 
+    /**
+     * filter a list of meetings
+     * @param meetings the meetings to filter
+     * @param filter the filter to use
+     * @return List<Meeting> a list of meetings filtered
+     */
     public List<Meeting> allFilters(List<Meeting> meetings, FilterRequest filter) {
         return meetings.stream()
                 .filter(meeting ->
@@ -138,7 +191,12 @@ public class MeetingService implements IGenericService<Meeting> {
                         searchFilterLocations(meeting, filter.location))
                 .collect(Collectors.toList());
     }
-
+    /**
+     * Check the name of a meeting
+     * @param meeting the meeting to check
+     * @param name the name to compare with
+     * @return boolean true if the name corresponds
+     */
     public boolean filterByName(Meeting meeting, String name) {
         if (name == null || name == "") {
             return true;
@@ -147,10 +205,22 @@ public class MeetingService implements IGenericService<Meeting> {
         }
 
     }
+
+    /**
+     * Check if a meeting is private
+     * @param meeting the meeting to check
+     * @return boolean true if the meeting is public
+     */
     public boolean filterByPrivate(Meeting meeting) {
         return !meeting.getIsPrivate();
     }
 
+    /**
+     * Check if a meeting is between dates
+     * @param meeting the meeting to check
+     * @param datesFilter the dates
+     * @return boolean true if the meeting is between dates
+     */
     public boolean filterByDateFilter(Meeting meeting, DatesFilterDTO datesFilter){
         if (datesFilter == null) {
             return true;
@@ -160,6 +230,12 @@ public class MeetingService implements IGenericService<Meeting> {
         }
     }
 
+    /**
+     * Check if one of several tags is part of a meeting
+     * @param meeting the meeting to check
+     * @param tags a list of tags
+     * @return boolean true if the meeting has one or more of the tags specified
+     */
     public boolean searchFilterTags(Meeting meeting, List<Tag> tags){
         if (tags == null || tags.isEmpty()) {
             return true;
@@ -168,6 +244,12 @@ public class MeetingService implements IGenericService<Meeting> {
         }
     }
 
+    /**
+     * Check if the filter has the location
+     * @param meeting the meeting to check
+     * @param location the location to check
+     * @return boolean true if the meeting has the location specified
+     */
     public boolean searchFilterLocations(Meeting meeting, Location location){
         if (location == null || location.getId() == null || location.getId() == "") {
             return true;
@@ -176,6 +258,11 @@ public class MeetingService implements IGenericService<Meeting> {
         }
     }
 
+    /**
+     * Find a meeting by its location
+     * @param id the id of the location that has to be in the meeting
+     * @return List<Meeting> a list of meeting having a specific location
+     */
     public List<Meeting> findByLocationID(String id) {
         return meetingRepository.findByLocationID(id);
     }

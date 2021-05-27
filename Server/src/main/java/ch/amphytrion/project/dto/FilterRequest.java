@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 
+/**
+ * Class used to filter meetings
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 public class FilterRequest implements InterfaceDTO {

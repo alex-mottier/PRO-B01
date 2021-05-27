@@ -9,6 +9,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Location class
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -21,7 +26,6 @@ public class Location {
     private Integer nbPeople;
     private String hostId;
     private String hostName;
-    // List de String ?
     private List<Tag> tags = new ArrayList<>();
     private List<OpeningHour> openingHours = new ArrayList<>();
 

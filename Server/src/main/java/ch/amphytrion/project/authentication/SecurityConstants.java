@@ -1,5 +1,10 @@
 package ch.amphytrion.project.authentication;
 
+/**
+ *
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 public class SecurityConstants {
     public static long EXPIRATION_TIME = 1000 * 60 * 30; // 30 minutes
     public static String SECRET = "AmPhYtRiOnIsWhAtThEwOrLdNeEdS";
