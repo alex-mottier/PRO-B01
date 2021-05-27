@@ -20,8 +20,10 @@ Ouvrir le fichier depuis la racine. Mettre à jour (Reload) les dépendances mav
 
 Il est aussi possible de lancer l'application de la manière suivante : 
 
+```shell
 mvn clean install
 java -jar /target/Amphitryon-0.0.1-SNAPSHOT.jar
+```
 
 ## Exécuter les tests unitaires ✔️
 
