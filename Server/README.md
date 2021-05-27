@@ -18,9 +18,14 @@ Version 3.8.1
 
 Ouvrir le fichier depuis la racine. Mettre à jour (Reload) les dépendances maven. L'exécution se fait depuis la classe "SpringLoader".
 
+Il est aussi possible de lancer l'application de la manière suivante : 
+
+mvn clean install
+java -jar /target/Amphitryon-0.0.1-SNAPSHOT.jar
+
 ## Exécuter les tests unitaires ✔️
 
-Les tests unitaires peuvent être exécutés depuis l'IDE, depuis le dossier "test>java>ch.amphytrion.project".
+Les tests unitaires peuvent être exécutés depuis l'IDE, depuis le dossier "test>java>ch.amphytrion.project" ou à l'aide de la commande maven `mvn clean test`.
 
 ## Accès à la base de données :file_cabinet:
 
@@ -54,3 +59,4 @@ Nous utilisons Heroku comme plateforme d'hébergement du back-end de notre appli
 Ces deux instances sont automatiquement mises à jour lorsque leur branche relative est mise à jour.
 
 Pour plus d'informations sur les accès à ces différents services (configuration détaillée, identification,...) , nous vous prions de vous référer à la documentation fournie dans le rapport du projet.
+
