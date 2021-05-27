@@ -24,7 +24,7 @@ class StudentStore {
   @observable meetingsCreatedByUser: Meeting[] = [];
   @observable userMeetings: Meeting[] = [];
   @observable chat: Chat | null = null;
-  @observable locations: Location[] | null = null;
+  @observable locations: Location[] = [];
   @observable locationToDisplay: Location | null = null;
   @observable hostToDisplay: Host | null = null;
   @observable searchMeetings: Meeting[] = [];

@@ -4,6 +4,11 @@ import ch.amphytrion.project.entities.databaseentities.User;
 
 import java.util.Objects;
 
+/**
+ * user RESTful response class
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 public class UserResponse implements InterfaceDTO {
     public String username;
     public String id;

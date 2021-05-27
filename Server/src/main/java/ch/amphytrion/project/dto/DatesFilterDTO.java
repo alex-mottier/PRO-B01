@@ -1,5 +1,6 @@
 package ch.amphytrion.project.dto;
 
+import ch.amphytrion.project.controller.CustomException;
 import ch.amphytrion.project.entities.databaseentities.Location;
 import ch.amphytrion.project.entities.databaseentities.Meeting;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,11 @@ import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 import lombok.Data;
 
+/**
+ * Filter composed of two dates. Used in meetings search
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -15,12 +21,21 @@ public class DatesFilterDTO implements InterfaceDTO {
     public String startDate;
     public String endDate;
 
-
+    /**
+     * DatesFilterDTO constructor
+     * @param meeting the meeting to filter (or not)
+     */
     public DatesFilterDTO (Meeting meeting){
         this.startDate = meeting.getStartDate();
         this.endDate = meeting.getEndDate();
     }
 
+    /**
+     * Check if two dates are in (or part of) two other dates
+     * @param datesFilter Object made of two dates, REST convenient
+     * @throws CustomException
+     * @return boolean true if between two dates given in parameters
+     */
     public boolean isBetween(DatesFilterDTO datesFilter) {
         // CHECK IF DATE NOT NULL OR EMPTY
 
@@ -53,12 +68,24 @@ public class DatesFilterDTO implements InterfaceDTO {
         return isStartInBetween || isEndInBetween;
     }
 
+    /**
+     * Parse convert two Strings to dates and check if one is after the another
+     * @param sDate1 an iso date in String
+     * @param sDate2 an iso date in String
+     * @return boolean true if sDate1 > sDate2
+     */
     public boolean compareStringDatesBigger(String sDate1, String sDate2) {
         DateTime dateTime1 = ISODateTimeFormat.dateTime().parseDateTime(sDate1);
         DateTime dateTime2 = ISODateTimeFormat.dateTime().parseDateTime(sDate2);
         return dateTime1.isAfter(dateTime2);
     }
 
+    /**
+     * Parse convert two Strings to dates and check if one is before the another
+     * @param sDate1 an iso date in String
+     * @param sDate2 an iso date in String
+     * @return boolean true if sDate1 < sDate2
+     */
     public boolean compareStringDatesSmaller(String sDate1, String sDate2) {
         DateTime dateTime1 = ISODateTimeFormat.dateTime().parseDateTime(sDate1);
         DateTime dateTime2 = ISODateTimeFormat.dateTime().parseDateTime(sDate2);

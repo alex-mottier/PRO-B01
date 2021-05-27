@@ -4,6 +4,11 @@ import ch.amphytrion.project.entities.databaseentities.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+/**
+ * Generic controllers' interface
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 public interface IGenericController<T> {
     default User getCurrentUser() throws CustomException {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -15,6 +20,10 @@ public interface IGenericController<T> {
 
     }
 
+    /**
+     * Verify if the current user is a student
+     * @throws CustomException
+     */
     default void checkUserIsStudent() throws CustomException {
         User currentUser = getCurrentUser();
         if(currentUser.getStudentProfil() == null){
@@ -22,6 +31,10 @@ public interface IGenericController<T> {
         }
     }
 
+    /**
+     * Verify if the current user is a host
+     * @throws CustomException
+     */
     default void checkUserIsHost() throws CustomException {
         User currentUser = getCurrentUser();
         if(currentUser.getHostProfil() == null){

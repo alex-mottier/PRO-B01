@@ -10,6 +10,7 @@ import { Alert } from 'react-native';
 import { AgendaItemsMap } from 'react-native-calendars';
 import Strings from '../context/Strings';
 import { Meeting } from '../models/ApplicationTypes';
+import AuthenticationStore from '../stores/AuthenticationStore';
 
 class Utils {
   private static instance: Utils;
@@ -40,6 +41,7 @@ class Utils {
         break;
       case 403:
         Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_FORBIDEN);
+        void AuthenticationStore.getInstance().signOutWithGoogle();
         break;
       case 404:
         Alert.alert(Strings.ERROR_OCCURED, Strings.ERROR_NOT_FOUND);

@@ -41,18 +41,22 @@ const ChatMeeting: React.FC = () => {
    * Action done on component loading
    */
   React.useEffect(() => {
-    setIsLoading(true);
+    let mounted = true;
     const interval = setInterval(() => {
       void studentStore.loadChat().then(() => {
         setChat(studentStore.chat);
       });
     }, 5000);
-    void studentStore.loadChat().then(() => {
-      setChat(studentStore.chat);
-      setIsLoading(false);
-    });
+    if (mounted) {
+      setIsLoading(true);
+      void studentStore.loadChat().then(() => {
+        setChat(studentStore.chat);
+        setIsLoading(false);
+      });
+    }
     return () => {
       clearInterval(interval);
+      mounted = false;
     };
   }, []);
 

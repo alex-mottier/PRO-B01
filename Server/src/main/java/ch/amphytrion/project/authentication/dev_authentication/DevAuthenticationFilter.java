@@ -21,6 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.stream.Collectors;
 
+
+/**
+ *
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 // verify user credential and asssign token
 public class DevAuthenticationFilter extends AbstractMultiReadAuthenticationProcessingFilter {
 

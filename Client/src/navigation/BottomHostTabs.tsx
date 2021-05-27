@@ -33,7 +33,7 @@ export const BottomHostTabs = (): React.ReactElement => {
           name={Globals.NAVIGATION.HOST_HOME}
           component={Home}
           options={{
-            tabBarLabel: Strings.APP_NAME,
+            tabBarLabel: Strings.AGENDA,
             tabBarIcon: Globals.ICONS.HOME,
           }}
         />
