@@ -1,4 +1,4 @@
-<img src="/img/Amphitryon.png" style="zoom: 25%;" />
+<img src="/img/Amphitryon.png"/>
 
 # Amphitryon 
 
@@ -14,7 +14,7 @@ Ce projet est réalisé dans le cadre du cours de PRO de notre 6ème semestre au
 
 ## Aperçu de l'application
 
-<img src="/img/Amphitryon.gif" style="zoom:25%;" />
+<img src="/img/Amphitryon.gif" width="200" />
 
 ## Équipe de développement :fire:
 **GROUPE B-01**  
