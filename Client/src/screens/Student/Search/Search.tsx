@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { Platform, SafeAreaView, ScrollView, View } from 'react-native';
+import { Platform, RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
 import {
   Button,
   FAB,
@@ -21,9 +21,8 @@ import {
 import Globals from '../../../app/context/Globals';
 import MeetingComponent from '../../../components/Meeting/MeetingComponent';
 import styles from './styles';
-import { Filter, Location, Meeting, Tag } from '../../../app/models/ApplicationTypes';
+import { Filter, Meeting, Tag } from '../../../app/models/ApplicationTypes';
 import TagsComponent from '../../../components/Tags/TagsComponent';
-import SearchLocation from '../../../components/SearchLocation/SearchLocation';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
 import { addDays } from 'date-fns/esm';
@@ -44,7 +43,6 @@ const Search: React.FC = () => {
   const [search, setSearch] = React.useState('');
   const [visible, setModalVisible] = React.useState(false);
   const [tags, setTags] = React.useState<Tag[]>([]);
-  const [location, setLocation] = React.useState<Location | null>(null);
   const [name, setName] = React.useState('');
   const [showStartDate, setShowStartDate] = React.useState(false);
   const [showEndDate, setShowEndDate] = React.useState(false);
@@ -53,6 +51,7 @@ const Search: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [meetings, setMeetings] = React.useState<Meeting[]>([]);
   const [searchWithId, setSearchWithId] = React.useState(true);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   /**
    * Action when start date is changed
@@ -102,7 +101,7 @@ const Search: React.FC = () => {
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
       tags: tags.length === 0 ? [] : tags,
-      location: location ? location : null,
+      location: null,
     };
     void studentStore.searchWithFilter(filter).then(() => {
       setMeetings(studentStore.searchMeetings);
@@ -145,9 +144,31 @@ const Search: React.FC = () => {
     setIsLoading(false);
   };
 
+  /**
+   * Refresh action
+   */
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    handleSubmit();
+    setRefreshing(false);
+  }, []);
+
+  /**
+   * On component load
+   */
+  React.useEffect(() => {
+    let mounted = true;
+    if (mounted) {
+      handleSubmit();
+    }
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         <View style={[styles.container, { backgroundColor: paperTheme.colors.surface }]}>
           <View style={styles.search}>
             <TextInput
@@ -206,7 +227,7 @@ const Search: React.FC = () => {
                 <View style={styles.content}>
                   <TextInput
                     label={Strings.MEETING_NAME}
-                    value={name}
+                    defaultValue={name}
                     onChangeText={(id) => setName(id)}
                     style={styles.fields}
                   />
@@ -244,12 +265,6 @@ const Search: React.FC = () => {
                       tags={tags}
                       addTag={(tag: Tag) => handleAddTag(tag)}
                       removeTag={(tag: Tag) => handleDeleteTag(tag)}
-                    />
-                  </View>
-                  <View style={{ width: '100%' }}>
-                    <SearchLocation
-                      location={location}
-                      chooseLocation={(location: Location | null) => setLocation(location)}
                     />
                   </View>
                 </View>

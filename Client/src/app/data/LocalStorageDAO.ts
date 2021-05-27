@@ -32,7 +32,7 @@ export default class LocalStorageDAO {
    */
   getToken = async (): Promise<TokenResponse | null> => {
     const user = await asyncStorage.getItem(LocalStorageDAO.publicToken);
-    return user === null ? null : JSON.parse(user);
+    return user === null || user === '' ? null : JSON.parse(user);
   };
 
   /**

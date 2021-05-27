@@ -10,13 +10,13 @@ import { Alert, View } from 'react-native';
 import {
   IconButton,
   Chip,
-  TextInput,
   Text,
   Portal,
   Modal,
   Button,
   Title,
   useTheme,
+  TextInput,
 } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
 import Strings from '../../app/context/Strings';
@@ -45,10 +45,9 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
    * Action when adding a tag
    */
   const handleAddTag = () => {
+    setTagName('');
     if (tagName !== '') {
-      setModalVisible(false);
       addTag({ name: tagName });
-      setTagName('');
     } else {
       Alert.alert('Tag nul', 'Veuillez saisir un tag non nul');
     }
@@ -96,10 +95,12 @@ const TagsComponent: React.FC<IProps> = ({ tags, addTag, removeTag }) => {
             </View>
             <Title style={styles.title}>{Strings.TAGS_ADD}</Title>
             <TextInput
-              label="Nom du tag"
+              label={Strings.TAGS_ADD}
+              defaultValue={tagName}
               value={tagName}
-              onChangeText={setTagName}
+              onChangeText={(tagName: string) => setTagName(tagName)}
               style={styles.field}
+              autoFocus={true}
             />
             <Button
               icon={Globals.ICONS.ADD_TAG}

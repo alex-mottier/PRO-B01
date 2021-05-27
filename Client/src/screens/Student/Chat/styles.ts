@@ -31,12 +31,13 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     width: '100%',
     alignContent: 'space-between',
+    paddingBottom: 10,
   },
   dateText: {
     fontSize: 11,
     color: Globals.COLORS.DARK_GRAY,
   },
-  fields: { width: '80%' },
+  fields: { width: '100%' },
   meeting: {
     marginTop: -10,
   },

@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Add CRUD methods to Meeting collection in database
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 @Repository
 public interface MeetingRepository extends MongoRepository<Meeting, String> {
     ArrayList<Meeting> findByName(String name);

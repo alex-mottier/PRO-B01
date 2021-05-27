@@ -25,15 +25,18 @@ const App: React.FC = () => {
    * Action when component is loaded
    */
   React.useEffect(() => {
-    authenticationStore.setIsLoading(true);
-
-    // Loading icons font
-    void Font.loadAsync({
-      MaterialCommunityIcons: require('./assets/MaterialCommunityIcons.ttf'),
-    }).then(() => {
-      authenticationStore.setIsLoading(false);
-      setIsLoading(false);
-    });
+    let mounted = true;
+    if (mounted) {
+      // Loading icons font
+      void Font.loadAsync({
+        MaterialCommunityIcons: require('./assets/MaterialCommunityIcons.ttf'),
+      }).then(() => {
+        setIsLoading(false);
+      });
+    }
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   // Don't load the application until the font is loaded

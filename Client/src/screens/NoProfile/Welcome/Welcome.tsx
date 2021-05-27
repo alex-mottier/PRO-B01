@@ -37,6 +37,7 @@ const Welcome: React.FC = () => {
         <View style={styles.container}>
           <Title>{Strings.WELCOME}</Title>
           <Text style={styles.text}>{Strings.AGREEMENT}</Text>
+          <Text style={styles.text}>{Globals.SETTINGS.VERSION}</Text>
           <View>
             <Button
               icon={Globals.ICONS.PROFILE}

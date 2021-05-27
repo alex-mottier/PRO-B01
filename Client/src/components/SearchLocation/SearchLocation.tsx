@@ -6,15 +6,16 @@
  */
 
 import * as React from 'react';
-import { ScrollView, View } from 'react-native';
+import { RefreshControl, ScrollView, View } from 'react-native';
 import { IconButton, TextInput, Text, Portal, Modal, Title, useTheme } from 'react-native-paper';
 import Globals from '../../app/context/Globals';
 import { useStores } from '../../app/stores/StoresContext';
 import Strings from '../../app/context/Strings';
-import { Location } from '../../app/models/ApplicationTypes';
+import { Location, OpeningHour } from '../../app/models/ApplicationTypes';
 import LoadingComponent from '../Loading/LoadingComponent';
 import LocationComponent from '../Location/LocationComponent';
 import styles from './styles';
+import { format } from 'date-fns';
 
 /**
  * Component props
@@ -33,8 +34,9 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
   /* Component states */
   const [locationName, setLocationName] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [locations, setLocations] = React.useState<Location[] | null>(studentStore.locations);
+  const [locations, setLocations] = React.useState<Location[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [refreshing] = React.useState(false);
 
   /**
    * Action when a location is choosen
@@ -65,18 +67,45 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
    * Action when component is loaded
    */
   React.useEffect(() => {
-    setIsLoading(true);
-    if (startDate && endDate)
-      void studentStore.loadLocations(startDate, endDate, null).then(() => {
-        setLocations(studentStore.locations);
+    let mounted = true;
+    if (mounted) {
+      setIsLoading(true);
+      void refreshLocations().then(() => {
         setIsLoading(false);
       });
-    else
-      void studentStore.loadAllLocations().then(() => {
-        setLocations(studentStore.locations);
-        setIsLoading(false);
-      });
+    }
+    return () => {
+      mounted = false;
+    };
+  }, [startDate]);
+
+  /**
+   * Refresh action
+   */
+  const onRefresh = React.useCallback(async () => {
+    await refreshLocations();
   }, []);
+
+  /**
+   * Load locations and filter them if they are available
+   */
+  const refreshLocations = async () => {
+    await studentStore.loadAllLocations().then(() => {
+      const availableLocation: Location[] = [];
+      studentStore.locations?.map((location: Location) => {
+        const day = startDate?.getDay();
+        const findedOpeningHours = location.openingHours.find((openingHour: OpeningHour) => {
+          return openingHour.day == day;
+        });
+        if (findedOpeningHours && startDate && endDate) {
+          const startOK = findedOpeningHours.startTime <= format(startDate, 'hh:mm:ss');
+          const endOK = findedOpeningHours.endTime >= format(endDate, 'hh:mm:ss');
+          if (startOK && endOK) availableLocation.push(location);
+        }
+      });
+      setLocations(availableLocation);
+    });
+  };
 
   return (
     <View>
@@ -121,7 +150,7 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
             </View>
             <Title style={styles.title}>{Strings.LOCATIONS_SEARCH}</Title>
             <TextInput
-              label="Nom du lieu"
+              label={Strings.LOCATION_NAME}
               value={locationName}
               onChangeText={(name) => handleLocationNameChange(name)}
               style={styles.field}
@@ -132,9 +161,11 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
               </View>
             )}
             {!isLoading && (
-              <ScrollView style={styles.scrollview}>
+              <ScrollView
+                style={styles.scrollview}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
                 <View style={styles.locations}>
-                  {locations &&
+                  {locations?.length > 0 &&
                     locations?.map((location: Location) => (
                       <LocationComponent
                         key={location.name}
@@ -143,6 +174,9 @@ const SearchLocation: React.FC<IProps> = ({ location, chooseLocation, startDate,
                         isAddView={true}
                       />
                     ))}
+                  {locations?.length === 0 && (
+                    <Text style={styles.text}>{Strings.NO_LOCATIONS}</Text>
+                  )}
                 </View>
               </ScrollView>
             )}

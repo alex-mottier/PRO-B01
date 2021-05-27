@@ -4,6 +4,11 @@ import ch.amphytrion.project.entities.databaseentities.*;
 
 import java.util.List;
 
+/**
+ * student RESTful response class
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 public class StudentResponse implements InterfaceDTO {
     public String id;
     public String name;

@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import { RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
 import { Avatar, Text, Title } from 'react-native-paper';
 import styles from './styles';
 import { observer } from 'mobx-react-lite';
@@ -20,12 +20,24 @@ const Profile: React.FC = () => {
   /* Usage of MobX global state store */
   const { studentStore, authenticationStore } = useStores();
 
+  /* Component states */
+  const [refreshing, setRefreshing] = React.useState(false);
+
   /* Local variables */
   const meetings = studentStore.meetingsCreatedByUser;
 
+  /**
+   * Refresh action
+   */
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await studentStore.loadMeetingsCreatedByUser();
+    setRefreshing(false);
+  }, []);
+
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         <View style={styles.container}>
           <View style={styles.row}>
             <Avatar.Image size={80} source={require('../../../../assets/Logo.png')} />

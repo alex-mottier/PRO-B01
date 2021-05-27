@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Meeting class
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -24,7 +29,6 @@ public class Meeting {
     private String locationID;
     private String ownerID;
     private String chatID;
-    // List de String ?
     private List<Tag> tags;
     private List<String> membersID = new ArrayList<>();
     private String startDate;
@@ -41,6 +45,7 @@ public class Meeting {
         this.tags = tags;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.isPrivate = isPrivate;
     }
 
     public Meeting(String name){ this.name = name; }

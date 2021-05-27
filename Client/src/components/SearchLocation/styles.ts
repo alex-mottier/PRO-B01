@@ -54,6 +54,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: -10,
   },
+  text: {
+    color: Globals.COLORS.TEXT,
+  },
   title: {
     justifyContent: 'center',
     textAlign: 'center',

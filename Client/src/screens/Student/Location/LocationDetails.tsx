@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react';
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import { RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
 import { Avatar, Text, Title, IconButton, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from './styles';
@@ -29,6 +29,7 @@ const LocationDetails: React.FC = () => {
   /* Component states */
   const [isLoading, setIsLoading] = React.useState(true);
   const [location, setLocation] = React.useState<Location | null>();
+  const [refreshing, setRefreshing] = React.useState(false);
 
   /* Local variables */
   let nbColors = 0;
@@ -37,16 +38,33 @@ const LocationDetails: React.FC = () => {
    * Action when component is loaded
    */
   React.useEffect(() => {
-    setIsLoading(true);
+    let mounted = true;
+    if (mounted) {
+      setIsLoading(true);
+      void studentStore.loadLocationToDisplay().then(() => {
+        setLocation(studentStore.locationToDisplay);
+        setIsLoading(false);
+      });
+    }
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  /**
+   * Refresh action
+   */
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
     void studentStore.loadLocationToDisplay().then(() => {
       setLocation(studentStore.locationToDisplay);
-      setIsLoading(false);
+      setRefreshing(false);
     });
   }, []);
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         {isLoading ? (
           <LoadingComponent />
         ) : (

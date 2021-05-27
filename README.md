@@ -1,3 +1,5 @@
+<p align="center"><img src="/img/Amphitryon.png" /></p>
+
 # Amphitryon 
 
 “Amphitryon” est une application ayant pour but de rassembler des étudiants afin de faciliter des échanges présentiels entre ceux-ci. Son intérêt est centré sur la difficulté de rencontre tout en respectant les recommandations sanitaires face à la pandémie.
@@ -9,6 +11,10 @@ Un hébergeur tel que la HEIG-VD, un commerce local ou un particulier peuvent me
 De plus, un système de recherche basé sur des tags définis par les emplacements de rencontre permettront de trouver l’endroit idéal pour les étudiants pour se rencontrer qui peuvent définir le thème du cours ou encore des options contenues dans l’hébergement (équipement, type de lieu). 
 
 Ce projet est réalisé dans le cadre du cours de PRO de notre 6ème semestre au sein de la HEIG-VD.
+
+## Aperçu de l'application
+
+<p align="center"><img src="/img/Amphitryon.gif" width="200" /></p>
 
 ## Équipe de développement :fire:
 **GROUPE B-01**  
@@ -23,7 +29,9 @@ Ce projet est réalisé dans le cadre du cours de PRO de notre 6ème semestre au
 | Werkle Johann     | johann.werkle@heig-vd.ch     | [jwgit2](https://github.com/jwgit2)                     |
 
 ## Documentation :books:
+
 - [Cahier des charges](https://docs.google.com/document/d/1qoa4yTymvGwsT7UbVMWsHINIgMTjK4omENQQtDLuuCA/edit?usp=sharing)
 - [Diagramme de Gantt](https://drive.google.com/file/d/1jsPWJtWTFPpic8qQQ9Nm8ls9UPAucrTE/view?usp=sharing)
 - [Journal de travail](https://docs.google.com/spreadsheets/d/1AO1D3wjjDWczJA71A2J2e0a2b0CYdRRPWPqOHQMfUHI/edit?usp=sharing)
 - [Modélisation](https://docs.google.com/document/d/18b8kpZCc5WYAIRArxywzORcK48tLwfY9McR1MsVFv4c/edit?usp=sharing)
+- [Documents finaux (Rapport, Document Qualité, Installation, Organisation du code, Présentation finale, Vidéo)](https://drive.google.com/drive/folders/1BEdxJ8qVRAZb4uH48S6OnlAA_U2zjq7Q)

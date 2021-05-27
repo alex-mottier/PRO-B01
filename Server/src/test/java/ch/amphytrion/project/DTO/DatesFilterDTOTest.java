@@ -7,7 +7,11 @@ import org.junit.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-
+/**
+ * Test of DatesFilterDTO class
+ *
+ * @author Alexis Allemann, Hakim Balestieri, Aloïs Christen, Christian Gomes, Alexandre Mottier, Johann Werkle
+ */
 public class DatesFilterDTOTest {
 
 
@@ -36,6 +40,9 @@ public class DatesFilterDTOTest {
          sOneYearBefore = oneYearBefore.toString();
      }
 
+    /**
+     * Test if two dates are between two another
+     */
     @Test
     public void twoDatesAndIsBetweenTest(){
 
@@ -44,6 +51,10 @@ public class DatesFilterDTOTest {
                             .isBetween(filter),
                 true);
     }
+
+    /**
+     * Test start date between two another
+     */
     @Test
     public void startDateAndIsBetweenTest(){
         filter = new DatesFilterDTO(sOneYearBefore, "");
@@ -51,6 +62,10 @@ public class DatesFilterDTOTest {
                             .isBetween(filter),
                 true);
     }
+
+    /**
+     * Test end date between two another
+     */
     @Test
     public void endDateAndIsBetweenTest(){
         filter = new DatesFilterDTO("", sOneYearAfter);
@@ -58,6 +73,9 @@ public class DatesFilterDTOTest {
                             .isBetween(filter),
                 true);
     }
+    /**
+     * Test with no date
+     */
     @Test
     public void noDateTest(){
         filter = new DatesFilterDTO("", "");
@@ -66,6 +84,10 @@ public class DatesFilterDTOTest {
                 true);
 
     }
+
+    /**
+     * Test with two date not between two another
+     */
     @Test
     public void twoDatesNotBetweenTest(){
         filter = new DatesFilterDTO(sOneYearBefore, sOneSecAfter);
@@ -73,6 +95,10 @@ public class DatesFilterDTOTest {
                         .isBetween(filter),
                 true);
     }
+
+    /**
+     * Test with start date not between two another
+     */
     @Test
     public void startDateNotBetweenTest(){
         filter = new DatesFilterDTO(sNow, "");
@@ -81,6 +107,9 @@ public class DatesFilterDTOTest {
                 true);
 
     }
+    /**
+     * Test with end date not between two another
+     */
     @Test
     public void endDateNotBetweenTest(){
         filter = new DatesFilterDTO("", sNow);
