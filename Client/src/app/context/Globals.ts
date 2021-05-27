@@ -88,10 +88,10 @@ export default {
     STUDENT_PROFILE: Strings.PROFILE,
     STUDENT_SEARCH: Strings.SEARCH,
   },
-  SETTINGS: {
-    API_URL: 'https://amphitryon.herokuapp.com',
-    GOOGLE_ID: '298748587556-mpio0261lovc0qkt660nbhgariolp1no.apps.googleusercontent.com',
-    VERSION: 'Version 2.0',
+  SETTINGS: { 
+    API_URL: 'https://amphitryon.herokuapp.com', 
+    GOOGLE_ID: '298748587556-mpio0261lovc0qkt660nbhgariolp1no.apps.googleusercontent.com', 
+    VERSION: 'Version 2.0', 
   },
   SESSION_TOKEN_NAME: 'session_token_amphitryon',
 };
