@@ -221,13 +221,13 @@ public class MeetingController extends BaseController implements IGenericControl
                     throw new CustomException("Meeting avec id :" + meeting.getId() + " non trouvé", HttpStatus.NOT_ACCEPTABLE, null);
                 }
                 /* Patch for update selected fields */
-                existantMeeting.setName(entity.getName());
-                existantMeeting.setDescription(entity.getDescription());
-                existantMeeting.setTags(entity.getTags());
-                existantMeeting.setLocationID(entity.getLocationID());
-                existantMeeting.setIsPrivate(entity.getIsPrivate());
-                existantMeeting.setStartDate(entity.getStartDate());
-                existantMeeting.setEndDate(entity.getEndDate());
+                existantMeeting.setName(meeting.getName());
+                existantMeeting.setDescription(meeting.getDescription());
+                existantMeeting.setTags(meeting.getTags());
+                existantMeeting.setLocationID(meeting.getLocationID());
+                existantMeeting.setIsPrivate(meeting.getIsPrivate());
+                existantMeeting.setStartDate(meeting.getStartDate());
+                existantMeeting.setEndDate(meeting.getEndDate());
                 Location location = locationService.findById(meeting.getLocationID());
                 return ResponseEntity.ok(new MeetingResponse(meetingService.save(existantMeeting), location));
             }

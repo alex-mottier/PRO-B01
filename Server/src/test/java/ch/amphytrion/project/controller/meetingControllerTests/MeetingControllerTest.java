@@ -192,4 +192,64 @@ class MeetingControllerTest {
         assertEquals(1, meetingController.getMeetingsWhereUserParticipate(null).getBody().size());
         assertEquals(m2.getId(), meetingController.getMeetingsWhereUserParticipate(null).getBody().get(0).id);
     }
+
+    @Test
+    void joinInexistantMeetingShouldThrow(){
+        assertThrows(CustomException.class, () -> meetingController.joinMeeting(""));
+    }
+
+    @Test
+    void joinMeetingShouldAddMeetingToStudent(){
+        String meetingName1 = "meeting-name-1";
+        DateTime now = DateTime.now();
+        String future = now.plusDays(1).toString();
+        String future2 = now.plusDays(2).toString();
+        Location location = new Location();
+        location.setNbPeople(2);
+        locationService.save(location);
+        Meeting m1 = new Meeting(meetingName1, "description1", location.getId(), null, null, null,
+                1, future, future2, false);
+        meetingService.save(m1);
+        meetingController.joinMeeting(m1.getId());
+        m1 = meetingService.findById(m1.getId());
+        assertTrue(student.getStudentProfil().getMeetingsParticipationsID().contains(m1.getId()));
+        assertTrue(m1.getMembersID().contains(student.getId()));
+    }
+
+    @Test
+    void joinAMeetingDoNothingIfAlreadyThere(){
+        String meetingName1 = "meeting-name-1";
+        DateTime now = DateTime.now();
+        String future = now.plusDays(1).toString();
+        String future2 = now.plusDays(2).toString();
+        Location location = new Location();
+        location.setNbPeople(2);
+        locationService.save(location);
+        Meeting m1 = new Meeting(meetingName1, "description1", location.getId(), null, null, null,
+                1, future, future2, false);
+        meetingService.save(m1);
+        meetingController.joinMeeting(m1.getId());
+        m1 = meetingService.findById(m1.getId());
+        meetingController.joinMeeting(m1.getId());
+        Meeting m2 = meetingService.findById(m1.getId());
+        assertEquals(m1, m2);
+    }
+
+    @Test
+    void joinShouldThrowIfFull(){
+        String meetingName1 = "meeting-name-1";
+        DateTime now = DateTime.now();
+        String future = now.plusDays(1).toString();
+        String future2 = now.plusDays(2).toString();
+        Location location = new Location();
+        location.setNbPeople(0);
+        locationService.save(location);
+        Meeting m1 = new Meeting(meetingName1, "description1", location.getId(), null, null, null,
+                1, future, future2, false);
+        meetingService.save(m1);
+        final String id = m1.getId();
+        assertThrows(CustomException.class, () -> meetingController.joinMeeting(id));
+        m1 = meetingService.findById(id);
+        assertEquals(0, m1.getMembersID().size());
+    }
 }
