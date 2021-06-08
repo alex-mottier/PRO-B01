@@ -2,6 +2,7 @@ package ch.amphytrion.project.controller.meetingControllerTests;
 
 import ch.amphytrion.project.controller.CustomException;
 import ch.amphytrion.project.controller.MeetingController;
+import ch.amphytrion.project.dto.FilterRequest;
 import ch.amphytrion.project.dto.MeetingResponse;
 import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.repositories.ChatRepository;
@@ -251,5 +252,122 @@ class MeetingControllerTest {
         assertThrows(CustomException.class, () -> meetingController.joinMeeting(id));
         m1 = meetingService.findById(id);
         assertEquals(0, m1.getMembersID().size());
+    }
+
+    //TODO filters tests
+
+    @Test
+    void createShouldCreateNewMeeting(){
+        String meetingName1 = "meeting-name-1";
+        DateTime now = DateTime.now();
+        String future = now.plusDays(1).toString();
+        String future2 = now.plusDays(2).toString();
+        Location location = new Location();
+        location.setNbPeople(2);
+        locationService.save(location);
+        Meeting m1 = new Meeting(meetingName1, "description1", location.getId(), student.getId(), null, null,
+                1, future, future2, false);
+        assertDoesNotThrow(()-> meetingController.create(m1));
+        assertEquals(1, meetingService.findAll().size());
+        Meeting created = meetingService.findAll().get(0);
+        m1.setId(created.getId());
+        assertEquals(m1, created);
+    }
+
+    @Test
+    void createdMeetingShouldHaveChat(){
+        String meetingName1 = "meeting-name-1";
+        DateTime now = DateTime.now();
+        String future = now.plusDays(1).toString();
+        String future2 = now.plusDays(2).toString();
+        Location location = new Location();
+        location.setNbPeople(2);
+        locationService.save(location);
+        Meeting m1 = new Meeting(meetingName1, "description1", location.getId(), student.getId(), null, null,
+                1, future, future2, false);
+        String createdID = meetingController.create(m1).getBody().id;
+        Meeting created = meetingService.findById(createdID);
+        assertNotNull(chatService.findById(created.getChatID()));
+        assertEquals(0, chatService.findById(created.getChatID()).getMessages().size());
+    }
+
+    @Test
+    void updateNonExistantShouldThrow(){
+        String meetingName1 = "meeting-name-1";
+        DateTime now = DateTime.now();
+        String future = now.plusDays(1).toString();
+        String future2 = now.plusDays(2).toString();
+        Location location = new Location();
+        location.setNbPeople(2);
+        locationService.save(location);
+        Meeting m1 = new Meeting(meetingName1, "description1", location.getId(), student.getId(), null, null,
+                1, future, future2, false);
+        assertThrows(CustomException.class, () -> meetingController.update(m1));
+    }
+
+    @Test
+    void updateShouldNotCreateNewMeeting(){
+        String meetingName1 = "meeting-name-1";
+        DateTime now = DateTime.now();
+        String future = now.plusDays(1).toString();
+        String future2 = now.plusDays(2).toString();
+        Location location = new Location();
+        location.setNbPeople(2);
+        locationService.save(location);
+        Meeting m1 = new Meeting(meetingName1, "description1", location.getId(), student.getId(), null, null,
+                1, future, future2, false);
+        meetingService.save(m1);
+        assertDoesNotThrow(() -> meetingController.update(m1));
+        assertEquals(1, meetingService.findAll().size());
+    }
+
+    @Test
+    void updateShouldChangeValues(){
+        String meetingName1 = "meeting-name-1";
+        String meetingName2 = "meeting-name-2";
+        String description1 = "old-description";
+        String description2 = "new-description";
+        DateTime now = DateTime.now();
+        String future = now.plusDays(1).toString();
+        String future2 = now.plusDays(2).toString();
+        Location location = new Location();
+        location.setNbPeople(2);
+        locationService.save(location);
+        Meeting m1 = new Meeting(meetingName1, description1, location.getId(), student.getId(), null, null,
+                1, future, future2, false);
+        Meeting dbMeeting = meetingService.save(m1);
+        m1.setDescription(description2);
+        m1.setName(meetingName2);
+        assertDoesNotThrow(() -> meetingController.update(m1));
+        dbMeeting = meetingService.findById(dbMeeting.getId());
+        assertEquals(meetingName2, dbMeeting.getName() );
+        assertEquals(description2, dbMeeting.getDescription() );
+    }
+
+    @Test
+    void deleteInexistantShouldThrow(){
+        String id = "meeting-id";
+        assertThrows(CustomException.class, () -> meetingController.delete(id));
+    }
+
+    @Test
+    void deleteShouldRemoveMeetingFromDB(){
+        String meetingName1 = "meeting-name-1";
+        String meetingName2 = "meeting-name-2";
+        DateTime now = DateTime.now();
+        String future = now.plusDays(1).toString();
+        String future2 = now.plusDays(2).toString();
+        Location location = new Location();
+        location.setNbPeople(2);
+        locationService.save(location);
+        Meeting m1 = new Meeting(meetingName1, "description1", location.getId(), student.getId(), null, null,
+                1, future, future2, false);
+        Meeting m2 = new Meeting(meetingName2, "description2", location.getId(), student.getId(), null, null,
+                1, future, future2, false);
+        Meeting m1saved = meetingService.save(m1);
+        meetingService.save(m2);
+        assertDoesNotThrow(() -> meetingController.delete(m1saved.getId()));
+        assertNull(meetingService.findById(m1saved.getId()));
+        assertEquals(1, meetingService.findAll().size());
     }
 }

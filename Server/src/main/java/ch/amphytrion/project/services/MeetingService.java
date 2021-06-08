@@ -88,9 +88,9 @@ public class MeetingService implements IGenericService<Meeting> {
         try {
             return meetingRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
+
     }
 
     /**

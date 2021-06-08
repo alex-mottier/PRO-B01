@@ -176,7 +176,7 @@ public class MeetingController extends BaseController implements IGenericControl
 
     /**
      * Add a specified meeting in the database
-     * @param entity the meeting to add, RESTfully formatted
+     * @param meeting the meeting to add, RESTfully formatted
      * @throws CustomException
      * @return ResponseEntity<MeetingResponse> the meeting created
      */
@@ -206,7 +206,7 @@ public class MeetingController extends BaseController implements IGenericControl
 
     /**
      * Update a specified meeting in the database
-     * @param entity the meeting to add, RESTfully formatted
+     * @param meeting the meeting to add, RESTfully formatted
      * @throws CustomException
      * @return ResponseEntity<MeetingResponse> the meeting updated
      */
@@ -259,6 +259,9 @@ public class MeetingController extends BaseController implements IGenericControl
                     }
                 }
                 meetingService.delete(meeting);
+                return;
+            } else {
+                throw new CustomException("Meeting avec id :" + meetingID + " non trouvé", HttpStatus.NOT_ACCEPTABLE, null);
             }
         } catch (Exception e) {
             throw new CustomException("Meeting avec id :" + meetingID + " non trouvé", HttpStatus.NOT_ACCEPTABLE, null);
