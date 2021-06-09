@@ -9,19 +9,25 @@ import ch.amphytrion.project.repositories.UserRepository;
 import ch.amphytrion.project.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataMongoTest
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureDataMongo
 class UserControllerWithoutUser {
 
     private final String OK_GOOGLE_TOKEN = "valid_google_token";
