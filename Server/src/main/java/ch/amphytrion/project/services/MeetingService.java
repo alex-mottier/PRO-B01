@@ -88,9 +88,9 @@ public class MeetingService implements IGenericService<Meeting> {
         try {
             return meetingRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
+
     }
 
     /**
@@ -154,7 +154,7 @@ public class MeetingService implements IGenericService<Meeting> {
             // Check if student is already part of the meeting
             if (studentProfil == null
                     || meeting.getMembersID().contains(member.getId())) {
-                return null;
+                return meeting;
             } else {
                 Location location = locationService.findById(meeting.getLocationID());
                 if (location != null && meeting.getMembersID().size() >= location.getNbPeople()){

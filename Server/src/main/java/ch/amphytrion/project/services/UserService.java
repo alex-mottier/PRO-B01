@@ -7,6 +7,7 @@ import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.repositories.UserRepository;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,13 +22,13 @@ public class UserService implements IGenericService<User>{
 
     private final String DEV_TOKEN = "tokenTest";
     private UserRepository userRepository;
-
-    @Autowired
     private GoogleTokenValider valider;
 
+
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, GoogleTokenValider valider) {
         this.userRepository = userRepository;
+        this.valider = valider;
     }
 
     /**
@@ -124,17 +125,15 @@ public class UserService implements IGenericService<User>{
             if (tokenInput.equals(DEV_TOKEN)) {
                 newUser = new User("mock-google-id" + username, username);
             } else {
-                GoogleIdToken tokenID = valider.validateToken(tokenInput);
-                if (tokenID != null) {
-                    GoogleIdToken.Payload payload = tokenID.getPayload();
-                    String userId = payload.get("sub").toString();
-                    if(findByGoogleId(userId) == null){
-                        newUser = new User(userId, username);
-                    }
+                String googleId = valider.getSubFromToken(tokenInput);
+                if(googleId != null && findByUsername(googleId) == null){
+                    newUser = new User(googleId, username);
                 }
             }
-            newUser.setStudentProfil(studentProfil);
-            userRepository.save(newUser);
+            if(newUser != null){
+                newUser.setStudentProfil(studentProfil);
+                userRepository.save(newUser);
+            }
         }
         return newUser;
     }
@@ -147,34 +146,31 @@ public class UserService implements IGenericService<User>{
     public User checkAndSignUpHost(SignUpHostRequest signUpHostRequest) {
         //TODO Separate User creation & unicity check
         String tokenInput = signUpHostRequest.tokenID;
-        String name = signUpHostRequest.name;
+        String username = signUpHostRequest.name;
         HostProfil hostProfil = new HostProfil();
 
         User newUser = null;
-        if(findByUsername(name) == null) {
+        if(findByUsername(username) == null) {
             if (tokenInput.equals(DEV_TOKEN)) {
-                newUser = new User("mock-google-id" + name, name);
+                newUser = new User("mock-google-id" + username, username);
             } else {
-                GoogleIdToken tokenID = valider.validateToken(tokenInput);
-                if (tokenID != null) {
-                    GoogleIdToken.Payload payload = tokenID.getPayload();
-                    String userId = payload.get("sub").toString();
-                    if(findByGoogleId(userId) == null){
-                        newUser = new User(userId, name);
-                    }
+                String userId = valider.getSubFromToken(tokenInput);
+                if(userId != null && findByUsername(userId) == null){
+                    newUser = new User(userId, username);
                 }
             }
-
-            //Ajout des informations du host
-            City city = new City( signUpHostRequest.cityName, signUpHostRequest.npa);
-            Address address = new Address(signUpHostRequest.street, signUpHostRequest.streetNb, city);
-            CovidData covidData = new CovidData(true, true, true, "" , "");
-            hostProfil.setCovidData(covidData);
-            hostProfil.setAddress(address);
-            hostProfil.setTags(signUpHostRequest.tags);
-            hostProfil.setDescription(signUpHostRequest.description);
-            newUser.setHostProfil(hostProfil);
-            userRepository.save(newUser);
+            if(newUser != null) {
+                //Ajout des informations du host
+                City city = new City(signUpHostRequest.cityName, signUpHostRequest.npa);
+                Address address = new Address(signUpHostRequest.street, signUpHostRequest.streetNb, city);
+                CovidData covidData = new CovidData(true, true, true, "", "");
+                hostProfil.setCovidData(covidData);
+                hostProfil.setAddress(address);
+                hostProfil.setTags(signUpHostRequest.tags);
+                hostProfil.setDescription(signUpHostRequest.description);
+                newUser.setHostProfil(hostProfil);
+                userRepository.save(newUser);
+            }
         }
         return newUser;
     }
