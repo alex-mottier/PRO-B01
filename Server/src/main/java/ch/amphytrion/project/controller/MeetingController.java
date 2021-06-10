@@ -8,9 +8,6 @@ import ch.amphytrion.project.services.ChatService;
 import ch.amphytrion.project.services.LocationService;
 import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.UserService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,7 +59,7 @@ public class MeetingController extends BaseController implements IGenericControl
             checkUserIsStudent();
             User user = getCurrentUser();
                 ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
-                for(Meeting meeting : meetingService.findFutureMeetings(user.getId())) {
+                for(Meeting meeting : meetingService.findOwnerFutureMeetings(user.getId())) {
                     Location location = locationService.findById(meeting.getLocationID());
                     MeetingResponse meetingResponse = new MeetingResponse(meeting, location);
                     meetingResponses.add(meetingResponse);

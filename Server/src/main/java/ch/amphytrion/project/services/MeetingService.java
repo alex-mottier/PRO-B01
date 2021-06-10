@@ -7,21 +7,14 @@ import ch.amphytrion.project.repositories.ChatRepository;
 import ch.amphytrion.project.repositories.LocationRepository;
 import ch.amphytrion.project.repositories.MeetingRepository;
 import ch.amphytrion.project.repositories.UserRepository;
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,7 +104,7 @@ public class MeetingService implements IGenericService<Meeting> {
      * @param ownerID The id of the owner of the meetings to find
      * @return Meeting The list of meetings found
      */
-    public ArrayList<Meeting> findFutureMeetings(String ownerID) {
+    public ArrayList<Meeting> findOwnerFutureMeetings(String ownerID) {
         ArrayList<Meeting> meetings = findByOwnerID(ownerID);
         ArrayList<Meeting> futureMeetings = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
