@@ -134,7 +134,7 @@ public class MeetingServiceTest {
 
     @Test
     void findOwnerFutureMeetingsShouldFindALlMeetingsInFuture(){
-        DateTime now = DateTime.now().plusHours(2); // To be at UTC time
+        DateTime now = DateTime.now();
         String past_1 = now.minusDays(1).toString();
         String past_0 = now.minusMinutes(1).toString();
         String future_0 = now.plusMinutes(1).toString();
@@ -166,7 +166,7 @@ public class MeetingServiceTest {
 
     @Test
     void findOwnerFutureMeetingsShouldFindOnlyOwnerMeetings(){
-        DateTime now = DateTime.now().plusHours(2); // To be at UTC time
+        DateTime now = DateTime.now();
         String past_1 = now.minusDays(1).toString();
         String past_0 = now.minusMinutes(1).toString();
         String future_0 = now.plusMinutes(1).toString();
