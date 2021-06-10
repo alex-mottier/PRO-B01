@@ -56,7 +56,6 @@ public class ChatService implements IGenericService<Chat> {
         try {
             return chatRepository.findById(id).orElseThrow(Exception::new);
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return null;
     }
