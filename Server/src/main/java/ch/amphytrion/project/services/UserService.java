@@ -20,7 +20,6 @@ import java.util.List;
 @Service
 public class UserService implements IGenericService<User>{
 
-    private final String DEV_TOKEN = "tokenTest";
     private UserRepository userRepository;
     private GoogleTokenValider valider;
 
