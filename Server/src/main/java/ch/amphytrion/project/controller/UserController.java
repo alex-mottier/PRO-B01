@@ -99,20 +99,5 @@ public class UserController extends BaseController implements IGenericController
         }
     }
 
-    @ApiOperation(value = "Retrieve userController")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully reached userController"),
-            @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
-            @ApiResponse(code = 403, message = "Access to this resource is forbidden"),
-            @ApiResponse(code = 406, message = "The user account already exists in the app")
-    })
 
-    //TODO : Check if still relevant
-    /**
-     * Test method of the controller
-     * @return the name of the class
-     */
-    private String testController() {
-        return this.getClass().getSimpleName();
-    }
 }
