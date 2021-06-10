@@ -55,9 +55,8 @@ public class HostService {
         try {
             return hostRepository.findByIdAndHostProfilIsNotNull(id);
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     /**
