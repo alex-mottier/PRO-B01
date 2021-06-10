@@ -78,11 +78,53 @@ public class StudentServiceTest {
     }
 
     @Test
+    void findByIdShouldReturnNullIfNotPresent(){
+        User user = createStudents(3).get(0);
+        assertNull(service.findById(user.getId() + "-fake"));
+    }
+
+    @Test
+    void findByIdShouldReturnTheStudent(){
+        User user = createStudents(3).get(0);
+        assertEquals(user, service.findById(user.getId()));
+    }
+
+    @Test
+    void findByIdShouldReturnNullIfNotStudent(){
+        User user = createStudents(3).get(0);
+        user.setStudentProfil(null);
+        repository.save(user);
+        assertNull(service.findById(user.getId()));
+    }
+
+    @Test
+    void findByUsernameShouldReturnNullIfNotPresent(){
+        User user = createStudents(3).get(0);
+        assertNull(service.findByUsername(user.getUsername() + "-fake"));
+    }
+
+    @Test
+    void findByUsernameShouldReturnTheStudent(){
+        User user = createStudents(3).get(0);
+        assertEquals(user, service.findByUsername(user.getUsername()));
+    }
+
+    @Test
+    void findByUsernameShouldReturnNullIfNotStudent(){
+        User user = createStudents(3).get(0);
+        user.setStudentProfil(null);
+        repository.save(user);
+        assertNull(service.findByUsername(user.getUsername()));
+    }
+
+    @Test
     void deletedStudentShouldNotBeFind(){
         User user = createStudents(3).get(0);
         service.delete(user);
         assertFalse(service.findAll().contains(user));
     }
+
+
 
     @Test
     void deleteInexistantShouldNotThrow(){

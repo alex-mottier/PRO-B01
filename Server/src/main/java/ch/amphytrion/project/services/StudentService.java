@@ -95,9 +95,11 @@ public class StudentService {
      */
     public User findByUsername(String username) {
         try{
-            return studentRepository.findByUsername(username);
+            User possibleStudent = studentRepository.findByUsername(username);
+            if(possibleStudent.getStudentProfil() != null){
+                return possibleStudent;
+            }
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return null;
     }

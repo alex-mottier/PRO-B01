@@ -87,7 +87,7 @@ public class HostServiceTest {
     }
 
     @Test
-    void findByIdShouldReturnTheUser(){
+    void findByIdShouldReturnTheHost(){
         User user = createHosts(3).get(0);
         assertEquals(user, service.findById(user.getId()));
     }
