@@ -65,7 +65,6 @@ public class UserController extends BaseController implements IGenericController
      * @throws CustomException
      * @return ResponseEntity<UserResponse> The user
      */
-    // X
     @SneakyThrows
     @PostMapping("/signUpStudent")
     public ResponseEntity<UserResponse> signUpStudent(@RequestBody StudentRequest studentRequest) {
@@ -87,7 +86,6 @@ public class UserController extends BaseController implements IGenericController
      * @throws CustomException
      * @return ResponseEntity<UserResponse> The user
      */
-    // X
     @SneakyThrows
     @PostMapping("/login")
     public ResponseEntity<UserResponse> login(@RequestBody Map<String, String> json) {
