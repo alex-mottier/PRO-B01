@@ -139,7 +139,6 @@ public class LocationController extends BaseController implements IGenericContro
      * @throws CustomException
      * @return ResponseEntity<LocationResponse> the location found, RESTfully formatted
      */
-    //X
     @SneakyThrows
     @GetMapping("/location/{locationId}")
     public ResponseEntity<LocationResponse> getById(@PathVariable String locationId) {

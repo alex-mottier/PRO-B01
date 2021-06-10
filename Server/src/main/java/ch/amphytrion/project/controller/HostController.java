@@ -59,8 +59,7 @@ public class HostController extends BaseController implements IGenericController
             List<User> hosts = hostService.findAll();
             return ResponseEntity.ok(
                     hosts.stream()
-                            //TODO : list of student ? is that right?
-                            .map(student -> new UserResponse(student))
+                            .map(host -> new UserResponse(host))
                             .collect(Collectors.toList())
             );
         } catch (Exception e) {
@@ -87,7 +86,6 @@ public class HostController extends BaseController implements IGenericController
      * Used to retrieve host by its id
      * @param id the id of the host
      * @throws CustomException
-     * @throws CustomException
      * @return ResponseEntity<HostResponse> The RESTful formatted host found
      */
     @SneakyThrows
@@ -110,7 +108,6 @@ public class HostController extends BaseController implements IGenericController
      * @throws CustomException
      * @return ResponseEntity<List<LocationResponse>> The RESTful locations retrieved from host
      */
-    //X
     @SneakyThrows
     @GetMapping("/getMyLocations")
     public ResponseEntity<List<LocationResponse>> getMyLocations() {

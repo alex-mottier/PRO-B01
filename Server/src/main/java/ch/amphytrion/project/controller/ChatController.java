@@ -40,7 +40,6 @@ public class ChatController extends BaseController implements IGenericController
      * @throws CustomException
      * @return ResponseEntity<Chat> The chat that received the message
      */
-    //X
     @SneakyThrows
     @PostMapping("/chat/createMessage/{chatId}")
     public ResponseEntity<Chat> createMessage(@PathVariable String chatId, @RequestBody Message message) {
@@ -62,7 +61,6 @@ public class ChatController extends BaseController implements IGenericController
      * @throws CustomException
      * @return ResponseEntity<Chat> the chat with corresponding id
      */
-    //X
     @SneakyThrows
     @GetMapping("/chat/{chatId}")
     public ResponseEntity<Chat> getById(@PathVariable String chatId) {
