@@ -5,9 +5,7 @@ import ch.amphytrion.project.dto.SignUpHostRequest;
 import ch.amphytrion.project.dto.StudentRequest;
 import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.repositories.UserRepository;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -128,7 +126,7 @@ public class UserService implements IGenericService<User>{
      */
     public User checkAndSignUpHost(SignUpHostRequest signUpHostRequest) {
 
-        User newUser = checkUserForCreation(signUpHostRequest.name, signUpHostRequest.tokenID);
+        User newUser = checkUserForCreation(signUpHostRequest.username, signUpHostRequest.tokenID);
 
         if(newUser != null) {
             //Ajout des informations du host
@@ -155,9 +153,9 @@ public class UserService implements IGenericService<User>{
      * @param tokenInput the token send by the user for verification
      */
     private User checkUserForCreation(String username, String tokenInput){
-        if (findByUsername(username) != null) {
+        if (findByUsername(username) == null) {
             String userId = valider.getSubFromToken(tokenInput);
-            if (userId != null && findByUsername(userId) == null) {
+            if (userId != null && findByGoogleId(userId) == null) {
                 return new User(userId, username);
             }
         }

@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -137,7 +136,7 @@ class UserControllerWithoutUser {
     SignUpHostRequest getSignUpHostRequest(){
         SignUpHostRequest hostRequest = new SignUpHostRequest();
         hostRequest.tokenID = OK_GOOGLE_TOKEN;
-        hostRequest.name = USERNAME;
+        hostRequest.username = USERNAME;
         hostRequest.street = STREET;
         hostRequest.streetNb = STREET_NB;
         hostRequest.cityName = CITY_NAME;
