@@ -259,6 +259,27 @@ public class MeetingService implements IGenericService<Meeting> {
     }
 
     /**
+     * Return all future meeting at the location
+     * @param locationID the id of the location
+     * @return the list of meeting that will happens at the location
+     */
+    public List<Meeting> findAllWithLocation(String locationID){
+        List<Meeting> meetings = findAll();
+        ArrayList<Meeting> futureAtLocationMeetings = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+
+        for(Meeting meeting : meetings) {
+            String end = meeting.getEndDate();
+            Instant instant = Instant.parse(end);
+            LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+            if(dateTime.isAfter(now) && meeting.getLocationID().equals(locationID)) {
+                futureAtLocationMeetings.add(meeting);
+            }
+        }
+        return futureAtLocationMeetings;
+    }
+
+    /**
      * Find a meeting by its location
      * @param id the id of the location that has to be in the meeting
      * @return List<Meeting> a list of meeting having a specific location
