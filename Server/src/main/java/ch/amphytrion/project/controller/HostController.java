@@ -195,21 +195,4 @@ public class HostController extends BaseController implements IGenericController
         }
     }
 
-
-    @ApiOperation(value = "Retrieve hostController")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully reached hostController"),
-            @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
-            @ApiResponse(code = 403, message = "Access to this resource is forbidden")
-    })
-
-    //TODO : Check if still relevant
-    /**
-     * Test method of the controller
-     * @return the name of the class
-     */
-    private String testController() {
-        return this.getClass().getSimpleName();
-    }
-
 }
