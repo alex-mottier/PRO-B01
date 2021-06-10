@@ -5,9 +5,7 @@ import ch.amphytrion.project.dto.SignUpHostRequest;
 import ch.amphytrion.project.dto.StudentRequest;
 import ch.amphytrion.project.entities.databaseentities.*;
 import ch.amphytrion.project.repositories.UserRepository;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +18,6 @@ import java.util.List;
 @Service
 public class UserService implements IGenericService<User>{
 
-    private final String DEV_TOKEN = "tokenTest";
     private UserRepository userRepository;
     private GoogleTokenValider valider;
 
@@ -57,12 +54,7 @@ public class UserService implements IGenericService<User>{
      */
     @Override
     public User findById(String id) {
-        try {
-            return userRepository.findById(id).orElseThrow(Exception::new);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+            return userRepository.findById(id).orElse(null);
     }
     /**
      * Find a user by its GoogleId
@@ -115,26 +107,15 @@ public class UserService implements IGenericService<User>{
      * @return User the user checked
      */
     public User checkAndSignUp(StudentRequest studentRequest) {
-        //TODO Separate User creation & unicity check
-        String username = studentRequest.username;
-        String tokenInput = studentRequest.tokenID;
-        StudentProfil studentProfil = new StudentProfil();
 
-        User newUser = null;
-        if(findByUsername(username) == null) {
-            if (tokenInput.equals(DEV_TOKEN)) {
-                newUser = new User("mock-google-id" + username, username);
-            } else {
-                String googleId = valider.getSubFromToken(tokenInput);
-                if(googleId != null && findByUsername(googleId) == null){
-                    newUser = new User(googleId, username);
-                }
-            }
-            if(newUser != null){
-                newUser.setStudentProfil(studentProfil);
-                userRepository.save(newUser);
-            }
+        User newUser = checkUserForCreation(studentRequest.username, studentRequest.tokenID);
+
+        if(newUser != null){
+            StudentProfil studentProfil = new StudentProfil();
+            newUser.setStudentProfil(studentProfil);
+            userRepository.save(newUser);
         }
+        
         return newUser;
     }
 
@@ -144,35 +125,41 @@ public class UserService implements IGenericService<User>{
      * @return User the user checked
      */
     public User checkAndSignUpHost(SignUpHostRequest signUpHostRequest) {
-        //TODO Separate User creation & unicity check
-        String tokenInput = signUpHostRequest.tokenID;
-        String username = signUpHostRequest.name;
-        HostProfil hostProfil = new HostProfil();
 
-        User newUser = null;
-        if(findByUsername(username) == null) {
-            if (tokenInput.equals(DEV_TOKEN)) {
-                newUser = new User("mock-google-id" + username, username);
-            } else {
-                String userId = valider.getSubFromToken(tokenInput);
-                if(userId != null && findByUsername(userId) == null){
-                    newUser = new User(userId, username);
-                }
-            }
-            if(newUser != null) {
-                //Ajout des informations du host
-                City city = new City(signUpHostRequest.cityName, signUpHostRequest.npa);
-                Address address = new Address(signUpHostRequest.street, signUpHostRequest.streetNb, city);
-                CovidData covidData = new CovidData(true, true, true, "", "");
-                hostProfil.setCovidData(covidData);
-                hostProfil.setAddress(address);
-                hostProfil.setTags(signUpHostRequest.tags);
-                hostProfil.setDescription(signUpHostRequest.description);
-                newUser.setHostProfil(hostProfil);
-                userRepository.save(newUser);
+        User newUser = checkUserForCreation(signUpHostRequest.username, signUpHostRequest.tokenID);
+
+        if(newUser != null) {
+            //Ajout des informations du host
+            City city = new City(signUpHostRequest.cityName, signUpHostRequest.npa);
+            Address address = new Address(signUpHostRequest.street, signUpHostRequest.streetNb, city);
+            CovidData covidData = new CovidData(true, true, true, "", "");
+
+            HostProfil hostProfil = new HostProfil();
+            hostProfil.setCovidData(covidData);
+            hostProfil.setAddress(address);
+            hostProfil.setTags(signUpHostRequest.tags);
+            hostProfil.setDescription(signUpHostRequest.description);
+            newUser.setHostProfil(hostProfil);
+            userRepository.save(newUser);
+        }
+
+        return newUser;
+    }
+
+    /**
+     * Check user before creation
+     *
+     * @param username the username of the new user
+     * @param tokenInput the token send by the user for verification
+     */
+    private User checkUserForCreation(String username, String tokenInput){
+        if (findByUsername(username) == null) {
+            String userId = valider.getSubFromToken(tokenInput);
+            if (userId != null && findByGoogleId(userId) == null) {
+                return new User(userId, username);
             }
         }
-        return newUser;
+        return null;
     }
 
 }

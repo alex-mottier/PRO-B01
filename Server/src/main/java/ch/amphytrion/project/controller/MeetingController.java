@@ -8,9 +8,6 @@ import ch.amphytrion.project.services.ChatService;
 import ch.amphytrion.project.services.LocationService;
 import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.UserService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,7 +52,6 @@ public class MeetingController extends BaseController implements IGenericControl
      * @throws CustomException
      * @return ResponseEntity<List<MeetingResponse>> The list of meetings that the user created, RESTfully formated
      */
-    //X
     @SneakyThrows
     @GetMapping("/getCreatedMeetings")
     public ResponseEntity<List<MeetingResponse>> getMeetingsCreatedByUser() {
@@ -63,7 +59,7 @@ public class MeetingController extends BaseController implements IGenericControl
             checkUserIsStudent();
             User user = getCurrentUser();
                 ArrayList<MeetingResponse> meetingResponses = new ArrayList<>();
-                for(Meeting meeting : meetingService.findFutureMeetings(user.getId())) {
+                for(Meeting meeting : meetingService.findOwnerFutureMeetings(user.getId())) {
                     Location location = locationService.findById(meeting.getLocationID());
                     MeetingResponse meetingResponse = new MeetingResponse(meeting, location);
                     meetingResponses.add(meetingResponse);
@@ -80,7 +76,6 @@ public class MeetingController extends BaseController implements IGenericControl
      * @throws CustomException
      * @return ResponseEntity<MeetingResponse> RESTful formatted meeting that has been left
      */
-    //X
     @SneakyThrows
     @PostMapping("/leaveMeeting/{meetingID}")
     public ResponseEntity<MeetingResponse> leaveMeeting(@PathVariable String meetingID){
@@ -109,7 +104,6 @@ public class MeetingController extends BaseController implements IGenericControl
      * @throws CustomException
      * @return ResponseEntity<List<MeetingResponse>> The list of meetings that the user is part of, RESTfully formated
      */
-    //X
     @SneakyThrows
     @PostMapping("/getMyMeetings")
     public ResponseEntity<List<MeetingResponse>> getMeetingsWhereUserParticipate(DatesFilterDTO datesFilter) {
@@ -135,7 +129,6 @@ public class MeetingController extends BaseController implements IGenericControl
      * @throws CustomException
      * @return ResponseEntity<MeetingResponse>The meeting that the user is now part of, RESTfully formated
      */
-    //X
     @SneakyThrows
     @PostMapping("/meeting/join/{meetingID}")
     public ResponseEntity<MeetingResponse> joinMeeting(@PathVariable String meetingID) {
@@ -156,7 +149,6 @@ public class MeetingController extends BaseController implements IGenericControl
      * @throws CustomException
      * @return ResponseEntity<List<MeetingResponse>> The meetings found , RESTfully formated
      */
-    //X
     @SneakyThrows
     @PostMapping("/meetings/filter")
     public ResponseEntity<List<MeetingResponse>> searchWithFilter(@RequestBody FilterRequest filter){
@@ -180,7 +172,6 @@ public class MeetingController extends BaseController implements IGenericControl
      * @throws CustomException
      * @return ResponseEntity<MeetingResponse> the meeting created
      */
-    //X
     @SneakyThrows
     @PostMapping("/meeting")
     public ResponseEntity<MeetingResponse> create(@RequestBody Meeting meeting) {
@@ -210,7 +201,6 @@ public class MeetingController extends BaseController implements IGenericControl
      * @throws CustomException
      * @return ResponseEntity<MeetingResponse> the meeting updated
      */
-    //X
     @SneakyThrows
     @PatchMapping("/meeting")
     public ResponseEntity<MeetingResponse> update(@RequestBody Meeting meeting) {
@@ -242,7 +232,6 @@ public class MeetingController extends BaseController implements IGenericControl
      * @param meetingID the ID of the meeting to delete
      * @throws CustomException
      */
-    //X
     @SneakyThrows
     @DeleteMapping("/meeting/{meetingID}")
     public void delete(@PathVariable String meetingID)  {
@@ -274,7 +263,6 @@ public class MeetingController extends BaseController implements IGenericControl
      * @throws CustomException
      * @return ResponseEntity<MeetingResponse> The meeting found
      */
-    //X
     @SneakyThrows
     @GetMapping("/meeting/{meetingID}")
     public ResponseEntity<MeetingResponse> getById(@PathVariable String meetingID) {
@@ -285,22 +273,6 @@ public class MeetingController extends BaseController implements IGenericControl
         } catch (Exception e) {
             throw new CustomException("Meeting avec id :" + meetingID + " non trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
-    }
-
-    @ApiOperation(value = "Retrieve meetingController")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully reached meetingController"),
-            @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
-            @ApiResponse(code = 403, message = "Access to this resource is forbidden")
-    })
-
-//TODO : Check if still relevant
-    /**
-     * Test method of the controller
-     * @return the name of the class
-     */
-    private String testController() {
-        return this.getClass().getSimpleName();
     }
 
 }

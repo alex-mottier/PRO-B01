@@ -254,8 +254,6 @@ class MeetingControllerTest {
         assertEquals(0, m1.getMembersID().size());
     }
 
-    //TODO filters tests
-
     @Test
     void createShouldCreateNewMeeting(){
         String meetingName1 = "meeting-name-1";

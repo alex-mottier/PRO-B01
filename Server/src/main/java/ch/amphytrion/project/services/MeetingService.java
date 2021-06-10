@@ -7,21 +7,14 @@ import ch.amphytrion.project.repositories.ChatRepository;
 import ch.amphytrion.project.repositories.LocationRepository;
 import ch.amphytrion.project.repositories.MeetingRepository;
 import ch.amphytrion.project.repositories.UserRepository;
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,12 +78,7 @@ public class MeetingService implements IGenericService<Meeting> {
      */
     @Override
     public Meeting findById(String id) {
-        try {
-            return meetingRepository.findById(id).orElseThrow(Exception::new);
-        } catch (Exception e) {
-            return null;
-        }
-
+        return meetingRepository.findById(id).orElse(null);
     }
 
     /**
@@ -103,11 +91,20 @@ public class MeetingService implements IGenericService<Meeting> {
     }
 
     /**
+     * Find a meeting by its location
+     * @param id the id of the location that has to be in the meeting
+     * @return List<Meeting> a list of meeting having a specific location
+     */
+    public List<Meeting> findByLocationID(String id) {
+        return meetingRepository.findByLocationID(id);
+    }
+
+    /**
      * Find a list of meetings by their owner id that haven't happened yet
      * @param ownerID The id of the owner of the meetings to find
      * @return Meeting The list of meetings found
      */
-    public ArrayList<Meeting> findFutureMeetings(String ownerID) {
+    public ArrayList<Meeting> findOwnerFutureMeetings(String ownerID) {
         ArrayList<Meeting> meetings = findByOwnerID(ownerID);
         ArrayList<Meeting> futureMeetings = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
@@ -259,12 +256,26 @@ public class MeetingService implements IGenericService<Meeting> {
     }
 
     /**
-     * Find a meeting by its location
-     * @param id the id of the location that has to be in the meeting
-     * @return List<Meeting> a list of meeting having a specific location
+     * Return all future meeting at the location
+     * @param locationID the id of the location
+     * @return the list of meeting that will happens at the location
      */
-    public List<Meeting> findByLocationID(String id) {
-        return meetingRepository.findByLocationID(id);
+    public List<Meeting> findAllWithLocation(String locationID){
+        List<Meeting> meetings = findAll();
+        ArrayList<Meeting> futureAtLocationMeetings = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+
+        for(Meeting meeting : meetings) {
+            String end = meeting.getEndDate();
+            Instant instant = Instant.parse(end);
+            LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+            if(dateTime.isAfter(now) && meeting.getLocationID().equals(locationID)) {
+                futureAtLocationMeetings.add(meeting);
+            }
+        }
+        return futureAtLocationMeetings;
     }
+
+
 }
 

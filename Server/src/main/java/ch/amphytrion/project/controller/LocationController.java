@@ -1,18 +1,12 @@
 package ch.amphytrion.project.controller;
 
-import ch.amphytrion.project.dto.DatesFilterDTO;
-import ch.amphytrion.project.dto.LocationFilterDTO;
 import ch.amphytrion.project.dto.LocationResponse;
 import ch.amphytrion.project.entities.databaseentities.CovidData;
 import ch.amphytrion.project.entities.databaseentities.Location;
-import ch.amphytrion.project.entities.databaseentities.Meeting;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.LocationService;
 import ch.amphytrion.project.services.MeetingService;
 import ch.amphytrion.project.services.UserService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,9 +31,9 @@ public class LocationController extends BaseController implements IGenericContro
      * Constuctor of location controller
      * @param locationService the related location service
      * @param userService the related user service
-     * @param meetingServce the related meeting service
+     * @param meetingService the related meeting service
      */
-    public LocationController(LocationService locationService, UserService userService,MeetingService meetingService) {
+    public LocationController(LocationService locationService, UserService userService, MeetingService meetingService) {
         this.locationService = locationService;
         this.userService = userService;
         this.meetingService = meetingService;
@@ -49,7 +43,6 @@ public class LocationController extends BaseController implements IGenericContro
      * @throws CustomException
      * @return ResponseEntity<List<Location>> return all the locations of the database RESTful formatted
      */
-    //X
     @SneakyThrows
     @GetMapping("/locations")
     public ResponseEntity<List<Location>> getAll() {
@@ -71,29 +64,11 @@ public class LocationController extends BaseController implements IGenericContro
     }
 
     /**
-     * Retrieve all the locations in the database
-     * @param filters a specific filter for locations with a meeting ID and two dates
-     * @throws CustomException
-     * @return ResponseEntity<List<Location>> return the corresponding locations of the database RESTful formatted
-     */
-    //X
-    @SneakyThrows
-    public ResponseEntity<List<Location>> getAllWithDate(@RequestBody LocationFilterDTO filters) {
-        //TODO logique & model dto with startDate & endDate
-        try {
-            return ResponseEntity.ok(locationService.findAll());
-        } catch (Exception e) {
-            return ResponseEntity.ok(new ArrayList<Location>());
-        }
-    }
-
-    /**
      * Add a location to the database
      * @param entity a location RESTfully formatted
      * @throws CustomException
      * @return ResponseEntity<LocationResponse> the location created RESTfully formatted
      */
-    //X
     @SneakyThrows
     @PostMapping("/location")
     public ResponseEntity<LocationResponse> create(@RequestBody Location entity) {
@@ -118,19 +93,23 @@ public class LocationController extends BaseController implements IGenericContro
      * @param locationID the ID of the location
      * @throws CustomException
      */
-    //X
     @SneakyThrows
     @DeleteMapping("/location/{locationID}")
     public void delete(@PathVariable String locationID) {
+        checkUserIsHost();
+        Location location;
         try {
-            //TODO vérifier qu'on supprime bien une location qui nous appartient!! ce serait bête sinon :)
-            //TODO : Supprimer une location - revient à supprimer tous les meetings dans ce lieu et supprimer ces meetings - A DISCUTER
-
-            checkUserIsHost();
-            locationService.deleteById(locationID);
+            location = locationService.findById(locationID);
         } catch (Exception e) {
             throw new CustomException("Location id : " + locationID + " introuvable", HttpStatus.NOT_ACCEPTABLE, null);
         }
+        if(location.getHostId() != getCurrentUser().getId()){
+            throw new CustomException("Vous n'êtes pas le propriétaire de ce lieu.", HttpStatus.NOT_ACCEPTABLE, null);
+        }
+        if(!meetingService.findAllWithLocation(locationID).isEmpty()){
+            throw new CustomException("Le lieu ne peut pas être supprimé : des meetings y sont prévus.", HttpStatus.NOT_ACCEPTABLE, null);
+        }
+        locationService.deleteById(locationID);
     }
 
 
@@ -141,7 +120,6 @@ public class LocationController extends BaseController implements IGenericContro
      * @throws CustomException
      * @return ResponseEntity<LocationResponse> the location updated, RESTfully formatted
      */
-    //X
     @SneakyThrows
     @PatchMapping("/location")
     public ResponseEntity<LocationResponse> update(@RequestBody Location entity) {
@@ -161,7 +139,6 @@ public class LocationController extends BaseController implements IGenericContro
      * @throws CustomException
      * @return ResponseEntity<LocationResponse> the location found, RESTfully formatted
      */
-    //X
     @SneakyThrows
     @GetMapping("/location/{locationId}")
     public ResponseEntity<LocationResponse> getById(@PathVariable String locationId) {
@@ -170,21 +147,6 @@ public class LocationController extends BaseController implements IGenericContro
         } catch (Exception e) {
             throw new CustomException("Ce lieu n'existe pas", HttpStatus.NOT_ACCEPTABLE, null);
         }
-    }
-
-    @ApiOperation(value = "Retrieve locationController")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully reached locationController"),
-            @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
-            @ApiResponse(code = 403, message = "Access to this resource is forbidden")
-    })
-    //TODO : Check if still relevant
-    /**
-     * Test method of the controller
-     * @return the name of the class
-     */
-    private String testController() {
-        return this.getClass().getSimpleName();
     }
 
 }

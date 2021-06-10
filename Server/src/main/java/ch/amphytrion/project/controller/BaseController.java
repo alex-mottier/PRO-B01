@@ -28,6 +28,4 @@ public class BaseController {
         return this.getClass().getCanonicalName();
     }
 
-
-
 }

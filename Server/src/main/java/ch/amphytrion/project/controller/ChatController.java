@@ -40,7 +40,6 @@ public class ChatController extends BaseController implements IGenericController
      * @throws CustomException
      * @return ResponseEntity<Chat> The chat that received the message
      */
-    //X
     @SneakyThrows
     @PostMapping("/chat/createMessage/{chatId}")
     public ResponseEntity<Chat> createMessage(@PathVariable String chatId, @RequestBody Message message) {
@@ -62,7 +61,6 @@ public class ChatController extends BaseController implements IGenericController
      * @throws CustomException
      * @return ResponseEntity<Chat> the chat with corresponding id
      */
-    //X
     @SneakyThrows
     @GetMapping("/chat/{chatId}")
     public ResponseEntity<Chat> getById(@PathVariable String chatId) {
@@ -72,21 +70,6 @@ public class ChatController extends BaseController implements IGenericController
         } else {
             throw new CustomException("Le chat n'existe pas", HttpStatus.NOT_ACCEPTABLE, null);
         }
-    }
-
-    @ApiOperation(value = "Retrieve chatController")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully reached chatController"),
-            @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
-            @ApiResponse(code = 403, message = "Access to this resource is forbidden")
-    })
-    //TODO : Check if still relevant
-/**
- * Test method of the controller
- * @return the name of the class
- */
-    private String testController() {
-        return this.getClass().getSimpleName();
     }
     
 }

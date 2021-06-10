@@ -53,12 +53,7 @@ public class ChatService implements IGenericService<Chat> {
      */
     @Override
     public Chat findById(String id) {
-        try {
-            return chatRepository.findById(id).orElseThrow(Exception::new);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return chatRepository.findById(id).orElse(null);
     }
 
     /**
