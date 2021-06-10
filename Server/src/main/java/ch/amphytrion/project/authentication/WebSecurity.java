@@ -52,19 +52,18 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
-//                // Filter for authentication with DevToken
-                .addFilterBefore(
-                        new DevAuthenticationFilter(authenticationManager(), userAuthService.getUserService()),
-                        BasicAuthenticationFilter.class
-                )
+                // Filter for authentication with DevToken
+                // Disabled for master
+//                .addFilterBefore(
+//                        new DevAuthenticationFilter(authenticationManager(), userAuthService.getUserService()),
+//                        BasicAuthenticationFilter.class
+//                )
                 // Filter for authentication by GoogleOpenID
                 .addFilterBefore(
                         new GoogleAuthenticationFilter(authenticationManager()),
                         BasicAuthenticationFilter.class
                 )
                 // Filter for authentication by JWT
-//                .addFilter(new JWTAuthenticationFilter(authenticationManager(), userAuthService.getUserService()))
-//                // Fitler for authorization by JWT
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), userAuthService.getUserService()))
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
