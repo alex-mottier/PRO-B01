@@ -85,12 +85,7 @@ public class MeetingService implements IGenericService<Meeting> {
      */
     @Override
     public Meeting findById(String id) {
-        try {
-            return meetingRepository.findById(id).orElseThrow(Exception::new);
-        } catch (Exception e) {
-            return null;
-        }
-
+        return meetingRepository.findById(id).orElse(null);
     }
 
     /**

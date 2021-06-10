@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
  */
 @Service
 public class HostService {
-    //TODO : toujours utile?
     private UserRepository hostRepository;
 
     /**

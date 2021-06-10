@@ -56,12 +56,7 @@ public class UserService implements IGenericService<User>{
      */
     @Override
     public User findById(String id) {
-        try {
-            return userRepository.findById(id).orElseThrow(Exception::new);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+            return userRepository.findById(id).orElse(null);
     }
     /**
      * Find a user by its GoogleId
