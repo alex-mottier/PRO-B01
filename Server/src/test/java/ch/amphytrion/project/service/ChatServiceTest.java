@@ -62,7 +62,7 @@ public class ChatServiceTest {
     }
 
     @Test
-    void findByIdShouldReturnTheUser(){
+    void findByIdShouldReturnTheChat(){
         Chat chat = createChats(3).get(0);
         assertEquals(chat, service.findById(chat.getId()));
     }
