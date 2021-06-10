@@ -98,6 +98,15 @@ public class MeetingService implements IGenericService<Meeting> {
     }
 
     /**
+     * Find a meeting by its location
+     * @param id the id of the location that has to be in the meeting
+     * @return List<Meeting> a list of meeting having a specific location
+     */
+    public List<Meeting> findByLocationID(String id) {
+        return meetingRepository.findByLocationID(id);
+    }
+
+    /**
      * Find a list of meetings by their owner id that haven't happened yet
      * @param ownerID The id of the owner of the meetings to find
      * @return Meeting The list of meetings found
@@ -274,13 +283,6 @@ public class MeetingService implements IGenericService<Meeting> {
         return futureAtLocationMeetings;
     }
 
-    /**
-     * Find a meeting by its location
-     * @param id the id of the location that has to be in the meeting
-     * @return List<Meeting> a list of meeting having a specific location
-     */
-    public List<Meeting> findByLocationID(String id) {
-        return meetingRepository.findByLocationID(id);
-    }
+
 }
 
