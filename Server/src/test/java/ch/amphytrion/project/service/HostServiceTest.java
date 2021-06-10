@@ -81,6 +81,27 @@ public class HostServiceTest {
     }
 
     @Test
+    void findByIdShouldReturnNullIfNotPresent(){
+        User user = createHosts(3).get(0);
+        assertNull(service.findById(user.getId() + "-fake"));
+    }
+
+    @Test
+    void findByIdShouldReturnTheUser(){
+        User user = createHosts(3).get(0);
+        assertEquals(user, service.findById(user.getId()));
+    }
+
+    @Test
+    void findByIdShouldReturnNullIfNotHost(){
+        User user = createHosts(3).get(0);
+        user.setHostProfil(null);
+        repository.save(user);
+        assertNull(service.findById(user.getId()));
+    }
+
+
+    @Test
     void deletedHostShouldNotBeFind(){
         User user = createHosts(3).get(0);
         service.delete(user);
