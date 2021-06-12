@@ -49,7 +49,7 @@ public class UserController extends BaseController implements IGenericController
     public ResponseEntity<UserResponse> signUpHost(@RequestBody SignUpHostRequest signUpHostRequest) {
         User newUser = userService.checkAndSignUpHost(signUpHostRequest);
         if (newUser != null) {
-            String token = JwtUtils.makeHeaderToken(newUser.getUsername());
+            String token = JwtUtils.makeHeaderToken(newUser.getId());
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
             return ResponseEntity.ok().headers(responseHeaders).body(new UserResponse(newUser));
@@ -70,7 +70,7 @@ public class UserController extends BaseController implements IGenericController
     public ResponseEntity<UserResponse> signUpStudent(@RequestBody StudentRequest studentRequest) {
         User newUser = userService.checkAndSignUp(studentRequest);
         if (newUser != null) {
-            String token = JwtUtils.makeHeaderToken(newUser.getUsername());
+            String token = JwtUtils.makeHeaderToken(newUser.getId());
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
             return ResponseEntity.ok().headers(responseHeaders).body(new UserResponse(newUser));

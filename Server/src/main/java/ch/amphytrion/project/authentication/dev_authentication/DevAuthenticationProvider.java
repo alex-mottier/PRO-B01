@@ -41,8 +41,8 @@ public class DevAuthenticationProvider implements AuthenticationProvider {
             return authentication;
         }
         try {
-            User user = userService.findByUsername(
-                    ((User)authentication.getPrincipal()).getUsername()
+            User user = userService.findById(
+                    ((User)authentication.getPrincipal()).getId()
             );
             if(user == null) {
                 throw new UserPrincipalNotFoundException("User not found");
