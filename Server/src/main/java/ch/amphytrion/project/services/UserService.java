@@ -154,9 +154,6 @@ public class UserService implements IGenericService<User>{
      */
     private User checkUserForCreation(String username, String tokenInput){
         if (findByUsername(username) == null) {
-            if(tokenInput.equals("tokenTest")){
-                return new User("google-id-" + username, username);
-            }
             String userId = valider.getSubFromToken(tokenInput);
             if (userId != null && findByGoogleId(userId) == null) {
                 return new User(userId, username);
