@@ -64,7 +64,7 @@ public class MeetingController extends BaseController implements IGenericControl
                     MeetingResponse meetingResponse = new MeetingResponse(meeting, location);
                     meetingResponses.add(meetingResponse);
                 }
-                return ResponseEntity.ok(meetingResponses);
+                return ResponseEntity.ok().body(meetingResponses);
         } catch (Exception e) {
             throw new CustomException("Aucun meeting n'a été trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
@@ -90,7 +90,7 @@ public class MeetingController extends BaseController implements IGenericControl
                  studentService.save(user);
                  meetingService.save(meeting);
                 Location location = locationService.findById(meeting.getLocationID());
-                return ResponseEntity.ok(new MeetingResponse(meeting, location));
+                return ResponseEntity.ok().body(new MeetingResponse(meeting, location));
                 }
         } catch (Exception e) {
             throw new CustomException("Meeting introuvable", HttpStatus.NOT_ACCEPTABLE, null);
@@ -117,7 +117,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 MeetingResponse meetingResponse = new MeetingResponse(meeting, location);
                 meetingResponses.add(meetingResponse);
             }
-            return ResponseEntity.ok(meetingResponses);
+            return ResponseEntity.ok().body(meetingResponses);
         } catch (Exception e) {
             System.out.println("");
             throw new CustomException("Aucun meeting n'a été trouvé", HttpStatus.NOT_ACCEPTABLE, null);
@@ -136,7 +136,7 @@ public class MeetingController extends BaseController implements IGenericControl
             checkUserIsStudent();
             Meeting meeting = meetingService.addMemberToMeeting(getCurrentUser(), meetingID);
             Location location = locationService.findById(meeting.getLocationID());
-            return ResponseEntity.ok(new MeetingResponse(meeting, location));
+            return ResponseEntity.ok().body(new MeetingResponse(meeting, location));
         }
         catch (Exception e) {
             throw new CustomException("Le meeting n'a pas pu être joint", HttpStatus.NOT_ACCEPTABLE, null);
@@ -160,7 +160,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 MeetingResponse meetingResponse = new MeetingResponse(meeting, location);
                 meetingResponses.add(meetingResponse);
             }
-            return ResponseEntity.ok(meetingResponses);
+            return ResponseEntity.ok().body(meetingResponses);
         } catch (Exception e) {
             throw new CustomException("Aucun meeting n'a été trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }
@@ -189,7 +189,7 @@ public class MeetingController extends BaseController implements IGenericControl
             user.getStudentProfil().getMeetingsParticipationsID().add(meeting.getId());
             studentService.save(user);
             Location location = locationService.findById(meeting.getLocationID());
-            return ResponseEntity.ok(new MeetingResponse(meeting, location));
+            return ResponseEntity.ok().body(new MeetingResponse(meeting, location));
         } catch (Exception e) {
             throw new CustomException("Aucun meeting créé", HttpStatus.NOT_ACCEPTABLE, null);
         }
@@ -219,7 +219,7 @@ public class MeetingController extends BaseController implements IGenericControl
                 existantMeeting.setStartDate(meeting.getStartDate());
                 existantMeeting.setEndDate(meeting.getEndDate());
                 Location location = locationService.findById(meeting.getLocationID());
-                return ResponseEntity.ok(new MeetingResponse(meetingService.save(existantMeeting), location));
+                return ResponseEntity.ok().body(new MeetingResponse(meetingService.save(existantMeeting), location));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
@@ -269,7 +269,7 @@ public class MeetingController extends BaseController implements IGenericControl
         try {
             Meeting meeting = meetingService.findById(meetingID);
             Location location = locationService.findById(meeting.getLocationID());
-            return ResponseEntity.ok(new MeetingResponse(meeting, location));
+            return ResponseEntity.ok().body(new MeetingResponse(meeting, location));
         } catch (Exception e) {
             throw new CustomException("Meeting avec id :" + meetingID + " non trouvé", HttpStatus.NOT_ACCEPTABLE, null);
         }

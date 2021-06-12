@@ -34,14 +34,17 @@ public class JwtUtils {
                                                              HttpServletResponse response,
                                                              FilterChain chain,
                                                              Authentication auth){
-        String token = makeHeaderToken(((User) auth.getPrincipal()).getUsername());
+        if(auth == null || auth.getPrincipal() == null){
+            return;
+        }
+        String token = makeHeaderToken(((User) auth.getPrincipal()).getId());
 
         response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
     }
 
-    public static String makeHeaderToken(String username){
+    public static String makeHeaderToken(String userID){
         return JWT.create()
-                .withSubject(username)
+                .withSubject(userID)
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
     }

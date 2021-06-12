@@ -126,7 +126,7 @@ public class UserService implements IGenericService<User>{
      */
     public User checkAndSignUpHost(SignUpHostRequest signUpHostRequest) {
 
-        User newUser = checkUserForCreation(signUpHostRequest.username, signUpHostRequest.tokenID);
+        User newUser = checkUserForCreation(signUpHostRequest.name, signUpHostRequest.tokenID);
 
         if(newUser != null) {
             //Ajout des informations du host

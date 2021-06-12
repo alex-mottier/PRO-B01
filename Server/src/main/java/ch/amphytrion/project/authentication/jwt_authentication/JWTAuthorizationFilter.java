@@ -1,6 +1,7 @@
 package ch.amphytrion.project.authentication.jwt_authentication;
 
 import ch.amphytrion.project.authentication.SecurityConstants;
+import ch.amphytrion.project.authentication.utils.JwtUtils;
 import ch.amphytrion.project.entities.databaseentities.User;
 import ch.amphytrion.project.services.UserService;
 import com.auth0.jwt.JWT;
@@ -9,6 +10,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
@@ -51,6 +53,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         try {
             JWTAuthorizationToken authentication = getAuthentication(req);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            JwtUtils.AddTokenWithSuccessfullAuthentication(req, res, chain, authentication);
             chain.doFilter(req, res);
         } catch (TokenExpiredException e){
             return;
@@ -62,14 +65,14 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         String token = request.getHeader(SecurityConstants.HEADER_STRING);
             if (token != null) {
                 // parse the token.
-                String username = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()))
+                String userId = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()))
                         .build()
                         .verify(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
                         .getSubject();
 
-                if (username != null) {
+                if (userId != null) {
                     // new arraylist means authorities
-                    User user = userService.findByUsername(username);
+                    User user = userService.findById(userId);
                     return new JWTAuthorizationToken(user, null, new ArrayList<>());
                 }
             }

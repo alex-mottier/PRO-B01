@@ -56,7 +56,7 @@ public class LocationController extends BaseController implements IGenericContro
                 }
             }
 
-            return ResponseEntity.ok(openLocations);
+            return ResponseEntity.ok().body(openLocations);
 
         } catch (Exception e) {
             throw new CustomException("Erreur lors de la récupération des locations", HttpStatus.NOT_ACCEPTABLE, null);
@@ -79,7 +79,7 @@ public class LocationController extends BaseController implements IGenericContro
                 entity.setHostId(user.getId());
                 entity.setId(null);
                 Location location = locationService.save(entity);
-                return ResponseEntity.ok(new LocationResponse( location,  userService));
+                return ResponseEntity.ok().body(new LocationResponse( location,  userService));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
@@ -125,7 +125,7 @@ public class LocationController extends BaseController implements IGenericContro
     public ResponseEntity<LocationResponse> update(@RequestBody Location entity) {
         try {
             if(entity.getId() != null && locationService.findById(entity.getId()) != null){
-               return  ResponseEntity.ok(new LocationResponse(locationService.save(entity), userService));
+               return  ResponseEntity.ok().body(new LocationResponse(locationService.save(entity), userService));
             }
         } catch (Exception e) {
             throw new CustomException("Lieu non modifié", HttpStatus.NOT_ACCEPTABLE, null);
@@ -143,7 +143,7 @@ public class LocationController extends BaseController implements IGenericContro
     @GetMapping("/location/{locationId}")
     public ResponseEntity<LocationResponse> getById(@PathVariable String locationId) {
         try {
-            return ResponseEntity.ok(new LocationResponse(locationService.findById(locationId), userService));
+            return ResponseEntity.ok().body(new LocationResponse(locationService.findById(locationId), userService));
         } catch (Exception e) {
             throw new CustomException("Ce lieu n'existe pas", HttpStatus.NOT_ACCEPTABLE, null);
         }

@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class SignUpHostRequest implements InterfaceDTO {
     public String tokenID;
-    public String username;
+    public String name;
     public String street;
     public String streetNb;
     public String cityName;

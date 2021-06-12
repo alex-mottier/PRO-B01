@@ -57,7 +57,7 @@ public class HostController extends BaseController implements IGenericController
     public ResponseEntity<List<UserResponse>> getAll() {
         try {
             List<User> hosts = hostService.findAll();
-            return ResponseEntity.ok(
+            return ResponseEntity.ok().body(
                     hosts.stream()
                             .map(host -> new UserResponse(host))
                             .collect(Collectors.toList())
@@ -76,7 +76,7 @@ public class HostController extends BaseController implements IGenericController
     @SneakyThrows
     public ResponseEntity<HostResponse> save(User entity) {
         try {
-            return ResponseEntity.ok(new HostResponse(hostService.save(entity)));
+            return ResponseEntity.ok().body(new HostResponse(hostService.save(entity)));
         } catch (Exception e) {
             throw new CustomException("hôte non modifié/créé", HttpStatus.NOT_ACCEPTABLE, null);
         }
@@ -94,7 +94,7 @@ public class HostController extends BaseController implements IGenericController
         try {
             User host = hostService.findById(id);
             if (host != null) {
-                return ResponseEntity.ok(new HostResponse(host));
+                return ResponseEntity.ok().body(new HostResponse(host));
             } else {
                 throw new CustomException("Aucun hôte correspondant trouvé", HttpStatus.NOT_ACCEPTABLE, null);
             }
@@ -119,7 +119,7 @@ public class HostController extends BaseController implements IGenericController
             for(Location location : locationService.findByHostId(userID)) {
                 locationResponses.add(new LocationResponse(location, userService));
             }
-            return ResponseEntity.ok(locationResponses);
+            return ResponseEntity.ok().body(locationResponses);
         } catch (Exception e) {
             throw new CustomException("Aucune location n'a été trouvée", HttpStatus.NOT_ACCEPTABLE, null);
         }
@@ -145,7 +145,7 @@ public class HostController extends BaseController implements IGenericController
                     new City(hostRequest.address.cityName, hostRequest.address.npa)));
             hostProfil.setCovidData(hostRequest.covidData);
             user.setHostProfil(hostProfil);
-            return ResponseEntity.ok(new HostResponse(userService.save(user)));
+            return ResponseEntity.ok().body(new HostResponse(userService.save(user)));
         } catch (Exception e) {
             throw new CustomException("L'hôte n'a pas été mis à jour", HttpStatus.NOT_ACCEPTABLE, null);
         }
@@ -185,7 +185,7 @@ public class HostController extends BaseController implements IGenericController
                 Location location = locationService.findById(meeting.getLocationID());
                 meetingResponses.add(new MeetingResponse(meeting, location));
             }
-            return ResponseEntity.ok(meetingResponses);
+            return ResponseEntity.ok().body(meetingResponses);
         }
         catch (Exception e) {
             throw new CustomException("Impossible de récupérer la liste des meetings", HttpStatus.NOT_ACCEPTABLE, null);
