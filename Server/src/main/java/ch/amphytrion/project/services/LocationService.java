@@ -52,12 +52,7 @@ public class LocationService implements IGenericService<Location> {
      */
     @Override
     public Location findById(String id) {
-        try {
-            return locationRepository.findById(id).orElseThrow(Exception::new);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+            return locationRepository.findById(id).orElse(null);
     }
 
     /**

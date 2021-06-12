@@ -1,11 +1,11 @@
-FROM maven:3.6.1-jdk-8-alpine AS MAVEN_BUILD
+FROM maven:3.6.1-jdk-8 AS MAVEN_BUILD
 
 COPY pom.xml /build/
 COPY src /build/src/
 WORKDIR /build/
 RUN mvn clean package
 
-FROM openjdk:8-jre-alpine
+FROM openjdk:8-jdk
 
 WORKDIR /app
 

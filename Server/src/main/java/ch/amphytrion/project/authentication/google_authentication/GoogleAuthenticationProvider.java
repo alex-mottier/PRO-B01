@@ -42,12 +42,11 @@ public class GoogleAuthenticationProvider implements AuthenticationProvider {
         String openIdToken = (String) authentication.getCredentials();
         try {
 
-            GoogleIdToken verifiedToken = valider.validateToken(openIdToken);
-            if(verifiedToken == null){
+            String googleId = valider.getSubFromToken(openIdToken);
+            if(googleId == null){
                 throw new BadCredentialsException("Authentication failed");
             }
-            GoogleIdToken.Payload payload = verifiedToken.getPayload();
-            User user = userService.findByGoogleId(payload.get("sub").toString());
+            User user = userService.findByGoogleId(googleId);
             if(user == null) {
                 throw new UserPrincipalNotFoundException("User not found");
             }

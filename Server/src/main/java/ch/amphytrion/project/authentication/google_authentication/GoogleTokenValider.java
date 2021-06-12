@@ -8,6 +8,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -34,6 +35,15 @@ public class GoogleTokenValider {
                     .build();
             return verifier.verify(tokenID);
         } catch (GeneralSecurityException | IOException | IllegalArgumentException e){
+            return null;
+        }
+    }
+
+    public String getSubFromToken(String tokenID){
+        GoogleIdToken googleIdToken = validateToken(tokenID);
+        if(googleIdToken != null){
+            return googleIdToken.getPayload().get("sub").toString();
+        } else {
             return null;
         }
     }

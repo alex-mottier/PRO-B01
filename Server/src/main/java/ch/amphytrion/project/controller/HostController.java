@@ -59,8 +59,7 @@ public class HostController extends BaseController implements IGenericController
             List<User> hosts = hostService.findAll();
             return ResponseEntity.ok(
                     hosts.stream()
-                            //TODO : list of student ? is that right?
-                            .map(student -> new UserResponse(student))
+                            .map(host -> new UserResponse(host))
                             .collect(Collectors.toList())
             );
         } catch (Exception e) {
@@ -87,7 +86,6 @@ public class HostController extends BaseController implements IGenericController
      * Used to retrieve host by its id
      * @param id the id of the host
      * @throws CustomException
-     * @throws CustomException
      * @return ResponseEntity<HostResponse> The RESTful formatted host found
      */
     @SneakyThrows
@@ -110,7 +108,6 @@ public class HostController extends BaseController implements IGenericController
      * @throws CustomException
      * @return ResponseEntity<List<LocationResponse>> The RESTful locations retrieved from host
      */
-    //X
     @SneakyThrows
     @GetMapping("/getMyLocations")
     public ResponseEntity<List<LocationResponse>> getMyLocations() {
@@ -185,30 +182,14 @@ public class HostController extends BaseController implements IGenericController
 
             //Construction de la liste de meetingResponses
             for(Meeting meeting : meetings) {
-                meetingResponses.add(new MeetingResponse(meeting, locationService));
+                Location location = locationService.findById(meeting.getLocationID());
+                meetingResponses.add(new MeetingResponse(meeting, location));
             }
             return ResponseEntity.ok(meetingResponses);
         }
         catch (Exception e) {
             throw new CustomException("Impossible de récupérer la liste des meetings", HttpStatus.NOT_ACCEPTABLE, null);
         }
-    }
-
-
-    @ApiOperation(value = "Retrieve hostController")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully reached hostController"),
-            @ApiResponse(code = 401, message = "You are not authorized to view this resource"),
-            @ApiResponse(code = 403, message = "Access to this resource is forbidden")
-    })
-
-    //TODO : Check if still relevant
-    /**
-     * Test method of the controller
-     * @return the name of the class
-     */
-    private String testController() {
-        return this.getClass().getSimpleName();
     }
 
 }
