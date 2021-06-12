@@ -136,7 +136,7 @@ class UserControllerWithoutUser {
     SignUpHostRequest getSignUpHostRequest(){
         SignUpHostRequest hostRequest = new SignUpHostRequest();
         hostRequest.tokenID = OK_GOOGLE_TOKEN;
-        hostRequest.username = USERNAME;
+        hostRequest.name = USERNAME;
         hostRequest.street = STREET;
         hostRequest.streetNb = STREET_NB;
         hostRequest.cityName = CITY_NAME;

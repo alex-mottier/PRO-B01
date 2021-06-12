@@ -165,7 +165,7 @@ public class UserServiceTest {
         User user = createUsers(3).get(0);
         SignUpHostRequest request = new SignUpHostRequest();
         request.tokenID = OK_GOOGLE_TOKEN;
-        request.username = user.getUsername();
+        request.name = user.getUsername();
         assertNull(service.checkAndSignUpHost(request));
     }
 
@@ -174,7 +174,7 @@ public class UserServiceTest {
         User user = createUsers(3).get(0);
         SignUpHostRequest request = new SignUpHostRequest();
         request.tokenID = KO_GOOGLE_TOKEN;
-        request.username = user.getUsername() + "-fake";
+        request.name = user.getUsername() + "-fake";
         assertNull(service.checkAndSignUpHost(request));
     }
 
@@ -185,7 +185,7 @@ public class UserServiceTest {
         service.save(user);
         SignUpHostRequest request = new SignUpHostRequest();
         request.tokenID = OK_GOOGLE_TOKEN;
-        request.username = user.getUsername() + "-fake";
+        request.name = user.getUsername() + "-fake";
         assertNull(service.checkAndSignUpHost(request));
     }
 
@@ -194,7 +194,7 @@ public class UserServiceTest {
         createUsers(3).get(0);
         SignUpHostRequest request = new SignUpHostRequest();
         request.tokenID = OK_GOOGLE_TOKEN;
-        request.username = BASE_USERNAME + "OK";
+        request.name = BASE_USERNAME + "OK";
         User newUser = service.checkAndSignUpHost(request);
         assertNotNull(service.findById(newUser.getId()));
         assertNotNull(service.findByGoogleId(newUser.getGoogleId()));
