@@ -49,7 +49,7 @@ public class ChatController extends BaseController implements IGenericController
         try {
             message.setUsername(currentUser.getUsername());
             chat.getMessages().add(message);
-            return ResponseEntity.ok(chatService.save(chat));
+            return ResponseEntity.ok().body(chatService.save(chat));
         } catch (Exception e) {
             throw new CustomException("Le message n'a pas pu être créé", HttpStatus.NOT_ACCEPTABLE, null);
         }
@@ -66,7 +66,7 @@ public class ChatController extends BaseController implements IGenericController
     public ResponseEntity<Chat> getById(@PathVariable String chatId) {
         Chat chat = chatService.findById(chatId);
         if(chat != null){
-            return ResponseEntity.ok(chatService.findById(chatId));
+            return ResponseEntity.ok().body(chatService.findById(chatId));
         } else {
             throw new CustomException("Le chat n'existe pas", HttpStatus.NOT_ACCEPTABLE, null);
         }

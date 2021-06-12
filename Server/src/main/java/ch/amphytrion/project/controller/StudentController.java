@@ -45,7 +45,7 @@ public class StudentController extends BaseController implements IGenericControl
     public ResponseEntity<List<UserResponse>> getAll() {
         try {
             List<User> students = studentService.findAll();
-            return ResponseEntity.ok(
+            return ResponseEntity.ok().body(
                     students.stream()
                             .map(student -> new UserResponse(student))
                             .collect(Collectors.toList())

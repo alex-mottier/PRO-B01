@@ -34,6 +34,9 @@ public class JwtUtils {
                                                              HttpServletResponse response,
                                                              FilterChain chain,
                                                              Authentication auth){
+        if(auth == null || auth.getPrincipal() == null){
+            return;
+        }
         String token = makeHeaderToken(((User) auth.getPrincipal()).getUsername());
 
         response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
